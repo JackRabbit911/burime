@@ -1,0 +1,12 @@
+.env
+composer.phar
+/node_modules/*
+/vendor/*
+/storage/*
+/system/*
+/test/*
+/htdocs/test/*
+/sys/*
+/backup/*
+master.zip
+*.sql
