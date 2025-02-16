@@ -3,15 +3,17 @@
         <li>
             {% if item.sub is defined %}
                 {% if app.is_active(item.title, false) %}
-                    {% set open = ' open' %}
+                    {% set active = ' class=menu-active' %}
                 {% else %}
-                    {% set open = '' %}
+                    {% set active = '' %}
                 {% endif %}
-                <details{{ open }}>
+                <details>
                     <summary>
-                        {{ __(item.title) }}
+                        <a{{ active }}>
+                            {{ __(item.title) }}
+                        </a>                            
                     </summary>
-                    <ul class="whitespace-nowrap w-52">
+                    <ul class="md:w-52">
                         {{ _self.menu(item.sub) }}
                     </ul>
                 </details>
