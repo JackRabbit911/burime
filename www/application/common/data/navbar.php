@@ -7,15 +7,15 @@ return [
         'sub' => [
             [
                 'title' => 'What is burime',
-                'href' => '', //path('about', ['action' => 'burime']),
+                'href' => path('about', ['action' => 'burime']),
             ],
             [
                 'title' => 'Rules of the game',
-                'href' => '', //path('about', ['action' => 'rules']),
+                'href' => path('about', ['action' => 'rules']),
             ],
             [
                 'title' => 'About genres',
-                'href' => '', //path('about', ['action' => 'genres']),
+                'href' => path('about', ['action' => 'genres']),
                 'border' => true,
             ],
         ],

@@ -8,10 +8,10 @@
                     {% set active = '' %}
                 {% endif %}
                 <details>
-                    <summary>
+                    <summary{{ active }}>
                         <a{{ active }}>
                             {{ __(item.title) }}
-                        </a>                            
+                        </a>
                     </summary>
                     <ul class="md:w-52">
                         {{ _self.menu(item.sub) }}
