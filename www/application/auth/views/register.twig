@@ -1,0 +1,19 @@
+{% embed '@auth/common/center_wrapper.twig' %}
+{% block center %}
+{% import 'common/macro/formmacro.twig' as m %}
+<form id="{{ form.id }}" method="post" action="{{ form.action }}" accept-charset="UTF-8" enctype="multipart/form-data">
+    <fieldset class="fieldset w-full bg-base-200 border border-base-300 p-4 rounded-box">
+        <h1 class="text-2xl font-medium leading-9 tracking-tight my-4">
+            {{ __(title) }}
+        </h1>
+        {{ csrf()|raw }}
+        {{ m.input(name) }}
+        {{ m.input(email) }}
+        {{ m.input(password) }}
+        {{ m.input(confirm) }}
+        {{ m.checkbox(agree)|raw }}
+        <button type="submit" class="btn btn-primary">{{ __('Sign Up') }}</button>
+    </fieldset>
+</form>
+{% endblock %}
+{% endembed %}

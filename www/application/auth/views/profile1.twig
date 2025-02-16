@@ -1,0 +1,45 @@
+{% import 'web/macro/formmacro.twig' as m %}
+{% extends 'layout.twig' %}
+{% block content %}
+
+<div class="flex min-h-full flex-col justify-center px-2 py-6 lg:px-4">
+
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm flex flex-row justify-between">
+      <h2 class="mt-4 text-2xl font-bold leading-9 tracking-tight">{{ title }}</h2>
+      <div class="avatar">
+        <div class="w-24 rounded">
+          <img src="{{ app.user.avatar }}" />
+        </div>
+      </div>
+    </div>
+  
+    <div class="mt-2 sm:mx-auto sm:w-full sm:max-w-sm">
+    
+        <form id="{{ form.id }}" method="post" action="{{ form.action }}" accept-charset="UTF-8" enctype="multipart/form-data">
+            {{ csrf()|raw }}
+            {{ m.input(name) }}
+            {{ m.input(email) }}
+            {{ m.input(phone) }}
+            {{ m.input(dob) }}
+            <div class="flex flex-row mx-2">
+                <div class="label-text basis-1/2 mt-2">
+                    {{ sex.label }}
+                </div>
+                <div class="basis-1/4 pe-2 me-2">
+                {{ m.radio(sex, 'male', 1) }}
+                </div>
+                <div class="basis-1/4">
+                {{ m.radio(sex, 'female', 0) }}
+                </div>
+            </div>
+            {{ m.file(avatar) }}
+            <div class="form-control mt-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+        <p class="mt-5 text-end text-sm">
+            <a href="{{ path('profile.password', {'action': 'showForm'}) }}" class="link-hover font-semibold mx-2">Change password</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

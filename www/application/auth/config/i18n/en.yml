@@ -1,0 +1,8 @@
+msg_register: To complete the registration on this website click
+whoops_restore: Confirmation code does not match or the link is out of date. Please repeat the
+pass_changed: Your password has been successfully changed.
+info_restore: A message with a link to restore password has been sent to the email address you provided.
+info_register: A message with a link to complete the registration has been sent to the email address you provided.
+whoops_register: Confirmation code does not match or the link is out of date. Please repeat the
+msg_restore: To login recovery on this website click
+to change password: Change password

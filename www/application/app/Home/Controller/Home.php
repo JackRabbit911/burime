@@ -17,6 +17,7 @@ class Home extends WebController
 
     public function __invoke()
     {
+        // dd(path('auth', ['action' => 'form']));
         $data['title'] = $this->title;
         // $data['count_branches'] = $this->repo->getBranchesCount();
         // $data['count_authors'] = $this->repo->getAuthorsCount();
