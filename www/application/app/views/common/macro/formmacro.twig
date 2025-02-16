@@ -1,0 +1,176 @@
+{% macro input(attr) %}
+    {% if attr.status is defined and (attr.value or attr.status == 'error') %}
+        {% set validate = ' input-error' %}
+    {% else %}
+        {% set validate = '' %}
+    {% endif %}
+    {% apply spaceless %}
+        <label for="{{ attr.id ?? attr.name }}" class="fieldset-label">
+            <span class="label-text">{{ __(attr.label ?? attr.name)|capitalize }}</span>
+            <span class="label-text-alt">{{ __(attr.alt_label ?? '') }}</span>
+        </label>
+        <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
+            type="{{ attr.type ?? attr.name }}" 
+            placeholder="{{ __(attr.placeholder ?? '') }}" 
+            class="input w-full{{ validate }}"
+            value="{{ attr.value ?? '' }}" 
+            />
+        {% if attr.msg is defined and attr.msg is not empty %}
+            {% set visible = '' %}
+        {% else %}
+            {% set visible = ' invisible' %}
+        {% endif %}
+        <label class="fieldset-label{{ visible }}">
+            <span class="label-text-alt text-error">
+                {{ attr.msg ?? 'ok'}}
+            </span>
+        </label>
+    {% endapply %}
+{% endmacro input %}
+
+{% macro file(attr) %}
+{% if attr.status is defined and (attr.value or attr.status == 'error') %}
+{% set validate = ' file-input-' ~ attr.status %}
+{% else %}
+{% set validate = '' %}
+{% endif %}
+{% apply spaceless %}
+    <div class="label flex justify-between">
+        <span class="label-text">{{ __(attr.label) }}</span>
+        <span class="label-text-alt">{{ __(attr.alt_label ?? '') }}</span>
+    </div>
+    <input type="file" name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}" 
+        class="file-input w-full{{ validate }}"
+        value="{{ attr.value ?? '' }}"
+    />
+    {% if attr.msg is defined and attr.msg is not empty %}
+        {% set visible = '' %}
+    {% else %}
+        {% set visible = ' invisible' %}
+    {% endif %}
+    <label class="fieldset-label{{ visible }}">
+        <span class="label-text-alt text-error">
+            {{ attr.msg ?? 'ok'}}
+        </span>
+    </label>     
+{% endapply %}
+{% endmacro file %}
+
+{% macro checkbox(attr) %}
+    {% if attr.status is defined %}
+        {% set validate = ' checkbox-' ~ attr.status %}
+    {% else %}
+        {% set validate = '' %}
+    {% endif %}
+
+    {% if attr.checked is defined and attr.checked == true %}
+        {% set checked = ' checked' %}
+    {% else %}
+        {% set checked = '' %}
+    {% endif %}
+
+    {% apply spaceless %}
+        <label class="fieldset-label">
+            <span class="label-text me-2">{{ __(attr.label)|raw }}</span>
+            <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
+                type="checkbox"{{ checked }} class="checkbox" />
+        </label>
+        {% if attr.msg is defined and attr.msg is not empty %}
+            {% set visible = '' %}
+        {% else %}
+            {% set visible = ' invisible' %}
+        {% endif %}
+        <label class="fieldset-label{{ visible }}">
+            <span class="label-text-alt text-error">
+                {{ attr.msg ?? 'ok'}}
+            </span>
+        </label>
+    {% endapply %}
+{% endmacro checkbox %}
+
+{% macro radio(attr, label, value, checked) %}
+{# {{ dump(attr) }} #}
+{% if checked == 'checked' %}
+{% set checked = ' checked' %}
+{% else %}
+{% set checked = '' %}
+{% endif %}
+
+{% if attr.value is defined %}
+    {% if attr.value == value %}
+        {% set checked = ' checked' %}
+    {% else %}
+        {% set checked = '' %}
+    {% endif %}
+{% endif %}
+
+{% apply spaceless %}
+    {% set id = attr.id ?? attr.name ~ value ?? attr.value %}
+    <label for="{{ id }}" class="fieldset-label cursor-pointer">
+        <span class="label-text">{{ __(label) }}</span> 
+        <input name="{{ attr.name }}" id="{{ id }}" 
+        type="radio"{{ checked }} class="radio" 
+        value="{{ value }}"
+        />
+    </label>
+{% endapply %}
+{% endmacro radio %}
+
+{% macro textarea(attr) %}
+{% if attr.status is defined %}
+{% set validate = ' textarea-' ~ attr.status %}
+{% else %}
+{% set validate = ' textarea-bordered' %}
+{% endif %}
+
+{% if attr.rows is defined %}
+{% set rows = ' rows=' ~ attr.rows %}
+{% else %}
+{% set rows = '' %}
+{% endif %}
+<label class="form-control">
+    <div class="label">
+        <span class="label-text">{{ attr.label ?? attr.name|capitalize }}</span>
+        <span class="label-text-alt">{{ attr.alt_label ?? '' }}</span>
+    </div>
+    <textarea name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"{{ rows }} class="textarea{{ validate }}" placeholder="{{ attr.placeholder ?? '' }}">{{ attr.value ?? '' }}</textarea>
+    {% if attr.msg is defined and attr.msg is not empty %}
+    <div class="label">
+        <span class="label-text-alt text-error">{{ attr.msg ?? '' }}</span>
+        {# <span class="label-text-alt">Alt label</span> #}
+    </div>
+    {% endif %}
+</label>
+{% endmacro textarea %}
+
+{% macro select(attr) %}
+{% if attr.status is defined %}
+{% set validate = ' select-' ~ attr.status %}
+{% else %}
+{% set validate = ' select-bordered' %}
+{% endif %}
+<label class="form-control w-full{{ attr.visible ?? '' }}">
+    {% if attr.label %}
+    <div class="label">
+        <span class="label-text">{{ attr.label }}</span>
+        {% if alt_label is defined %}
+        <span class="label-text-alt">{{ alt_label }}</span>
+        {% endif %}
+    </div>
+    {% endif %}
+    <select name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}" 
+    class="select{{ validate }}" {{ attr.attributes ?? '' }}>
+        {% for opt in attr.options %}
+        <option{% if opt.disabled is defined %} disabled{% endif %}
+        {% if opt.selected is defined and opt.selected == true %} selected{% endif %}
+        {% if opt.value is defined %}value="{{ opt.value }}"{% endif %}>
+            {{ opt.label }}</option>
+        {% endfor %}
+    </select>
+    {% if attr.msg is defined and attr.msg is not empty %}
+    <div class="label">
+        <span class="label-text-alt text-error">{{ attr.msg }}</span>
+    </div>
+    {% endif %}
+</label>
+{% endmacro select %}
