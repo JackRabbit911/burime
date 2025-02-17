@@ -26,7 +26,7 @@ return [
     ],
     [
         'title' => 'Authors',
-        'href' => '', //path('authors'),
+        'href' => path('authors'),
     ],
     [
         'title' => 'Search',
