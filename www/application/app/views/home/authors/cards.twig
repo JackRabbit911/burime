@@ -1,7 +1,6 @@
 {% extends 'common/layout.twig' %}
-{# {% import 'web/author/author_card.twig' as a %} #}
-
 {% block content %}
+{% import 'home/authors/author_card.twig' as a %}
 {# {{ include('web/common/title_switcher.twig') }} #}
 <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4 h-auto">
     {% for author in authors %}

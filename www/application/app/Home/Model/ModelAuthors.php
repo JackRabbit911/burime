@@ -30,7 +30,9 @@ class ModelAuthors extends Model
             $table->limit($limit)->offset($offset);
         }
         
-        return $table->asObject(AuthorInterface::class)->get();
+        $authorClassName = container()->get(AuthorInterface::class);
+
+        return $table->asObject($authorClassName)->get();
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Home\Controller;
 
 use App\Home\Model\ModelAuthors;
 use Common\Component\Switcher;
+use Common\Contract\AuthorInterface;
 use Sys\Paginator;
 use Sys\Controller\WebController;
 
