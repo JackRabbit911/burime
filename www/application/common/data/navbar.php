@@ -22,7 +22,7 @@ return [
     ],
     [
         'title' => 'Works',
-        'href' => '', //path('works'),
+        'href' => path('works'),
     ],
     [
         'title' => 'Authors',
