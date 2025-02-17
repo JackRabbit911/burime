@@ -7,9 +7,6 @@ use Sys\Model\Model;
 
 class ModelAuthors extends Model
 {
-     /**
-     * Controller\AuthorsList::makeData
-     */
     public function get($limit = null, $offset = 0, $groupsOnly = false)
     {
         $table = $this->qb->table('authors')
@@ -35,9 +32,6 @@ class ModelAuthors extends Model
         return $table->asObject($authorClassName)->get();
     }
 
-    /**
-     * Controller\AuthorsList::__construct
-     */
     public function getCount()
     {
         return $this->qb->table('authors')->count();
