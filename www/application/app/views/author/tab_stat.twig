@@ -74,5 +74,8 @@
     <a role="tab" class="tab">{{ __('Edit') }}</a>
     {% endif %}
 </div>
-{% endblock %}
+{% endblock center %}
+{% block bottom %}
+    {{ include('author/tab_controls.twig') }}
+{% endblock bottom %}
 {% endembed %}
