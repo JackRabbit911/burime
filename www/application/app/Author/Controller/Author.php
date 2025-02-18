@@ -4,7 +4,7 @@ namespace App\Author\Controller;
 
 use App\Author\Model\ModelAuthor;
 use App\Author\Model\ModelUserGroup;
-
+use App\Author\Repo\Statistic;
 // use App\Model\ModelStat;
 
 use Sys\Controller\WebController;
@@ -35,47 +35,15 @@ class Author extends WebController
             ? $this->modelUserGroup->inUserGroup($this->user->id, $id, 100) : false;
     }
 
-    public function __invoke($id)
+    public function __invoke(Statistic $repo, $id)
     {
         $data = $this->data;
         // $data['avg_rating'] = $modelStat->getAuthorRatingAvg($id);
 
         $data['avg_rating'] = 4.1; //= RatingRepo->getRatingByAuthor($id);
+        $data['statistic'] = $repo->get($id);
 
-        $data['statistic'] = [
-            'books' => [
-                'title' => 'Books',
-                'count' => 3,
-                'href' => '',
-                'title_link' => 'Authors books',
-            ],
-            'posts' => [
-                'title' => 'Posts',
-                'count' => 13,
-                'href' => '',
-                'title_link' => 'All posts by author',
-            ],
-            'comments' => [
-                'title' => 'Comments',
-                'count' => 128,
-                'href' => '',
-                'title_link' => 'Authors comments',
-            ],
-            'subscribers' => [
-                'title' => 'Subscribers',
-                'count' => 17,
-                'href' => '',
-                'title_link' => 'Show subscribers',
-            ],
-            'in_groups' => [
-                'title' => 'In groups',
-                'count' => 8,
-                'href' => '',
-                'title_link' => 'Go to groups',
-            ],
-        ];
-
-        return view('web/author/tab_stat', $data);
+        return view('author/tab_stat', $data);
     }
 
     public function info($id)

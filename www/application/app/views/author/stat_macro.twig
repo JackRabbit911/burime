@@ -1,0 +1,11 @@
+{% macro tr(data) %}
+<tr>
+    <td>{{ __(data.title) }}</td>
+    <td>{{ data.count }}</td>
+    <td>
+        <a href="{{ data.href }}" class="link">
+            {{ data.title_link }}
+        </a>
+    </td>
+</tr>
+{% endmacro tr %}
