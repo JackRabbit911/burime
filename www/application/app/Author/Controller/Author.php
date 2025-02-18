@@ -59,6 +59,6 @@ class Author extends WebController
         $data['favorite'] = ($this->user) ? $this->modelUserGroup->inUserGroup($this->user->id, $id, 100) : false;
         $this->app->js('/assets/js/checkboxCheck.js');
 
-        return view('web/author/tab_members', $data);
+        return view('author/tab_members', $data);
     }
 }
