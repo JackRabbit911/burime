@@ -1,22 +1,25 @@
-{% if app.user %}
+<form id="acts" action="{{ path('author.controls') }}" method="post">
+    <input name="members[]" type="hidden" value="{{ author.id }}" />
+    {% if app.user %}
     {% set disabled = '' %}
     {% else %}
     {% set disabled = ' disabled' %}
-{% endif %}
-<div class="join join-vertical sm:join-horizontal w-full">
-    <button form="acts" name="action" type="submit" value="sendmsg" class="btn join-item"{{ disabled }}>
-        {{ __('Send message') }}
-    </button>
-    <button form="acts" name="action" type="submit" value="chat" class="btn join-item"{{ disabled }}>
-        {{ __('Invite to chat') }}
-    </button>
-    {% if favorite == false %}
-        <button form="acts" name="action" type="submit" value="subscribe" class="btn join-item"{{ disabled }}>
+    {% endif %}
+    <div class="join join-vertical sm:join-horizontal w-full pt-4">
+        <button name="action" type="submit" value="sendmsg" class="btn join-item"{{ disabled }}>
+            {{ __('Send message') }}
+        </button>
+        <button name="action" type="submit" value="chat" class="btn join-item"{{ disabled }}>
+            {{ __('Invite to chat') }}
+        </button>
+        {% if favorite == false %}
+        <button name="action" type="submit" value="subscribe" class="btn join-item"{{ disabled }}>
             {{ __('Subscribe') }}
         </button>
-    {% else %}
-        <button form="acts" name="action" type="submit" value="unsubscribe" class="btn join-item"{{ disabled }}>
+        {% else %}
+        <button name="action" type="submit" value="unsubscribe" class="btn join-item"{{ disabled }}>
             {{ __('Unsubscribe') }}
         </button>
-    {% endif %}
-</div>
+        {% endif %}
+    </div>
+</form>

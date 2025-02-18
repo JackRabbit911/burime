@@ -49,7 +49,7 @@ class Author extends WebController
     public function info($id)
     {
         $data = $this->data;
-        return view('web/author/tab_info', $data);
+        return view('author/tab_info', $data);
     }
 
     public function members($id)

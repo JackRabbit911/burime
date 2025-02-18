@@ -8,7 +8,7 @@
     <a role="tab" class="tab tab-active">
         {{ __('Statistic') }}
     </a>
-    <div class="tab-content bg-base-100 border-base-300 p-6">
+    <div class="tab-content bg-base-100 border-base-300 p-6 text-start">
         <div class="overflow-x-auto">
             <table class="table">
                 <tbody>
@@ -53,9 +53,6 @@
                 </tbody>
             </table>
         </div>
-        <form id="acts" action="{{ path('author.controls') }}" method="post">
-            <input name="members[]" type="hidden" value="{{ author.id }}" />
-        </form>
     </div>
     {% if author.info.info is defined 
         and author.info.info is not empty 
