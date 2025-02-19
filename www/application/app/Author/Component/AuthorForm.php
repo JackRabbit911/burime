@@ -8,7 +8,7 @@ class AuthorForm extends Form
 {
     public function __construct($author, $users_authors)
     {
-        $view = (isset($author->id)) ? 'web/author/tab_form' : 'web/author/form';
+        $view = (isset($author->id)) ? 'author/tab_form' : 'author/form';
             
         if (!isset($author->openclosed)) {
             $author->openclosed = 2;
@@ -17,7 +17,6 @@ class AuthorForm extends Form
         $this->form($view)
             ->id('authorform')
             ->action(path('author.save', ['id' => $author->id ?? null]));
-            // ->action(path('author.post', ['action' => 'save', 'id' => $author->id ?? null]));
 
         $this->text('alias')
             ->placeholder('Your pen name')

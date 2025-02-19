@@ -5,6 +5,7 @@ namespace App\Author\Controller;
 use App\Author\Model\ModelAuthor;
 use App\Author\Middleware\OwnerGuard;
 use App\Author\Middleware\AuthorValidation;
+use App\Author\Middleware\UserAuthorsMiddleware;
 use App\Author\Repo\Avatar;
 use App\Author\Component\AuthorForm;
 use App\Author\Author;
@@ -23,13 +24,10 @@ class Form extends WebController
     }
 
     #[OwnerGuard]
+    #[UserAuthorsMiddleware]
     public function __invoke(ModelUserGroup $modelUserGroup, $id = null)
     {
         $data['author'] = $this->request->getAttribute('author');
-
-        // $data['favorite'] = ($this->user) 
-        //     ? $modelUserGroup->inUserGroup($this->user->id, $id, 100) : false;
-
         return new AuthorForm($data['author'], $this->user->ownAuthors);
     }
 

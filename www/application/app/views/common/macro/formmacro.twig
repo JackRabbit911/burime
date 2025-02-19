@@ -4,28 +4,28 @@
     {% else %}
         {% set validate = '' %}
     {% endif %}
-    {% apply spaceless %}
-        <label for="{{ attr.id ?? attr.name }}" class="fieldset-label">
-            <span class="label-text">{{ __(attr.label ?? attr.name)|capitalize }}</span>
-            <span class="label-text-alt">{{ __(attr.alt_label ?? '') }}</span>
-        </label>
-        <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
-            type="{{ attr.type ?? attr.name }}" 
-            placeholder="{{ __(attr.placeholder ?? '') }}" 
-            class="input w-full{{ validate }}"
-            value="{{ attr.value ?? '' }}" 
-            />
-        {% if attr.msg is defined and attr.msg is not empty %}
-            {% set visible = '' %}
-        {% else %}
-            {% set visible = ' invisible' %}
-        {% endif %}
-        <label class="fieldset-label{{ visible }}">
-            <span class="label-text-alt text-error">
-                {{ attr.msg ?? 'ok'}}
-            </span>
-        </label>
-    {% endapply %}
+    <label for="{{ attr.id ?? attr.name }}" class="fieldset-label">
+        <legend class="fieldset-legend">
+            {{ __(attr.label ?? attr.name)|capitalize }}
+        </legend>
+        <span class="label-text">{{ __(attr.alt_label ?? '') }}</span>
+    </label>
+    <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
+        type="{{ attr.type ?? attr.name }}" 
+        placeholder="{{ __(attr.placeholder ?? '') }}" 
+        class="input w-full{{ validate }}"
+        value="{{ attr.value ?? '' }}" 
+        />
+    {% if attr.msg is defined and attr.msg is not empty %}
+        {% set visible = '' %}
+    {% else %}
+        {% set visible = ' invisible' %}
+    {% endif %}
+    <label class="fieldset-label{{ visible }}">
+        <span class="label-text-alt text-error">
+            {{ attr.msg ?? 'ok'}}
+        </span>
+    </label>
 {% endmacro input %}
 
 {% macro file(attr) %}
@@ -34,15 +34,15 @@
 {% else %}
 {% set validate = '' %}
 {% endif %}
-{% apply spaceless %}
     <div class="label flex justify-between">
-        <span class="label-text">{{ __(attr.label) }}</span>
+        <legend class="fieldset-legend">
+            {{ __(attr.label) }}
+        </legend>
         <span class="label-text-alt">{{ __(attr.alt_label ?? '') }}</span>
     </div>
     <input type="file" name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}" 
         class="file-input w-full{{ validate }}"
-        value="{{ attr.value ?? '' }}"
-    />
+        value="{{ attr.value ?? '' }}"/>
     {% if attr.msg is defined and attr.msg is not empty %}
         {% set visible = '' %}
     {% else %}
@@ -53,7 +53,6 @@
             {{ attr.msg ?? 'ok'}}
         </span>
     </label>     
-{% endapply %}
 {% endmacro file %}
 
 {% macro checkbox(attr) %}
@@ -68,28 +67,24 @@
     {% else %}
         {% set checked = '' %}
     {% endif %}
-
-    {% apply spaceless %}
-        <label class="fieldset-label">
-            <span class="label-text me-2">{{ __(attr.label)|raw }}</span>
-            <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
-                type="checkbox"{{ checked }} class="checkbox" />
+    <label class="fieldset-label">
+        <legend class="fieldset-legend me-2 pb-1 pt-0">{{ __(attr.label)|raw }}</legend>
+        <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
+            type="checkbox"{{ checked }} class="checkbox" />
+    </label>
+    {% if attr.msg is defined and attr.msg is not empty %}
+        {% set visible = '' %}
+    {% else %}
+        {% set visible = ' invisible' %}
+    {% endif %}
+    <label class="fieldset-label{{ visible }}">
+        <span class="label-text-alt text-error">
+            {{ attr.msg ?? 'ok'}}
+        </span>
         </label>
-        {% if attr.msg is defined and attr.msg is not empty %}
-            {% set visible = '' %}
-        {% else %}
-            {% set visible = ' invisible' %}
-        {% endif %}
-        <label class="fieldset-label{{ visible }}">
-            <span class="label-text-alt text-error">
-                {{ attr.msg ?? 'ok'}}
-            </span>
-        </label>
-    {% endapply %}
 {% endmacro checkbox %}
 
 {% macro radio(attr, label, value, checked) %}
-{# {{ dump(attr) }} #}
 {% if checked == 'checked' %}
 {% set checked = ' checked' %}
 {% else %}
@@ -107,7 +102,7 @@
 {% apply spaceless %}
     {% set id = attr.id ?? attr.name ~ value ?? attr.value %}
     <label for="{{ id }}" class="fieldset-label cursor-pointer">
-        <span class="label-text">{{ __(label) }}</span> 
+        <legend class="fieldset-legend me-2 pb-1 pt-0">{{ __(label) }}</legend>
         <input name="{{ attr.name }}" id="{{ id }}" 
         type="radio"{{ checked }} class="radio" 
         value="{{ value }}"
@@ -128,19 +123,21 @@
 {% else %}
 {% set rows = '' %}
 {% endif %}
-<label class="form-control">
-    <div class="label">
-        <span class="label-text">{{ attr.label ?? attr.name|capitalize }}</span>
-        <span class="label-text-alt">{{ attr.alt_label ?? '' }}</span>
+    <div class="fieldset-label flex justify-between">
+        <legend class="fieldset-legend">
+            {{ __(attr.label ?? attr.name|capitalize) }}
+        </legend>
+        <span class="label-text">{{ attr.alt_label ?? '' }}</span>
     </div>
-    <textarea name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"{{ rows }} class="textarea{{ validate }}" placeholder="{{ attr.placeholder ?? '' }}">{{ attr.value ?? '' }}</textarea>
+    <textarea name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"{{ rows }} class="textarea w-full{{ validate }}" placeholder="{{ attr.placeholder ?? '' }}">{{ attr.value ?? '' }}</textarea>
     {% if attr.msg is defined and attr.msg is not empty %}
-    <div class="label">
-        <span class="label-text-alt text-error">{{ attr.msg ?? '' }}</span>
-        {# <span class="label-text-alt">Alt label</span> #}
-    </div>
+        {% set visible = '' %}
+    {% else %}
+        {% set visible = ' invisible' %}
     {% endif %}
-</label>
+    <div class="fieldset-label{{ visible }}">
+        <span class="label-text-alt text-error">{{ attr.msg ?? 'ok' }}</span>
+    </div>
 {% endmacro textarea %}
 
 {% macro select(attr) %}
@@ -149,17 +146,16 @@
 {% else %}
 {% set validate = ' select-bordered' %}
 {% endif %}
-<label class="form-control w-full{{ attr.visible ?? '' }}">
     {% if attr.label %}
-    <div class="label">
-        <span class="label-text">{{ attr.label }}</span>
+    <div class="fieldset-label flex justify-between">
+        <legend class="fieldset-legend">{{ attr.label }}</legend>
         {% if alt_label is defined %}
-        <span class="label-text-alt">{{ alt_label }}</span>
+        <span class="label-text">{{ alt_label }}</span>
         {% endif %}
     </div>
     {% endif %}
     <select name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}" 
-    class="select{{ validate }}" {{ attr.attributes ?? '' }}>
+    class="select w-full{{ validate }}" {{ attr.attributes ?? '' }}>
         {% for opt in attr.options %}
         <option{% if opt.disabled is defined %} disabled{% endif %}
         {% if opt.selected is defined and opt.selected == true %} selected{% endif %}
@@ -168,9 +164,12 @@
         {% endfor %}
     </select>
     {% if attr.msg is defined and attr.msg is not empty %}
-    <div class="label">
-        <span class="label-text-alt text-error">{{ attr.msg }}</span>
-    </div>
+        {% set visible = '' %}
+    {% else %}
+        {% set visible = ' invisible' %}
     {% endif %}
+    <div class="fieldset-label{{ visible }}">
+        <span class="label-text-alt text-error">{{ attr.msg ?? 'ok' }}</span>
+    </div>
 </label>
 {% endmacro select %}

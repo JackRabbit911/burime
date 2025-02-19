@@ -1,0 +1,49 @@
+{% embed 'common/embed/center_lg.twig' %}
+{% import 'common/macro/formmacro.twig' as m %}
+{% block top %}
+    {{ include('author/top.twig') }}
+{% endblock top %}
+{% block center %}
+<div role="tablist" class="tabs tabs-lift w-full">
+    <a href="{{ path('author', {'id': author.id}) }}" role="tab" class="tab">
+        {{ __('Statistic') }}
+    </a>
+    {% if author.info.info is defined 
+        and author.info.info is not empty 
+        or author.info.rules is defined 
+        and author.info.rules is not empty %}
+    <a href="{{ path('author', {'action': 'info', 'id': author.id}) }}" role="tab" class="tab">
+        {{ __('Info') }}
+    </a>
+    {% endif %}
+    {% if author.c_members > 0 and (author.openclosed < 2 or (app.user and author.owner == app.user.id)) %}
+        <a href="{{ path('author', {'action': 'members', 'id': author.id}) }}" role="tab" class="tab">
+            {{ __('Members') }}
+        </a>
+    {% endif %}
+    {% if app.user and author.owner == app.user.id %}
+    <a role="tab" class="tab tab-active">{{ __('Edit') }}</a>
+    <div class="tab-content bg-base-100 border-base-300 text-start">
+        <form id="{{ form.id }}" method="post" action="{{ form.action }}" accept-charset="UTF-8" enctype="multipart/form-data">
+            <fieldset class="fieldset w-full px-2">
+                {{ csrf()|raw }}
+                {{ m.input(alias) }}
+                {{ m.textarea(info.slogan) }}
+                {{ m.textarea(info.info) }}
+                {{ m.file(avatar) }}
+                {{ m.select(openclosed) }}
+                {% if member.options is not empty %}
+                    {{ m.select(member) }}
+                {% endif %}
+                <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+            </fieldset>
+        </form>
+    </div>
+
+{% endif %}
+</div>
+{% endblock center %}
+{% block bottom %}
+{% endblock bottom %}
+{% endembed %}
+
