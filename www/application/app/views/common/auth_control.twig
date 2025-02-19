@@ -1,4 +1,27 @@
-<div class="dropdown dropdown-end">
+{# <div class="dropdown dropdown-end"> #}
+    {% if app.user %}
+    <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar size-13 -my-2">
+            {{ app.cmp('avatar')|raw }}
+        </div>
+        <ul
+          tabindex="0"
+          class="menu dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+          <li>
+            <a href="{{ path('profile') }}" class="justify-between">
+              Profile
+              <span class="badge">New</span>
+            </a>
+          </li>
+          <li><a>Settings</a></li>
+          <li><a href="{{ path('auth', {action: 'logout'}) }}">Logout</a></li>
+        </ul>
+    </div>
+
+    {# <a href="{{ path('auth', {action: 'logout'}) }}">
+        {{ app.user.name }}
+    </a> #}
+    {% else %}
     <a href="{{ path('auth', {action: 'form'}) }}">
         <div tabindex="0" role="button" class="btn btn-square btn-ghost">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -6,13 +29,5 @@
             </svg>
         </div>
     </a>
-    {# <ul tabindex="0" class="dropdown-content menu bg-base-100 max-h-[70vh] overflow-y-auto rounded-box z-50 min-w-38 p-2 mt-3 shadow-sm">
-      {% for lang, title in i18n.linksList(app.request.path) %}
-        <li>
-          <a href="{{ lang }}">
-            {{ title }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul> #}
-</div>
+    {% endif %}
+{# </div> #}

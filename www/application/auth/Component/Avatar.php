@@ -4,14 +4,16 @@ namespace Auth\Component;
 
 use Auth\User;
 use Sys\Template\Component;
+use Sys\Template\TemplateInterface;
 
 class Avatar extends Component
 {
     private array $data;
-    private string $view = '@auth/common/avatar';
 
-    public function __construct(User $user)
+    public function __construct(TemplateInterface $tpl, User $user)
     {
+        $tpl->addPath(APPPATH . 'auth/views', 'auth');
+
         $config = config('user');
 
         $path = $config['avatar_path'] . $user->id;
@@ -26,6 +28,6 @@ class Avatar extends Component
 
     public function render()
     {
-        return view($this->view, $this->data);
+        return view('@auth/common/avatar', $this->data);
     }
 }
