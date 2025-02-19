@@ -36,6 +36,9 @@
     <a role="tab" class="tab">{{ __('Edit') }}</a>
     {% endif %}
 </div>
+<form id="acts" action="{{ path('author.controls') }}" method="post">
+    <input name="members[]" type="hidden" value="{{ author.id }}" />
+</form>
 {% endblock center %}
 {% block bottom %}
     {{ include('author/tab_controls.twig') }}
