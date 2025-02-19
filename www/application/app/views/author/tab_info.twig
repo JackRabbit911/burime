@@ -33,7 +33,7 @@
     </a>
     {% endif %}
     {% if app.user and author.owner == app.user.id %}
-    <a role="tab" class="tab">{{ __('Edit') }}</a>
+    <a href="{{ path('author', {'action': 'form', 'id': author.id}) }}" role="tab" class="tab">{{ __('Edit') }}</a>
     {% endif %}
 </div>
 <form id="acts" action="{{ path('author.controls') }}" method="post">
