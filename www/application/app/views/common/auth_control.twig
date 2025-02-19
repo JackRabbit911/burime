@@ -1,4 +1,3 @@
-{# <div class="dropdown dropdown-end"> #}
     {% if app.user %}
     <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar size-13 -my-2">
@@ -6,7 +5,7 @@
         </div>
         <ul
           tabindex="0"
-          class="menu dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+          class="menu dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow-sm">
           <li>
             <a href="{{ path('profile') }}" class="justify-between">
               Profile
@@ -17,10 +16,6 @@
           <li><a href="{{ path('auth', {action: 'logout'}) }}">Logout</a></li>
         </ul>
     </div>
-
-    {# <a href="{{ path('auth', {action: 'logout'}) }}">
-        {{ app.user.name }}
-    </a> #}
     {% else %}
     <a href="{{ path('auth', {action: 'form'}) }}">
         <div tabindex="0" role="button" class="btn btn-square btn-ghost">
@@ -30,4 +25,3 @@
         </div>
     </a>
     {% endif %}
-{# </div> #}
