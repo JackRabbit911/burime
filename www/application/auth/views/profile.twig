@@ -1,9 +1,8 @@
-{% embed '@auth/common/center_wrapper.twig' %}
+{% embed 'common/embed/center_lg.twig' %}
 {% block center %}
 {% import 'common/macro/formmacro.twig' as m %}
 <form id="{{ form.id }}" method="post" action="{{ form.action }}" accept-charset="UTF-8" enctype="multipart/form-data">
     <fieldset class="fieldset w-full bg-base-200 border border-base-300 p-4 rounded-box">
-        {# {{ dump(app.user.avatar()) }} #}
         <div class="flex flex-row">
             <h1 class="flex-grow text-2xl font-medium leading-9 tracking-tight my-4">
                 {{ __(title) }}
@@ -20,7 +19,9 @@
             </div>
             <div class="fieldset basis-4/9">
                 <label class="fieldset-label">
-                    {{ __(sex.label) }}
+                    <legend class="fieldset-legend">
+                        {{ __(sex.label) }}
+                    </legend>
                 </label>
                 <div class="flex flex-row justify-between pt-2">
                     {{ m.radio(sex, 'male', 1) }}
