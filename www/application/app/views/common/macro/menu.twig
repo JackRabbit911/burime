@@ -21,13 +21,18 @@
                     </ul>
                 </details>
             {% else %}
+                {% set class = [] %}
                 {% if app.is_active(item.href) %}
-                    {% set active = ' class=menu-active' %}
-                {% else %}
-                    {% set active = '' %}
+                    {% set class = class|merge(['menu-active']) %}
                 {% endif %}
-                <a{{ active }} href="{{ item.href }}">
+                {% if item.badge is defined and item.badge > 0 %}
+                    {% set class = class|merge(['justify-between']) %}
+                {% endif %}
+                <a class="{{ class|join(' ') }}" href="{{ item.href }}">
                     {{ __(item.title) }}
+                    {% if item.badge is defined and item.badge > 0 %}
+                        <span class="badge">{{ item.badge }}</span>
+                    {% endif %}
                 </a>
             {% endif %}            
         </li>

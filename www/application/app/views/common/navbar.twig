@@ -20,7 +20,7 @@
         </div>
 
         <div class="flex flex-row">
-            {{ include('common/auth_control.twig') }}
+            {{ app.cmp('UserControls')|raw }}
             {{ include('common/langs.twig') }}
         </div>
     </nav>
