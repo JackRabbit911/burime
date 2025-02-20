@@ -1,5 +1,8 @@
 {% macro menu(menu) %}
     {% for item in menu %}
+        {% if item.border is defined and item.border == true %}
+            <div class="divider my-0"></div>
+        {% endif %}
         <li>
             {% if item.sub is defined %}
                 {% if app.is_active(item.title, false) %}
