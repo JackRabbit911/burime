@@ -68,6 +68,6 @@ class UserControls extends Component
 
     public function render()
     {
-        return view('common/auth_control', $this->data);
+        return view('common/user_controls', $this->data);
     }
 }
