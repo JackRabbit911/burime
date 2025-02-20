@@ -1,7 +1,10 @@
     {% import 'common/macro/menu.twig' as m %}
     {% if app.user %}
-    <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle indicator size-13 -my-2">
+    <div class="dropdown dropdown-end flex">
+        <div class="hidden md:flex flex-col justify-end -mb-1 pe-1 text-xs text-base-content/80">
+            {{ app.user.name }}
+        </div>
+        <div tabindex="0" role="button" class="btn btn-ghost indicator size-13 -my-2 px-0">
             {% if badge %}
                 <span class="indicator-item badge badge-xs badge-success top-1">{{ badge }}</span>
             {% endif %}
