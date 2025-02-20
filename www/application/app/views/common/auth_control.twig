@@ -1,7 +1,10 @@
     {% import 'common/macro/menu.twig' as m %}
     {% if app.user %}
     <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar size-13 -my-2">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle indicator size-13 -my-2">
+            {% if badge %}
+                <span class="indicator-item badge badge-xs badge-success top-1">{{ badge }}</span>
+            {% endif %}
             {{ app.cmp('avatar')|raw }}
         </div>
         <ul tabindex="0"

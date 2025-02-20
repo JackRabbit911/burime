@@ -15,6 +15,7 @@ class UserControls extends Component
         if ($user) {
             $countMsg = $model->getMsgCount($user->id);
             $msg = $countMsg['new'] . '/' . $countMsg['total'];
+            $this->data['badge'] = ($countMsg['new']) ? '+' . $countMsg['new'] : false;
     
             $complete = 50;
     
