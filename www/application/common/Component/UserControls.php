@@ -36,7 +36,7 @@ class UserControls extends Component
                 ],
                 [
                     'title' => 'My Authors',
-                    'href' => '',
+                    'href' => path('private', ['action' => 'authors']),
                     'border' => true,
                 ],
                 [

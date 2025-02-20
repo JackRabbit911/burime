@@ -16,7 +16,6 @@ return [
     'restore.password'=>['/auth/restore/change/password/{action}', ChangePassword::class],
 
     'profile'       => ['/private/profile', [Profile::class, 'form']],
-    'private'       => ['/private/{action}', PrivateController::class],
     'profile.save'  => ['/private/profile/save', [Profile::class, 'save']],
     'profile.password'=>['/private/change/password/{action}', ChangePassword::class]
 ];

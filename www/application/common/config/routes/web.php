@@ -7,6 +7,7 @@ use App\Home\Controller\About;
 use App\Home\Controller\AuthorsList;
 use App\Home\Controller\Home;
 use App\Home\Controller\Works;
+use App\Private\PrivateController;
 use HttpSoft\Response\HtmlResponse;
 
 return [
@@ -19,4 +20,6 @@ return [
     'author.controls'=>['/author/controls/{id?}', Controls::class],
     'author.form'   => ['/author/form/{id?}', Form::class],
     'author.save'   => ['/author/save/{id?}', [Form::class, 'save']],
+
+    'private'       => ['/private/{action}', PrivateController::class],
 ];

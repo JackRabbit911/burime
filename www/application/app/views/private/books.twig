@@ -1,0 +1,58 @@
+{% extends 'layout.twig' %}
+{% import 'web/home/book_card.twig' as b %}
+{% block content %}
+
+<div class="flex min-h-full flex-col justify-center px-2 py-6 lg:px-4">
+
+    <div class="mx-auto w-full md:w-2/3 lg:w-3/5 flex flex-row">
+        <div class="avatar">
+            <div class="w-24 rounded">
+            <img src="{{ app.user.avatar }}" />
+            </div>
+        </div>
+        <div class="flex flex-col ms-4">
+            <h2 class="mt-2 text-2xl font-bold leading-9 tracking-tight">{{ 'Personal area' }}</h2>
+            <h3 class="mt-2 text-xl font-medium leading-9 tracking-tight">{{ app.user.name }}</h3>
+        </div>
+    </div>
+
+    <div class="mt-2 mx-auto w-full md:w-2/3 lg:w-3/5 h-auto">
+        <div class="flex flex-row justify-between">
+            <h4 class="mt-2 text-lg font-medium leading-9 tracking-tight">
+                My books and branches
+            </h4>
+            <a href="{{ path('create', {'action': 'genres'}) }}" class="mt-3.5 link link-primary">{{ __('Create a new burime') }}</a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 h-auto">
+            {% for book in my_books %}
+            <a href="{{ path('branch', {'branch_id': book.id}) }}">
+                {{ b.book(book) }}
+                {# {{ dump(book) }} #}
+            </a>
+            {% endfor %}
+        </div>
+        {% if actual is defined and actual is not empty %}
+        <div class="flex flex-row justify-between">
+            <h4 class="mt-2 text-lg font-medium leading-9 tracking-tight">
+                Actual projects
+            </h4>
+        </div>
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 h-auto">
+            {# {% for author in friends %}    
+                {{ a.authorcard(author) }}
+            {% endfor %} #}
+        </div>
+        {% endif %}
+        <div class="flex flex-row justify-between">
+            <h4 class="mt-2 text-lg font-medium leading-9 tracking-tight">
+                My favorites
+            </h4>
+        </div>
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 h-auto">
+            {# {% for author in favorites %}    
+                {{ a.authorcard(author) }}
+            {% endfor %} #}
+        </div>
+    </div>
+</div>
+{% endblock %}
