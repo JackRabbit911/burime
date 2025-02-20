@@ -16,10 +16,10 @@ return [
     'works'         => ['/works/{action?}', Works::class],
     'authors'       => ['/authors', AuthorsList::class],
 
-    'author'        => ['/author/{action?}/{id}', Author::class],
     'author.controls'=>['/author/controls/{id?}', Controls::class],
     'author.form'   => ['/author/form/{id?}', Form::class],
     'author.save'   => ['/author/save/{id?}', [Form::class, 'save']],
+    'author'        => ['/author/{action?}/{id}', Author::class],
 
     'private'       => ['/private/{action}', PrivateController::class],
 ];

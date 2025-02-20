@@ -8,7 +8,7 @@ class AuthorForm extends Form
 {
     public function __construct($author, $users_authors)
     {
-        $view = (isset($author->id)) ? 'author/tab_form' : 'author/form';
+        $view = (isset($author->id)) ? 'author/tab_form' : 'author/wrap_form';
             
         if (!isset($author->openclosed)) {
             $author->openclosed = 2;

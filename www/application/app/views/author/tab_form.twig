@@ -1,5 +1,4 @@
 {% embed 'common/embed/center_lg.twig' %}
-{% import 'common/macro/formmacro.twig' as m %}
 {% block top %}
     {{ include('author/top.twig') }}
 {% endblock top %}
@@ -24,7 +23,8 @@
     {% if app.user and author.owner == app.user.id %}
     <a role="tab" class="tab tab-active">{{ __('Edit') }}</a>
     <div class="tab-content bg-base-100 border-base-300 text-start">
-        <form id="{{ form.id }}" method="post" action="{{ form.action }}" accept-charset="UTF-8" enctype="multipart/form-data">
+        {{ include('author/form.twig') }}
+        {# <form id="{{ form.id }}" method="post" action="{{ form.action }}" accept-charset="UTF-8" enctype="multipart/form-data">
             <fieldset class="fieldset w-full px-2">
                 {{ csrf()|raw }}
                 {{ m.input(alias) }}
@@ -37,7 +37,7 @@
                 {% endif %}
                 <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
             </fieldset>
-        </form>
+        </form> #}
     </div>
 
 {% endif %}
