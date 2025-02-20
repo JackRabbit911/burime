@@ -31,7 +31,7 @@ class UserControls extends Component
             $this->data['usermenu'] = [
                 [
                     'title' => 'Messages',
-                    'href' => '',
+                    'href' => path('message', ['action' => 'list']),
                     'badge' => $msg,
                 ],
                 [

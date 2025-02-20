@@ -47,7 +47,7 @@ class MessageController extends WebController
         $data['deleted'] = $this->modelMessage->getDeletedByIds($ids);
         $data['title'] = 'Messages list';
 
-        return view('web/message/list', $data);
+        return view('message/list', $data);
     }
 
     public function show(

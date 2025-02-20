@@ -1,0 +1,108 @@
+{% macro new(color) %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-{{ color }} float-start">
+    <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
+    <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
+</svg>
+{% endmacro new %}
+
+{% macro read() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-base-300">
+    <path d="M19.5 22.5a3 3 0 0 0 3-3v-8.174l-6.879 4.022 3.485 1.876a.75.75 0 1 1-.712 1.321l-5.683-3.06a1.5 1.5 0 0 0-1.422 0l-5.683 3.06a.75.75 0 0 1-.712-1.32l3.485-1.877L1.5 11.326V19.5a3 3 0 0 0 3 3h15Z" />
+    <path d="M1.5 9.589v-.745a3 3 0 0 1 1.578-2.642l7.5-4.038a3 3 0 0 1 2.844 0l7.5 4.038A3 3 0 0 1 22.5 8.844v.745l-8.426 4.926-.652-.351a3 3 0 0 0-2.844 0l-.652.351L1.5 9.589Z" />
+</svg>
+{% endmacro read %}
+
+{% macro status(status) %}
+    {% if status > 110 %}
+        {{ _self.new('error') }}
+    {% elseif status > 90 %}
+        {{ _self.new('success') }}
+    {% elseif status < 90 %}
+        {{ _self.read }}
+    {% endif %}
+{% endmacro status %}
+
+{% macro tr_in(data) %}
+<tr class="hover">
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) }}">
+            {{ _self.status(data.status) }}
+        </a>
+    </td>
+    <td class="py-2">
+        {{ data.created|date('d.m.y H:i') }}
+    </td>
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) }}">
+            <div class="flex items-center gap-3">
+                <div class="avatar">
+                    <div class="mask mask-squircle h-10 w-10">
+                        <img src="{{ app.avatar(data.from) }}" alt="{{ data.alias }}" />
+                    </div>
+                </div>
+                <div>
+                    <div class="font-bold">{{ data.alias }}</div>
+                </div>
+            </div>
+        </a>
+    </td>
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) }}">
+            {{ data.to_alias }}
+        </a>
+    </td>
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) }}">
+            {{ data.subject }}
+        </a>
+    </td>
+</tr>
+{% endmacro tr_in %}
+
+{% macro tr_out(data) %}
+<tr class="hover">
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'showOut', 'id': data.id}) }}">
+            {{ _self.status(data.status) }}
+        </a>
+    </td>
+    <td class="py-2">
+        {{ data.created|date('d.m.y H:i') }}
+    </td>
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'showOut', 'id': data.id}) }}">
+            {{ data.from }}
+        </a>
+    </td>
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'showOut', 'id': data.id}) }}">
+            {{ json(data.to, true)|join(', ') }}
+        </a>
+    </td>
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'showOut', 'id': data.id}) }}">
+            {{ data.subject }}
+        </a>
+    </td>
+</tr>
+{% endmacro tr_out %}
+
+{% macro tr_del(data) %}
+<tr class="hover">
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'showDel', 'id': data.id}) }}">
+            {{ data.alias }}
+        </a>
+    </td>
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'showDel', 'id': data.id}) }}">
+            {{ data.subject }}
+        </a>
+    </td>
+    <td class="py-2">
+        <a href="{{ path('message', {'action': 'remove', 'id': data.id, 'author_id': data.from}) }}" class="btn btn-ghost btn-xs">
+            {{ __('delete') }}
+        </a>
+    </td>
+</tr>
+{% endmacro tr_del %}

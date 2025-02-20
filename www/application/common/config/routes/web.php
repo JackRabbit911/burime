@@ -8,6 +8,7 @@ use App\Home\Controller\AuthorsList;
 use App\Home\Controller\Home;
 use App\Home\Controller\Works;
 use App\Private\PrivateController;
+use App\Message\MessageController;
 use HttpSoft\Response\HtmlResponse;
 
 return [
@@ -20,6 +21,8 @@ return [
     'author.form'   => ['/author/form/{id?}', Form::class],
     'author.save'   => ['/author/save/{id?}', [Form::class, 'save']],
     'author'        => ['/author/{action?}/{id}', Author::class],
+
+    'message'       => ['/message/{action}/{id?}/{author_id?}', MessageController::class],
 
     'private'       => ['/private/{action}', PrivateController::class],
 ];
