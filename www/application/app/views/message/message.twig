@@ -1,60 +1,24 @@
-{% embed 'common/embed/top-xl.twig' with {'title': title} %}
-{% import 'message/tr_msg_macro.twig' as tr %}
+{% embed 'common/embed/top-xl.twig' %}
+{% block top %}
+<h1 class="text-2xl">
+    {{ __(title) }}
+</h1>
+{% endblock top %}
 {% block center %}
 <div class="grid md:grid-cols-3 gap-4 pt-2">
     <div>
-        <p class="label-text py-2">{{ __('From') }}</p>
-        <a href="{{ path('author', {'id': msg.from}) }}" class="link">
-            <div class="flex">
-                <div class="avatar">
-                    <div class="mask mask-squircle h-14 w-14">
-                        <img src="{{ app.avatar(msg.from) }}" alt="{{ msg.alias }}" />
-                    </div>
-                </div>
-                <div class="grow flex justify-center">
-                    {{ msg.alias }}
-                </div>
-            </div>
-        </a>
-        <div class="label-text py-2 flex flex-row justify-normal">
-            <div>
-                {{ __('Status') }}
-            </div>
-            <div class="grow flex justify-center">
-                {{ tr.status(msg.status) }}
-            </div>
-        </div>
-        <p class="label-text py-2">{{ __('Recipients') }}</p>
-        <a href="{{ path('author', {'id': to.id}) }}" class="link font-medium">
-            {{ to.alias }}
-        </a>
-        {% for recipient in recipients %}
-        <div>
-            <a href="{{ path('author', {'id': recipient.id}) }}" class="link">
-                {{ recipient.alias }}
-            </a>
-        </div>
-        {% endfor %}
+        {% block left %}
+        {{ include('message/info.twig') }}
+        {% endblock left %}
     </div>
     <div class="md:col-span-2">
-        <p class="label-text py-2">{{ __('Subject') }}</p>
-        <p class="border rounded-lg p-6">{{ msg.subject }}</p>
-        <p class="label-text py-2">{{ __('Message') }}</p>
-        <div class="border rounded-lg p-6">
-            {{ body|raw }}
-        </div>
-    </div>
-    <div class="md:col-span-3 flex flex-row justify-center">
-        <a href="{{ path('message', {'action': 'form', 'id': msg.id, 'author_id': to.id}) }}" class="btn me-2">
-            {{ __('Reply to the author') }}
-        </a>
-        <a href="{{ path('message', {'action': 'list'}) }}" class="btn me-2">
-            {{ __('Go to messages list') }}
-        </a>
-        <a href="{{ path('message', {'action': 'delete', 'id': msg.id, 'author_id': to.id}) }}" class="btn">
-            {{ __('Delete this message') }}
-        </a>
+        {% block right %}
+        {{ include('message/body.twig') }}
+        {% endblock right %}
     </div>
 </div>
 {% endblock center %}
+{% block bottom %}
+{{ include(controls) }}
+{% endblock bottom %}
 {% endembed %}

@@ -54,61 +54,44 @@ class MessageController extends WebController
         IModelUserGroup $modelUserGroup,
         $id, $author_id
     ){
+        $data = $this->makeData($id, $author_id);       
         $data['title'] = __('Incoming message');
-        $data['msg'] = $this->modelMessage->find($id);
-
-        $data['msg']->data = json_decode($data['msg']->data, true);
-        $data['recipients'] = $this->modelMessage->getRecipients($id, $author_id);
-        $data['to'] = $this->authorRepo->findAuthor($author_id);
-
-        $data['msg']->data['body'] = nl2br(str_replace('{AUTHOR}', $data['to']->alias, $data['msg']->data['body']));
 
         $this->modelMessage->changeStatus($id, $author_id, MsgStatus::Read->value);
         $this->session->set('to', [$data['msg']->from]);
-
-        $modelUserGroup->addToUserGroup($this->user->id, $data['msg']->from, MemberRole::Addressbook->value);
-
-        $handler = $data['msg']->handler;
-
-        $data['action'] = __FUNCTION__;
-        $data['body'] = ($handler)
-            ? container()->call([$handler, 'render'], ['data' => $data])
-            : view('message/blank/default', $data);
+        $modelUserGroup->addToUserGroup(
+            $this->user->id, $data['msg']->from, 
+            MemberRole::Addressbook->value);
+        
+        $data['controls'] = 'message/controls_in.twig';
 
         return view('message/message', $data);
     }
 
     public function showOut($id)
     {
-        $data['title'] = __('Outgoing message');
-        $data['msg'] = $this->modelMessage->find($id);
-        $data['msg']->data = json_decode($data['msg']->data, true);
-        $data['recipients'] = $this->modelMessage->getRecipients($id);
-
-        $data['msg']->data['body'] = nl2br(str_replace('{AUTHOR}', __('Author'), $data['msg']->data['body']));
+        $data = $this->makeData($id);
         
-        $handler = $data['msg']->handler;
-        $data['action'] = __FUNCTION__;
-        $data['body'] = ($handler)
-            ? container()->call([$handler, 'render'], ['data' => $data])
-            : view('message/blank/default', $data);
-
         if (isset($this->request->getQueryParams()['delete'])) {
             $data['alert'] = true;
         } else {
             $data['alert'] = false;
         }
+       
+        $data['title'] = __('Outgoing message');
+        $data['controls'] = 'message/controls_out.twig';
 
-        return view('message/message_out', $data);
+        return view('message/message', $data);
     }
 
     public function showDel($id)
     {
-        $data['title'] = __('Message to delete');
-        $data['msg'] = $this->modelMessage->find($id);
-        $data['msg']->data = json_decode($data['msg']->data, true);
+        $data = $this->makeData($id);
 
-        return view('message/message_del', $data);
+        $data['title'] = __('Message to delete');
+        $data['controls'] = 'message/controls_del.twig';
+
+        return view('message/message', $data);
     }
 
     public function form($author_id = null)
@@ -185,5 +168,30 @@ class MessageController extends WebController
         }
 
         return $this->redirect(path('message', ['action' => 'list']));
+    }
+
+    private function makeData($id, $author_id = null)
+    {
+        $data['msg'] = $this->modelMessage->find($id);        
+        $data['msg']->data = json_decode($data['msg']->data, true);
+        $data['recipients'] = $this->modelMessage->getRecipients($id, $author_id);
+
+        if ($author_id) {
+            $data['to'] = $this->authorRepo->findAuthor($author_id);
+            $to = $data['to']->alias;
+        } else {
+            $to = __('Author');
+        }
+        
+        $data['msg']->data['body'] = nl2br(str_replace('{AUTHOR}', $to, $data['msg']->data['body']));
+
+        $handler = $data['msg']->handler;
+        
+        $data['action'] = __FUNCTION__;
+        $data['body'] = ($handler)
+        ? container()->call([$handler, 'render'], ['data' => $data])
+        : view('message/blank/default', $data);
+
+        return $data;
     }
 }
