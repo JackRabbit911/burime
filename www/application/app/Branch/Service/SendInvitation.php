@@ -57,6 +57,6 @@ class SendInvitation
         $vars['msg'] = $data['msg'];
         $vars['disabled'] = ($data['action'] === 'showOut') ? true : false;
 
-        return view('web/message/blank/invitation', $vars);
+        return view('message/blank/invitation', $vars);
     }
 }

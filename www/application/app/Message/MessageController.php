@@ -73,9 +73,9 @@ class MessageController extends WebController
         $data['action'] = __FUNCTION__;
         $data['body'] = ($handler)
             ? container()->call([$handler, 'render'], ['data' => $data])
-            : view('web/message/blank/default', $data);
+            : view('message/blank/default', $data);
 
-        return view('web/message/message', $data);
+        return view('message/message', $data);
     }
 
     public function showOut($id)
@@ -91,7 +91,7 @@ class MessageController extends WebController
         $data['action'] = __FUNCTION__;
         $data['body'] = ($handler)
             ? container()->call([$handler, 'render'], ['data' => $data])
-            : view('web/message/blank/default', $data);
+            : view('message/blank/default', $data);
 
         if (isset($this->request->getQueryParams()['delete'])) {
             $data['alert'] = true;
@@ -99,7 +99,7 @@ class MessageController extends WebController
             $data['alert'] = false;
         }
 
-        return view('web/message/message_out', $data);
+        return view('message/message_out', $data);
     }
 
     public function showDel($id)
@@ -108,7 +108,7 @@ class MessageController extends WebController
         $data['msg'] = $this->modelMessage->find($id);
         $data['msg']->data = json_decode($data['msg']->data, true);
 
-        return view('web/message/message_del', $data);
+        return view('message/message_del', $data);
     }
 
     public function form($author_id = null)
@@ -147,7 +147,7 @@ class MessageController extends WebController
         $data['title'] = __('Recipients');
         $data['authors'] = $this->modelRecipient->getByFilter($filter, $recipients);
 
-        return view('web/message/recipients', $data);
+        return view('message/recipients', $data);
     }
 
     #[Route(methods: 'post')]

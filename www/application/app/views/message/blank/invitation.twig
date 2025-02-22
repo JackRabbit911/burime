@@ -1,0 +1,31 @@
+{% import 'home/books/book_card.twig' as b %}
+{% if branch %}
+    <div class="grid grid-2 md:grid-cols-3 gap-4">
+        <a href="{{ path('branch', {'branch_id': branch.id}) }}" target="_blank">
+            {{ b.book(branch) }}
+        </a>
+        <div class="md:col-span-2 prose flex flex-col justify-between">
+            {{ msg.data.body|raw }}
+            <div class="flex flex-row">
+                {% if disabled == true %}
+                {% set disabled = ' disabled' %}
+                {% else %}
+                {% set disabled = '' %}
+                {% endif %}
+                <a href="{{ accept_link ?? '' }}" class="btn btn-primary basis-1/2"{{ disabled }}>
+                    {{ __('Accept') }}
+                </a>
+                <a href="{{ refuse_link ?? '' }}" class="btn ms-2 basis-1/2"{{ disabled }}>
+                    {{ __('Refuse') }}
+                </a>
+            </div>
+            <p class="text-sm mt-3">
+                {{ __('Best regards, ') ~ msg.alias }}
+            </p>
+        </div>
+    </div>
+{% else %}
+<p class="text-error">
+    {{ __('The branch may have been deleted') }}
+</p>
+{% endif %}

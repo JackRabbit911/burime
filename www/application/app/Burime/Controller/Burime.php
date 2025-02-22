@@ -1,0 +1,121 @@
+<?php declare(strict_types=1);
+
+namespace App\Burime\Controller;
+
+use App\Burime\Component\PostControls;
+use App\Burime\Component\Ask2Join;
+use App\Burime\Component\PostForm;
+use App\Burime\Middleware\AuthorPostGuard;
+use App\Burime\Middleware\TimeUpMiddleware;
+use App\Burime\Repository\BranchRepo;
+use App\Burime\Repository\PostsRepo;
+use App\Burime\Service\BranchPermissions;
+use App\Burime\Service\PostPermissions;
+use Common\Enum\AuthorRole;
+use Common\Enum\BranchAuthorStatus;
+use Common\Enum\BranchStatus;
+use Sys\Controller\WebController;
+use Az\Route\Route;
+
+#[TimeUpMiddleware]
+class Burime extends WebController
+{
+    private BranchRepo $repo;
+    private array $data;
+    private string $sidebar = 'burime/sidebar';
+
+    public function __construct(BranchRepo $repo)
+    {
+        $this->repo = $repo;
+    }
+
+    protected function _before()
+    {
+        $route = $this->request->getAttribute(Route::class);
+        $branch_id = $route->getParameters()['branch_id'];
+
+        $this->data['branch'] = ($this->request->getAttribute('branch')) 
+            ?: $this->repo->find($branch_id);
+
+        $this->data['sidebar'] = $this->sidebar;
+        $author = $this->getBrunchAuthorsByUser($this->data['branch'], $this->user);
+        $branchPerms = new BranchPermissions($this->data['branch'], $this->user, $author);
+        $this->data['perms'] = $branchPerms->getPerms();
+        $this->data['myAuthor'] = $author;
+    }
+
+    public function __invoke(PostsRepo $repo, $branch_id)
+    {
+        $this->data['main'] = 'burime/posts';
+        $this->data['posts'] = $repo->getPosts((int) $branch_id, $this->user?->id);
+        $this->data['last'] = $repo->getLastPost($this->data['posts']);
+
+        $postPermissions = new PostPermissions($this->data['branch'], $this->user);
+        $this->app->add('PostControls', new PostControls($postPermissions));
+        $this->app->add('postPermissions', $postPermissions);
+
+        return view('burime/branch', $this->data);
+    }
+
+    public function authors()
+    {
+        $this->data['main'] = 'web/branch/authors';
+
+        $this->data['authors'] = $this->data['branch']->authors->map(function ($v) {
+            $v->role = AuthorRole::getRoleString($v->role);
+            $v->status = BranchAuthorStatus::getStatusString($v->status);
+            return $v;
+        });
+
+        return view('burime/branch', $this->data);
+    }
+
+    public function rules()
+    {
+        $this->data['main'] = 'web/branch/rules';
+        return view('burime/branch', $this->data);
+    }
+
+    public function ask2join($branch_id)
+    {
+        $this->data['form'] = (new Ask2Join($branch_id, $this->user))->render();
+        $this->data['main'] = 'burime/form_wrapper';
+        $this->data['is_ask'] = true;
+
+        return view('burime/branch', $this->data);
+    }
+
+    #[AuthorPostGuard]
+    public function form()
+    {
+        $post_last = $this->request->getAttribute('last');
+        $post_current = $this->request->getAttribute('current');
+
+        if (!$this->data['branch']->info['time_up']) {
+            $this->data['branch']->status = BranchStatus::Blocked->value;
+        }
+
+        if ($this->data['branch']->info['current_writer'] ?? 0 !== $this->user->id) {
+            $this->data['branch']->info['time_beguin'] = time();
+            $this->data['branch']->info['current_writer'] = $this->user->id;
+        }
+        
+        $this->data['branch']->save();
+
+        $this->data['myAuthors'] = ($this->data['myAuthor']) ?: $this->user->ownAuthors;
+        $this->data['form'] = new PostForm($this->data, $post_last, $post_current);
+        $this->data['main'] = 'burime/form_wrapper';
+
+        return view('burime/branch', $this->data);
+    }
+
+    private function getBrunchAuthorsByUser($branch, $user)
+    {
+        if (!$user) {
+            return null;
+        }
+
+        return $branch->authors->getInstance($user->id, 'user_id')
+            ?: $branch->authors->getInstance($user->id, 'owner');
+    }
+}

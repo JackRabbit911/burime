@@ -1,0 +1,77 @@
+{% embed 'common/embed/top-xl.twig' with {'title': title} %}
+{% import 'message/tr_msg_macro.twig' as tr %}
+{% block center %}
+<div class="grid md:grid-cols-3 gap-4 pt-2">
+    <div>
+        <p class="label-text py-2">{{ __('From') }}</p>
+        <a href="{{ path('author', {'id': msg.from}) }}" class="link">
+            <div class="flex">
+                <div class="avatar">
+                    <div class="mask mask-squircle h-14 w-14">
+                        <img src="{{ app.avatar(msg.from) }}" alt="{{ msg.alias }}" />
+                    </div>
+                </div>
+                <div class="grow flex justify-center">
+                    {{ msg.alias }}
+                </div>
+            </div>
+        </a>
+        <p class="label-text py-2">{{ __('Recipients') }}</p>
+        {% for recipient in recipients %}
+        <div class="flex justify-between">
+            <a href="{{ path('author', {'id': recipient.id}) }}" class="link">
+                {{ recipient.alias }}
+            </a>
+            {{ tr.status(recipient.status) }}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="md:col-span-2">
+        <p class="label-text py-2">{{ __('Subject') }}</p>
+        <p class="border rounded-lg p-6">{{ msg.subject }}</p>
+        <p class="label-text py-2">{{ __('Message') }}</p>
+        <div class="border rounded-lg p-6">
+            {{ body|raw }}
+        </div>
+    </div>
+    {% if alert == true %}
+    <div role="alert" class="alert alert-warning rounded-lg md:col-span-3">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 shrink-0 stroke-current"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <div>
+
+            <div class="mb-2">
+                Warning:<br>Are you sure? This action will immediately delete the message from all recipients!<br>
+            </div>
+            <div class="flex justify-end">
+                <a href="{{ path('message', {'action': 'showOut', 'id': msg.id}) }}" class="btn me-1">
+                    Cancel
+                </a>
+                <a href="{{ path('message', {'action': 'forcedelete', 'id': msg.id, 'author_id': msg.from}) }}" class="btn btn-error">
+                    Delete anyway
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="md:col-span-3 flex flex-row justify-center">
+        <a href="{{ path('message', {'action': 'list'}) }}" class="btn me-2">
+            {{ __('Go to messages list') }}
+        </a>
+        <a href="{{ path('message', {'action': 'showOut', 'id': msg.id}) ~ '?delete=force' }}" class="btn me-2">
+            {{ __('Delete for everyone') }}
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock center %}
+{% endembed %}
