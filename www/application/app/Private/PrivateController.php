@@ -22,37 +22,22 @@ final class PrivateController extends WebController
     public function authors()
     {
         $authors = $this->model->getMyGroups($this->user->id);
-        $favorites = $this->model->getUserGroupMembers($this->user->id, MemberRole::Favorive);
-        $friends = $this->model->getUserGroupMembers($this->user->id, MemberRole::Friend);
+        // $favorites = $this->model->getUserGroupMembers($this->user->id, MemberRole::Favorive);
+        // $friends = $this->model->getUserGroupMembers($this->user->id, MemberRole::Friend);
 
-        $data = [
-            'authors' => $authors,
-            'favorites' => $favorites,
-            'friends' => $friends,
-        ];
+        $data['authors'] = $authors;
+        $data['view'] = __FUNCTION__;
 
-        return view('private/authors', $data);
+        return view('private/my_wrap', $data);
     }
 
     public function books(ContainerInterface $container)
     {
         $this->app->add('coverpath', trim($container->get(BranchInterface::class)::COVERPATH, '.'));
 
-        $my_books = $this->model->getMyBooks($this->user->id);
+        $data['my_books'] = $this->model->getMyBooks($this->user->id);
+        $data['view'] = __FUNCTION__;
 
-        // $my_books = $modelBranch->getByUser($this->user->id);
-
-        // $my_books = $modelBranch->getByOwner($this->user->id);
-        // $authors = $modelAuthor->getUsersGroups($this->user->id);
-        // $favorites = $modelUserGroup->getUserGroupMembers($this->user->id, Role::FAVORITE);
-        // $friends = $modelUserGroup->getUserGroupMembers($this->user->id, Role::FRIEND);
-
-        $data = [
-            'my_books' => $my_books,
-            // 'favorites' => $favorites,
-            // 'friends' => $friends,
-        ];
-
-        return view('web/personal/books', $data);
+        return view('private/my_wrap', $data);
     }
 }

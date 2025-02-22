@@ -41,7 +41,7 @@ class UserControls extends Component
                 ],
                 [
                     'title' => 'My Books',
-                    'href' => '',
+                    'href' => path('private', ['action' => 'books']),
                 ],
                 [
                     'title' => 'Favorites',

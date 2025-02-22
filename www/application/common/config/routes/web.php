@@ -3,6 +3,7 @@
 use App\Author\Controller\Author;
 use App\Author\Controller\Controls;
 use App\Author\Controller\Form;
+use App\Branch\Controller\Create;
 use App\Burime\Controller\Burime;
 use App\Home\Controller\About;
 use App\Home\Controller\AuthorsList;
@@ -30,5 +31,6 @@ return [
 
     'private'       => ['/private/{action}', PrivateController::class],
 
+    'create'        => ['/create/{action}', Create::class],
     'participation' => ['/participation/{branch_id}/{action}/{author_id?}', Participation::class],
 ];
