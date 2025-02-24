@@ -1,0 +1,21 @@
+{% embed 'common/embed/top-xl.twig' %}
+{% block top %}
+<h1 class="text-2xl">
+    {{ branch.title }}
+</h1>
+{% endblock top %}
+{% block center %}
+<div class="grid md:grid-cols-3 gap-4 pt-2">
+    <div>
+        {% block left %}
+        {{ include('burime/sidebar.twig') }}
+        {% endblock left %}
+    </div>
+    <div class="md:col-span-2">
+        {% block right %}
+        {{ include('burime/posts.twig') }}
+        {% endblock right %}
+    </div>
+</div>
+{% endblock center %}
+{% endembed %}

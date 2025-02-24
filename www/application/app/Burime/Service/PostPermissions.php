@@ -46,6 +46,8 @@ class PostPermissions
             return false;
         }
 
+        // dd($this->user->ownAuthors);
+
         $author = $this->user->ownAuthors->getInstance($post->author_id);
         return ($author) ? true : false;
     }

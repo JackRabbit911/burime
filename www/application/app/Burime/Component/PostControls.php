@@ -41,6 +41,6 @@ class PostControls
             'branch' => $this->permissions->branch,
         ];
 
-        return view('web/branch/post_controls', $data);
+        return view('burime/post_controls', $data);
     }
 }

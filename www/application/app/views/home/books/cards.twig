@@ -4,7 +4,6 @@
     {% import 'home/books/book_card.twig' as b %}
     {% for book in books %}
     <a href="{{ path('branch', {'branch_id': book.id}) }}">
-    {# <a> #}
     {{ b.book(book) }}
     </a>
     {% endfor %}
