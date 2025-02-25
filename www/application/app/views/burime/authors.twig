@@ -1,0 +1,40 @@
+{% embed 'burime/branch.twig' %}
+{% block right %}
+<article>
+    <div class="overflow-x-auto">
+        <table class="table my-2">
+            <thead>
+                <tr>
+                    <th>{{ __('Alias') }}</th>
+                    <th>{{ __('Role') }}</th>
+                    <th>{{ __('Status') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('author', {'id': author.id}) }}">
+                                <div class="flex items-center gap-3">
+                                    <div class="avatar">
+                                        <div class="mask mask-squircle w-12 h-12">
+                                        <img src="{{ author.avatar }}" alt="{{ author.alias }}" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold">{{ author.alias }}</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </td>
+                        <td>{{ author.role }}</td>
+                        <td>{{ author.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {# {{ dump(authors) }} #}
+</article>
+{% endblock right %}
+{% endembed %}

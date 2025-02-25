@@ -1,3 +1,5 @@
+{% embed 'burime/branch.twig' %}
+{% block right %}
 {% if perms.age %}
 <article class="text-current/80">
     {% if app.postPermissions.first() %}
@@ -50,3 +52,5 @@
     {{ __(perms.msg)|raw }}
 </div>
 {% endif %}
+{% endblock right %}
+{% endembed %}

@@ -56,26 +56,23 @@ class Burime extends WebController
         $this->app->add('PostControls', new PostControls($postPermissions));
         $this->app->add('postPermissions', $postPermissions);
 
-        return view('burime/branch', $this->data);
+        return view('burime/posts', $this->data);
     }
 
     public function authors()
     {
-        $this->data['main'] = 'web/branch/authors';
-
         $this->data['authors'] = $this->data['branch']->authors->map(function ($v) {
             $v->role = AuthorRole::getRoleString($v->role);
             $v->status = BranchAuthorStatus::getStatusString($v->status);
             return $v;
         });
 
-        return view('burime/branch', $this->data);
+        return view('burime/authors', $this->data);
     }
 
     public function rules()
     {
-        $this->data['main'] = 'web/branch/rules';
-        return view('burime/branch', $this->data);
+        return view('burime/rules', $this->data);
     }
 
     public function ask2join($branch_id)

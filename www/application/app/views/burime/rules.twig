@@ -1,0 +1,65 @@
+{% embed 'burime/branch.twig' %}
+{% block right %}
+{% import 'common/macro/icon.twig' as i %}
+<article class="prose prose-stone">
+    <p>
+        <h4 class="font-bold">{{ __('Description')  }}</h4>
+        <p class="mt-2 mb-3 ps-4 text-current/80">
+            {{ branch.info.description }}
+        </p>
+    </p>
+    <p>
+        <h4 class="font-bold">{{ __('Rules') }}</h4>
+        <div class="grid md:grid-cols-2 gap-4">
+            <table class="table my-2">
+                <tbody>
+                    <tr>
+                        <td>{{ __('Post size') }}</td>
+                        <td>
+                            {{ branch.info.post_size }} {{ __('words') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ __('Comments') }}</td>
+                        <td>
+                            {{ branch.info.comments  ? 'Yes' : 'No' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ __('Author`s signature') }}</td>
+                        <td>
+                            {{ branch.info.signature  ? 'Yes' : 'No' }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table my-2">
+                <tbody>
+                    <tr>
+                        <td>{{ __('Time limit') }}</td>
+                        <td>
+                            {{ branch.info.time_limit }} {{ __('minutes') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ __('Pre-moderation') }}</td>
+                        <td>
+                            {{ branch.info.moderation  ? 'Yes' : 'No' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ __('Age limit') }}</td>
+                        <td>
+                            {{ branch.age_limit }} {{ __('years') }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="mt-2 ps-4 text-current/80">
+            {{ branch.info.rules }}
+        </p>
+    </p>
+</article>
+{% endblock right %}
+{% endembed %}
