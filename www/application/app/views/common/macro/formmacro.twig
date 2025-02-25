@@ -70,7 +70,10 @@
     <label class="fieldset-label">
         <legend class="fieldset-legend me-2 pb-1 pt-0">{{ __(attr.label)|raw }}</legend>
         <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
-            type="checkbox"{{ checked }} class="checkbox" />
+            type="checkbox"{{ checked }} class="checkbox"
+            {% if attr.value is defined %}
+            value="{{ attr.value }}"
+            {% endif %} />
     </label>
     {% if attr.msg is defined and attr.msg is not empty %}
         {% set visible = '' %}
