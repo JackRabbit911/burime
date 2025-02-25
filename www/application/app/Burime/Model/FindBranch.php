@@ -37,10 +37,10 @@ final class FindBranch extends Model implements IFindBranch
         GROUP_CONCAT(DISTINCT `genres`.`title` ORDER BY genres.weight SEPARATOR ', ') AS genreStr,
         AVG(`pr`.`rating`) AS rating
         FROM branches
-        JOIN branches_authors AS ba ON ba.branch_id = branches.id
-        JOIN authors ON authors.id = ba.author_id
-        JOIN branches_genres AS bg ON bg.branch_id = branches.id
-        JOIN genres ON genres.id = bg.genre_id AND genres.weight > 0
+        LEFT JOIN branches_authors AS ba ON ba.branch_id = branches.id
+        LEFT JOIN authors ON authors.id = ba.author_id
+        LEFT JOIN branches_genres AS bg ON bg.branch_id = branches.id
+        LEFT JOIN genres ON genres.id = bg.genre_id AND genres.weight > 0
         LEFT JOIN branches_posts AS bp ON bp.branch_id = branches.id
         LEFT JOIN posts_ratings AS pr ON pr.post_id = bp.post_id
         WHERE branches.id = ? AND ba.role > 100
