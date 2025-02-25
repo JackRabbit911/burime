@@ -6,15 +6,17 @@ use App\Burime\Model\BranchAuthor;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorStatus;
 use Common\Contract\IModelGroup;
-use Auth\User;
+// use Auth\User;
 use HttpSoft\Response\RedirectResponse;
+use Sys\Contract\UserInterface;
 use Sys\Controller\BaseController;
+use Az\Route\Route;
 
 class Participation extends BaseController
 {
     private IModelGroup $modelGroup;
     private BranchAuthor $modelBranchAuthor;
-    private ?User $user;
+    private ?UserInterface $user;
 
     public function __construct(IModelGroup $modelGroup, BranchAuthor $modelBranchAuthor)
     {
@@ -46,6 +48,7 @@ class Participation extends BaseController
         return $this->redirect($branch_id);
     }
 
+    #[Route(methods: 'post')]
     public function ask2join($branch_id, $author_id = 0)
     {
         $data['branch_id'] = $branch_id;
