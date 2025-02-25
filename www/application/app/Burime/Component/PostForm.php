@@ -14,12 +14,11 @@ class PostForm extends Form
         $this->set('branch', $branch);
         $this->set('last', $post_last);
 
-        $this->form('web/branch/form')
+        $this->form('burime/form')
             ->id('postform')
             ->action(path('branch.post', 
                 [
                     'branch_id' => $branch->id, 
-                    'action' => 'save', 
                     'post_id' => $post_current->id ?? null
                 ]));
         

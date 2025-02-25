@@ -78,8 +78,6 @@ class Burime extends WebController
     public function ask2join($branch_id)
     {
         $this->data['form'] = (new Ask2Join($branch_id, $this->user))->render();
-        // $this->data['is_ask'] = true;
-
         return view('burime/form_wrapper', $this->data);
     }
 
@@ -102,9 +100,8 @@ class Burime extends WebController
 
         $this->data['myAuthors'] = ($this->data['myAuthor']) ?: $this->user->ownAuthors;
         $this->data['form'] = new PostForm($this->data, $post_last, $post_current);
-        $this->data['main'] = 'burime/form_wrapper';
 
-        return view('burime/branch', $this->data);
+        return view('burime/form_wrapper', $this->data);
     }
 
     private function getBrunchAuthorsByUser($branch, $user)

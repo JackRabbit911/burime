@@ -25,7 +25,7 @@ class PostBranchSave extends WebController
 
     #[Route(tokens: ['branch_id' => '\d+', 'post_id' => '\d*'])]
     #[Route(methods: 'post')]
-    public function save(ModelAuthor $modelAuthor, $branch_id, $post_id = null)
+    public function __invoke(ModelAuthor $modelAuthor, $branch_id, $post_id = null)
     {
         $branch = $this->request->getAttribute('branch');
         $data = $this->request->getParsedBody();

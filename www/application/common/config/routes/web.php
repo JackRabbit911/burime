@@ -28,6 +28,7 @@ return [
     'author.save'   => ['/author/save/{id?}', [Form::class, 'save']],
     'author'        => ['/author/{action?}/{id}', Author::class],
 
+    'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
 
     'message'       => ['/message/{action}/{id?}/{author_id?}', MessageController::class],
@@ -38,5 +39,5 @@ return [
     'participation' => ['/participation/{branch_id}/{action}/{author_id?}', Participation::class],
     'rating'        => ['/rating/{action}/{post_id}', Rating::class],
     'post'          => ['/post/{branch_id}/{action}/{post_id}', PostControls::class],
-    'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
+    // 'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
 ];
