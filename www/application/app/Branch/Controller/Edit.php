@@ -28,7 +28,7 @@ class Edit extends WebController
             $data['branch'] = $branch;
         }
 
-        return view('web/edit/form_wrapper', $data);
+        return view('branch/edit/tab_genres', $data);
     }
 
     public function genres(ModelGenre $modelGenre, $branch)

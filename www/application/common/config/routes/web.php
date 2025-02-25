@@ -4,6 +4,8 @@ use App\Author\Controller\Author;
 use App\Author\Controller\Controls;
 use App\Author\Controller\Form;
 use App\Branch\Controller\Create;
+use App\Branch\Controller\Edit;
+use App\Branch\Controller\EditSave;
 use App\Burime\Controller\Burime;
 use App\Burime\Controller\Participation;
 use App\Burime\Controller\PostBranchSave;
@@ -30,6 +32,8 @@ return [
 
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
+    'edit'          => ['/edit/{func}/{id}', Edit::class],
+    'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],
 
     'message'       => ['/message/{action}/{id?}/{author_id?}', MessageController::class],
 
