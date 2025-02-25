@@ -78,10 +78,9 @@ class Burime extends WebController
     public function ask2join($branch_id)
     {
         $this->data['form'] = (new Ask2Join($branch_id, $this->user))->render();
-        $this->data['main'] = 'burime/form_wrapper';
-        $this->data['is_ask'] = true;
+        // $this->data['is_ask'] = true;
 
-        return view('burime/branch', $this->data);
+        return view('burime/form_wrapper', $this->data);
     }
 
     #[AuthorPostGuard]
