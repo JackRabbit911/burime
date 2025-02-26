@@ -4,7 +4,7 @@
     {% else %}
         {% set validate = '' %}
     {% endif %}
-    <label for="{{ attr.id ?? attr.name }}" class="fieldset-label">
+    <label for="{{ attr.id ?? attr.name }}" class="fieldset-label flex justify-between">
         <legend class="fieldset-legend">
             {{ __(attr.label ?? attr.name)|capitalize }}
         </legend>
@@ -67,7 +67,7 @@
     {% else %}
         {% set checked = '' %}
     {% endif %}
-    <label class="fieldset-label">
+    <label class="fieldset-label flex justify-between">
         <legend class="fieldset-legend me-2 pb-1 pt-0">{{ __(attr.label)|raw }}</legend>
         <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
             type="checkbox"{{ checked }} class="checkbox"
@@ -104,7 +104,7 @@
 
 {% apply spaceless %}
     {% set id = attr.id ?? attr.name ~ value ?? attr.value %}
-    <label for="{{ id }}" class="fieldset-label cursor-pointer">
+    <label for="{{ id }}" class="fieldset-label cursor-pointer flex justify-between mb-4">
         <legend class="fieldset-legend me-2 pb-1 pt-0">{{ __(label) }}</legend>
         <input name="{{ attr.name }}" id="{{ id }}" 
         type="radio"{{ checked }} class="radio" 
