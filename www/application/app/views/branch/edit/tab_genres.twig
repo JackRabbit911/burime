@@ -6,10 +6,10 @@
         {{ form|raw }}
         {# {{ include('web/edit/form_controls.twig') }} #}
     </div>
-    <a href="{{ path('edit', {'func': 'rules', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Rules') }}</a>
-    <a href="{{ path('edit', {'func': 'authors', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Authors') }}</a>
-    <a href="{{ path('edit', {'func': 'cover', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Cover') }}</a>
-    <a href="{{ path('edit', {'func': 'publish', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Publish') }}</a>
+    <a href="{{ path('edit', {'action': 'rules', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Rules') }}</a>
+    <a href="{{ path('edit', {'action': 'authors', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Authors') }}</a>
+    <a href="{{ path('edit', {'action': 'cover', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Cover') }}</a>
+    <a href="{{ path('edit', {'action': 'publish', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Publish') }}</a>
 </div>
 {% endblock center %}
 {% block bottom %}

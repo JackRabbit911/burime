@@ -17,33 +17,25 @@ use Sys\Collection\Collection;
 #[OwnerBranchGuard]
 class Edit extends WebController
 {
-    public function __invoke($func, $id)
+    private array $data;
+
+    protected function _before()
     {
-        $branch = $this->request->getAttribute('branch');
-
-        $data = call([$this, $func], ['branch' => $branch]);
-        $data['title'] = __('Edit the book: ') . $branch->title ?? '';
-
-        if (!isset($data['branch'])) {
-            $data['branch'] = $branch;
-        }
-
-        return view('branch/edit/tab_genres', $data);
+        $this->data['branch'] = $this->request->getAttribute('branch');
+        $this->data['title'] = __('Edit the book: ') . $this->data['branch']->title ?? '';
     }
 
-    public function genres(ModelGenre $modelGenre, $branch)
+    public function genres(ModelGenre $modelGenre, $id)
     {
-        $genres = $modelGenre->getByBranch($branch->id);
+        $genres = $modelGenre->getByBranch($id);
         $genres = new Collection($genres);
-        $branch->genres = $genres->props();
-
-        $data['branch'] = $branch;
+        $this->data['branch']->genres = $genres->props();
 
         $totalGenres = $modelGenre->getTitles();
-        $data['form'] = new BranchGenresForm($totalGenres, $branch);
-        $data['tab'] = 'tab_genres';
+        $this->data['form'] = new BranchGenresForm($totalGenres, $this->data['branch']);
+        $this->data['tab'] = 'tab_genres';
 
-        return $data;
+        return view('branch/edit/tab_genres', $this->data);
     }
 
     public function rules($branch)

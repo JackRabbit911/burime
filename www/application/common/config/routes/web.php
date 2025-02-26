@@ -32,7 +32,7 @@ return [
 
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
-    'edit'          => ['/edit/{func}/{id}', Edit::class],
+    'edit'          => ['/edit/{action}/{id}', Edit::class],
     'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],
 
     'message'       => ['/message/{action}/{id?}/{author_id?}', MessageController::class],

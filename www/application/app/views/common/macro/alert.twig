@@ -1,50 +1,32 @@
-{% macro alert(data) %}
+{% macro alert(role, msg) %}
 {% import 'common/macro/icon.twig' as i %}
-{% if data.role == 'info' %}
+{% if role == 'info' %}
 {% set class = 'alert-info' %}
-{% elseif data.role == 'success' %}
+{% elseif role == 'success' %}
 {% set class = 'alert-success' %}
-{% elseif data.role == 'warning' %}
+{% elseif role == 'warning' %}
 {% set class = 'alert-warning' %}
-{% elseif data.role == 'error' %}
+{% elseif role == 'error' %}
 {% set class = 'alert-error' %}
-{% elseif data.role == 'info-soft' %}
+{% elseif role == 'info-soft' %}
 {% set class = 'alert-info alert-soft' %}
-{% elseif data.role == 'success-soft' %}
+{% elseif role == 'success-soft' %}
 {% set class = 'alert-success alert-soft' %}
-{% elseif data.role == 'warning-soft' %}
+{% elseif role == 'warning-soft' %}
 {% set class = 'alert-warning alert-soft' %}
-{% elseif data.role == 'error-soft' %}
+{% elseif role == 'error-soft' %}
 {% set class = 'alert-error alert-soft' %}
 {% else %}
 {% set class = 'alert' %}
 {% endif %}
 
-{% set icon = data.role|split('-')[0] %}
+{% set icon = role|split('-')[0] %}
 
-<div role="alert" class="alert {{ class }} rounded-none sm:rounded-lg">
+<div role="alert" class="alert {{ class }} rounded-none sm:rounded">
     {{ _self.icon(icon) }}
-    <div>
-        <h3 class="text-lg font-medium">
-            {{ __(data.subject) }}
-        </h3>
-        {% if data.appeal is defined %}
-            <h4 class="text-md font-bold">
-                {{ __(data.appeal) }}
-            </h4>
-        {% endif %}
-        <p>
-            {{ __(data.msg) }} 
-            {% if data.link is defined %}
-            <a href="{{ data.link.href }}" class="link font-semibold">
-                {{ data.link.title }}
-            </a>
-            {% endif %}
-        </p>
-    </div>
-    {% if data.btn is defined %}
-    <a href="{{ data.btn.href }}" class="btn btn-neutral">{{ data.btn.title }}</a>
-    {% endif %}
+    <p class="font-medium">
+        {{ __(msg)|raw }} 
+    </p>
 </div>
 {% endmacro %}
 

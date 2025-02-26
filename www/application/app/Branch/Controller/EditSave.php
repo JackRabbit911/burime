@@ -37,7 +37,7 @@ class EditSave extends BranchSaveAbstract
     {
         $this->branch->genres = $this->data['genres'] ?? [];
         $this->branch->save();
-        return $this->redirect(path('edit', ['func' => __FUNCTION__, 'id' => $id]));
+        return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
     }
 
     #[RulesValidation]
@@ -46,7 +46,7 @@ class EditSave extends BranchSaveAbstract
         parent::rules($id);
         $this->branch->update($this->data)->save();
 
-        return $this->redirect(path('edit', ['func' => __FUNCTION__, 'id' => $id]));
+        return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
     }
 
     #[BranchAuthorsValidation]
@@ -58,7 +58,7 @@ class EditSave extends BranchSaveAbstract
 
         $this->branch->save();
 
-        return $this->redirect(path('edit', ['func' => __FUNCTION__, 'id' => $id]));
+        return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
     }
 
     #[BranchCoverValidation]
@@ -67,7 +67,7 @@ class EditSave extends BranchSaveAbstract
         parent::cover($saveCover, $id);
         $this->branch->update($this->data)->save();
 
-        return $this->redirect(path('edit', ['func' => __FUNCTION__, 'id' => $id]));
+        return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
     }
 
     #[SendMsg(SendInvitation::class)]
@@ -80,6 +80,6 @@ class EditSave extends BranchSaveAbstract
 
         $this->msgData = ['branch' => $this->branch, 'to' => $to];
 
-        return $this->redirect(path('edit', ['func' => __FUNCTION__, 'id' => $id]));
+        return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
     }
 }
