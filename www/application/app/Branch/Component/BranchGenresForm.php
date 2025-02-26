@@ -17,7 +17,7 @@ class BranchGenresForm extends Form
             $branchGenres = new Collection($branchGenres);
         }
         
-        $this->form('branch/create/genres_form')
+        $this->form('branch/form/genres')
             ->action(path($route, ['action' => 'genres', 'id' => $branch->id ?? null]))
             ->id('genreform');
 

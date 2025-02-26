@@ -4,7 +4,6 @@
     <a role="tab" class="tab tab-active">{{ __('Genres') }}</a>
     <div role="tabpanel" class="w-full tab-content border-base-300 rounded-btn p-6">
         {{ form|raw }}
-        {# {{ include('web/edit/form_controls.twig') }} #}
     </div>
     <a href="{{ path('edit', {'action': 'rules', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Rules') }}</a>
     <a href="{{ path('edit', {'action': 'authors', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Authors') }}</a>

@@ -33,17 +33,14 @@ class Edit extends WebController
 
         $totalGenres = $modelGenre->getTitles();
         $this->data['form'] = new BranchGenresForm($totalGenres, $this->data['branch']);
-        $this->data['tab'] = 'tab_genres';
 
-        return view('branch/edit/tab_genres', $this->data);
+        return view('branch/edit/genres', $this->data);
     }
 
-    public function rules($branch)
+    public function rules($id)
     {
-        $data['form'] = new RulesForm($branch);
-        $data['tab'] = 'tab_rules';
-
-        return $data;
+        $this->data['form'] = new RulesForm($this->data['branch']);
+        return view('branch/edit/rules', $this->data);
     }
 
     public function authors(BranchAuthors $branchAuthors, $branch)

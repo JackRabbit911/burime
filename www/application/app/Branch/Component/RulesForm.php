@@ -12,7 +12,7 @@ class RulesForm extends Form
         $route = (isset($branch->id)) ? 'edit.save' : 'create.save';
         $this->set('id', $branch->id ?? null);
 
-        $this->form('web/create/rules_form')
+        $this->form('branch/form/rules')
             ->action(path($route, ['action' => 'rules', 'id' => $branch->id ?? null]))
             ->id('rulesform');
 
