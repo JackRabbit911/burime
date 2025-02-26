@@ -3,8 +3,6 @@
 namespace App\Branch\Model;
 
 use App\Branch\Branch;
-use App\Author\Author;
-use App\Author\Model\ModelAuthor;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchRole;
@@ -15,7 +13,7 @@ use Common\Contract\IModelAuthor;
 
 class AddAuthorsRepo
 {
-    private ModelAuthor $model;
+    private IModelAuthor $model;
 
     public function __construct(IModelAuthor $model)
     {

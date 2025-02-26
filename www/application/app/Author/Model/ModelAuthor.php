@@ -3,6 +3,7 @@
 namespace App\Author\Model;
 
 use App\Author\Author;
+use Common\Contract\IModelAuthor;
 use Common\Enum\MemberRole;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorStatus;
@@ -11,7 +12,7 @@ use Sys\Model\Trait\QueryBuilder;
 use Sys\Model\Trait\Schema;
 use Sys\Collection\Collection;
 
-class ModelAuthor implements Saveble
+class ModelAuthor implements Saveble, IModelAuthor
 {
     use QueryBuilder;
     use Schema;

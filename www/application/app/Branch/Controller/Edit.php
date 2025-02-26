@@ -13,6 +13,7 @@ use App\Branch\Middleware\OwnerBranchGuard;
 use App\Branch\Branch;
 use Sys\Controller\WebController;
 use Sys\Collection\Collection;
+use App\Author\Middleware\UserAuthorsMiddleware;
 
 #[OwnerBranchGuard]
 class Edit extends WebController
@@ -43,16 +44,16 @@ class Edit extends WebController
         return view('branch/edit/rules', $this->data);
     }
 
-    public function authors(BranchAuthors $branchAuthors, $branch)
+    #[UserAuthorsMiddleware]
+    public function authors(BranchAuthors $branchAuthors, $id)
     {
         $queryParams = $this->request->getQueryParams();
 
-        $formData = $branchAuthors->getFormData($queryParams, $this->user, $branch);
+        $formData = $branchAuthors->getFormData($queryParams, $this->user, $this->data['branch']);
 
-        $data['form'] = new AuthorsChoice($formData, $branch);
-        $data['tab'] = 'tab_authors';
+        $this->data['form'] = new AuthorsChoice($formData, $this->data['branch']);
 
-        return $data;
+        return view('branch/edit/authors', $this->data);
     }
 
     public function cover($branch)

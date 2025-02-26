@@ -28,7 +28,7 @@ final class OwnerBranchGuard implements MiddlewareInterface
 
         $branch = $this->repo->find($id);
 
-        if (!$branch || isset($branch->owner) && $user->id !== $branch->owner) {
+        if (!$branch || !$user || isset($branch->owner) && $user->id !== $branch->owner) {
             abort();
         }
 

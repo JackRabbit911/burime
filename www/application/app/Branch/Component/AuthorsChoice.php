@@ -21,7 +21,7 @@ class AuthorsChoice extends Form
             ];
         }
 
-        $this->form('web/create/authors_form')
+        $this->form('branch/form/authors')
             ->action(path($route, ['action' => 'authors', 'id' => $branch->id ?? null]))
             ->id('authorsform');
 
