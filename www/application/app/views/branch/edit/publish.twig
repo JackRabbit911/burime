@@ -1,0 +1,17 @@
+{% embed 'branch/form_wrapper.twig' %}
+{% block center %}
+<div role="tablist" class="tabs tabs-lift w-full">
+    <a href="{{ path('edit', {'action': 'genres', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Genres') }}</a>
+    <a href="{{ path('edit', {'action': 'rules', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Rules') }}</a>
+    <a href="{{ path('edit', {'action': 'authors', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Authors') }}</a>
+    <a href="{{ path('edit', {'action': 'cover', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Cover') }}</a>
+    <a role="tab" class="tab tab-active">{{ __('Publish') }}</a>
+    <div role="tabpanel" class="w-full tab-content border-base-300 rounded-btn p-6">
+        {{ form|raw }}
+    </div>
+</div>
+{% endblock center %}
+{% block bottom %}
+{{ include('branch/edit/form_controls.twig') }}
+{% endblock bottom %}
+{% endembed %}

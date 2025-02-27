@@ -11,7 +11,7 @@ class StatusForm extends Form
     {
         $this->set('branch', $branch);
 
-        $this->form('web/edit/status_form')
+        $this->form('branch/form/status')
             ->action(path('edit.save', ['action' => 'publish', 'id' => $branch->id ?? null]))
             ->id('statusform');
 

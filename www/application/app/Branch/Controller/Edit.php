@@ -62,11 +62,11 @@ class Edit extends WebController
         return view('branch/edit/cover', $this->data);
     }
 
-    public function publish($branch)
+    public function publish($id)
     {
         $this->app->js('/assets/js/checkboxCheck.js');
-        $data['form'] = new StatusForm($branch);
-
+        
+        $this->data['form'] = new StatusForm($this->data['branch']);
         return view('branch/edit/publish', $this->data);
     }
 }
