@@ -38,11 +38,11 @@ class Create extends WebController
         return view('branch/create/form_wrapper', $this->data);
     }
 
-    public function rules($branch)
+    public function rules()
     {
-        $data['step'] = 2;
-        $data['form'] = new RulesCreateForm($branch);
-        $data['sbmt'] = [
+        $this->data['step'] = 2;
+        $this->data['form'] = new RulesCreateForm($this->data['branch']);
+        $this->data['sbmt'] = [
             'prev' => 'genres',
             'next' => 'authors',
         ];
@@ -50,43 +50,43 @@ class Create extends WebController
         return view('branch/create/form_wrapper', $this->data);
     }
 
-    public function authors(AddAuthors $addAuthors, $branch)
+    public function authors(AddAuthors $addAuthors)
     {
         $queryParams = $this->request->getQueryParams();
-        $formData = $addAuthors->getFormData($queryParams, $this->user, $branch);
+        $formData = $addAuthors->getFormData($queryParams, $this->user, $this->data['branch']);
         
-        $data['step'] = 3;
-        $data['form'] = new AuthorsChoice($formData, $branch);
-        $data['sbmt'] = [
+        $this->data['step'] = 3;
+        $this->data['form'] = new AuthorsChoice($formData, $this->data['branch']);
+        $this->data['sbmt'] = [
             'prev' => 'rules',
             'next' => 'cover',
         ];
-        $data['controls'] = 'form_controls';
+        $this->data['controls'] = 'form_controls';
 
         return view('branch/create/form_wrapper', $this->data);
     }
 
-    public function cover($branch)
+    public function cover()
     {
         $this->app->add('coverpath', trim(Branch::COVERPATH, '.'));
 
-        $data['step'] = 4;
-        $data['form'] = new CoverForm($branch);
-        $data['controls'] = 'cover_controls';
+        $this->data['step'] = 4;
+        $this->data['form'] = new CoverForm($this->data['branch']);
+        $this->data['controls'] = 'cover_controls';
 
         return view('branch/create/form_wrapper', $this->data);
     }
 
-    public function publish($branch)
+    public function publish()
     {
-        $form = new PublishForm($branch);
-        $ready = $form->ready($branch);
+        $form = new PublishForm($this->data['branch']);
+        $ready = $form->ready($this->data['branch']);
         $form->set('ready', $ready);
 
-        $data['step'] = 5;
-        $data['ready'] = $ready;
-        $data['form'] = $form;
-        $data['controls'] = 'publish_controls';
+        $this->data['step'] = 5;
+        $this->data['ready'] = $ready;
+        $this->data['form'] = $form;
+        $this->data['controls'] = 'publish_controls';
 
         return view('branch/create/form_wrapper', $this->data);
     }

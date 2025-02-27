@@ -11,7 +11,7 @@ class RulesCreateForm extends Form
     {
         $this->set('id', $branch->id ?? null);
 
-        $this->form('web/create/rules_form')
+        $this->form('branch/form/rules')
             ->action(path('create.save', ['action' => 'rules']))
             ->id('rulesform');
 

@@ -12,7 +12,9 @@ use App\Branch\Middleware\BranchAuthorsValidation;
 use App\Branch\Middleware\BranchCoverValidation;
 use Common\Enum\BranchStatus;
 use Common\Repository\BranchPostCreateRepo;
+use Az\Route\Route;
 
+#[Route(methods: 'post')]
 class CreateSave extends BranchSaveAbstract
 {
     public function _before()
@@ -26,6 +28,8 @@ class CreateSave extends BranchSaveAbstract
     {
         $this->branch->genres = $this->data['genres'] ?? [];
         $this->session->branch = $this->branch;
+
+        // dd($this->action);
 
         return $this->redirect(path('create', ['action' => $this->action]));
     }
