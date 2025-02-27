@@ -13,7 +13,7 @@ flex flex-col justify-between text-center shadow overflow-hidden" {{ style|raw }
 <img src="{{ '/img/cover/' ~ book.cover }}" alt="{{ book.title }}" />
 {% else %}
     <div class="text-sm flex-none overflow-hidden p-1">
-        {{ book.alias ?? '' }}
+        {{ book.alias ?? book.master.alias }}
     </div>
     <div class="text-xl md:text-xl lg:text-base 2xl:text-xl overflow-hidden p-1">
         {{ book.title }}

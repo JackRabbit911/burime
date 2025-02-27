@@ -67,13 +67,15 @@ class Create extends WebController
         return view('branch/create/form_wrapper', $this->data);
     }
 
-    public function cover()
+    public function cover(ModelGenre $model)
     {
         $this->app->add('coverpath', trim(Branch::COVERPATH, '.'));
+        $genres = $model->getTitlesByIds($this->data['branch']->genres);
 
         $this->data['step'] = 4;
         $this->data['form'] = new CoverForm($this->data['branch']);
-        $this->data['controls'] = 'cover_controls';
+        $this->data['controls'] = 'branch/create/cover_controls.twig';
+        $this->data['branch']->genreStr = implode(', ', $genres);
 
         return view('branch/create/form_wrapper', $this->data);
     }
