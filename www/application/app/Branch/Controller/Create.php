@@ -12,6 +12,7 @@ use App\Branch\Component\PublishForm;
 use App\Branch\Branch;
 use Sys\Controller\WebController;
 use Sys\Collection\Collection;
+use App\Author\Middleware\UserAuthorsMiddleware;
 // use App\Model\BookRepo;
 
 class Create extends WebController
@@ -50,6 +51,7 @@ class Create extends WebController
         return view('branch/create/form_wrapper', $this->data);
     }
 
+    #[UserAuthorsMiddleware]
     public function authors(AddAuthors $addAuthors)
     {
         $queryParams = $this->request->getQueryParams();
@@ -61,7 +63,6 @@ class Create extends WebController
             'prev' => 'rules',
             'next' => 'cover',
         ];
-        $this->data['controls'] = 'form_controls';
 
         return view('branch/create/form_wrapper', $this->data);
     }

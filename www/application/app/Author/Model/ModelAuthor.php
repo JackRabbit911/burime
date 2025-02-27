@@ -8,16 +8,15 @@ use Common\Enum\MemberRole;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorStatus;
 use Sys\Model\Interface\Saveble;
-use Sys\Model\Trait\QueryBuilder;
 use Sys\Model\Trait\Schema;
 use Sys\Collection\Collection;
+use Sys\Model\Model;
 
-class ModelAuthor implements Saveble, IModelAuthor
+class ModelAuthor extends Model implements Saveble, IModelAuthor
 {
-    use QueryBuilder;
     use Schema;
 
-    private string $table = 'authors';
+    protected string $table = 'authors';
     
     /**
      * CommitListener::handle
