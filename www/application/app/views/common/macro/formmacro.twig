@@ -16,16 +16,7 @@
         class="input w-full{{ validate }}"
         value="{{ attr.value ?? '' }}" 
         />
-    {% if attr.msg is defined and attr.msg is not empty %}
-        {% set visible = '' %}
-    {% else %}
-        {% set visible = ' invisible' %}
-    {% endif %}
-    <label class="fieldset-label{{ visible }}">
-        <span class="label-text-alt text-error">
-            {{ attr.msg ?? 'ok'}}
-        </span>
-    </label>
+        {{ _self.message(attr) }}
 {% endmacro input %}
 
 {% macro file(attr) %}
@@ -43,16 +34,7 @@
     <input type="file" name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}" 
         class="file-input w-full{{ validate }}"
         value="{{ attr.value ?? '' }}"/>
-    {% if attr.msg is defined and attr.msg is not empty %}
-        {% set visible = '' %}
-    {% else %}
-        {% set visible = ' invisible' %}
-    {% endif %}
-    <label class="fieldset-label{{ visible }}">
-        <span class="label-text-alt text-error">
-            {{ attr.msg ?? 'ok'}}
-        </span>
-    </label>     
+        {{ _self.message(attr) }}
 {% endmacro file %}
 
 {% macro checkbox(attr) %}
@@ -75,16 +57,7 @@
             value="{{ attr.value }}"
             {% endif %} />
     </label>
-    {% if attr.msg is defined and attr.msg is not empty %}
-        {% set visible = '' %}
-    {% else %}
-        {% set visible = ' invisible' %}
-    {% endif %}
-    <label class="fieldset-label{{ visible }}">
-        <span class="label-text-alt text-error">
-            {{ attr.msg ?? 'ok'}}
-        </span>
-    </label>
+    {{ _self.message(attr) }}
 {% endmacro checkbox %}
 
 {% macro radio(attr, label, value, checked) %}
@@ -133,14 +106,7 @@
         <span class="label-text">{{ attr.alt_label ?? '' }}</span>
     </div>
     <textarea name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"{{ rows }} class="textarea w-full{{ validate }}" placeholder="{{ attr.placeholder ?? '' }}">{{ attr.value ?? '' }}</textarea>
-    {% if attr.msg is defined and attr.msg is not empty %}
-        {% set visible = '' %}
-    {% else %}
-        {% set visible = ' invisible' %}
-    {% endif %}
-    <div class="fieldset-label{{ visible }}">
-        <span class="label-text-alt text-error">{{ attr.msg ?? 'ok' }}</span>
-    </div>
+    {{ _self.message(attr) }}
 {% endmacro textarea %}
 
 {% macro select(attr) %}
@@ -166,13 +132,21 @@
             {{ opt.label }}</option>
         {% endfor %}
     </select>
-    {% if attr.msg is defined and attr.msg is not empty %}
-        {% set visible = '' %}
-    {% else %}
-        {% set visible = ' invisible' %}
-    {% endif %}
-    <div class="fieldset-label{{ visible }}">
-        <span class="label-text-alt text-error">{{ attr.msg ?? 'ok' }}</span>
-    </div>
+    {{ _self.message(attr) }}
 </label>
 {% endmacro select %}
+
+{% macro message(attr) %}
+{% if attr.msg is defined and attr.msg is not empty %}
+    {% set visible = '' %}
+    {% set msg = attr.msg %}
+{% else %}
+    {% set visible = ' invisible' %}
+    {% set msg = 'ok' %}
+{% endif %}
+<label class="fieldset-label{{ visible }}">
+    <span class="label-text-alt text-error">
+        {{ msg }}
+    </span>
+</label>
+{% endmacro message %}
