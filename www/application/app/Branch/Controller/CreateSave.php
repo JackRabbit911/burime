@@ -29,8 +29,6 @@ class CreateSave extends BranchSaveAbstract
         $this->branch->genres = $this->data['genres'] ?? [];
         $this->session->branch = $this->branch;
 
-        // dd($this->action);
-
         return $this->redirect(path('create', ['action' => $this->action]));
     }
 
