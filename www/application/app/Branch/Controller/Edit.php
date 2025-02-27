@@ -48,30 +48,25 @@ class Edit extends WebController
     public function authors(BranchAuthors $branchAuthors, $id)
     {
         $queryParams = $this->request->getQueryParams();
-
         $formData = $branchAuthors->getFormData($queryParams, $this->user, $this->data['branch']);
 
         $this->data['form'] = new AuthorsChoice($formData, $this->data['branch']);
-
         return view('branch/edit/authors', $this->data);
     }
 
-    public function cover($branch)
+    public function cover($id)
     {
         $this->app->add('coverpath', trim(Branch::COVERPATH, '.'));
 
-        $data['form'] = new CoverForm($branch);
-        $data['tab'] = 'tab_cover';
-
-        return $data;
+        $this->data['form'] = new CoverForm($this->data['branch']);
+        return view('branch/edit/cover', $this->data);
     }
 
     public function publish($branch)
     {
         $this->app->js('/assets/js/checkboxCheck.js');
         $data['form'] = new StatusForm($branch);
-        $data['tab'] = 'tab_publish';
 
-        return $data;
+        return view('branch/edit/publish', $this->data);
     }
 }

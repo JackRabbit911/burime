@@ -13,7 +13,7 @@ class CoverForm extends Form
 
         $this->set('branch', $branch);
 
-        $this->form('web/create/cover_form')
+        $this->form('branch/form/cover')
             ->action(path($route, ['action' => 'cover', 'id' => $branch->id ?? null]))
             ->id('coverform');
 
