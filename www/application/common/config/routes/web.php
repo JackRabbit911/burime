@@ -4,6 +4,7 @@ use App\Author\Controller\Author;
 use App\Author\Controller\Controls;
 use App\Author\Controller\Form;
 use App\Branch\Controller\Create;
+use App\Branch\Controller\CreateSave;
 use App\Branch\Controller\Edit;
 use App\Branch\Controller\EditSave;
 use App\Burime\Controller\Burime;
@@ -34,12 +35,13 @@ return [
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
     'edit'          => ['/edit/{action}/{id}', Edit::class],
     'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],
+    'create'        => ['/create/{action}', Create::class],
+    'create.save'   => ['/create/{action}', CreateSave::class],
 
     'message'       => ['/message/{action}/{id?}/{author_id?}', MessageController::class],
 
     'private'       => ['/private/{action}', PrivateController::class],
 
-    'create'        => ['/create/{action}', Create::class],
     'participation' => ['/participation/{branch_id}/{action}/{author_id?}', Participation::class],
     'rating'        => ['/rating/{action}/{post_id}', Rating::class],
     'post'          => ['/post/{branch_id}/{action}/{post_id}', PostControls::class],
