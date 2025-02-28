@@ -16,7 +16,7 @@ final class AuthorGuard implements MiddlewareInterface
         $user = $request->getAttribute('user');
         
         if (!$user) {
-            redirect(path('home'));
+            redirect(path('auth', ['action' => 'form']));
         }
 
         if ($user->ownAuthors->empty()) {
