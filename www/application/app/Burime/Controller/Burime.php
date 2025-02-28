@@ -16,9 +16,7 @@ use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchStatus;
 use Sys\Controller\WebController;
 use Az\Route\Route;
-use App\Author\Middleware\UserAuthorsMiddleware;
 
-#[UserAuthorsMiddleware]
 #[TimeUpMiddleware]
 class Burime extends WebController
 {

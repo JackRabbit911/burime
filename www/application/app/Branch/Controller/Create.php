@@ -9,12 +9,13 @@ use App\Branch\Service\AddAuthors;
 use App\Branch\Component\AuthorsChoice;
 use App\Branch\Component\CoverForm;
 use App\Branch\Component\PublishForm;
+use App\Branch\Middleware\AuthorGuard;
 use App\Branch\Branch;
 use Sys\Controller\WebController;
 use Sys\Collection\Collection;
-use App\Author\Middleware\UserAuthorsMiddleware;
-// use App\Model\BookRepo;
+use Auth\Middleware\AuthGuardMiddleware;
 
+#[AuthorGuard]
 class Create extends WebController
 {
     private array $data;
@@ -51,7 +52,6 @@ class Create extends WebController
         return view('branch/create/form_wrapper', $this->data);
     }
 
-    #[UserAuthorsMiddleware]
     public function authors(AddAuthors $addAuthors)
     {
         $queryParams = $this->request->getQueryParams();

@@ -5,7 +5,6 @@ namespace App\Author\Controller;
 use App\Author\Model\ModelAuthor;
 use App\Author\Middleware\OwnerGuard;
 use App\Author\Middleware\AuthorValidation;
-use App\Author\Middleware\UserAuthorsMiddleware;
 use App\Author\Repo\Avatar;
 use App\Author\Component\AuthorForm;
 use App\Author\Author;
@@ -24,7 +23,6 @@ class Form extends WebController
     }
 
     #[OwnerGuard]
-    #[UserAuthorsMiddleware]
     public function __invoke(ModelUserGroup $modelUserGroup, $id = null)
     {
         $data['author'] = $this->request->getAttribute('author');

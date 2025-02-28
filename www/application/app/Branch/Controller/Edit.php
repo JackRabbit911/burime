@@ -13,7 +13,6 @@ use App\Branch\Middleware\OwnerBranchGuard;
 use App\Branch\Branch;
 use Sys\Controller\WebController;
 use Sys\Collection\Collection;
-use App\Author\Middleware\UserAuthorsMiddleware;
 
 #[OwnerBranchGuard]
 class Edit extends WebController
@@ -44,7 +43,6 @@ class Edit extends WebController
         return view('branch/edit/rules', $this->data);
     }
 
-    #[UserAuthorsMiddleware]
     public function authors(BranchAuthors $branchAuthors, $id)
     {
         $queryParams = $this->request->getQueryParams();
