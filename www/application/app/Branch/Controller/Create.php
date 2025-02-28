@@ -89,7 +89,7 @@ class Create extends WebController
         $this->data['step'] = 5;
         $this->data['ready'] = $ready;
         $this->data['form'] = $form;
-        $this->data['controls'] = 'publish_controls';
+        $this->data['controls'] = 'branch/create/publish_controls.twig';
 
         return view('branch/create/form_wrapper', $this->data);
     }

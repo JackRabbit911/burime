@@ -10,13 +10,10 @@ class PublishForm extends Form
     public function __construct(Branch $branch)
     {
         $route = (isset($branch->id)) ? 'edit.save' : 'create.save';
-        // $posts = $repo->getFirstLastPosts($branch->id ?? null);
-
-        // dd($posts);
 
         $this->set('branch', $branch);
 
-        $this->form('web/create/publish_form')
+        $this->form('branch/create/publish')
             ->action(path($route, ['action' => 'publish', 'id' => $branch->id ?? null]))
             ->id('publishform');
 
@@ -26,22 +23,18 @@ class PublishForm extends Form
             ->value(true);
 
         $this->hidden('first_id')
-            // ->value($posts['first']->id ?? null)
             ->value(null);
 
         $this->hidden('last_id')
-            // ->value($posts['last']->id ?? null)
             ->value(null);
 
         $this->textarea('first_post')
             ->label(__('First post'))
-            // ->value($posts['first']->body ?? '')
             ->value('')
             ->rows(5);
             
         $this->textarea('last_post')
             ->label(__('Last post'))
-            // ->value($posts['last']->body ?? '')
             ->value('')
             ->rows(5);
     }

@@ -1,0 +1,29 @@
+{% import 'common/macro/formmacro.twig' as m %}
+
+{% macro radial(value) %}
+{% set style = 'style="--value:' ~ value ~ '; --size:6rem; --thickness: .4rem;"' %}
+<div class="radial-progress text-primary" {{ style|raw }} role="progressbar">{{ value }}%</div>
+{% endmacro radial %}
+
+<form id="{{ form.id }}" action="{{ form.action }}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        <div class="grid md:grid-cols-3 gap-4">
+            <div class="pt-2">
+                <p class="label-text mb-4">
+                    {{ __('Ready for publication') }}
+                </p>
+                <div class="flex flex-row justify-center">
+                    {{ _self.radial(ready) }}
+                </div>
+                <div class="divider"></div>
+                {{ m.checkbox(invitation) }}
+            </div>
+            <div class="md:col-span-2">
+                    <input type="hidden" name="{{ first_id.name }}" value="{{ first_id.value }}" />
+                    <input type="hidden" name="{{ last_id.name }}" value="{{ last_id.value }}" />
+                    {{ m.textarea(first_post) }}
+                    {{ m.textarea(last_post) }}
+            </div>
+        </div>
+    </fieldset>
+</form>
