@@ -1,4 +1,4 @@
-{% embed 'branch/form_wrapper.twig' %}
+{% embed 'branch/edit/form_wrapper.twig' %}
 {% block center %}
 <div role="tablist" class="tabs tabs-lift w-full">
     <a href="{{ path('edit', {'action': 'genres', 'id': branch.id}) }}" role="tab" class="tab">{{ __('Genres') }}</a>
@@ -11,7 +11,4 @@
     </div>
 </div>
 {% endblock center %}
-{% block bottom %}
-{{ include('branch/edit/form_controls.twig') }}
-{% endblock bottom %}
 {% endembed %}
