@@ -17,7 +17,7 @@ class MessageForm extends Form
         }
 
         $this->title('Message creation form');
-        $this->form('web/message/message_form')
+        $this->form('message/message_form')
             ->action(path('message', ['action' => 'save']))
             ->id('msgform');
         $this->select('from')
