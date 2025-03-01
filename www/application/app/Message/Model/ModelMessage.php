@@ -27,7 +27,7 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
             ->join('messages', 'messages.id', '=', 'to.message_id')
             ->join('authors', 'authors.id', '=', 'messages.from')
             ->join($this->qb->raw('authors AS au ON au.id = to.author_id'))
-            ->whereIn('to.user_id', $ids)
+            ->whereIn('to.author_id', $ids)
             ->orderBy('to.status', 'DESC')
             ->orderBy('messages.created', 'DESC')
             ->get();

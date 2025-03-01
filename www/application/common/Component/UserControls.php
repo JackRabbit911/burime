@@ -13,7 +13,7 @@ class UserControls extends Component
     public function __construct(ModelUserStat $model, ?UserInterface $user = null)
     {
         if ($user) {
-            $countMsg = $model->getMsgCount($user->id);
+            $countMsg = $model->getMsgCount($user->ownAuthors->props()->all());
             $msg = $countMsg['new'] . '/' . $countMsg['total'];
             $this->data['badge'] = ($countMsg['new']) ? '+' . $countMsg['new'] : false;
     

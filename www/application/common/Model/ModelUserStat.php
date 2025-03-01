@@ -6,10 +6,10 @@ use Sys\Model\Model;
 
 class ModelUserStat extends Model
 {
-    public function getMsgCount($user_id)
+    public function getMsgCount($ids)
     {
         $table = $this->qb->table('messages_authors')
-            ->where('user_id', '=', $user_id);
+            ->whereIn('author_id', $ids);
 
         $count['total'] = $table->count();
 
