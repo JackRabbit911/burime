@@ -15,6 +15,7 @@ use App\Home\Controller\About;
 use App\Home\Controller\AuthorsList;
 use App\Home\Controller\Home;
 use App\Home\Controller\Works;
+use App\Message\Controller\Message;
 use App\Private\PrivateController;
 use App\Message\MessageController;
 use App\Rating\Rating;
@@ -38,7 +39,7 @@ return [
     'create'        => ['/create/{action}', Create::class],
     'create.save'   => ['/create/{action}', CreateSave::class],
 
-    'message'       => ['/message/{action}/{id?}/{author_id?}', MessageController::class],
+    'message'       => ['/message/{action}/{id?}/{author_id?}', Message::class],
 
     'private'       => ['/private/{action}', PrivateController::class],
 

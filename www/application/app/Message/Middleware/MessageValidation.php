@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message;
+namespace App\Message\Middleware;
 
 use Attribute;
 use Az\Validation\Middleware\ValidationMiddleware;

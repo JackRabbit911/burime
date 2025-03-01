@@ -3,12 +3,10 @@
 namespace App\Message\Model;
 
 use Common\Enum\MemberRole;
-use Sys\Model\Trait\QueryBuilder;
+use Sys\Model\Model;
 
-class ModelRecipient 
+class ModelRecipient extends Model
 {
-    use QueryBuilder;
-
     public function getByIds(array $ids)
     {
         return ($ids) ? $this->qb->table('authors')

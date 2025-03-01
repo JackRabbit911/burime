@@ -2,17 +2,20 @@
 
 namespace App\Message\Model;
 
+use App\Message\Msg;
 use Common\Contract\IModelMessage;
 use Sys\Model\Interface\Saveble;
 use Sys\Model\Model;
 use Pecee\Pixie\Exceptions\ForeignKeyException;
 use PDO;
+use JSON_UNESCAPED_SLASHES;
+use JSON_UNESCAPED_UNICODE;
 
 final class ModelMessage extends Model implements Saveble, IModelMessage
 {
     protected string $table = 'messages';
 
-    public function getInbox($user_id)
+    public function getInbox($ids)
     {
         return $this->qb->table('messages_authors')->alias('to')
             ->select('messages.id', 'messages.created')
@@ -24,13 +27,13 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
             ->join('messages', 'messages.id', '=', 'to.message_id')
             ->join('authors', 'authors.id', '=', 'messages.from')
             ->join($this->qb->raw('authors AS au ON au.id = to.author_id'))
-            ->where('to.user_id', '=', $user_id)
+            ->whereIn('to.user_id', $ids)
             ->orderBy('to.status', 'DESC')
             ->orderBy('messages.created', 'DESC')
             ->get();
     }
 
-    public function getOutboxByIds($groupsIds)
+    public function getOutbox($ids)
     {
         return $this->qb->table($this->table)
             ->select(['messages.id', 'subject', 'messages.created'])
@@ -40,10 +43,22 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
             ->join('messages_authors', 'message_id', '=', 'messages.id')
             ->join('authors', 'authors.id', '=', 'messages_authors.author_id')
             ->join($this->qb->raw('authors AS au ON au.id = `from`'))
-            ->whereIn('from', $groupsIds)
+            ->whereIn('from', $ids)
             ->groupBy('messages.id')
             ->orderBy('status', 'DESC')
             ->orderBy('messages.created', 'DESC')
+            ->get();
+        }
+        
+    public function getDeleted($ids)
+    {
+        return $this->qb->table($this->table)
+            ->select('messages.id', 'from', 'subject')
+            ->select('authors.alias')
+            ->join('authors', 'authors.id', '=', 'from')
+            ->leftJoin('messages_authors', 'message_id', '=', 'messages.id')
+            ->whereNull('message_id')
+            ->whereIn('from', $ids)
             ->get();
     }
 
@@ -73,19 +88,20 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
         return $table->get();
     }
 
-    public function save($data)
+    public function save(Msg $msg)
     {
-        $data['data'] = json_encode($data['data'], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+        $data = $msg->prepareProps()->toArray();
 
         $status = (isset($data['important'])) ? 120 : 100;
         unset($data['important']);
 
-        $recipients = $this->getAuthorsUsersIds($data['to'] ?? []);
+        // $recipients = $this->getAuthorsUsersIds($data['to'] ?? []);
 
-        if (empty($recipients)) {
+        if (empty($data['to'])) {
             return;
         }
 
+        $recipients = $data['to'];
         unset($data['to']);
 
         $id = $this->qb->table($this->table)
@@ -94,8 +110,7 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
         foreach ($recipients as $to) {
             $msgs_authors[] = [
                 'message_id' => $id,
-                'author_id' => $to->author,
-                'user_id' => $to->user,
+                'author_id' => (int) $to,
                 'status' => $status,
             ];
         }
@@ -146,70 +161,59 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
             ->delete();
     }
 
-    public function getDeletedByIds($groupsIds)
-    {
-        return $this->qb->table($this->table)
-            ->select('messages.id', 'from', 'subject')
-            ->select('authors.alias')
-            ->join('authors', 'authors.id', '=', 'from')
-            ->leftJoin('messages_authors', 'message_id', '=', 'messages.id')
-            ->whereNull('message_id')
-            ->whereIn('from', $groupsIds)
-            ->get();
-    }
 
-    public function getUsersGroupsIds($user_id)
-    {
-        $myGroupsIds = $this->qb->table('authors')
-            ->select('id')
-            ->where('owner', '=', $user_id)
-            ->setFetchMode(PDO::FETCH_COLUMN);
+    // public function getUsersGroupsIds($user_id)
+    // {
+    //     $myGroupsIds = $this->qb->table('authors')
+    //         ->select('id')
+    //         ->where('owner', '=', $user_id)
+    //         ->setFetchMode(PDO::FETCH_COLUMN);
 
-        $usersGroupsIds = $this->qb->table('users_authors')
-            ->select('author_id')
-            ->where('user_id', '=', $user_id)
-            ->where('role', '>', 200)
-            ->setFetchMode(PDO::FETCH_COLUMN);
+    //     $usersGroupsIds = $this->qb->table('users_authors')
+    //         ->select('author_id')
+    //         ->where('user_id', '=', $user_id)
+    //         ->where('role', '>', 200)
+    //         ->setFetchMode(PDO::FETCH_COLUMN);
 
-        $authors_authors = $this->qb->table('authors_authors')->alias('aa')
-            ->select('authors.id')
-            ->join('authors', 'authors.id', '=', 'aa.parent_id')
-            ->where('aa.role', '>=', 100)
-            ->setFetchMode(PDO::FETCH_COLUMN)
-            ->orderBy('openclosed', 'DESC')
-            ->union($usersGroupsIds)
-            ->union($myGroupsIds);
+    //     $authors_authors = $this->qb->table('authors_authors')->alias('aa')
+    //         ->select('authors.id')
+    //         ->join('authors', 'authors.id', '=', 'aa.parent_id')
+    //         ->where('aa.role', '>=', 100)
+    //         ->setFetchMode(PDO::FETCH_COLUMN)
+    //         ->orderBy('openclosed', 'DESC')
+    //         ->union($usersGroupsIds)
+    //         ->union($myGroupsIds);
             
-        $usersGroupsIdsArray = $usersGroupsIds->get();
+    //     $usersGroupsIdsArray = $usersGroupsIds->get();
 
-        if (!empty($usersGroupsIdsArray)) {
-            $authors_authors->whereIn('aa.child_id', $usersGroupsIdsArray);
-        }
+    //     if (!empty($usersGroupsIdsArray)) {
+    //         $authors_authors->whereIn('aa.child_id', $usersGroupsIdsArray);
+    //     }
 
-        return $authors_authors->get();
-    }
+    //     return $authors_authors->get();
+    // }
 
-    private function getAuthorsUsersIds($authors)
-    {
-        if (empty($authors)) {
-            return [];
-        }
+    // private function getAuthorsUsersIds($authors)
+    // {
+    //     if (empty($authors)) {
+    //         return [];
+    //     }
 
-        if (!is_array($authors)) {
-            $authors = [$authors];
-        }
+    //     if (!is_array($authors)) {
+    //         $authors = [$authors];
+    //     }
 
-        $owners = $this->qb->table('authors')
-            ->select($this->qb->raw('`id` AS `author`'))
-            ->select($this->qb->raw('`owner` AS `user`'))
-            ->whereIn('id', $authors);
+    //     $owners = $this->qb->table('authors')
+    //         ->select($this->qb->raw('`id` AS `author`'))
+    //         ->select($this->qb->raw('`owner` AS `user`'))
+    //         ->whereIn('id', $authors);
 
-        return $this->qb->table('users_authors')->alias('ua')
-            ->select($this->qb->raw('`author_id` AS `author`'))
-            ->select($this->qb->raw('`user_id` AS `user`'))
-            ->whereIn('author_id', $authors)
-            ->where('role', '>', 200)
-            ->union($owners)
-            ->get();
-    }
+    //     return $this->qb->table('users_authors')->alias('ua')
+    //         ->select($this->qb->raw('`author_id` AS `author`'))
+    //         ->select($this->qb->raw('`user_id` AS `user`'))
+    //         ->whereIn('author_id', $authors)
+    //         ->where('role', '>', 200)
+    //         ->union($owners)
+    //         ->get();
+    // }
 }
