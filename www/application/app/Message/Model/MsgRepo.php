@@ -77,12 +77,8 @@ class MsgRepo
         
         $data['msg']->data['body'] = nl2br(str_replace('{AUTHOR}', $to, $data['msg']->data['body']));
 
-        $handler = $data['msg']->handler;
-        
-        $data['action'] = __FUNCTION__;
-        $data['body'] = ($handler)
-        ? container()->call([$handler, 'render'], ['data' => $data])
-        : view('message/blank/default', $data);
+        $view = $data['view'] ?? 'message/blank/default';
+        $data['body'] = view($view, (array) $data['msg']);
 
         $this->modelMessage->changeStatus($id, $author_id, MsgStatus::Read->value);
 

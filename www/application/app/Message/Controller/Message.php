@@ -46,6 +46,32 @@ class Message extends WebController
         return view('message/message', $data);
     }
 
+    public function showOut($id)
+    {
+        $data = $this->repo->makeData($id, $this->user->id);
+        
+        if (isset($this->request->getQueryParams()['delete'])) {
+            $data['alert'] = true;
+        } else {
+            $data['alert'] = false;
+        }
+       
+        $data['title'] = __('Outgoing message');
+        $data['controls'] = 'message/controls_out.twig';
+
+        return view('message/message', $data);
+    }
+
+    public function showDel($id)
+    {
+        $data = $this->repo->makeData($id, $this->user->id);
+
+        $data['title'] = __('Message to delete');
+        $data['controls'] = 'message/controls_del.twig';
+
+        return view('message/message', $data);
+    }
+
     public function form($author_id = null)
     {
         $new = $this->request->getQueryParams()['new'] ?? null;
@@ -91,11 +117,7 @@ class Message extends WebController
     {
         $data = $this->request->getParsedBody();
         Msg::fromArray($data)->save(ModelMessage::class);
-        // dd($data, $msg);
-        // $this->repo->save($data);
-
+ 
         return new RedirectResponse(path('message', ['action' => 'list']));
-
-        // return redirect(path('message', ['action' => 'list']));
     }
 }
