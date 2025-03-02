@@ -35,11 +35,9 @@ class MsgRepo
         return $data;
     }
 
-    public function getMsg($id)
+    public function getSubject($id)
     {
-        $data['msg'] = $this->modelMessage->find($id);
-
-        return $data;
+        return $this->modelMessage->getSubject($id);
     }
 
     public function getRecipients(array $ids): array

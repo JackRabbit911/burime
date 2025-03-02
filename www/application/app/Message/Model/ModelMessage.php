@@ -73,6 +73,14 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
             ->find($id, 'messages.id');
     }
 
+    public function getSubject($id)
+    {
+        return $this->qb->table($this->table)
+            ->select('messages.subject')
+            ->setFetchMode(\PDO::FETCH_COLUMN)
+            ->find($id);
+    }
+
     public function getRecipients($msg_id, $except = null)
     {
         $table = $this->qb->table('messages_authors')

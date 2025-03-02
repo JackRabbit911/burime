@@ -75,19 +75,21 @@ class Message extends WebController
         return view('message/message', $data);
     }
 
-    public function form($author_id = null)
+    public function form($id = null, $author_id = null)
     {
         $new = $this->request->getQueryParams()['new'] ?? null;
 
         if ($new === 'true') {
             $this->session->remove('to');
-            return $this->redirect(path('message', ['action' => 'recipients']));
+            return new RedirectResponse(path('message', ['action' => 'recipients']));
         }
 
         $ids = $this->session->get('to');
         $recipients = ($ids) ? $this->repo->getRecipients($ids) : [];
 
-        return new MessageForm($this->user->ownAuthors, $recipients, $author_id);
+        $subject = ($id) ? $this->repo->getSubject($id) : null;
+
+        return new MessageForm($this->user->ownAuthors, $recipients, (int) $author_id, $subject);
     }
 
     public function recipients()
