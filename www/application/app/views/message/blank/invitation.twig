@@ -4,22 +4,23 @@
             {{ app.cmp('cover', {branch_id: msg.data.branch_id})|raw }}
         </a>
         <div class="md:col-span-2 prose flex flex-col justify-between">
-            {{ msg.data.body|raw }}
+            {{ __(msg.data.appeal, {username: to.alias}) }}<br />
+            {{ msg.data.body|nl2br }}
             <div class="flex flex-row justify-between">
                 {% if msg.disabled == true %}
                 {% set disabled = ' disabled' %}
                 {% else %}
                 {% set disabled = '' %}
                 {% endif %}
-                <a href="{{ accept_link ?? '' }}" class="btn btn-primary grow"{{ disabled }}>
+                <a href="{{ path('participation', {action: 'accept', 'branch_id': msg.data.branch_id }) }}" class="btn btn-primary grow"{{ disabled }}>
                     {{ __('Accept') }}
                 </a>
-                <a href="{{ refuse_link ?? '' }}" class="btn ms-2 grow"{{ disabled }}>
+                <a href="{{ path('participation', {action: 'refuse', 'branch_id': msg.data.branch_id}) }}" class="btn ms-2 grow"{{ disabled }}>
                     {{ __('Refuse') }}
                 </a>
             </div>
             <p class="text-sm mt-3">
-                {{ __('Best regards, ') ~ msg.alias }}
+                {{ __(signature ?? 'Best regards') ~ ', ' ~ msg.alias }}
             </p>
         </div>
     </div>

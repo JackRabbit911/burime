@@ -70,12 +70,8 @@ class MsgRepo
 
         if ($author_id) {
             $data['to'] = $this->authorRepo->findAuthor($author_id);
-            $to = $data['to']->alias;
-        } else {
-            $to = 'Author';
         }
-        
-        $data['msg']->data['body'] = nl2br(str_replace('{AUTHOR}', $to, $data['msg']->data['body']));
+
         $data['msg']->view = $data['msg']->view ?: 'message/blank/default';
         
         $this->modelMessage->changeStatus($id, $author_id, MsgStatus::Read->value);
