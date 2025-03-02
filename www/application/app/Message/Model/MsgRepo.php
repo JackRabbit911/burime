@@ -76,10 +76,8 @@ class MsgRepo
         }
         
         $data['msg']->data['body'] = nl2br(str_replace('{AUTHOR}', $to, $data['msg']->data['body']));
-
-        $view = $data['view'] ?? 'message/blank/default';
-        $data['body'] = view($view, (array) $data['msg']);
-
+        $data['msg']->view = $data['msg']->view ?: 'message/blank/default';
+        
         $this->modelMessage->changeStatus($id, $author_id, MsgStatus::Read->value);
 
         $this->modelUserGroup->addToUserGroup(

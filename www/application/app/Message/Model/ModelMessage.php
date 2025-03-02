@@ -91,11 +91,10 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
     public function save(Msg $msg)
     {
         $data = $msg->prepareProps()->toArray();
+        unset($data['path']);
 
         $status = (isset($data['important'])) ? 120 : 100;
         unset($data['important']);
-
-        // $recipients = $this->getAuthorsUsersIds($data['to'] ?? []);
 
         if (empty($data['to'])) {
             return;
@@ -103,6 +102,7 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
 
         $recipients = $data['to'];
         unset($data['to']);
+        unset($data['tpl']);
 
         $id = $this->qb->table($this->table)
             ->insert($data);

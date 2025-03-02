@@ -42,6 +42,7 @@ class Message extends WebController
         $this->session->set('to', [$data['msg']->from]);
         $data['title'] = 'Incoming message';
         $data['controls'] = 'message/controls_in.twig';
+        $data['msg']->disabled = false;
 
         return view('message/message', $data);
     }
@@ -58,6 +59,7 @@ class Message extends WebController
        
         $data['title'] = __('Outgoing message');
         $data['controls'] = 'message/controls_out.twig';
+        $data['msg']->disabled = true;
 
         return view('message/message', $data);
     }
@@ -68,6 +70,7 @@ class Message extends WebController
 
         $data['title'] = __('Message to delete');
         $data['controls'] = 'message/controls_del.twig';
+        $data['msg']->disabled = true;
 
         return view('message/message', $data);
     }

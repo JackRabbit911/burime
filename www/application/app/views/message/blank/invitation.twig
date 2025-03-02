@@ -1,21 +1,20 @@
-{% import 'home/books/book_card.twig' as b %}
-{% if branch %}
+{% if msg.data.branch_id %}
     <div class="grid grid-2 md:grid-cols-3 gap-4">
-        <a href="{{ path('branch', {'branch_id': branch.id}) }}" target="_blank">
-            {{ b.book(branch) }}
+        <a href="{{ path('branch', {'branch_id': msg.data.branch_id}) }}" target="_blank">
+            {{ app.cmp('cover', {branch_id: msg.data.branch_id})|raw }}
         </a>
         <div class="md:col-span-2 prose flex flex-col justify-between">
             {{ msg.data.body|raw }}
-            <div class="flex flex-row">
-                {% if disabled == true %}
+            <div class="flex flex-row justify-between">
+                {% if msg.disabled == true %}
                 {% set disabled = ' disabled' %}
                 {% else %}
                 {% set disabled = '' %}
                 {% endif %}
-                <a href="{{ accept_link ?? '' }}" class="btn btn-primary basis-1/2"{{ disabled }}>
+                <a href="{{ accept_link ?? '' }}" class="btn btn-primary grow"{{ disabled }}>
                     {{ __('Accept') }}
                 </a>
-                <a href="{{ refuse_link ?? '' }}" class="btn ms-2 basis-1/2"{{ disabled }}>
+                <a href="{{ refuse_link ?? '' }}" class="btn ms-2 grow"{{ disabled }}>
                     {{ __('Refuse') }}
                 </a>
             </div>

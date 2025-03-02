@@ -4,21 +4,21 @@ namespace App\Branch\Controller;
 
 use App\Branch\Model\AddAuthorsRepo;
 use App\Branch\Model\SaveCover;
-use App\Branch\Service\SendInvitation;
 use App\Branch\Middleware\BranchAuthorsValidation;
 use App\Branch\Middleware\BranchCoverValidation;
 use App\Branch\Middleware\BranchGenresValidation;
 use App\Branch\Middleware\RulesValidation;
 use App\Branch\Middleware\OwnerBranchGuard;
-use App\Message\SendMsg;
+use Common\Observer\SendMsg;
 use Common\Enum\BranchStatus;
 use Az\Route\Route;
+use HttpSoft\Response\RedirectResponse;
 
 #[Route(methods: 'post')]
 #[OwnerBranchGuard]
 class EditSave extends BranchSaveAbstract
 {
-    public array $msgData;
+    public array $msg;
 
     protected function _before()
     {
@@ -37,6 +37,7 @@ class EditSave extends BranchSaveAbstract
     {
         $this->branch->genres = $this->data['genres'] ?? [];
         $this->branch->save();
+
         return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
     }
 
@@ -50,15 +51,15 @@ class EditSave extends BranchSaveAbstract
     }
 
     #[BranchAuthorsValidation]
-    #[SendMsg(SendInvitation::class)]
+    #[SendMsg]
     public function authors(AddAuthorsRepo $repo, $id)
     {
         $this->branch->authors = $repo->getAuthors($this->session, $this->branch, $this->user->id, $this->data);
-        $this->msgData = ['branch' => $this->branch];
 
+        $this->sendInvitation();
         $this->branch->save();
 
-        return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
+        return new RedirectResponse(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
     }
 
     #[BranchCoverValidation]
@@ -67,19 +68,29 @@ class EditSave extends BranchSaveAbstract
         parent::cover($saveCover, $id);
         $this->branch->update($this->data)->save();
 
-        return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
+        return new RedirectResponse(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
     }
 
-    #[SendMsg(SendInvitation::class)]
+    #[SendMsg]
     public function publish($id)
     {
         $this->branch->status = $this->data['status'] ?? BranchStatus::Ready->value;
         $this->branch->save();
+        $this->sendInvitation();
 
-        $to = $this->data['authors'] ?? null;
+        return new RedirectResponse(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
+    }
 
-        $this->msgData = ['branch' => $this->branch, 'to' => $to];
-
-        return $this->redirect(path('edit', ['action' => __FUNCTION__, 'id' => $id]));
+    private function sendInvitation()
+    {
+        $this->msg = [
+            'to' => $this->session->keep('invites')->props()->all(),
+            'from' => $this->branch->master()->id,
+            'tpl' => 'invite_to_branch',
+            'data' => [
+                'branch_id' => $this->branch->id,
+                'title' => $this->branch->title,
+            ],
+        ];
     }
 }
