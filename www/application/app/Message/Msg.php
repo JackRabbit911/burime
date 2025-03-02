@@ -2,12 +2,14 @@
 
 namespace App\Message;
 
+use App\Message\Model\ModelMessage;
 use Sys\Entity\Entity;
 use Sys\Trait\FromArray;
 use JSON_UNESCAPED_SLASHES;
 use JSON_UNESCAPED_UNICODE;
 use Sys\Trait\ToArray;
 
+#[ModelMessage]
 class Msg extends Entity
 {
     use FromArray;

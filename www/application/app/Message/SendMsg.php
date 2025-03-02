@@ -2,32 +2,25 @@
 
 namespace App\Message;
 
+use App\Message\Model\ModelMessage;
+use App\Message\Msg;
+use Sys\Observer\Interface\Listener;
+use Psr\Container\ContainerInterface;
 use Attribute;
-use Sys\Observer\Interface\Observer;
 
 #[Attribute]
-class SendMsg implements Observer
+class SendMsg implements Listener
 {
-    private object $handler;
     private $object;
 
-    public function __construct(string $handler)
+    public function __construct(ContainerInterface $c, string $_class)
     {
-        $this->handler = container()->get($handler);
-    }
-
-    public function update(object|string|callable $object): self
-    {
-        $this->object = $object;
-        return $this;
+        $this->object = $c->get($_class);
     }
 
     public function handle()
     {
-        if (is_string($this->object)) {
-            $this->object = container()->get($this->object);
-        }
-
-        call_user_func_array([$this->handler, 'send'], $this->object->msgData);
+        Msg::fromArray($this->object->msg)
+            ->save(ModelMessage::class);
     }
 }
