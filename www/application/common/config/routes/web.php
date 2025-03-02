@@ -14,6 +14,7 @@ use App\Burime\Controller\PostControls;
 use App\Home\Controller\About;
 use App\Home\Controller\AuthorsList;
 use App\Home\Controller\Home;
+use App\Home\Controller\Search;
 use App\Home\Controller\Works;
 use App\Message\Controller\Message;
 use App\Private\PrivateController;
@@ -26,6 +27,7 @@ return [
     'about'         => ['/about/{action}', About::class],
     'works'         => ['/works/{action?}', Works::class],
     'authors'       => ['/authors', AuthorsList::class],
+    'search'        => ['/search', Search::class],
 
     'author.controls'=>['/author/controls/{id?}', Controls::class],
     'author.form'   => ['/author/form/{id?}', Form::class],

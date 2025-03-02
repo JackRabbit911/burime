@@ -30,6 +30,6 @@ return [
     ],
     [
         'title' => 'Search',
-        'href' => '', //path('search'),
+        'href' => path('search'),
     ],
 ];
