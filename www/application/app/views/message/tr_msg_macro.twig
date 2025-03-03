@@ -23,84 +23,67 @@
 {% endmacro status %}
 
 {% macro tr_in(data) %}
-<tr class="hover">
+{% set path =  path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) %}
+<tr class="hover:bg-base-300 cursor-pointer" onclick="document.location = '{{ path }}';">
     <td class="py-2">
-        <a href="{{ path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) }}">
-            {{ _self.status(data.status) }}
-        </a>
+        {{ _self.status(data.status) }}
     </td>
     <td class="py-2">
         {{ data.created|date('d.m.y H:i') }}
     </td>
     <td class="py-2">
-        <a href="{{ path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) }}">
-            <div class="flex items-center gap-3">
-                <div class="avatar">
-                    <div class="mask mask-squircle h-10 w-10">
-                        <img src="{{ app.avatar(data.from) }}" alt="{{ data.alias }}" />
-                    </div>
-                </div>
-                <div>
-                    <div class="font-bold">{{ data.alias }}</div>
+        <div class="flex items-center gap-3">
+            <div class="avatar">
+                <div class="mask mask-squircle h-10 w-10">
+                    <img src="{{ app.avatar(data.from) }}" alt="{{ data.alias }}" />
                 </div>
             </div>
-        </a>
+            <div>
+                <div class="font-bold">{{ data.alias }}</div>
+            </div>
+        </div>
     </td>
     <td class="py-2">
-        <a href="{{ path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) }}">
-            {{ data.to_alias }}
-        </a>
+        {{ data.to_alias }}
     </td>
-    <td class="py-2">
-        <a href="{{ path('message', {'action': 'show', 'id': data.id, 'author_id': data.author_id}) }}">
-            {{ __(data.subject) }}
-        </a>
+    <td class="py-2 w-42 overflow-hidden">
+        {{ __(data.subject) }}
     </td>
 </tr>
 {% endmacro tr_in %}
 
 {% macro tr_out(data) %}
-<tr class="hover">
+{% set path =  path('message', {'action': 'showOut', 'id': data.id}) %}
+<tr class="hover:bg-base-300 cursor-pointer" onclick="document.location = '{{ path }}';">
     <td class="py-2">
-        <a href="{{ path('message', {'action': 'showOut', 'id': data.id}) }}">
-            {{ _self.status(data.status) }}
-        </a>
+        {{ _self.status(data.status) }}
     </td>
     <td class="py-2">
         {{ data.created|date('d.m.y H:i') }}
     </td>
     <td class="py-2">
-        <a href="{{ path('message', {'action': 'showOut', 'id': data.id}) }}">
-            {{ data.from }}
-        </a>
+        {{ data.from }}
     </td>
     <td class="py-2">
-        <a href="{{ path('message', {'action': 'showOut', 'id': data.id}) }}">
-            {{ json(data.to, true)|join(', ') }}
-        </a>
+        {{ json(data.to, true)|join(', ') }}
     </td>
     <td class="py-2">
-        <a href="{{ path('message', {'action': 'showOut', 'id': data.id}) }}">
-            {{ __(data.subject) }}
-        </a>
+        {{ __(data.subject) }}
     </td>
 </tr>
 {% endmacro tr_out %}
 
 {% macro tr_del(data) %}
-<tr class="hover">
-    <td class="py-2">
-        <a href="{{ path('message', {'action': 'showDel', 'id': data.id}) }}">
-            {{ data.alias }}
-        </a>
+{% set path =  path('message', {'action': 'showDel', 'id': data.id}) %}
+<tr class="hover:bg-base-300">
+    <td class="py-2 cursor-pointer" onclick="document.location = '{{ path }}';">
+        {{ data.alias }}
     </td>
-    <td class="py-2">
-        <a href="{{ path('message', {'action': 'showDel', 'id': data.id}) }}">
-            {{ __(data.subject) }}
-        </a>
+    <td class="py-2 cursor-pointer" onclick="document.location = '{{ path }}';">
+        {{ __(data.subject) }}
     </td>
-    <td class="py-2">
-        <a href="{{ path('message', {'action': 'remove', 'id': data.id, 'author_id': data.from}) }}" class="btn btn-ghost btn-xs">
+    <td class="py-2 text-end">
+        <a href="{{ path('message', {'action': 'remove', 'id': data.id, 'author_id': data.from}) }}" class="btn btn-ghost btn-xs btn-wide">
             {{ __('delete') }}
         </a>
     </td>

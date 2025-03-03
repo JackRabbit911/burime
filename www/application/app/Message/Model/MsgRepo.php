@@ -55,6 +55,16 @@ class MsgRepo
         $this->modelMessage->save($data);
     }
 
+    public function delete($msg_id, $author_id)
+    {
+        $this->modelMessage->delete($msg_id, $author_id);
+    }
+
+    public function remove($msg_id, $author_id)
+    {
+        return $this->modelMessage->remove($msg_id, $author_id);
+    }
+
     public function authorAvatar($author_id, $alt = '')
     {
         return $this->authorRepo->authorAvatar($author_id, $alt);

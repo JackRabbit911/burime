@@ -125,4 +125,16 @@ class Message extends WebController
  
         return new RedirectResponse(path('message', ['action' => 'list']));
     }
+
+    public function delete($id, $author_id)
+    {
+        $this->repo->delete($id, $author_id);
+        return new RedirectResponse(path('message', ['action' => 'list']));
+    }
+
+    public function remove($id, $author_id)
+    {
+        $this->repo->remove($id, $author_id);
+        return new RedirectResponse(path('message', ['action' => 'list']));
+    }
 }

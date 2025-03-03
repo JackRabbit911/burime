@@ -137,20 +137,21 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
             ->update(['status' => $status]);
     }
 
-    public function delete($id, $author_id, $user_id)
+    public function delete($id, $author_id)
     {
         $this->qb->table('messages_authors')
             ->where('message_id' , '=', $id)
             ->where('author_id' , '=', $author_id)
-            ->where('user_id' , '=', $user_id)
+            // ->where('user_id' , '=', $user_id)
             ->delete();
     }
 
-    public function remove($id)
+    public function remove($id, $from)
     {
         try {
             $this->qb->table($this->table)
                 ->where('id', '=', $id)
+                ->where('from', '=', $from)
                 ->delete();
                 return true;
         } catch (ForeignKeyException $e) {
