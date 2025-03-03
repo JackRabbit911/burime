@@ -9,7 +9,7 @@
     </a>
     <div class="overflow-x-auto">
         {% if inbox is not empty %}
-        <h4>{{ __('Inbox') }}</h4>
+        <h2>{{ __('Inbox') }}</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -28,7 +28,7 @@
         </table>
         {% endif %}
         {% if outbox is not empty %}
-        <h4>{{ __('Outbox') }}</h4>
+        <h2>{{ __('Outbox') }}</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -47,7 +47,7 @@
         </table>
         {% endif %}
         {% if deleted is not empty %}
-        <h4>{{ __('Deleted') }}</h4>
+        <h2>{{ __('Deleted') }}</h2>
         <table class="table">
             <thead>
                 <tr>
