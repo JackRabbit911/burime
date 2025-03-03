@@ -30,7 +30,8 @@ class Message extends WebController
     public function list()
     {
         $data = $this->repo->getList($this->user->ownAuthors->props()->all());
-        $data['title'] = 'Messages list';
+        $data['title'] = 'Messages list';       
+        $this->app->js('/assets/js/stringTrim.js');
 
         return view('message/list', $data);
     }
