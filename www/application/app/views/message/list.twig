@@ -9,15 +9,15 @@
     </a>
     <div class="overflow-x-auto">
         {% if inbox is not empty %}
-        <h4>Inbox</h4>
+        <h4>{{ __('Inbox') }}</h4>
         <table class="table">
             <thead>
                 <tr>
-                <th>Status</th>
-                <th>Date</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Subject</th>
+                <th>{{ __('Status') }}</th>
+                <th>{{ __('Date') }}</th>
+                <th>{{ __('From') }}</th>
+                <th>{{ __('To') }}</th>
+                <th>{{ __('Subject') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,15 +28,15 @@
         </table>
         {% endif %}
         {% if outbox is not empty %}
-        <h4>Outbox</h4>
+        <h4>{{ __('Outbox') }}</h4>
         <table class="table">
             <thead>
                 <tr>
-                <th>Status</th>
-                <th>Date</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Subject</th>
+                <th>{{ __('Status') }}</th>
+                <th>{{ __('Date') }}</th>
+                <th>{{ __('From') }}</th>
+                <th>{{ __('To') }}</th>
+                <th>{{ __('Subject') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,12 +47,12 @@
         </table>
         {% endif %}
         {% if deleted is not empty %}
-        <h4>Deleted</h4>
+        <h4>{{ __('Deleted') }}</h4>
         <table class="table">
             <thead>
                 <tr>
-                <th>From</th>
-                <th>Subject</th>
+                <th>{{ __('From') }}</th>
+                <th>{{ __('Subject') }}</th>
                 <th></th>
                 </tr>
             </thead>
