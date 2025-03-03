@@ -13,7 +13,6 @@ use App\Branch\Middleware\AuthorGuard;
 use App\Branch\Branch;
 use Sys\Controller\WebController;
 use Sys\Collection\Collection;
-use Auth\Middleware\AuthGuardMiddleware;
 
 #[AuthorGuard]
 class Create extends WebController

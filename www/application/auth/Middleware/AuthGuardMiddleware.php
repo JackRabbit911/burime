@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Auth\Middleware;
 
@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Sys\Helper\ResponseType;
 
 #[Attribute]
-final class AuthGuardMiddleware implements MiddlewareInterface
+class AuthGuardMiddleware implements MiddlewareInterface
 {
     private ExceptionResponseFactory $factory;
 

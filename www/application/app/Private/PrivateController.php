@@ -5,11 +5,11 @@ namespace App\Private;
 use App\Private\ModelPrivate;
 use Common\Enum\MemberRole;
 use Common\Contract\BranchInterface;
-use Auth\Middleware\AuthGuardMiddleware;
+use Common\Middleware\AuthGuard;
 use Sys\Controller\WebController;
 use Psr\Container\ContainerInterface;
 
-#[AuthGuardMiddleware]
+#[AuthGuard]
 final class PrivateController extends WebController
 {
     private ModelPrivate $model;

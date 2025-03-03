@@ -4,11 +4,11 @@ namespace Auth\Controller;
 
 use Auth\Component\AuthForm;
 use Auth\Model\TokenAuth;
-use HttpSoft\Response\RedirectResponse;
-use Az\Route\Route;
 use Auth\Middleware\AuthGuardMiddleware;
 use Auth\Middleware\AuthValidation;
 use Auth\Middleware\GuestGuardMiddleware;
+use HttpSoft\Response\RedirectResponse;
+use Az\Route\Route;
 
 class Auth extends AuthAbstract
 {

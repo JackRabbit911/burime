@@ -7,13 +7,12 @@ use App\Message\Model\MsgRepo;
 use App\Message\Component\MessageForm;
 use App\Message\Middleware\MessageValidation;
 use App\Message\Msg;
-use Common\Repository\AuthorRepo;
-use Auth\Middleware\AuthGuardMiddleware;
+use Common\Middleware\AuthGuard;
 use Sys\Controller\WebController;
 use Az\Route\Route;
 use HttpSoft\Response\RedirectResponse;
 
-#[AuthGuardMiddleware]
+#[AuthGuard]
 class Message extends WebController
 {
     private MsgRepo $repo;
