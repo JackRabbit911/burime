@@ -13,15 +13,7 @@
             <table class="table">
                 <tbody>
                     {% if author.c_members > 0 %}
-                    <tr>
-                        <td>Members</td>
-                        <td>{{ author.c_members }}</td>
-                        <td>
-                            <a href="{{ path('author', {'action': 'members', 'id': author.id}) }}" class="link">
-                                Go to members
-                            </a>
-                        </td>
-                    </tr>
+                        {{ stat.tr(statistic.members) }}
                     {% endif %}
                     {{ stat.tr(statistic.rating) }}
                     {{ stat.tr(statistic.books) }}

@@ -68,27 +68,27 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
     /**
      * Controller\AuthorsList::makeData
      */
-    public function get($limit = null, $offset = 0, $groupsOnly = false)
-    {
-        $table = $this->qb->table($this->table)
-            ->select('authors.*')
-            ->select($this->qb->raw('AVG(authors_ratings.rating) AS rating'))
-            ->select($this->qb->raw('COUNT(child_id) AS c_members'))
-            ->leftJoin('authors_authors', 'parent_id', '=', 'id')
-            ->leftJoin('authors_ratings', 'author_id', '=', 'id')
-            ->groupBy('authors.id')
-            ->orderBy('rating', 'DESC');
+    // public function get($limit = null, $offset = 0, $groupsOnly = false)
+    // {
+    //     $table = $this->qb->table($this->table)
+    //         ->select('authors.*')
+    //         ->select($this->qb->raw('AVG(authors_ratings.rating) AS rating'))
+    //         ->select($this->qb->raw('COUNT(child_id) AS c_members'))
+    //         ->leftJoin('authors_authors', 'parent_id', '=', 'id')
+    //         ->leftJoin('authors_ratings', 'author_id', '=', 'id')
+    //         ->groupBy('authors.id')
+    //         ->orderBy('rating', 'DESC');
 
-        if ($groupsOnly) {
-            $table->where('openclosed', '<', 2);
-        }
+    //     if ($groupsOnly) {
+    //         $table->where('openclosed', '<', 2);
+    //     }
 
-        if ($limit) {
-            $table->limit($limit)->offset($offset);
-        }
+    //     if ($limit) {
+    //         $table->limit($limit)->offset($offset);
+    //     }
         
-        return $table->asObject(Author::class)->get();
-    }
+    //     return $table->asObject(Author::class)->get();
+    // }
 
     /**
      * Controller\AuthorsList::__construct
@@ -108,6 +108,7 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
             ->select('authors.*', 'aa.role')
             ->join('authors', 'authors.id', '=', 'aa.child_id')
             ->where('aa.parent_id', '=', $author_id)
+            ->where('aa.role', '>', 40)
             ->orderBy('aa.role', 'DESC')
             ->asObject(Author::class)
             ->get();

@@ -13,11 +13,17 @@ class Statistic
         $this->model = $model;
     }
 
-    public function get($author_id)
+    public function get($author)
     {
-        $data = $this->model->getStat($author_id);
+        $data = $this->model->getStat($author->id);
         
         return [
+            'members' => [
+                'title' => 'Members',
+                'count' => $author->c_members,
+                'href' => path('author', ['action' => 'members', 'id' => $author->id]),
+                'title_link' => 'Go to members',
+            ],
             'rating' => [
                 'title' => 'Rating',
                 'count' => round($data['rating'], 2),

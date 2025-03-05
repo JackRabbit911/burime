@@ -5,7 +5,6 @@ namespace App\Author\Controller;
 use App\Author\Model\ModelAuthor;
 use App\Author\Model\ModelUserGroup;
 use App\Author\Repo\Statistic;
-// use App\Model\ModelStat;
 
 use Sys\Controller\WebController;
 use Az\Route\Route;
@@ -37,28 +36,21 @@ class Author extends WebController
 
     public function __invoke(Statistic $repo, $id)
     {
-        $data = $this->data;
-        // $data['avg_rating'] = $modelStat->getAuthorRatingAvg($id);
-
-        $data['avg_rating'] = 4.1; //= RatingRepo->getRatingByAuthor($id);
-        $data['statistic'] = $repo->get($id);
-
-        return view('author/tab_stat', $data);
+        $this->data['statistic'] = $repo->get($this->data['author']);
+        return view('author/tab_stat', $this->data);
     }
 
     public function info($id)
     {
-        $data = $this->data;
-        return view('author/tab_info', $data);
+        return view('author/tab_info', $this->data);
     }
 
     public function members($id)
     {
-        $data = $this->data;
-        $data['members'] = $this->modelAuthor->getMembers($id);
-        $data['favorite'] = ($this->user) ? $this->modelUserGroup->inUserGroup($this->user->id, $id, 100) : false;
+        $this->data['members'] = $this->modelAuthor->getMembers($id);
+        $this->data['favorite'] = ($this->user) ? $this->modelUserGroup->inUserGroup($this->user->id, $id, 100) : false;
         $this->app->js('/assets/js/checkboxCheck.js');
 
-        return view('author/tab_members', $data);
+        return view('author/tab_members', $this->data);
     }
 }
