@@ -23,11 +23,7 @@
                         </td>
                     </tr>
                     {% endif %}
-                    <tr>
-                        <td>{{ __('Rating') }}</td>
-                        <td>{{ avg_rating }}</td>
-                        <td></td>
-                    </tr>
+                    {{ stat.tr(statistic.rating) }}
                     {{ stat.tr(statistic.books) }}
                     {{ stat.tr(statistic.posts) }}
                     {{ stat.tr(statistic.comments) }}

@@ -2,20 +2,35 @@
 
 namespace App\Author\Repo;
 
+use App\Author\Model\ModelStat;
+
 class Statistic
 {
+    private ModelStat $model;
+
+    public function __construct(ModelStat $model)
+    {
+        $this->model = $model;
+    }
+
     public function get($author_id)
     {
+        $data = $this->model->getStat($author_id);
+        
         return [
+            'rating' => [
+                'title' => 'Rating',
+                'count' => round($data['rating'], 2),
+            ],
             'books' => [
                 'title' => 'Books',
-                'count' => 3,
+                'count' => $data['books'],
                 'href' => '',
                 'title_link' => 'Authors books',
             ],
             'posts' => [
                 'title' => 'Posts',
-                'count' => 13,
+                'count' => $data['posts'],
                 'href' => '',
                 'title_link' => 'All posts by author',
             ],
