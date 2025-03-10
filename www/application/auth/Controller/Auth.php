@@ -7,8 +7,9 @@ use Auth\Model\TokenAuth;
 use Auth\Middleware\AuthGuardMiddleware;
 use Auth\Middleware\AuthValidation;
 use Auth\Middleware\GuestGuardMiddleware;
-use HttpSoft\Response\RedirectResponse;
 use Az\Route\Route;
+use Az\Validation\Middleware\CsrfMiddleware;
+use HttpSoft\Response\RedirectResponse;
 
 class Auth extends AuthAbstract
 {
@@ -26,6 +27,7 @@ class Auth extends AuthAbstract
 
     #[Route(methods: 'post')]
     #[GuestGuardMiddleware, AuthValidation]
+    #[CsrfMiddleware]
     public function login(TokenAuth $tokenAuth)
     {
         $user = $this->model->getUser();
