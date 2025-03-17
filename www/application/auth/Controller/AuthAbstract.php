@@ -33,7 +33,8 @@ abstract class AuthAbstract extends WebController
     {
         $home = url('home');
         $default = $this->request->getServerParams()['HTTP_REFERER'] ?? $home;     
-        $ref = $this->session->pull('ref', $default);
+        $ref = $this->session->get('ref', $default);
+        $this->session->remove('ref');
 
         return ($ref == url()) ? $home : $ref;
     }
