@@ -2,29 +2,10 @@
 
 namespace App\Rating;
 
-// use App\Model\ModelRating;
-use Auth\User;
 use HttpSoft\Response\RedirectResponse;
-use Sys\Controller\BaseController;
 
-class Rating extends BaseController
+class Rating extends RatingAbstract
 {
-    private ModelRating $model;
-    private ?User $user;
-
-    private $like = 5;
-    private $dislike = 2;
-
-    public function __construct(ModelRating $model)
-    {
-        $this->model = $model;
-    }
-
-    protected function _before()
-    {
-        $this->user = $this->request->getAttribute('user');
-    }
-
     public function like($post_id)
     {
         $this->model->setRating($this->user->id, $post_id, $this->like);

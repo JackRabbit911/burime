@@ -48,4 +48,11 @@ final class ModelRating extends Model
             ->setFetchMode(\PDO::FETCH_COLUMN)
             ->first();
     }
+
+    public function getPostAvgRating($post_id)
+    {
+        return $this->qb->table('posts_ratings')
+            ->where('post_id', '=', $post_id)
+            ->average('rating');
+    }
 }

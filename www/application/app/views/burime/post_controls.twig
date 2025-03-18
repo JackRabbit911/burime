@@ -1,11 +1,21 @@
 {% import 'common/macro/icon.twig' as i %}
-<div class="join">
+<div class="join" role="post-controls">
     {% if app.user %}
         {% if allow_rating %}
-        <a title="Like" href="{{ link_like }}" class="cursor-pointer btn btn-xs join-item">
+        <a 
+            id="like-{{ post.id }}" 
+            title="Like" 
+            href="{{ link_like }}" 
+            class="cursor-pointer btn btn-xs join-item"
+        >
             {{ i.like(post.user_rating, 'size-5') }}
         </a>
-        <a title="Dislike" href="{{ link_dislike }}" class="cursor-pointer btn btn-xs join-item">
+        <a 
+            id="dislike-{{ post.id }}" 
+            title="Dislike" 
+            href="{{ link_dislike }}" 
+            class="cursor-pointer btn btn-xs join-item"
+            >
             {{ i.dislike(post.user_rating, 'size-5') }}
         </a>
         {% endif %}
@@ -54,14 +64,12 @@
     {{ post.id }}
     {{ post.status }}
     {{ post.weight }}
-    {% if post.rating %}    
-        <div class="badge badge-ghost mt-1">
-            {{ i.star() }}
-            <span class="mt-0.5 ms-1 prose-md">
-                {{ post.rating }}
-            </span>
-        </div>
-    {% endif %}
+    <div class="badge badge-ghost mt-1">
+        {{ i.star() }}
+        <span id="avg-{{ post.id }}" class="mt-0.5 ms-1 prose-md">
+            {{ post.rating }}
+        </span>
+    </div>
     {% if (branch.info.signature is defined and branch.info.signature == '1') or post.status == 80 %}
         <span class="text-xs text-current/100 font-medium ms-1 mt-1">{{ post.alias }}</span>
     {% endif %}
