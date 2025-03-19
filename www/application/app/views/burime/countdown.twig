@@ -1,0 +1,21 @@
+<div class="flex flex-row justify-between">
+    <span
+        class="countdown font-mono text-xl -mb-4"
+        data-time="{{ branch.info.time_limit }}"
+        data-id="{{ post.id }}"
+    >
+        <span id="hours" style="--value:0;"></span>
+        :
+        <span id="min" style="--value:0;"></span>
+        :
+        <span id="sec" style="--value:0;"></span>
+    </span>
+    {% if post.status == 80 %}
+        {% set msg = __('Under moderation') %}
+    {% elseif post.status == 10 %}
+        {% set msg = __('You didn`t have time to publish the post') %}
+    {% else %}
+        {% set msg = '' %}
+    {% endif %}
+    <span class="pb-1 text-error">{{ app.session.msg ?? msg }}</span>
+</div>

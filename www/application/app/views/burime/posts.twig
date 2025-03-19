@@ -11,22 +11,8 @@
     {% for post in posts %}
         {% if app.postPermissions.show(post) %}
             {% if post.status < 100 %}
-            <span class="countdown font-mono text-xl -mb-8 mt-4">
-                <span style="--value:10;"></span>
-                :
-                <span style="--value:24;"></span>
-                :
-                <span style="--value:${counter};"></span>
-            </span>
-            {% if post.status == 80 %}
-                {% set msg = __('Under moderation') %}
-            {% elseif post.status == 10 %}
-                {% set msg = __('You didn`t have time to publish the post') %}
-            {% else %}
-                {% set msg = '' %}
-            {% endif %}
-            <span class="ms-4 text-error">{{ app.session.msg ?? msg }}</span>
-            <p class="bg-neutral text-neutral-content">
+                {{ include('burime/countdown.twig') }}
+                <p class="bg-neutral text-neutral-content">
                     {{ post.body|nl2br|raw }}
                 </p>
             {% else %}
