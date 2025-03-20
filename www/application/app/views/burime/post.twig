@@ -1,0 +1,14 @@
+{% if app.postPermissions.show(post) %}
+    {% if post.status < 100 %}
+        {{ include('burime/timer.twig') }}
+        <p class="bg-neutral text-neutral-content">
+            {{ post.body|nl2br|raw }}
+        </p>
+    {% else %}
+        <p>{{ post.body|nl2br|raw }}</p>
+    {% endif %}
+    <div class="flex flex-row justify-between prose max-w-none mt-2 mb-4">
+        {{ app.PostControls.render(post)|raw }}
+    </div>
+    {% set last_author = post.author_id %}
+{% endif %}
