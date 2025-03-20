@@ -54,8 +54,13 @@ class Burime extends WebController
         $this->app->add('PostControls', new PostControls($postPermissions));
         $this->app->add('postPermissions', $postPermissions);
 
-        $this->app->js('/assets/js/rating.js');
-        $this->app->js('/assets/js/countdown.js');
+        if ($this->user) {
+            $this->app->js('/assets/js/rating.js');
+        }
+
+        if ($this->data['perms']->timer) {
+            $this->app->js('/assets/js/timer.js');
+        }
 
         return view('burime/posts', $this->data);
     }

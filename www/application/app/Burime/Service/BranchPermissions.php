@@ -35,18 +35,19 @@ Register and indicate your date of birth';
         $this->permissions->edit = $this->edit();
         $this->permissions->leave = $this->leave();
         $this->permissions->ask = $this->ask2join();
+        $this->permissions->timer = $this->timer();
     }
 
-    public function isParticipant($branch_authors, $user_id)
-    {
-        foreach ($branch_authors as $author) {
-            if ($author->user_id === $user_id) {
-                return true;
-            }
-        }
+    // public function isParticipant($branch_authors, $user_id)
+    // {
+    //     foreach ($branch_authors as $author) {
+    //         if ($author->user_id === $user_id) {
+    //             return true;
+    //         }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     public function getPerms()
     {
@@ -66,6 +67,18 @@ Register and indicate your date of birth';
         }
 
         return true;
+    }
+
+    private function timer(): bool
+    {
+        if ($this->branch->status === BranchStatus::Blocked->value) {
+            if ($this->myAuthor->id === $this->branch->info['current_writer'] ?? null
+            || $this->myAuthor->role >= AuthorRole::Moderator) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function age(): bool
