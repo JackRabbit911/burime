@@ -1,6 +1,7 @@
 <div class="flex flex-row justify-between">
+    {% if perms.timer %}
     <span
-        class="countdown font-mono text-xl -mb-4"
+        class="countdown font-mono text-xl"
         data-time="{{ branch.info.time_limit }}"
         data-id="{{ post.id }}"
     >
@@ -10,6 +11,7 @@
         :
         <span id="sec" style="--value:0;"></span>
     </span>
+    {% endif %}
     {% if post.status == 80 %}
         {% set msg = __('Under moderation') %}
     {% elseif post.status == 10 %}
@@ -17,5 +19,5 @@
     {% else %}
         {% set msg = '' %}
     {% endif %}
-    <span class="pb-1 text-error">{{ app.session.msg ?? msg }}</span>
+    <span class="pb-1 text-error">{{ app.session.msg ?? msg }} {{ post.status }}</span>
 </div>

@@ -72,7 +72,7 @@ Register and indicate your date of birth';
     private function timer(): bool
     {
         if ($this->branch->status === BranchStatus::Blocked->value) {
-            if ($this->myAuthor->id === $this->branch->info['current_writer'] ?? null
+            if ($this->user->id === $this->branch->info['current_writer'] ?? null
             || $this->myAuthor->role >= AuthorRole::Moderator) {
                 return true;
             }

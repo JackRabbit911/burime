@@ -88,7 +88,7 @@ class Burime extends WebController
     }
 
     #[AuthorPostGuard]
-    public function form()
+    public function form($post_id)
     {
         $post_last = $this->request->getAttribute('last');
         $post_current = $this->request->getAttribute('current');
@@ -97,7 +97,8 @@ class Burime extends WebController
             $this->data['branch']->status = BranchStatus::Blocked->value;
         }
 
-        if ($this->data['branch']->info['current_writer'] ?? 0 !== $this->user->id) {
+        if (!isset($this->data['branch']->info['current_writer'])
+        || $this->data['branch']->info['current_writer'] !== $this->user->id) {
             $this->data['branch']->info['time_beguin'] = time();
             $this->data['branch']->info['current_writer'] = $this->user->id;
         }
