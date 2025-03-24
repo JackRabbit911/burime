@@ -30,7 +30,7 @@ class TimeUpMiddleware implements MiddlewareInterface
             ? time() - $branch->info['time_beguin'] > $branch->info['time_limit'] * 60
             : false;
 
-        if ($branch->info['time_up'] && $branch->status === BranchStatus::Blocked->value) {
+        if ($branch->info['time_up'] && BranchStatus::isBlocked($branch->status)) {
             $branch->status = BranchStatus::Ready->value;
         }
 

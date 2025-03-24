@@ -8,10 +8,12 @@ use App\Burime\Repository\SaveRepo;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
+use Common\Middleware\AuthGuard;
 use Sys\Controller\WebController;
 use Az\Route\Route;
 use HttpSoft\Response\RedirectResponse;
 
+#[AuthGuard]
 #[TimeUpMiddleware]
 class PostBranchSave extends WebController
 {
@@ -22,14 +24,13 @@ class PostBranchSave extends WebController
         $branch = $this->request->getAttribute('branch');
         $data = $this->request->getParsedBody();
 
-        $post_permissions = new PostPermissions($branch, $this->user);
+        // $post_permissions = new PostPermissions($branch, $this->user);
 
         if ($branch->info['current_writer'] === $this->user->id) {
             switch ($data['sbmt']) {
                 case 'publish':
-                    if ($branch->info['moderation'] === 1
-                        && !$post_permissions->hasRole(AuthorRole::Moderator->value)) {
-                        $branch->status = BranchStatus::Blocked->value;
+                    if ($branch->info['moderation'] === 1) {
+                        $branch->status = BranchStatus::Waiting->value;
                         $post_status = PostStatus::Moderation->value;
                     } else {
                         $branch->status = BranchStatus::Ready->value;

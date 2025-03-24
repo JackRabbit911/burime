@@ -93,7 +93,7 @@ class Burime extends WebController
         $post_current = $this->request->getAttribute('current');
 
         if (!$this->data['branch']->info['time_up']) {
-            $this->data['branch']->status = BranchStatus::Blocked->value;
+            $this->data['branch']->status = BranchStatus::Writing->value;
         }
 
         if (!isset($this->data['branch']->info['current_writer'])

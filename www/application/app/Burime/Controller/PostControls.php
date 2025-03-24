@@ -62,7 +62,7 @@ class PostControls extends BaseController
         return new RedirectResponse($this->uri);
     }
 
-    public function approve($branch_id, $post_id)
+    public function approve(int $branch_id, int $post_id)
     {
         $this->modelPost->setPostStatus($post_id, PostStatus::Publish->value);
         $this->branchRepo->setStatus($branch_id, BranchStatus::Ready->value);

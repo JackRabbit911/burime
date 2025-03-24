@@ -42,11 +42,11 @@ class PostPermissions
 
     public function timer(): bool
     {
-        if ($this->branch->status === BranchStatus::Blocked->value) {
-            if ($this->user->id === $this->branch->info['current_writer']
-            || $this->hasRole(AuthorRole::Moderator->value)) {
+        if ($this->branch->status === BranchStatus::Writing->value
+        && $this->user->id === $this->branch->info['current_writer']
+        || $this->branch->status === BranchStatus::Moderation->value
+        && $this->hasRole(AuthorRole::Moderator->value)) {           
                 return true;
-            }
         }
 
         return false;
@@ -84,10 +84,10 @@ class PostPermissions
         return true;
     }
 
-    public function expired($post)
-    {
-        return $post->status === 10;
-    }
+    // public function expired($post)
+    // {
+    //     return $post->status === 10;
+    // }
 
     public function draft($post)
     {
@@ -111,17 +111,15 @@ class PostPermissions
         }
 
         if ($this->isLast($post)) {
-            if (($this->hasRole(AuthorRole::Moderator->value) 
-                && $this->branch->status === BranchStatus::Blocked->value) 
-                || $this->isAuthor($post)) {
+            if ($this->hasRole(AuthorRole::Moderator->value) || $this->isAuthor($post)) {
                 return true;
             }
         }
 
-        if ($this->expired($post)
-            && $this->isAuthor($post)) {
-            return true;
-        }
+        // if ($this->expired($post)
+        //     && $this->isAuthor($post)) {
+        //     return true;
+        // }
 
         return false;
     }
