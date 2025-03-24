@@ -52,7 +52,7 @@ class PostControls extends BaseController
     public function delete(PostDelMsg $message, $branch_id, $post_id)
     {
         if ($this->permissions->delete($this->post)) {
-            $is_delete = $this->modelPost->deletePost($post_id);
+            $is_delete = $this->modelPost->delete($post_id);
 
             if ($is_delete && $this->isModerator && !$this->isAuthor) {
                 $message->send($this->branch, $this->post, $this->user->id);
