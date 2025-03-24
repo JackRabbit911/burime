@@ -51,7 +51,7 @@ class Burime extends WebController
         $this->data['posts'] = $repo->getPosts((int) $branch_id, $this->user?->id);
         $this->data['last'] = $repo->getLastPost($this->data['posts']);
 
-        $this->app->add('CmpPost', new CmpPost($this->data['branch'], $this->user, $this->data['perms']));
+        $this->app->add('CmpPost', new CmpPost($this->data['branch'], $this->data['perms'], $this->user));
 
         if ($this->user) {
             $this->app->js('/assets/js/rating.js');

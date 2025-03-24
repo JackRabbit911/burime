@@ -2,24 +2,23 @@
 
 namespace App\Burime\Component;
 
-use App\Branch\Branch;
 use App\Burime\Post;
 use App\Burime\Service\PostPermissions;
 use App\Burime\Component\PostControls;
-use Common\Enum\BranchStatus;
+use Common\Contract\BranchInterface;
 use Common\Enum\PostStatus;
-use Auth\User;
+use Sys\Contract\UserInterface;
 use stdClass;
 
 class CmpPost
 {
-    private Branch $branch;
-    private User $user;
+    private BranchInterface $branch;
+    private ?UserInterface $user;
     private PostPermissions $postPermissions;
     private PostControls $postControls;
     private stdClass $perms;
 
-    public function __construct(Branch $branch, User $user, stdClass $perms)
+    public function __construct(BranchInterface $branch, stdClass $perms, ?UserInterface $user = null)
     {
         $this->branch = $branch;
         $this->user = $user;
@@ -33,9 +32,8 @@ class CmpPost
     {
         $msg = '';
 
-        if ($post->status === PostStatus::Draft->value
+        if ($post->status === PostStatus::Draft->value && $this->user
         && $this->branch->info['current_writer'] === $this->user->id) {
-
             $msg = $this->branch->info['time_up'] ? 'Expired' : 'Draft';
         } elseif ($post->status === PostStatus::Moderation->value) {
             $msg = 'Under moderation';
