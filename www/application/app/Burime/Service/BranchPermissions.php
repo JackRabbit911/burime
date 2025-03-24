@@ -30,12 +30,13 @@ Register and indicate your date of birth';
         $this->myAuthor = $myAuthor;
 
         $this->permissions = new stdClass;
+        $this->permissions->first = $this->first();
         $this->permissions->show = $this->show();
         $this->permissions->age = $this->age();
         $this->permissions->edit = $this->edit();
         $this->permissions->leave = $this->leave();
         $this->permissions->ask = $this->ask2join();
-        $this->permissions->timer = $this->timer();
+        // $this->permissions->timer = $this->timer();
     }
 
     // public function isParticipant($branch_authors, $user_id)
@@ -54,6 +55,20 @@ Register and indicate your date of birth';
         return $this->permissions;
     }
 
+    public function first()
+    {
+        if (is_null($this->branch->maxWeight)) {
+            if ($this->branch->role === BranchRole::Open->value) {
+                return true;
+            } elseif (!$this->branch->authors->intersect($this->user->ownAuthors)->empty()
+                && $this->myAuthor->role >= AuthorRole::Author->value) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function show(): bool
     {
         if ($this->branch->status < BranchStatus::Archive->value 
@@ -69,17 +84,17 @@ Register and indicate your date of birth';
         return true;
     }
 
-    private function timer(): bool
-    {
-        if ($this->branch->status === BranchStatus::Blocked->value) {
-            if ($this->user->id === $this->branch->info['current_writer'] ?? null
-            || $this->myAuthor->role >= AuthorRole::Moderator) {
-                return true;
-            }
-        }
+    // private function timer(): bool
+    // {
+    //     if ($this->branch->status === BranchStatus::Blocked->value) {
+    //         if ($this->user->id === $this->branch->info['current_writer'] ?? null
+    //         || $this->myAuthor->role >= AuthorRole::Moderator) {
+    //             return true;
+    //         }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     private function age(): bool
     {

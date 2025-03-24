@@ -4,6 +4,7 @@ namespace App\Burime\Controller;
 
 use App\Burime\Component\PostControls;
 use App\Burime\Component\Ask2Join;
+use App\Burime\Component\CmpPost;
 use App\Burime\Component\PostForm;
 use App\Burime\Middleware\AuthorPostGuard;
 use App\Burime\Middleware\TimeUpMiddleware;
@@ -50,17 +51,15 @@ class Burime extends WebController
         $this->data['posts'] = $repo->getPosts((int) $branch_id, $this->user?->id);
         $this->data['last'] = $repo->getLastPost($this->data['posts']);
 
-        $postPermissions = new PostPermissions($this->data['branch'], $this->user);
-        $this->app->add('PostControls', new PostControls($postPermissions));
-        $this->app->add('postPermissions', $postPermissions);
+        $this->app->add('CmpPost', new CmpPost($this->data['branch'], $this->user, $this->data['perms']));
 
         if ($this->user) {
             $this->app->js('/assets/js/rating.js');
         }
 
-        if ($this->data['perms']->timer) {
-            $this->app->js('/assets/js/timer.js');
-        }
+        // if ($this->data['perms']->timer) {
+        //     $this->app->js('/assets/js/timer.js');
+        // }
 
         return view('burime/posts', $this->data);
     }
@@ -88,7 +87,7 @@ class Burime extends WebController
     }
 
     #[AuthorPostGuard]
-    public function form($post_id)
+    public function form()
     {
         $post_last = $this->request->getAttribute('last');
         $post_current = $this->request->getAttribute('current');

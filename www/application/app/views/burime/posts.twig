@@ -2,7 +2,7 @@
 {% block right %}
     {% if perms.age %}
         <article class="text-current/80">
-            {% if app.postPermissions.first() %}
+            {% if perms.first %}
                 <a
                     title="Write fist post"
                     href="{{ path('branch', {'branch_id': branch.id, 'action': 'form'}) }}"
@@ -11,19 +11,10 @@
                     {{ __('Wtite the first post') }}
                 </a>
             {% endif %}
-            {# {% set last_author = null %} #}
             {% for post in posts %}
-                {{ include('burime/post.twig') }}
+                {{ app.CmpPost.render(post)|raw }}
+                {# {{ include('burime/post.twig') }} #}
             {% endfor %}
-            {# {% if app.postPermissions.newPost(last_author) %}
-                <a
-                    title="Write post"
-                    href="{{ path('branch', {'branch_id': branch.id, 'action': 'form'}) }}"
-                    class="cursor-pointer btn btn-primary w-full"
-                >
-                    {{ __('Wtite the post') }}
-                </a>
-            {% endif %} #}
             {% if last %}
                 <p class="opacity-50">{{ last.body|nl2br|raw }}</p>
             {% endif %}

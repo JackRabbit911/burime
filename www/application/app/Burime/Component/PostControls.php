@@ -16,7 +16,6 @@ class PostControls
     public function render($post)
     {
         $data = [
-            'allow_first' => $this->permissions->first(),
             'allow_write' => $this->permissions->write($post),
             'link_write' => path('branch', ['branch_id' => $this->permissions->branch->id, 'action' => 'form']),
             'allow_edit' => $this->permissions->edit($post),

@@ -40,13 +40,23 @@ class PostPermissions
         return $this->branch->maxWeight == $post->weight;
     }
 
+    public function timer(): bool
+    {
+        if ($this->branch->status === BranchStatus::Blocked->value) {
+            if ($this->user->id === $this->branch->info['current_writer']
+            || $this->hasRole(AuthorRole::Moderator->value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function isAuthor($post)
     {
         if (!$this->user) {
             return false;
         }
-
-        // dd($this->user->ownAuthors);
 
         $author = $this->user->ownAuthors->getInstance($post->author_id);
         return ($author) ? true : false;
@@ -145,19 +155,19 @@ class PostPermissions
         return false;
     }
 
-    public function first()
-    {
-        if (is_null($this->branch->maxWeight)) {
-            if ($this->branch->role === BranchRole::Open->value) {
-                return true;
-            } elseif (!$this->branch->authors->intersect($this->user->ownAuthors)->empty()
-                && $this->hasRole(AuthorRole::Author->value)) {
-                return true;
-            }
-        }
+    // public function first()
+    // {
+    //     if (is_null($this->branch->maxWeight)) {
+    //         if ($this->branch->role === BranchRole::Open->value) {
+    //             return true;
+    //         } elseif (!$this->branch->authors->intersect($this->user->ownAuthors)->empty()
+    //             && $this->hasRole(AuthorRole::Author->value)) {
+    //             return true;
+    //         }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     public function newPost($last_author)
     {
@@ -177,10 +187,15 @@ class PostPermissions
         return false;
     }
 
-    public function save($post)
-    {
-        
-    }
+    // public function save($post)
+    // {
+    //     if ($this->branch->status === BranchStatus::Blocked->value
+    //     && $post->status === PostStatus::Draft) {
+    //         return true;
+    //     }
+
+    //     return false;
+    // }
 
     public function rating($post)
     {
