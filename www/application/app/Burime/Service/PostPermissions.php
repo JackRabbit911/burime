@@ -3,10 +3,9 @@
 namespace App\Burime\Service;
 
 use App\Author\Author;
+use App\Burime\Post;
 use Common\Contract\BranchInterface;
 use Common\Enum\AuthorRole;
-
-use Common\Enum\BranchRole;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
 use Auth\User;
@@ -52,9 +51,9 @@ class PostPermissions
         return false;
     }
 
-    public function isAuthor($post)
+    public function isAuthor(?Post $post)
     {
-        if (!$this->user) {
+        if (!$this->user || !$post) {
             return false;
         }
 
@@ -84,16 +83,6 @@ class PostPermissions
         return true;
     }
 
-    // public function expired($post)
-    // {
-    //     return $post->status === 10;
-    // }
-
-    public function draft($post)
-    {
-        
-    }
-
     public function edit($post)
     {
         if ($this->isLast($post) && $this->isAuthor($post) 
@@ -106,6 +95,10 @@ class PostPermissions
 
     public function delete($post)
     {
+        if (!$post) {
+            return false;
+        }
+
         if ($post->status === PostStatus::Fixed->value) {
             return false;
         }
@@ -115,11 +108,6 @@ class PostPermissions
                 return true;
             }
         }
-
-        // if ($this->expired($post)
-        //     && $this->isAuthor($post)) {
-        //     return true;
-        // }
 
         return false;
     }
@@ -149,38 +137,6 @@ class PostPermissions
             && $this->branch->status === BranchStatus::Ready->value) {
             return true;
         }
-
-        return false;
-    }
-
-    // public function first()
-    // {
-    //     if (is_null($this->branch->maxWeight)) {
-    //         if ($this->branch->role === BranchRole::Open->value) {
-    //             return true;
-    //         } elseif (!$this->branch->authors->intersect($this->user->ownAuthors)->empty()
-    //             && $this->hasRole(AuthorRole::Author->value)) {
-    //             return true;
-    //         }
-    //     }
-
-    //     return false;
-    // }
-
-    public function newPost($last_author)
-    {
-        // if ($this->user->ownAuthors->has($last_author)) {
-        //     return false;
-        // }
-
-        // if ($this->branch->status === BranchStatus::READY) {
-        //     if ($this->branch->role === BranchRole::Open->value) {
-        //         return true;
-        //     } elseif (!$this->branch->authors->intersect($this->user->ownAuthors)->empty()
-        //         && $this->hasRole(AuthorRole::AUTHOR)) {
-        //         return true;
-        //     }
-        // }
 
         return false;
     }

@@ -7,15 +7,15 @@ use App\Burime\Model\ModelPost;
 use App\Burime\Repository\BranchRepo;
 use App\Burime\Service\PostPermissions;
 use App\Burime\Service\PostDelMsg;
-
+use Az\Session\SessionInterface;
 use Common\Contract\BranchInterface;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
 
-use Auth\User;
-use HttpSoft\Response\RedirectResponse;
+use Sys\Contract\UserInterface;
 use Sys\Controller\BaseController;
+use HttpSoft\Response\RedirectResponse;
 
 class PostControls extends BaseController
 {
@@ -23,8 +23,9 @@ class PostControls extends BaseController
     private BranchRepo $branchRepo;
     private PostPermissions $permissions;
     private BranchInterface $branch;
-    private EntityPost $post;
-    private ?User $user;
+    private ?EntityPost $post;
+    private ?UserInterface $user;
+    private ?SessionInterface $session;
 
     private bool $isModerator;
     private bool $isAuthor;
@@ -38,6 +39,7 @@ class PostControls extends BaseController
 
     protected function _before()
     {
+        $this->session = $this->request->getAttribute('session');
         $this->user = $this->request->getAttribute('user');
         $this->branch = $this->branchRepo->find($this->parameters['branch_id']);
         $this->permissions = new PostPermissions($this->branch, $this->user);
@@ -49,13 +51,16 @@ class PostControls extends BaseController
         $this->uri = path('branch', ['branch_id' => $this->branch->id]);
     }
 
-    public function delete(PostDelMsg $message, $branch_id, $post_id)
+    public function delete(int $branch_id, $post_id)
     {
+        $this->branchRepo->setStatus($branch_id, BranchStatus::Ready->value);
+
         if ($this->permissions->delete($this->post)) {
             $is_delete = $this->modelPost->delete($post_id);
 
             if ($is_delete && $this->isModerator && !$this->isAuthor) {
-                $message->send($this->branch, $this->post, $this->user->id);
+                $this->session->flash('to', [$this->post->author_id]);
+                return new RedirectResponse(path('message', ['action' => 'form']));
             }
         }
        

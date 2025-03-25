@@ -51,6 +51,12 @@ class Burime extends WebController
         $this->data['posts'] = $repo->getPosts((int) $branch_id, $this->user?->id);
         $this->data['last'] = $repo->getLastPost($this->data['posts']);
 
+        if ($this->data['branch']->status === BranchStatus::Waiting->value
+        && $this->data['myAuthor']->role >= AuthorRole::Moderator->value) {
+            $this->data['branch']->status = BranchStatus::Moderation->value;
+            $this->data['branch']->save();
+        }
+
         $this->app->add('CmpPost', new CmpPost($this->data['branch'], $this->data['perms'], $this->user));
 
         if ($this->user) {

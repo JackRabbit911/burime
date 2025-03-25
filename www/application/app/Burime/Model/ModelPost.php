@@ -98,7 +98,7 @@ class ModelPost implements Saveble
     {
         $post = $this->find($post_id);
 
-        if ($branch_id) {
+        if ($post && $branch_id) {
             $post->weight = $this->getWeight($post_id, $branch_id);
         }
 
