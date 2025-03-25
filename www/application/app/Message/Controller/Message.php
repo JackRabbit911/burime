@@ -87,9 +87,14 @@ class Message extends WebController
         $ids = $this->session->get('to');
         $recipients = ($ids) ? $this->repo->getRecipients($ids) : [];
 
-        $subject = ($id) ? $this->repo->getSubject($id) : null;
+        $subject = ($id)
+        ? 'Re: ' . $this->repo->getSubject($id)
+        : $this->session->get('subject') ?? '';
 
-        return new MessageForm($this->user->ownAuthors, $recipients, (int) $author_id, $subject);
+        $body = $this->session->get('body');
+
+        return new MessageForm($this->user->ownAuthors, $recipients, 
+            (int) $author_id, $subject, $body);
     }
 
     public function recipients()

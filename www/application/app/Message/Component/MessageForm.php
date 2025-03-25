@@ -7,7 +7,8 @@ use Sys\Form\Form;
 
 class MessageForm extends Form
 {
-    public function __construct(Collection $myAuthors, array $recipients, int $author_id, ?string $subject = null)
+    public function __construct(Collection $myAuthors, array $recipients,
+    int $author_id, ?string $subject = '', ?string $body = '')
     {
         foreach ($myAuthors as $myAuthor) {
             $options[] = [
@@ -16,8 +17,6 @@ class MessageForm extends Form
                 'selected' => ($myAuthor->id == $author_id) ? true : false,
             ];
         }
-
-        $subject = ($subject) ? 'Re: ' . __($subject) : '';
 
         $this->title('Message creation form');
         $this->form('message/message_form')
@@ -30,7 +29,7 @@ class MessageForm extends Form
             ->label(__('Mark as important'));
 
         $this->text('subject')
-            ->value($subject);
+            ->value(__($subject));
 
         foreach ($recipients as $key => $recipient) {
             $attr = [
@@ -45,6 +44,7 @@ class MessageForm extends Form
 
         $this->textarea('data[body]')
             ->label('Message')
+            ->value($body)
             ->rows(5);
     }
 }
