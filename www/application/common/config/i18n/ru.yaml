@@ -14,6 +14,12 @@ Status: Статус
 Date: Дата
 Hello: Привет
 guest: гость
+Incoming message: Входящее сообщение
+Outgoing message: Исходящее сообщение
+Reply to the author: Ответить автору
+Go to messages list: К списку сообщений
+Delete this message: Удалить это сообщение
+Delete for everyone: Удалить у всех
 
 Welcome, :name!: Добро пожаловать, :name!
 Welcome, : Добро пожаловать, 
