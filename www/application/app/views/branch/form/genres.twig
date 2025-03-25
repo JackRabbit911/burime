@@ -1,0 +1,26 @@
+{% import 'common/macro/formmacro.twig' as m %}
+<form id="{{ form.id }}" action="{{ form.action }}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        {% set cat = 0 %}
+        <div class="flex flex-row flex-wrap -mb-3">
+        {% for k, genre in genres %}
+            {% if genre is iterable and k matches '/^\\d+$/' %}
+                {% if cat < genre.weight %}
+                <div class="divider w-full mt-0"></div>
+                {% endif %}
+            {% set cat = genre.weight %}
+            <div class="me-6">
+                {{ m.checkbox(genre) }}
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+        {% if app.session.validation_msg %}
+        <label class="label">
+            <span class="label-text-alt text-error">
+                {{ app.session.validation_msg }}
+            </span>
+        </label>
+        {% endif %}
+    </fieldset>
+</form>

@@ -1,0 +1,28 @@
+{% embed 'burime/branch.twig' %}
+{% block right %}
+    {% if perms.age %}
+        <article class="text-current/80">
+            {% if perms.first %}
+                <a
+                    title="Write fist post"
+                    href="{{ path('branch', {'branch_id': branch.id, 'action': 'form'}) }}"
+                    class="cursor-pointer btn btn-primary w-full"
+                >
+                    {{ __('Wtite the first post') }}
+                </a>
+            {% endif %}
+            {% for post in posts %}
+                {{ app.CmpPost.render(post)|raw }}
+                {# {{ include('burime/post.twig') }} #}
+            {% endfor %}
+            {% if last %}
+                <p class="opacity-50">{{ last.body|nl2br|raw }}</p>
+            {% endif %}
+        </article>
+    {% else %}
+        <div class="p-10 text-center h-full bg-warning text-lg align-middle">
+            {{ __(perms.msg)|raw }}
+        </div>
+    {% endif %}
+{% endblock right %}
+{% endembed %}

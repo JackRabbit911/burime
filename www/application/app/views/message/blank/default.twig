@@ -1,0 +1,8 @@
+<div class="flex flex-col justify-between">
+    <p>
+    {{ msg.data.body|nl2br }}
+    </p>
+    <span class="text-sm mt-3">
+        {{ __(signature ?? 'Best regards') ~ ', ' ~ msg.alias }}
+    </span>
+</div>

@@ -1,0 +1,39 @@
+<?php declare(strict_types=1);
+
+namespace App\Burime\Middleware;
+
+use Attribute;
+use App\Burime\Repository\BranchRepo;
+use Common\Enum\BranchStatus;
+use Az\Route\Route;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+#[Attribute]
+class TimeUpMiddleware implements MiddlewareInterface
+{
+    private BranchRepo $repo;
+
+    public function __construct(BranchRepo $repo)
+    {
+        $this->repo = $repo;
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $branch_id = $request->getAttribute(Route::class)->getParameters()['branch_id'];
+        $branch = $this->repo->find($branch_id);
+
+        $branch->info['time_up'] = (isset($branch->info['time_beguin'])) 
+            ? time() - $branch->info['time_beguin'] > $branch->info['time_limit'] * 60
+            : false;
+
+        if ($branch->info['time_up'] && BranchStatus::isBlocked($branch->status)) {
+            $branch->status = BranchStatus::Ready->value;
+        }
+
+        return $handler->handle($request->withAttribute('branch', $branch));
+    }
+}

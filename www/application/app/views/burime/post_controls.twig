@@ -1,0 +1,76 @@
+{% import 'common/macro/icon.twig' as i %}
+<div class="join" role="post-controls">
+    {% if app.user %}
+        {% if allow_rating %}
+        <a 
+            id="like-{{ post.id }}" 
+            title="Like" 
+            href="{{ link_like }}" 
+            class="cursor-pointer btn btn-xs join-item"
+        >
+            {{ i.like(post.user_rating, 'size-5') }}
+        </a>
+        <a 
+            id="dislike-{{ post.id }}" 
+            title="Dislike" 
+            href="{{ link_dislike }}" 
+            class="cursor-pointer btn btn-xs join-item"
+            >
+            {{ i.dislike(post.user_rating, 'size-5') }}
+        </a>
+        {% endif %}
+
+        {% if allow_comment %}
+        <a title="Comment" href="" class="cursor-pointer btn btn-xs join-item">
+            {{ i.comment('size-5') }}
+        </a>
+        {% endif %}
+
+        {% if allow_branch %}
+        <a title="New branch" href="" class="cursor-pointer btn btn-xs join-item">
+            {{ i.branch('size-4') }}
+        </a>
+        {% endif %}
+
+        {% if allow_write %}
+        <a title="Continue" href="{{ link_write }}" class="cursor-pointer btn btn-xs join-item">
+            {{ i.pencil('size-5') }}
+        </a>
+        {% endif %}
+
+        {% if allow_edit %}
+        <a title="Edit" href="{{ link_edit }}" class="cursor-pointer btn btn-xs join-item">
+            {{ i.pencil('size-5') }}
+        </a>
+        {% endif %}
+
+        {% if allow_approve %}
+        <a title="Approve" href="{{ link_approve }}" class="cursor-pointer btn btn-xs join-item">
+            {{ i.check('size-5') }}
+        </a>
+        <a title="Rewrite" href="{{ link_rewrite }}" class="cursor-pointer btn btn-xs join-item">
+            {{ i.pencil('size-5') }}
+        </a>
+        {% endif %}
+
+        {% if allow_delete %}
+        <a title="Delete" href="{{ link_delete }}" class="cursor-pointer btn btn-xs join-item">
+            {{ i.xmark('size-6', 'text-red-800') }}
+        </a>
+        {% endif %}
+    {% endif %}
+</div>
+<div class="flex flex-row justify-center items-center">
+    {{ post.id }}
+    {{ post.status }}
+    {{ post.weight }}
+    <div class="badge badge-ghost mt-1">
+        {{ i.star() }}
+        <span id="avg-{{ post.id }}" class="mt-0.5 ms-1 prose-md">
+            {{ post.rating }}
+        </span>
+    </div>
+    {% if (branch.info.signature is defined and branch.info.signature == '1') or post.status == 80 %}
+        <span class="text-xs text-current/100 font-medium ms-1 mt-1">{{ post.alias }}</span>
+    {% endif %}
+</div>

@@ -1,0 +1,35 @@
+{% import 'message/tr_msg_macro.twig' as tr %}
+<p class="label-text py-2">{{ __('From') }}</p>
+<a href="{{ path('author', {'id': msg.from}) }}" class="link">
+    <div class="flex">
+        <div class="avatar">
+            <div class="mask mask-squircle h-14 w-14">
+                <img src="{{ app.avatar(msg.from) }}" alt="{{ msg.alias }}" />
+            </div>
+        </div>
+        <div class="grow flex justify-center">
+            {{ msg.alias }}
+        </div>
+    </div>
+</a>
+<div class="label-text py-2 flex flex-row justify-normal">
+    <div>
+        {{ __('Status') }}
+    </div>
+    <div class="grow flex justify-center">
+        {{ tr.status(msg.status) }}
+    </div>
+</div>
+<p class="label-text py-2">{{ __('Recipients') }}</p>
+{% if to is defined %}
+<a href="{{ path('author', {'id': to.id}) }}" class="link font-medium">
+    {{ to.alias }}
+</a>
+{% endif %}
+{% for recipient in recipients %}
+<div>
+    <a href="{{ path('author', {'id': recipient.id}) }}" class="link">
+        {{ recipient.alias }}
+    </a>
+</div>
+{% endfor %}

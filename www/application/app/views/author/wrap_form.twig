@@ -1,0 +1,10 @@
+{% embed 'common/embed/center_lg.twig' %}
+{% block top %}
+<h1 class="text-2xl font-medium leading-9 tracking-tight my-4">
+    {{ __('Create your new author or group') }}
+</h1>
+{% endblock top %}
+{% block center %}
+{{ include('author/form.twig') }}
+{% endblock center %}
+{% endembed %}

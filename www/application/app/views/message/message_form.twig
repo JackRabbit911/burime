@@ -1,0 +1,56 @@
+{% embed 'common/embed/top-xl.twig' %}
+{% block top %}
+<h1 class="text-2xl">
+    {{ __(title) }}
+</h1>
+{% endblock top %}
+{% block center %}
+{% import 'common/macro/formmacro.twig' as m %}
+{% macro no_recipients() %}
+<label class="label">
+    <span class="label-text-alt text-error">
+        {{ __('Recipient must be selected') }}
+    </span>
+</label>
+<label class="label">
+    <a href="{{ path('message', {'action': 'recipients'}) }}" class="label-text-alt link">
+        {{ __('Go to choice recipients') }}
+    </a>
+</label>
+{% endmacro %}
+<form id="{{ form.id }}" action="{{ form.action }}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        <div class="grid md:grid-cols-3 gap-4 pt-2">
+            <div>
+                {{ m.select(from) }}
+                {{ m.checkbox(important) }}
+                {% if to is defined %}
+                <p class="label-text pb-2 pt-4 ps-1">{{ __('Recipients') }}</p>
+                    {% for k, recipient in to %}
+                    {% if recipient is iterable and k matches '/^\\d+$/' %}
+                    {{ m.checkbox(recipient) }}
+                    {% endif %}
+                    {% endfor %}
+                    {% if to.status is defined and to.status == 'error' %}
+                    {{ _self.no_recipients() }}
+                    {% endif %}
+                {% else %}
+                {{ _self.no_recipients() }}
+                {% endif %}
+            </div>
+            <div class="md:col-span-2">
+                {{ m.input(subject) }}
+                {{ m.textarea(data.body) }}
+            </div>
+            <div class="md:col-span-3 flex justify-end">
+                {% if to is defined %}
+                    <button type="submit" class="btn lg:btn-wide w-full btn-primary">
+                        {{ __('Send') }}
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock center %}
+{% endembed %}

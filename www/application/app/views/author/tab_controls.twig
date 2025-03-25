@@ -1,0 +1,21 @@
+{% if app.user  %}
+<div class="join join-vertical sm:join-horizontal w-full pt-4">
+    {% if author.owner != app.user.id or members is defined %}
+    <button form="acts" name="action" type="submit" value="sendmsg" class="btn join-item">
+        {{ __('Send message') }}
+    </button>
+    <button form="acts" name="action" type="submit" value="chat" class="btn join-item">
+        {{ __('Invite to chat') }}
+    </button>
+        {% if favorite == false %}
+        <button form="acts" name="action" type="submit" value="subscribe" class="btn join-item">
+            {{ __('Subscribe') }}
+        </button>
+        {% else %}
+        <button form="acts" name="action" type="submit" value="unsubscribe" class="btn join-item">
+            {{ __('Unsubscribe') }}
+        </button>
+        {% endif %}
+    {% endif %}
+</div>
+{% endif %}

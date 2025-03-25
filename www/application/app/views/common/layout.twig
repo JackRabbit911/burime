@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="{{ i18n.lang() }}" class="h-full">
+    <head>
+        {{ include('common/head.twig') }}
+    </head>
+    {% apply spaceless %}
+    <body class="h-full">
+        <div class="mx-auto flex flex-col min-h-screen">
+            {{ app.cmp('navbar')|raw }}
+            <main class="lg:container mb-auto lg:mx-auto px-4">
+                {% block content %}
+                {% endblock %}
+            </main>
+            <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+                <aside>
+                    <p>Copyright © 2024 - All right reserved by ACME Industries Ltd</p>
+                </aside>
+            </footer>
+        </div>
+        {# <script src="/assets/js/start.js"></script> #}
+        {{ app.js|raw }}
+    </body>
+    {% endapply %}
+</html>

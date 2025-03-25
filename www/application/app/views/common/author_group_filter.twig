@@ -1,0 +1,30 @@
+<div class="pt-2 flex flex-row mb-2">
+    {% set friends_disabled, favorites_disabled, addressbook_disabled, showall_disabled = '', '', '', '' %}
+
+    {% if app.request.queryParams('filter') %}
+        {% set filter = app.request.queryParams('filter') %}
+        {% if filter == 'friends' %}
+            {% set friends_disabled = ' disabled' %}
+        {% endif %}
+
+        {% if filter == 'favorites' %}
+            {% set favorites_disabled = ' disabled' %}
+        {% endif %}
+
+        {% if filter == 'addressbook' %}
+            {% set addressbook_disabled = ' disabled' %}
+        {% endif %}
+    {% else %}
+        {% set showall_disabled = ' disabled' %}
+    {% endif %}
+
+    {% set href = app.request.rmQuery('filter') %}
+    {% set friends = app.request.addQuery('filter=friends') %}
+    {% set favorites = app.request.addQuery('filter=favorites') %}
+    {% set addressbook = app.request.addQuery('filter=addressbook') %}
+    
+    <a href="{{ href }}" class="btn btn-sm btn-outline me-1"{{ showall_disabled }}>{{ __('Show all') }}</a>
+    <a href="{{ friends }}" class="btn btn-sm btn-outline me-1"{{ friends_disabled }}>{{ __('Friends') }}</a>
+    <a href="{{ favorites }}" class="btn btn-sm btn-outline me-1"{{ favorites_disabled }}>{{ __('Favorites') }}</a>
+    <a href="{{ addressbook }}" class="btn btn-sm btn-outline"{{ addressbook_disabled }}>{{ __('Addressbook') }}</a>
+</div>

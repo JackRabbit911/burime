@@ -1,0 +1,42 @@
+{% embed 'common/embed/center_lg.twig' %}
+{% block center %}
+{% import 'common/macro/formmacro.twig' as m %}
+<form id="{{ form.id }}" method="post" action="{{ form.action }}" accept-charset="UTF-8" enctype="multipart/form-data">
+    <fieldset class="fieldset w-full bg-base-200 border border-base-300 p-4 rounded-box">
+        <div class="flex flex-row">
+            <h1 class="flex-grow text-2xl font-medium leading-9 tracking-tight my-4">
+                {{ __(title) }}
+            </h1>
+            {{ app.cmp('avatar')|raw }}
+        </div>
+        {{ csrf()|raw }}
+        {{ m.input(name) }}
+        {{ m.input(email) }}
+        {{ m.input(phone) }}
+        <div class="flex flex-row justify-between gap-4">
+            <div class="fieldset grow">
+                {{ m.input(dob) }}
+            </div>
+            <div class="fieldset basis-4/9">
+                <label class="fieldset-label">
+                    <legend class="fieldset-legend">
+                        {{ __(sex.label) }}
+                    </legend>
+                </label>
+                <div class="flex flex-row justify-between pt-2">
+                    {{ m.radio(sex, 'male', 1) }}
+                    {{ m.radio(sex, 'female', 0) }}
+                </div>
+            </div>            
+        </div>
+        {{ m.file(avatar) }}
+        <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+        <p class="mt-5 text-end text-sm">
+            <a href="{{ path('profile.password', {'action': 'form'}) }}" class="link-hover font-semibold mx-2">
+                {{ __('to change password') }}
+            </a>
+        </p>
+    </fieldset>
+</form>
+{% endblock %}
+{% endembed %}

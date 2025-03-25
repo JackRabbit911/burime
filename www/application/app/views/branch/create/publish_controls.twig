@@ -1,0 +1,17 @@
+<div class="flex flex-row justify-between mt-4">
+    <button form="{{ form.form.id }}" name="sbmt" type="submit" class="btn btn-neutral" value="cover">
+        {{ __('Prev') }}
+    </button>
+    <div>
+        <button form="{{ form.form.id }}" name="sbmt" type="submit" class="btn btn-error" value="cancel">
+            {{ __('Cancel') }}
+        </button>
+        <button form="{{ form.form.id }}" name="sbmt" type="submit" class="btn" value="draft">
+            {{ __('Draft') }}
+        </button>
+    </div>
+    <button form="{{ form.form.id }}" name="sbmt" type="submit" class="btn btn-primary" value="publish"
+    {% if ready < 84 %}disabled{% endif %}>
+        {{ __('Publish') }}
+    </button>
+</div>

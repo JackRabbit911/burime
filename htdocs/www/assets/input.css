@@ -1,0 +1,9 @@
+@import "tailwindcss" source(none);
+@plugin "daisyui";
+@source "../../../www/application/app/views";
+@source "../../../www/application/auth/views";
+
+summary.menu-active {
+    color: var(--menu-active-fg);
+    background-color: var(--menu-active-bg);
+}

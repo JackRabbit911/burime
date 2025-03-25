@@ -2,7 +2,7 @@
 composer.phar
 /node_modules/*
 /vendor/*
-/storage/*
+/www/storage/*
 /system/*
 /test/*
 /htdocs/test/*

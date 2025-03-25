@@ -26,6 +26,6 @@ if (PHP_SAPI === 'cli') {
 
 define('ROUTE_PATHS', [
     CONFIG . 'routes/' . MODE . '.php',
-    // APPPATH . 'auth/config/simple_routes.php',
+    APPPATH . 'auth/config/routes.php',
     CONFIG . 'routes/common.php',
 ]); 

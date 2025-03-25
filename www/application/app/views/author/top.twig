@@ -1,0 +1,13 @@
+<div class="w-full flex flex-row">
+    <div class="avatar aspect-square size-24">
+        <img src="{{ author.avatar }}" />
+    </div>
+    <div class="text-start ps-3">
+        <h1 class="text-2xl font-medium">
+            {{ author.alias }}
+        </h1>
+        <p class="text-sm italic overflow-hidden">
+            {{ author.info.slogan ?? '...' }}
+        </p>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+{% extends 'common/layout.twig' %}
+{% block content %}
+{# {% if paginator is defined %}
+<div class="flex justify-center">
+    {{ paginator|raw }}
+</div>
+{% endif %} #}
+{% embed 'content_wrapper.twig' with {'title': branch.title} %}
+{% block center %}
+{% embed 'center_wrapper.twig' %}
+{% block left %}
+{{ include(sidebar ~ '.twig') }}
+{% endblock left %}
+{% block right %}
+{{ include(main ~ '.twig') }}
+{% endblock right %}
+{% endembed %}
+{% endblock center %}
+{% endembed %}
+{% endblock content %}

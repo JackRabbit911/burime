@@ -1,0 +1,4 @@
+{% extends 'common/layout.twig' %}
+{% block content %}
+{{ __('Hello') }},  {{ app.user.name ?? __('guest') }}!
+{% endblock %}

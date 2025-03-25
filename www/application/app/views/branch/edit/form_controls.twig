@@ -1,0 +1,12 @@
+<div class="flex flex-row justify-between mt-4">
+    {% set status_msg = app.session.pull('status_msg') %}
+    <div class="me-4">
+        {% if status_msg %}
+        {% import 'common/macro/alert.twig' as alert %}
+        {{ alert.alert('success', status_msg) }}
+        {% endif %}
+    </div>
+    <button form="{{ form.form.id }}" type="submit" class="btn btn-primary">
+        {{ __('Save') }}
+    </button>
+</div>

@@ -1,0 +1,6 @@
+{% embed '@auth/common/center_wrapper.twig' %}
+{% block center %}
+{% import '@auth/common/alert_macro.twig' as a %}
+    {{ a.alert(data) }}
+{% endblock %}
+{% endembed %}

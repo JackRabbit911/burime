@@ -1,0 +1,25 @@
+{% extends 'common/layout.twig' %}
+{% block content %}
+<div class="flex flex-row justify-center">
+    <div class="w-full md:w-2xl lg:w-4xl bg-base-100 p-4">
+        {% block top %}
+        <h1 class="text-2xl mt-2 mb-3">
+            {{ branch.title }}
+        </h1>
+        {% endblock top %}
+        {% block center %}
+        <div class="grid md:grid-cols-3 gap-4 pt-2">
+            <div>
+                {% block left %}
+                {{ include('burime/sidebar.twig') }}
+                {% endblock left %}
+            </div>
+            <div class="md:col-span-2">
+                {% block right %}
+                {% endblock right %}
+            </div>
+        </div>
+        {% endblock center %}
+    </div>
+</div>
+{% endblock %}

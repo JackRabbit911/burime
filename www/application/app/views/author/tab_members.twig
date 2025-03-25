@@ -1,0 +1,88 @@
+{% embed 'common/embed/center_lg.twig' %}
+{% block top %}
+    {{ include('author/top.twig') }}
+{% endblock top %}
+{% block center %}
+<div role="tablist" class="tabs tabs-lift w-full">
+    <a href="{{ path('author', {'id': author.id}) }}" role="tab" class="tab">
+        {{ __('Statistic') }}
+    </a>
+    {% if author.info.info is defined 
+        and author.info.info is not empty 
+        or author.info.rules is defined 
+        and author.info.rules is not empty %}
+        <a href="{{ path('author', {'action': 'info', 'id': author.id}) }}" role="tab" class="tab">
+            {{ __('Info') }}
+        </a>
+    {% endif %}
+    {% if author.c_members > 0 and (author.openclosed < 2 or (app.user and author.owner == app.user.id)) %}
+        <a href="{{ path('author', {'action': 'members', 'id': author.id}) }}" role="tab" class="tab tab-active">
+            {{ __('Members') }}
+        </a>
+        <div class="tab-content bg-base-100 border-base-300 p-6 text-start">
+            <form id="acts" action="{{ path('author.controls', {'id': author.id}) }}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                <div class="overflow-x-auto">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label>
+                                    <input type="checkbox" class="checkbox" />
+                                    </label>
+                                </th>
+                                <th>Author</th>
+                            </tr>
+                        </thead>
+                        <tbody class="overflow-auto">
+                        {% for member in members %}
+                        <tr class="hover">
+                            <th>
+                                <label>
+                                    <input name="members[]" type="checkbox" class="checkbox" value="{{ member.id }}" />
+                                </label>
+                            </th>
+                            <td>
+                                <a href="{{ path('author', {'id': member.id}) }}">
+                                    <div class="flex items-center gap-3">
+                                        <div class="avatar offline">
+                                            <div class="mask mask-squircle w-12 h-12">
+                                            <img src="{{ member.avatar }}" alt="{{ member.alias }}" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            {% if member.role >= 50 %}
+                                            <div class="font-bold">{{ member.alias }}</div>
+                                            {% else %}
+                                            <div class="text-sm opacity-50">{{ member.alias }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
+                            <td>
+                                <button name="member" type="submit" value={{ member.id }} class="btn btn-ghost btn-sm">actions</button>
+                            </td>
+                        </tr>
+                        {% endfor %}        
+                    </tbody>
+                    </table>
+                    {% if app.session.validation and app.session.validation.members.status == 'error' %}
+                    <label class="label">
+                        <span class="label-text-alt text-error">
+                            {{ __('Recipient must be selected') }}
+                        </span>
+                    </label>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    {% if app.user and author.owner == app.user.id %}
+    <a href="{{ path('author', {'action': 'form', 'id': author.id}) }}" role="tab" class="tab">{{ __('Edit') }}</a>
+    {% endif %}
+</div>
+{% endblock center %}
+{% block bottom %}
+    {{ include('author/tab_controls.twig') }}
+{% endblock bottom %}
+{% endembed %}

@@ -1,0 +1,152 @@
+{% macro input(attr) %}
+    {% if attr.status is defined and (attr.value or attr.status == 'error') %}
+        {% set validate = ' input-error' %}
+    {% else %}
+        {% set validate = '' %}
+    {% endif %}
+    <label for="{{ attr.id ?? attr.name }}" class="fieldset-label flex justify-between">
+        <legend class="fieldset-legend">
+            {{ __(attr.label ?? attr.name)|capitalize }}
+        </legend>
+        <span class="label-text">{{ __(attr.alt_label ?? '') }}</span>
+    </label>
+    <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
+        type="{{ attr.type ?? attr.name }}" 
+        placeholder="{{ __(attr.placeholder ?? '') }}" 
+        class="input w-full{{ validate }}"
+        value="{{ attr.value ?? '' }}" 
+        />
+        {{ _self.message(attr) }}
+{% endmacro input %}
+
+{% macro file(attr) %}
+{% if attr.status is defined and (attr.value or attr.status == 'error') %}
+{% set validate = ' file-input-' ~ attr.status %}
+{% else %}
+{% set validate = '' %}
+{% endif %}
+    <div class="label flex justify-between">
+        <legend class="fieldset-legend">
+            {{ __(attr.label) }}
+        </legend>
+        <span class="label-text-alt">{{ __(attr.alt_label ?? '') }}</span>
+    </div>
+    <input type="file" name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}" 
+        class="file-input w-full{{ validate }}"
+        value="{{ attr.value ?? '' }}"/>
+        {{ _self.message(attr) }}
+{% endmacro file %}
+
+{% macro checkbox(attr) %}
+    {% if attr.status is defined %}
+        {% set validate = ' checkbox-' ~ attr.status %}
+    {% else %}
+        {% set validate = '' %}
+    {% endif %}
+
+    {% if attr.checked is defined and attr.checked == true %}
+        {% set checked = ' checked' %}
+    {% else %}
+        {% set checked = '' %}
+    {% endif %}
+    <label class="fieldset-label flex justify-between">
+        <legend class="fieldset-legend me-2 pb-1 pt-0">{{ __(attr.label)|raw }}</legend>
+        <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
+            type="checkbox"{{ checked }} class="checkbox"
+            {% if attr.value is defined %}
+            value="{{ attr.value }}"
+            {% endif %} />
+    </label>
+    {{ _self.message(attr) }}
+{% endmacro checkbox %}
+
+{% macro radio(attr, label, value, checked) %}
+{% if checked == 'checked' %}
+{% set checked = ' checked' %}
+{% else %}
+{% set checked = '' %}
+{% endif %}
+
+{% if attr.value is defined %}
+    {% if attr.value == value %}
+        {% set checked = ' checked' %}
+    {% else %}
+        {% set checked = '' %}
+    {% endif %}
+{% endif %}
+
+{% apply spaceless %}
+    {% set id = attr.id ?? attr.name ~ value ?? attr.value %}
+    <label for="{{ id }}" class="fieldset-label cursor-pointer flex justify-between mb-4">
+        <legend class="fieldset-legend me-2 pb-1 pt-0">{{ __(label) }}</legend>
+        <input name="{{ attr.name }}" id="{{ id }}" 
+        type="radio"{{ checked }} class="radio" 
+        value="{{ value }}"
+        />
+    </label>
+{% endapply %}
+{% endmacro radio %}
+
+{% macro textarea(attr) %}
+{% if attr.status is defined %}
+{% set validate = ' textarea-' ~ attr.status %}
+{% else %}
+{% set validate = ' textarea-bordered' %}
+{% endif %}
+
+{% if attr.rows is defined %}
+{% set rows = ' rows=' ~ attr.rows %}
+{% else %}
+{% set rows = '' %}
+{% endif %}
+    <div class="fieldset-label flex justify-between">
+        <legend class="fieldset-legend">
+            {{ __(attr.label ?? attr.name|capitalize) }}
+        </legend>
+        <span class="label-text">{{ attr.alt_label ?? '' }}</span>
+    </div>
+    <textarea name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"{{ rows }} class="textarea w-full{{ validate }}" placeholder="{{ attr.placeholder ?? '' }}">{{ attr.value ?? '' }}</textarea>
+    {{ _self.message(attr) }}
+{% endmacro textarea %}
+
+{% macro select(attr) %}
+{% if attr.status is defined %}
+{% set validate = ' select-' ~ attr.status %}
+{% else %}
+{% set validate = ' select-bordered' %}
+{% endif %}
+    {% if attr.label %}
+    <div class="fieldset-label flex justify-between">
+        <legend class="fieldset-legend">{{ attr.label }}</legend>
+        {% if alt_label is defined %}
+        <span class="label-text">{{ alt_label }}</span>
+        {% endif %}
+    </div>
+    {% endif %}
+    <select name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}" 
+    class="select w-full{{ validate }}" {{ attr.attributes ?? '' }}>
+        {% for opt in attr.options %}
+        <option{% if opt.disabled is defined %} disabled{% endif %}
+        {% if opt.selected is defined and opt.selected == true %} selected{% endif %}
+        {% if opt.value is defined %}value="{{ opt.value }}"{% endif %}>
+            {{ opt.label }}</option>
+        {% endfor %}
+    </select>
+    {{ _self.message(attr) }}
+</label>
+{% endmacro select %}
+
+{% macro message(attr) %}
+{% if attr.msg is defined and attr.msg is not empty %}
+    {% set visible = '' %}
+    {% set msg = attr.msg %}
+{% else %}
+    {% set visible = ' invisible' %}
+    {% set msg = 'ok' %}
+{% endif %}
+<label class="fieldset-label{{ visible }}">
+    <span class="label-text-alt text-error">
+        {{ msg }}
+    </span>
+</label>
+{% endmacro message %}

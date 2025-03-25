@@ -1,0 +1,41 @@
+{% import 'home/books/book_card.twig' as b %}
+<a href="{{ path('branch', {'branch_id': branch.id}) }}">
+    <div class="grid grid-cols-2 gap-4">
+        {{ b.book(branch) }}
+        <div class="text-sm">
+            <p>
+                {{ __('Role: ') ~ branch.role }}
+            </p>
+            <p>
+                {{ __('Status: ') ~ branch.status }}
+            </p>
+            <p>
+                {{ __('Rating: ') ~ branch.rating }}
+            </p>
+        </div> 
+    </div>
+</a>
+
+<a href="{{ path('branch', {'action': 'authors', 'branch_id': branch.id}) }}" class="btn w-full mt-2">
+    {{ __('Authors and roles') }}
+</a>
+<a href="{{ path('branch', {'action': 'rules', 'branch_id': branch.id}) }}" class="btn w-full mt-2">
+    {{ __('Rules of this Branch') }}
+</a>
+{% if perms is defined %}
+    {% if perms.edit %}
+    <a href="{{ path('edit', {'action': 'genres', 'id': branch.id}) }}" class="btn w-full mt-2">
+        {{ __('Edit') }}
+    </a>
+    {% endif %}
+    {% if perms.leave %}
+    <a href="{{ path('participation', {'action': 'recall', 'branch_id': branch.id, 'author_id': myAuthor.id}) }}" class="btn w-full mt-2">
+        {{ __('Leave this branch') }}
+    </a>
+    {% endif %}
+    {% if perms.ask and is_ask is not defined %}
+    <a href="{{ path('branch', {'action': 'ask2join', 'branch_id': branch.id}) }}" class="btn w-full mt-2">
+        {{ __('Ask to join') }}
+    </a>
+    {% endif %}
+{% endif %}

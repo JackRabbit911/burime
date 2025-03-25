@@ -1,0 +1,13 @@
+{% if postPermissions.show(post) %}
+    {% if post.status < 100 %}
+        {{ include('burime/timer.twig') }}
+        <p class="bg-neutral text-neutral-content">
+            {{ post.body|nl2br|raw }}
+        </p>
+    {% else %}
+        <p>{{ post.body|nl2br|raw }}</p>
+    {% endif %}
+    <div class="flex flex-row justify-between prose max-w-none mt-2 mb-4">
+        {{ postControls.render(post)|raw }}
+    </div>
+{% endif %}

@@ -1,0 +1,40 @@
+{% macro menu(menu) %}
+    {% for item in menu %}
+        {% if item.border is defined and item.border == true %}
+            <div class="divider my-0"></div>
+        {% endif %}
+        <li>
+            {% if item.sub is defined %}
+                {% if app.is_active(item.title, false) %}
+                    {% set active = ' class=menu-active' %}
+                {% else %}
+                    {% set active = '' %}
+                {% endif %}
+                <details>
+                    <summary{{ active }}>
+                        <a{{ active }}>
+                            {{ __(item.title) }}
+                        </a>
+                    </summary>
+                    <ul class="md:w-52">
+                        {{ _self.menu(item.sub) }}
+                    </ul>
+                </details>
+            {% else %}
+                {% set class = [] %}
+                {% if app.is_active(item.href) %}
+                    {% set class = class|merge(['menu-active']) %}
+                {% endif %}
+                {% if item.badge is defined and item.badge > 0 %}
+                    {% set class = class|merge(['justify-between']) %}
+                {% endif %}
+                <a class="{{ class|join(' ') }}" href="{{ item.href }}">
+                    {{ __(item.title) }}
+                    {% if item.badge is defined and item.badge > 0 %}
+                        <span class="badge">{{ item.badge }}</span>
+                    {% endif %}
+                </a>
+            {% endif %}            
+        </li>
+    {% endfor %}
+{% endmacro %}

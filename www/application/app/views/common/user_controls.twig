@@ -1,0 +1,26 @@
+    {% import 'common/macro/menu.twig' as m %}
+    {% if app.user %}
+    <div class="dropdown dropdown-end flex">
+        <div class="hidden md:flex flex-col justify-end -mb-1 pe-1 text-xs text-base-content/80">
+            {{ app.user.name }}
+        </div>
+        <div tabindex="0" role="button" class="btn btn-ghost indicator size-13 -my-2 px-0">
+            {% if badge %}
+                <span class="indicator-item badge badge-xs badge-success top-1">{{ badge }}</span>
+            {% endif %}
+            {{ app.cmp('avatar')|raw }}
+        </div>
+        <ul tabindex="0"
+            class="menu dropdown-content bg-base-100 rounded-box z-1 mt-13 w-52 p-2 shadow-sm">
+                {{ m.menu(usermenu) }}
+        </ul>
+    </div>
+    {% else %}
+    <a href="{{ path('auth', {action: 'form'}) }}">
+        <div tabindex="0" role="button" class="btn btn-square btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                <path fill-rule="evenodd" d="M16.5 3.75a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5V15a.75.75 0 0 0-1.5 0v3.75a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V5.25a3 3 0 0 0-3-3h-6a3 3 0 0 0-3 3V9A.75.75 0 1 0 9 9V5.25a1.5 1.5 0 0 1 1.5-1.5h6Zm-5.03 4.72a.75.75 0 0 0 0 1.06l1.72 1.72H2.25a.75.75 0 0 0 0 1.5h10.94l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 0 0-1.06 0Z" clip-rule="evenodd" />
+            </svg>
+        </div>
+    </a>
+    {% endif %}
