@@ -2,7 +2,6 @@
 
 namespace App\Burime\Controller;
 
-use App\Burime\Component\PostControls;
 use App\Burime\Component\Ask2Join;
 use App\Burime\Component\CmpPost;
 use App\Burime\Component\PostForm;
@@ -11,7 +10,6 @@ use App\Burime\Middleware\TimeUpMiddleware;
 use App\Burime\Repository\BranchRepo;
 use App\Burime\Repository\PostsRepo;
 use App\Burime\Service\BranchPermissions;
-use App\Burime\Service\PostPermissions;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchStatus;
@@ -54,18 +52,20 @@ class Burime extends WebController
         if ($this->data['branch']->status === BranchStatus::Waiting->value
         && $this->data['myAuthor']->role >= AuthorRole::Moderator->value) {
             $this->data['branch']->status = BranchStatus::Moderation->value;
-            $this->data['branch']->save();
         }
 
-        $this->app->add('CmpPost', new CmpPost($this->data['branch'], $this->data['perms'], $this->user));
+        $this->data['branch']->save();
+
+        $cmpPost = new CmpPost($this->data['branch'], $this->user);
+        $this->app->add('CmpPost', $cmpPost);
 
         if ($this->user) {
             $this->app->js('/assets/js/rating.js');
         }
 
-        // if ($this->data['perms']->timer) {
-        //     $this->app->js('/assets/js/timer.js');
-        // }
+        if ($cmpPost->timer()) {
+            $this->app->js('/assets/js/timer.js');
+        }
 
         return view('burime/posts', $this->data);
     }
