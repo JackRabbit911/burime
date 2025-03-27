@@ -10,6 +10,7 @@ use App\Burime\Middleware\TimeUpMiddleware;
 use App\Burime\Repository\BranchRepo;
 use App\Burime\Repository\PostsRepo;
 use App\Burime\Service\BranchPermissions;
+use App\Burime\Service\PostPermissions;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchStatus;
@@ -110,10 +111,13 @@ class Burime extends WebController
         
         $this->data['branch']->save();
 
+        $this->data['postPermissions'] = new PostPermissions($this->data['branch'], $this->user);
         $this->data['myAuthors'] = ($this->data['myAuthor']) ?: $this->user->ownAuthors;
-        $this->data['form'] = new PostForm($this->data, $post_last, $post_current);
+        $form = new PostForm($this->data, $post_last, $post_current);
 
-        return view('burime/form_wrapper', $this->data);
+        $this->app->js('/assets/js/timer.js');
+
+        return $form->render($this->data);
     }
 
     private function getBrunchAuthorsByUser($branch, $user)

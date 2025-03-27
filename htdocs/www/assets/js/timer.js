@@ -6,7 +6,6 @@ if (countdown) {
     const ss = document.querySelector('span#sec')
 
     let tl = parseInt(countdown.dataset.time, 10)
-    const id = countdown.dataset.id
     
     if (!isNaN(tl)) {
         tl *= 60

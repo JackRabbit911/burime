@@ -13,6 +13,7 @@ class PostForm extends Form
 
         $this->set('branch', $branch);
         $this->set('last', $post_last);
+        $this->set('postPermissions', $data['postPermissions']);
 
         $this->form('burime/form')
             ->id('postform')
