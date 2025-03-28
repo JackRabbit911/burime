@@ -2,7 +2,7 @@
 {% block right %}
 {% import 'common/macro/formmacro.twig' as m %}
 <article>
-    <p>{{ last.body ?? '' }}</p>
+    <p class="mb-3">{{ last.body ?? '' }}</p>
     {{ include('burime/timer.twig') }}
     <form id="{{ form.id }}" action="{{ form.action }}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
             {{ m.textarea(new_post) }}

@@ -64,7 +64,7 @@ class Burime extends WebController
             $this->app->js('/assets/js/rating.js');
         }
 
-        if ($cmpPost->timer()) {
+        if ($cmpPost->isTimer()) {
             $this->app->js('/assets/js/timer.js');
         }
 

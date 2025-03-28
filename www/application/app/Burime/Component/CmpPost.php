@@ -15,6 +15,7 @@ class CmpPost
     private ?UserInterface $user;
     private PostPermissions $postPermissions;
     private PostControls $postControls;
+    private Timer $timer;
 
     public function __construct(BranchInterface $branch, ?UserInterface $user = null)
     {
@@ -23,6 +24,7 @@ class CmpPost
 
         $this->postPermissions = new PostPermissions($branch, $user);
         $this->postControls = new PostControls($this->postPermissions);
+        $this->timer = new Timer($branch, $this->postPermissions);
     }
 
     public function render(Post $post)
@@ -40,6 +42,7 @@ class CmpPost
             'branch' => $this->branch,
             'postPermissions' => $this->postPermissions,
             'postControls' => $this->postControls,
+            'timer' => $this->timer,
             'post' => $post,
             'msg' => $msg,
         ];
@@ -47,7 +50,7 @@ class CmpPost
         return view('burime/post', $data);
     }
 
-    public function timer()
+    public function isTimer()
     {
         return $this->postPermissions->timer();
     }

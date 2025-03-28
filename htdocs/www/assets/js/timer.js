@@ -8,11 +8,9 @@ if (countdown) {
     let tl = parseInt(countdown.dataset.time, 10)
     
     if (!isNaN(tl)) {
-        tl *= 60
-       
         const timer = setInterval(() => {
             let h = Math.floor(tl / 60 / 60)
-            let m = Math.floor(tl / 60)
+            let m = Math.floor((tl - h * 60 * 60) / 60)
             let s = tl % 60
         
             sh.style.setProperty('--value', h)

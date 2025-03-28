@@ -1,6 +1,6 @@
 {% if postPermissions.show(post) %}
     {% if post.status < 100 %}
-        {{ include('burime/timer.twig') }}
+        {{ timer|raw }}
         <p class="bg-neutral text-neutral-content">
             {{ post.body|nl2br|raw }}
         </p>
