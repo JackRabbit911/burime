@@ -41,6 +41,10 @@ class PostPermissions
 
     public function timer(): bool
     {
+        if (!$this->user) {
+            return false;
+        }
+        
         if ($this->branch->status === BranchStatus::Writing->value
         && $this->user->id === $this->branch->info['current_writer']
         || $this->branch->status === BranchStatus::Moderation->value
