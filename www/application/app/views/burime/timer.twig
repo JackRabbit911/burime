@@ -1,18 +1,20 @@
 <div class="flex flex-row justify-between">
     {% if postPermissions.timer() %}
+    {% set hour = 'style=--value:' ~ hour ~ ';' %}
+    {% set min = 'style=--value:' ~ min ~ ';' %}
+    {% set sec = 'style=--value:' ~ sec ~ ';' %}
         <span
             class="countdown font-mono text-xl"
-            data-time="{{ branch.info.time_limit }}"
-            data-id="{{ post.id }}"
+            data-time="{{ timeRemaining }}"
         >
-            <span id="hours" style="--value:0;"></span>
+            <span id="hours" {{ hour }}></span>
             :
-            <span id="min" style="--value:0;"></span>
+            <span id="min" {{ min }}></span>
             :
-            <span id="sec" style="--value:0;"></span>
+            <span id="sec" {{ sec }}></span>
         </span>
     {% else %}
         <span></span>
     {% endif %}
-    <span class="pb-1 text-error">{{ msg }}</span>
+    <span class="pb-1 text-error">{{ msg ?? '' }}</span>
 </div>

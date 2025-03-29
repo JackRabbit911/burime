@@ -1,0 +1,33 @@
+<?php declare(strict_types=1);
+
+namespace App\Burime\Component;
+
+use App\Burime\Service\PostPermissions;
+use Common\Contract\BranchInterface;
+use Sys\Template\Component;
+
+class Timer extends Component
+{
+    private array $data;
+
+    public function __construct(BranchInterface $branch, PostPermissions $postPermissions)
+    {
+        $now = time();
+        $tr = ($branch->info['time_limit'] * 60) - ($now - $branch->info['time_beguin']);
+
+        if ($tr < 0) {
+            $tr = 0;
+        }
+
+        $this->data['postPermissions'] = $postPermissions;
+        $this->data['timeRemaining'] = $tr;
+        $this->data['hour'] = (int) floor($tr / 60 / 60);
+        $this->data['min'] = intdiv($tr - ($this->data['hour'] * 60 * 60), 60);
+        $this->data['sec'] = $tr % 60;
+    }
+
+    public function render()
+    {
+        return view('burime/timer', $this->data);
+    }
+}

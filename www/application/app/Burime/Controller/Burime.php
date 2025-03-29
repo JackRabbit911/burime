@@ -2,10 +2,10 @@
 
 namespace App\Burime\Controller;
 
-use App\Burime\Component\PostControls;
 use App\Burime\Component\Ask2Join;
 use App\Burime\Component\CmpPost;
 use App\Burime\Component\PostForm;
+use App\Burime\Component\Timer;
 use App\Burime\Middleware\AuthorPostGuard;
 use App\Burime\Middleware\TimeUpMiddleware;
 use App\Burime\Repository\BranchRepo;
@@ -54,18 +54,20 @@ class Burime extends WebController
         if ($this->data['branch']->status === BranchStatus::Waiting->value
         && $this->data['myAuthor']->role >= AuthorRole::Moderator->value) {
             $this->data['branch']->status = BranchStatus::Moderation->value;
-            $this->data['branch']->save();
         }
 
-        $this->app->add('CmpPost', new CmpPost($this->data['branch'], $this->data['perms'], $this->user));
+        $this->data['branch']->save();
+
+        $cmpPost = new CmpPost($this->data['branch'], $this->user);
+        $this->app->add('CmpPost', $cmpPost);
 
         if ($this->user) {
             $this->app->js('/assets/js/rating.js');
         }
 
-        // if ($this->data['perms']->timer) {
-        //     $this->app->js('/assets/js/timer.js');
-        // }
+        if ($cmpPost->isTimer()) {
+            $this->app->js('/assets/js/timer.js');
+        }
 
         return view('burime/posts', $this->data);
     }
@@ -104,16 +106,23 @@ class Burime extends WebController
 
         if (!isset($this->data['branch']->info['current_writer'])
         || $this->data['branch']->info['current_writer'] !== $this->user->id) {
-            $this->data['branch']->info['time_beguin'] = time();
             $this->data['branch']->info['current_writer'] = $this->user->id;
+        }
+
+        if (!isset($this->data['branch']->info['time_beguin'])) {
+            $this->data['branch']->info['time_beguin'] = time();
         }
         
         $this->data['branch']->save();
 
+        $this->data['postPermissions'] = new PostPermissions($this->data['branch'], $this->user);
         $this->data['myAuthors'] = ($this->data['myAuthor']) ?: $this->user->ownAuthors;
-        $this->data['form'] = new PostForm($this->data, $post_last, $post_current);
+        $this->data['timer'] = new Timer($this->data['branch'], $this->data['postPermissions']);
+        $form = new PostForm($this->data, $post_last, $post_current);
 
-        return view('burime/form_wrapper', $this->data);
+        $this->app->js('/assets/js/timer.js');
+
+        return $form->render($this->data);
     }
 
     private function getBrunchAuthorsByUser($branch, $user)

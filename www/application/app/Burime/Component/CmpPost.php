@@ -8,7 +8,6 @@ use App\Burime\Component\PostControls;
 use Common\Contract\BranchInterface;
 use Common\Enum\PostStatus;
 use Sys\Contract\UserInterface;
-use stdClass;
 
 class CmpPost
 {
@@ -16,16 +15,16 @@ class CmpPost
     private ?UserInterface $user;
     private PostPermissions $postPermissions;
     private PostControls $postControls;
-    private stdClass $perms;
+    private Timer $timer;
 
-    public function __construct(BranchInterface $branch, stdClass $perms, ?UserInterface $user = null)
+    public function __construct(BranchInterface $branch, ?UserInterface $user = null)
     {
         $this->branch = $branch;
         $this->user = $user;
-        $this->perms = $perms;
 
         $this->postPermissions = new PostPermissions($branch, $user);
         $this->postControls = new PostControls($this->postPermissions);
+        $this->timer = new Timer($branch, $this->postPermissions);
     }
 
     public function render(Post $post)
@@ -43,11 +42,16 @@ class CmpPost
             'branch' => $this->branch,
             'postPermissions' => $this->postPermissions,
             'postControls' => $this->postControls,
+            'timer' => $this->timer,
             'post' => $post,
-            // 'perms' => $this->perms,
             'msg' => $msg,
         ];
 
         return view('burime/post', $data);
+    }
+
+    public function isTimer()
+    {
+        return $this->postPermissions->timer();
     }
 }
