@@ -7,7 +7,8 @@ enum PostStatus: int
     case Deleted = 0;
     case Draft = 20;
     case Moderation = 80;
-    case Publish = 120;
+    case Publish = 100;
+    case Approved = 120;
     case Fixed = 140;
 
     public function allowChange()
