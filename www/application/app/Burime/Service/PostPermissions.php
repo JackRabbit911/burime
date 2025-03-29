@@ -44,13 +44,18 @@ class PostPermissions
         if (!$this->user) {
             return false;
         }
-        
+
         if ($this->branch->status === BranchStatus::Writing->value
-        && $this->user->id === $this->branch->info['current_writer']
-        || $this->branch->status === BranchStatus::Moderation->value
-        && $this->hasRole(AuthorRole::Moderator->value)) {           
+        && $this->user->id === $this->branch->info['current_writer']) {           
                 return true;
         }
+        
+        // if ($this->branch->status === BranchStatus::Writing->value
+        // && $this->user->id === $this->branch->info['current_writer']
+        // || $this->branch->status === BranchStatus::Moderation->value
+        // && $this->hasRole(AuthorRole::Moderator->value)) {           
+        //         return true;
+        // }
 
         return false;
     }
@@ -89,10 +94,16 @@ class PostPermissions
 
     public function edit($post)
     {
-        if ($this->isLast($post) && $this->isAuthor($post) 
-            && $post->status !== PostStatus::Fixed->value) {
+        if ($this->isLast($post)
+        && $post->status === PostStatus::Draft
+        && $this->isAuthor($post)) {
             return true;
         }
+
+        // if ($this->isLast($post) && $this->isAuthor($post) 
+        //     && $post->status !== PostStatus::Fixed->value) {
+        //     return true;
+        // }
 
         return false;
     }
@@ -107,10 +118,12 @@ class PostPermissions
             return false;
         }
 
-        if ($this->isLast($post)) {
-            if ($this->hasRole(AuthorRole::Moderator->value) || $this->isAuthor($post)) {
-                return true;
-            }
+        if ($this->hasRole(AuthorRole::Moderator->value)) {
+            return true;
+        }
+
+        if ($this->isLast($post) && $this->isAuthor($post)) {
+            return true;
         }
 
         return false;

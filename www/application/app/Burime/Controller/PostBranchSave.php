@@ -32,6 +32,7 @@ class PostBranchSave extends WebController
                     if ($branch->info['moderation'] === 1) {
                         $branch->status = BranchStatus::Waiting->value;
                         $post_status = PostStatus::Moderation->value;
+                        $branch->info['time_beguin'] = time();
                     } else {
                         $branch->status = BranchStatus::Ready->value;
                         $post_status = PostStatus::Publish->value;
@@ -39,8 +40,8 @@ class PostBranchSave extends WebController
 
                     $repo->addAuthor($branch->id, (int) $data['author'], $this->user->id);
 
-                    $branch->info['time_up'] = false;
-                    $branch->info['time_beguin'] = null;
+                    // $branch->info['time_up'] = false;
+                    // $branch->info['time_beguin'] = null;
 
                     break;
                 case 'draft':
