@@ -1,6 +1,8 @@
-const nodeDelPostList = document.querySelectorAll('a[data-role="deletePost"]')
+const nodeDelPostList = document.querySelectorAll('a[href*="delete"]')
+const regDel = /post\/\d\/delete\/\d/
+const nodeDelPostArr = Array.from(nodeDelPostList).filter(el => regDel.test(el.href))
 
-nodeDelPostList.forEach(item => {
+nodeDelPostArr.forEach(item => {
     item.addEventListener("click", function (event) {
         event.preventDefault()
         const conf = document.createElement('div')
