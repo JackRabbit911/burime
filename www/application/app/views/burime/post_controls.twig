@@ -54,7 +54,11 @@
         {% endif %}
 
         {% if allow_delete %}
-        <a title="Delete" href="{{ link_delete }}" class="cursor-pointer btn btn-xs join-item">
+        <a
+            title="Delete" href="{{ link_delete }}"
+            class="cursor-pointer btn btn-xs join-item"
+            data-role="deletePost"
+        >
             {{ i.xmark('size-6', 'text-red-800') }}
         </a>
         {% endif %}

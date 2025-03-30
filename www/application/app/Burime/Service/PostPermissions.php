@@ -118,7 +118,8 @@ class PostPermissions
             return false;
         }
 
-        if ($this->hasRole(AuthorRole::Moderator->value)) {
+        if ($this->hasRole(AuthorRole::Moderator->value)
+        && $post->status < PostStatus::Approved->value) {
             return true;
         }
 

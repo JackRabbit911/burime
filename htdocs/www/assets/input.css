@@ -2,6 +2,7 @@
 @plugin "daisyui";
 @source "../../../www/application/app/views";
 @source "../../../www/application/auth/views";
+@source "js";
 
 summary.menu-active {
     color: var(--menu-active-fg);
