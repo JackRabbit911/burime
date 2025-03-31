@@ -7,6 +7,8 @@
             title="Like" 
             href="{{ link_like }}" 
             class="cursor-pointer btn btn-xs join-item"
+            onclick="rating.call(this); return false;"
+            data-branch="{{ branch.id }}"
         >
             {{ i.like(post.user_rating, 'size-5') }}
         </a>
@@ -15,6 +17,8 @@
             title="Dislike" 
             href="{{ link_dislike }}" 
             class="cursor-pointer btn btn-xs join-item"
+            onclick="rating.call(this); return false;"
+            data-branch="{{ branch.id }}"
             >
             {{ i.dislike(post.user_rating, 'size-5') }}
         </a>
@@ -57,7 +61,7 @@
         <a
             title="Delete" href="{{ link_delete }}"
             class="cursor-pointer btn btn-xs join-item"
-            data-role="deletePost"
+            onclick="deletePostHandler.call(this); return false;"
         >
             {{ i.xmark('size-6', 'text-red-800') }}
         </a>

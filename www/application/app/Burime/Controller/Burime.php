@@ -43,6 +43,8 @@ class Burime extends WebController
         $branchPerms = new BranchPermissions($this->data['branch'], $this->user, $author);
         $this->data['perms'] = $branchPerms->getPerms();
         $this->data['myAuthor'] = $author;
+
+        $this->app->js('assets/js/postControls.js');
     }
 
     public function __invoke(PostsRepo $repo, $branch_id)
@@ -60,16 +62,6 @@ class Burime extends WebController
 
         $cmpPost = new CmpPost($this->data['branch'], $this->user);
         $this->app->add('CmpPost', $cmpPost);
-
-        if ($this->user) {
-            $this->app->js('/assets/js/rating.js');
-        }
-
-        $this->app->js('/assets/js/deletePostHandler.js');
-
-        if ($cmpPost->isTimer()) {
-            $this->app->js('/assets/js/timer.js');
-        }
 
         return view('burime/posts', $this->data);
     }
@@ -121,8 +113,6 @@ class Burime extends WebController
         $this->data['myAuthors'] = ($this->data['myAuthor']) ?: $this->user->ownAuthors;
         $this->data['timer'] = new Timer($this->data['branch'], $this->data['postPermissions']);
         $form = new PostForm($this->data, $post_last, $post_current);
-
-        $this->app->js('/assets/js/timer.js');
 
         return $form->render($this->data);
     }
