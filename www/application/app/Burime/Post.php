@@ -3,10 +3,11 @@
 namespace App\Burime;
 
 use App\Burime\Model\ModelPost;
+use Common\Contract\PostInterface;
 use Sys\Entity\Entity;
 
 #[ModelPost]
-class Post extends Entity 
+class Post extends Entity implements PostInterface
 {
     public function __construct()
     {
