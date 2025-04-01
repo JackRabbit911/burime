@@ -1,12 +1,9 @@
 "use strict"
 
 function rating() {
-    const color = "rgb(253 224 71)"
     const [action, id] = this.href.split('/').slice(-2)
     const method = (action == "remove") ? "DELETE" : "POST"
-    const branchId = this.dataset.branch
-
-    console.log(branchId);
+    const branchId = parseInt(this.dataset.branch, 10)
 
     fetch('/api/rating/' + action + '/' + id, {
         method: method,
@@ -14,15 +11,10 @@ function rating() {
     })
         .then((response) => response.json())
         .then((json) => {
-            console.log(json)
-            // json.controls.forEach(node => {
-            //     const fill = (node.fill) ? color : "none"
-            //     const el = document.getElementById(node.id)
-            //     el.href = node.href
-            //     el.children[0].setAttribute("fill", fill)
-            // })
-
-            // document.getElementById('avg-' + id).textContent = Math.round(json.avg * 100) / 100
+            json.forEach(item => {
+                let node = document.getElementById(item.id)
+                node.innerHTML = item.html
+            })
         })
 }
 

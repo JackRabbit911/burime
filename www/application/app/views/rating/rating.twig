@@ -1,0 +1,21 @@
+{% import 'common/macro/icon.twig' as i %}
+<a 
+    id="like-{{ post.id }}"
+    title="Like"
+    href="{{ link_like }}"
+    class="cursor-pointer btn btn-xs join-item"
+    onclick="rating.call(this); return false;"
+    data-branch="{{ branch.id }}"
+>
+    {{ i.like(post.user_rating, 'size-5') }}
+</a>
+<a 
+    id="dislike-{{ post.id }}"
+    title="Dislike"
+    href="{{ link_dislike }}"
+    class="cursor-pointer btn btn-xs join-item"
+    onclick="rating.call(this); return false;"
+    data-branch="{{ branch.id }}"
+>
+    {{ i.dislike(post.user_rating, 'size-5') }}
+</a>
