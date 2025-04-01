@@ -2,26 +2,9 @@
 <div class="join" role="post-controls">
     {% if app.user %}
         {% if allow_rating %}
-        <a 
-            id="like-{{ post.id }}" 
-            title="Like" 
-            href="{{ link_like }}" 
-            class="cursor-pointer btn btn-xs join-item"
-            onclick="rating.call(this); return false;"
-            data-branch="{{ branch.id }}"
-        >
-            {{ i.like(post.user_rating, 'size-5') }}
-        </a>
-        <a 
-            id="dislike-{{ post.id }}" 
-            title="Dislike" 
-            href="{{ link_dislike }}" 
-            class="cursor-pointer btn btn-xs join-item"
-            onclick="rating.call(this); return false;"
-            data-branch="{{ branch.id }}"
-            >
-            {{ i.dislike(post.user_rating, 'size-5') }}
-        </a>
+        <div id="post-rating-{{ post.id }}" class="join">
+            {{ app.cmp('CmpRating', {'branch': branch}).render(post)|raw }}
+        </div>
         {% endif %}
 
         {% if allow_comment %}
