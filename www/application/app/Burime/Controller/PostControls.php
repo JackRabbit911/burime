@@ -58,7 +58,14 @@ class PostControls extends BaseController
 
     public function delete(int $branch_id, int $post_id)
     {
-        $this->branchRepo->setStatus($branch_id, BranchStatus::Ready->value);
+        $this->branch->status = BranchStatus::Ready->value;
+
+        if ($this->permissions->isLast($this->post)) {
+            $this->branch->info['time_beguin'] = null;
+            $this->branch->info['time_up'] = false;
+        }
+
+        $this->branch->save();
 
         if ($this->permissions->delete($this->post)) {
             // $is_delete = $this->modelPost->delete($post_id);

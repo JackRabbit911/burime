@@ -84,7 +84,7 @@ class PostPermissions
         if ($post->status === PostStatus::Deleted->value) {
             return false;
         }
-        
+
         if ($post->status <= PostStatus::Draft->value && !$this->isAuthor($post)) {
             return false;
         }
@@ -155,7 +155,7 @@ class PostPermissions
         
         if (!$this->isAuthor($post) 
             && $this->isLast($post)
-            && $post->status === PostStatus::Publish->value
+            && $post->status >= PostStatus::Publish->value
             && $this->branch->status === BranchStatus::Ready->value) {
             return true;
         }
