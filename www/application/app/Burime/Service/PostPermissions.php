@@ -81,6 +81,10 @@ class PostPermissions
 
     public function show($post)
     {
+        if ($post->status === PostStatus::Deleted->value) {
+            return false;
+        }
+        
         if ($post->status <= PostStatus::Draft->value && !$this->isAuthor($post)) {
             return false;
         }
