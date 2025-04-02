@@ -44,7 +44,9 @@ class Burime extends WebController
         $this->data['perms'] = $branchPerms->getPerms();
         $this->data['myAuthor'] = $author;
 
-        $this->app->js('/assets/js/postControls.js');
+        if ($this->user) {
+            $this->app->js('/assets/js/postControls.js');
+        }
     }
 
     public function __invoke(PostsRepo $repo, $branch_id)
