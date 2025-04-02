@@ -61,7 +61,9 @@ class PostControls extends BaseController
         $this->branchRepo->setStatus($branch_id, BranchStatus::Ready->value);
 
         if ($this->permissions->delete($this->post)) {
-            $is_delete = $this->modelPost->delete($post_id);
+            // $is_delete = $this->modelPost->delete($post_id);
+            $this->modelPost->setPostStatus($post_id, PostStatus::Deleted->value);
+            $is_delete = true;
 
             if ($is_delete && $this->isModerator && !$this->isAuthor) {
                 $this->session->flash('to', [$this->post->author_id]);
@@ -77,7 +79,7 @@ class PostControls extends BaseController
 
     public function approve(int $branch_id, int $post_id)
     {
-        $this->modelPost->setPostStatus($post_id, PostStatus::Publish->value);
+        $this->modelPost->setPostStatus($post_id, PostStatus::Approved->value);
         $this->branchRepo->setStatus($branch_id, BranchStatus::Ready->value);
 
         return new RedirectResponse($this->uri);

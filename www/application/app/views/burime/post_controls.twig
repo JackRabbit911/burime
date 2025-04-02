@@ -44,7 +44,8 @@
         <a
             title="Delete" href="{{ link_delete }}"
             class="cursor-pointer btn btn-xs join-item"
-            onclick="deletePostHandler.call(this); return false;"
+            data-post="{{ post.id }}"
+            onclick="confirmPostHandler.call(this); return false;"
         >
             {{ i.xmark('size-6', 'text-red-800') }}
         </a>
