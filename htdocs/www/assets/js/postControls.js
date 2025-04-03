@@ -1,5 +1,7 @@
 "use strict"
 
+document.body.onload = () => postWriteTimeLimit()
+
 function rating() {
     const [action, id] = this.href.split('/').slice(-2)
     const method = (action == "remove") ? "DELETE" : "POST"
@@ -18,8 +20,8 @@ function rating() {
         })
 }
 
-function timer() {
-    const countdown = document.querySelector('span.countdown')
+function postWriteTimeLimit() {
+    const countdown = document.querySelector('#timeLimitCounter')
 
     if (countdown) {
         const sh = document.querySelector('span#hours')
