@@ -18,18 +18,17 @@
             {{ i.branch('size-4') }}
         </a>
         {% endif %}
-
-        {% if allow_write %}
+        
+        {% if allow_edit %}
+        <a title="Edit" href="{{ link_edit }}" class="cursor-pointer btn btn-xs join-item">
+            {{ i.pencil('size-5') }}
+        </a>
+        {% elseif allow_write %}
         <a title="Continue" href="{{ link_write }}" class="cursor-pointer btn btn-xs join-item">
             {{ i.pencil('size-5') }}
         </a>
         {% endif %}
 
-        {% if allow_edit %}
-        <a title="Edit" href="{{ link_edit }}" class="cursor-pointer btn btn-xs join-item">
-            {{ i.pencil('size-5') }}
-        </a>
-        {% endif %}
 
         {% if allow_approve %}
         <a title="Approve" href="{{ link_approve }}" class="cursor-pointer btn btn-xs join-item">

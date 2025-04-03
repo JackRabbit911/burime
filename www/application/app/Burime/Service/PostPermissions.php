@@ -98,8 +98,10 @@ class PostPermissions
 
     public function edit($post)
     {
+        // dd($this->isLast($post), $post->status === PostStatus::Draft->value, $this->isAuthor($post), $post->id);
+
         if ($this->isLast($post)
-        && $post->status === PostStatus::Draft
+        && $post->status !== PostStatus::Moderation->value
         && $this->isAuthor($post)) {
             return true;
         }
@@ -136,7 +138,9 @@ class PostPermissions
 
     public function approve($post)
     {
-        if ($post->status === PostStatus::Moderation->value && $this->hasRole(AuthorRole::Moderator->value)) {
+        if ($post->status === PostStatus::Moderation->value
+            && $this->hasRole(AuthorRole::Moderator->value)
+            && !$this->isAuthor($post)) {
             return true;
         }
 
@@ -156,7 +160,10 @@ class PostPermissions
         if (!$this->isAuthor($post) 
             && $this->isLast($post)
             && $post->status >= PostStatus::Publish->value
-            && $this->branch->status === BranchStatus::Ready->value) {
+            && $this->branch->status === BranchStatus::Ready->value
+            || $this->branch->status === BranchStatus::Writing->value
+            && $this->branch->info['current_writer'] === $this->user->id
+            && $this->isLast($post)) {
             return true;
         }
 
