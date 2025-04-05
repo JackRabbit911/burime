@@ -1,12 +1,11 @@
 "use strict"
 
+document.body.onload = () => postWriteTimeLimit()
+
 function rating() {
-    const color = "rgb(253 224 71)"
     const [action, id] = this.href.split('/').slice(-2)
     const method = (action == "remove") ? "DELETE" : "POST"
-    const branchId = this.dataset.branch
-
-    console.log(branchId);
+    const branchId = parseInt(this.dataset.branch, 10)
 
     fetch('/api/rating/' + action + '/' + id, {
         method: method,
@@ -14,20 +13,15 @@ function rating() {
     })
         .then((response) => response.json())
         .then((json) => {
-            console.log(json)
-            // json.controls.forEach(node => {
-            //     const fill = (node.fill) ? color : "none"
-            //     const el = document.getElementById(node.id)
-            //     el.href = node.href
-            //     el.children[0].setAttribute("fill", fill)
-            // })
-
-            // document.getElementById('avg-' + id).textContent = Math.round(json.avg * 100) / 100
+            json.forEach(item => {
+                let node = document.getElementById(item.id)
+                node.innerHTML = item.html
+            })
         })
 }
 
-function timer() {
-    const countdown = document.querySelector('span.countdown')
+function postWriteTimeLimit() {
+    const countdown = document.querySelector('#timeLimitCounter')
 
     if (countdown) {
         const sh = document.querySelector('span#hours')
@@ -58,39 +52,24 @@ function timer() {
     }
 }
 
-function deletePostHandler() {
-    const nodeDelPostList = document.querySelectorAll('a[href*="delete"]')
-    const regDel = /post\/\d\/delete\/\d/
-    const nodeDelPostArr = Array.from(nodeDelPostList).filter(el => regDel.test(el.href))
+function cancelPostHandler() {
+    const postId = this.dataset.post
+    const postControlsWrapper = document.getElementById('post-controls-wrapper-' + postId)
+    this.closest('div.alert').remove();
+    postControlsWrapper.classList.remove('hidden');
+}
 
-    nodeDelPostArr.forEach(item => {
-        item.addEventListener("click", function (event) {
-            event.preventDefault()
-            const confirmDialogWrapper = document.createElement('div')
-            confirmDialogWrapper.className = "flex justify-between alert alert-warning rounded-t-none rounded-b-md";
+function confirmPostHandler() {
+    const postId = this.dataset.post
+    const postControlsWrapper = document.getElementById('post-controls-wrapper-' + postId)
+    const postConfirmWrapper = document.getElementById('post-confirm-wrapper-' + postId)
 
-            const msg = document.createElement('span')
-            msg.innerHTML = "<strong>Warning!</strong> This post will be deleted"
-
-            const cancelBtn = document.createElement('button')
-            cancelBtn.className = "btn btn-neutral md:me-2 mb-1 md:mb-0"
-            cancelBtn.onclick = () => { location.reload() }
-            cancelBtn.innerText = "Cancel"
-
-            const delBtn = document.createElement('button')
-            delBtn.className = "btn btn-primary"
-            delBtn.onclick = () => { location.replace(item.href) }
-            delBtn.innerText = "Delete"
-
-            const span = document.createElement('span')
-            span.className = "text-end"
-            span.appendChild(cancelBtn)
-            span.appendChild(delBtn)
-
-            confirmDialogWrapper.appendChild(msg)
-            confirmDialogWrapper.appendChild(span)
-
-            item.closest('div.flex').replaceWith(confirmDialogWrapper)
+    fetch('/api/post/confirm/' + postId)
+        .then((response) => response.text())
+        .then((text) => {
+            postControlsWrapper.classList.add('hidden');
+            postConfirmWrapper.innerHTML = text
+            const link = postConfirmWrapper.querySelector('a.btn-primary')
+            link.href = this.href
         })
-    })
 }

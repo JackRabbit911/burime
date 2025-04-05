@@ -4,6 +4,7 @@
     {% set min = 'style=--value:' ~ min ~ ';' %}
     {% set sec = 'style=--value:' ~ sec ~ ';' %}
         <span
+            id="timeLimitCounter"
             class="countdown font-mono text-xl"
             data-time="{{ timeRemaining }}"
         >

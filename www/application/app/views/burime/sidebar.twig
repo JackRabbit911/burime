@@ -10,7 +10,10 @@
                 {{ __('Status: ') ~ branch.status }}
             </p>
             <p>
-                {{ __('Rating: ') ~ branch.rating }}
+                {{ __('Rating: ') }}
+                <span id="branch-rating">
+                    {{ branch.rating }}
+                </span>
             </p>
         </div> 
     </div>

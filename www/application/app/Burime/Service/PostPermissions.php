@@ -81,6 +81,10 @@ class PostPermissions
 
     public function show($post)
     {
+        if ($post->status === PostStatus::Deleted->value) {
+            return false;
+        }
+
         if ($post->status <= PostStatus::Draft->value && !$this->isAuthor($post)) {
             return false;
         }
@@ -94,9 +98,12 @@ class PostPermissions
 
     public function edit($post)
     {
+        // dd($this->isLast($post), $post->status === PostStatus::Draft->value, $this->isAuthor($post), $post->id);
+
         if ($this->isLast($post)
-        && $post->status === PostStatus::Draft
-        && $this->isAuthor($post)) {
+        && $post->status !== PostStatus::Moderation->value
+        && $this->isAuthor($post)
+        && $this->branch->info['current_writer'] === $this->user->id) {
             return true;
         }
 
@@ -123,7 +130,9 @@ class PostPermissions
             return true;
         }
 
-        if ($this->isLast($post) && $this->isAuthor($post)) {
+        if ($this->isLast($post)
+        && $this->isAuthor($post)
+        && $this->branch->info['current_writer'] === $this->user->id) {
             return true;
         }
 
@@ -132,7 +141,9 @@ class PostPermissions
 
     public function approve($post)
     {
-        if ($post->status === PostStatus::Moderation->value && $this->hasRole(AuthorRole::Moderator->value)) {
+        if ($post->status === PostStatus::Moderation->value
+            && $this->hasRole(AuthorRole::Moderator->value)
+            && !$this->isAuthor($post)) {
             return true;
         }
 
@@ -151,8 +162,11 @@ class PostPermissions
         
         if (!$this->isAuthor($post) 
             && $this->isLast($post)
-            && $post->status === PostStatus::Publish->value
-            && $this->branch->status === BranchStatus::Ready->value) {
+            && $post->status >= PostStatus::Publish->value
+            && $this->branch->status === BranchStatus::Ready->value
+            || $this->branch->status === BranchStatus::Writing->value
+            && $this->branch->info['current_writer'] === $this->user->id
+            && $this->isLast($post)) {
             return true;
         }
 

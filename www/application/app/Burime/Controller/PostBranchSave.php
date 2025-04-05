@@ -24,18 +24,19 @@ class PostBranchSave extends WebController
         $branch = $this->request->getAttribute('branch');
         $data = $this->request->getParsedBody();
 
-        // $post_permissions = new PostPermissions($branch, $this->user);
+        $post_permissions = new PostPermissions($branch, $this->user);
 
         if ($branch->info['current_writer'] === $this->user->id) {
             switch ($data['sbmt']) {
                 case 'publish':
-                    if ($branch->info['moderation'] === 1) {
+                    if ($branch->info['moderation'] === 1
+                        && !$post_permissions->hasRole(AuthorRole::Moderator->value)) {
                         $branch->status = BranchStatus::Waiting->value;
                         $post_status = PostStatus::Moderation->value;
                         $branch->info['time_beguin'] = time();
                     } else {
                         $branch->status = BranchStatus::Ready->value;
-                        $post_status = PostStatus::Publish->value;
+                        $post_status = PostStatus::Approved->value;
                     }
 
                     $repo->addAuthor($branch->id, (int) $data['author'], $this->user->id);
@@ -55,6 +56,8 @@ class PostBranchSave extends WebController
                 case 'cancel':
                     if (!$post_id) {
                         $branch->status = BranchStatus::Ready->value;
+                        $branch->info['time_up'] = false;
+                        $branch->info['time_beguin'] = null;
                     }
 
                     $post_status = false;

@@ -1,0 +1,24 @@
+<div class="flex justify-between alert alert-warning rounded-t-none rounded-b-md w-full">
+    <span>
+        <strong>
+            {{ __('Warning!') }}
+        </strong>
+        {{ __(' This post will be deleted') }}
+    </span>
+    <span class="text-end">
+        <button
+            class="btn btn-neutral m-0.5"
+            onclick="cancelPostHandler.call(this); return false;"
+            data-post="{{ post_id }}"
+        >
+            {{ __('Cancel') }}
+        </button>
+        <a
+            href=""
+            class="btn btn-primary m-0.5"
+            data-post="{{ post_id }}"
+        >
+            {{ __('Delete') }}
+        </a>
+    </span>
+</div>

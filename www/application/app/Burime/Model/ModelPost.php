@@ -183,8 +183,10 @@ class ModelPost implements Saveble
     public function getMaxWeight($branch_id)
     {
         $max_weight = $this->qb->table('branches_posts')
+            ->join('posts', 'posts.id', '=', 'branches_posts.post_id')
             ->where('branch_id', '=', $branch_id)
             ->where('weight', '<', self::MAX_WEIGHT)
+            ->where('posts.status', '>', PostStatus::Deleted->value)
             ->max('weight');
 
         return (int) $max_weight;
@@ -193,9 +195,11 @@ class ModelPost implements Saveble
     public function getMaxWeightAndCount($branch_id)
     {
         return $this->qb->table('branches_posts')
+            ->join('posts', 'posts.id', '=', 'branches_posts.post_id')
             ->select($this->qb->raw('MAX(weight) AS max_weight'))
             ->select($this->qb->raw('COUNT(post_id) AS count'))
             ->where('weight', '<', self::MAX_WEIGHT)
+            ->where('posts.status', '>', PostStatus::Deleted->value)
             ->find($branch_id, 'branch_id');
     }
 

@@ -2,26 +2,9 @@
 <div class="join" role="post-controls">
     {% if app.user %}
         {% if allow_rating %}
-        <a 
-            id="like-{{ post.id }}" 
-            title="Like" 
-            href="{{ link_like }}" 
-            class="cursor-pointer btn btn-xs join-item"
-            onclick="rating.call(this); return false;"
-            data-branch="{{ branch.id }}"
-        >
-            {{ i.like(post.user_rating, 'size-5') }}
-        </a>
-        <a 
-            id="dislike-{{ post.id }}" 
-            title="Dislike" 
-            href="{{ link_dislike }}" 
-            class="cursor-pointer btn btn-xs join-item"
-            onclick="rating.call(this); return false;"
-            data-branch="{{ branch.id }}"
-            >
-            {{ i.dislike(post.user_rating, 'size-5') }}
-        </a>
+        <div id="post-rating-{{ post.id }}" class="join">
+            {{ app.cmp('CmpRating', {'branch': branch}).render(post)|raw }}
+        </div>
         {% endif %}
 
         {% if allow_comment %}
@@ -35,18 +18,17 @@
             {{ i.branch('size-4') }}
         </a>
         {% endif %}
-
-        {% if allow_write %}
+        
+        {% if allow_edit %}
+        <a title="Edit" href="{{ link_edit }}" class="cursor-pointer btn btn-xs join-item">
+            {{ i.pencil('size-5') }}
+        </a>
+        {% elseif allow_write %}
         <a title="Continue" href="{{ link_write }}" class="cursor-pointer btn btn-xs join-item">
             {{ i.pencil('size-5') }}
         </a>
         {% endif %}
 
-        {% if allow_edit %}
-        <a title="Edit" href="{{ link_edit }}" class="cursor-pointer btn btn-xs join-item">
-            {{ i.pencil('size-5') }}
-        </a>
-        {% endif %}
 
         {% if allow_approve %}
         <a title="Approve" href="{{ link_approve }}" class="cursor-pointer btn btn-xs join-item">
@@ -61,7 +43,8 @@
         <a
             title="Delete" href="{{ link_delete }}"
             class="cursor-pointer btn btn-xs join-item"
-            onclick="deletePostHandler.call(this); return false;"
+            data-post="{{ post.id }}"
+            onclick="confirmPostHandler.call(this); return false;"
         >
             {{ i.xmark('size-6', 'text-red-800') }}
         </a>
