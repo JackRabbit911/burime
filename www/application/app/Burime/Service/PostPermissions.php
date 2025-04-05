@@ -102,7 +102,8 @@ class PostPermissions
 
         if ($this->isLast($post)
         && $post->status !== PostStatus::Moderation->value
-        && $this->isAuthor($post)) {
+        && $this->isAuthor($post)
+        && $this->branch->info['current_writer'] === $this->user->id) {
             return true;
         }
 
@@ -129,7 +130,9 @@ class PostPermissions
             return true;
         }
 
-        if ($this->isLast($post) && $this->isAuthor($post)) {
+        if ($this->isLast($post)
+        && $this->isAuthor($post)
+        && $this->branch->info['current_writer'] === $this->user->id) {
             return true;
         }
 
