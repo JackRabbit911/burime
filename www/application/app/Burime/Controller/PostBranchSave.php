@@ -22,11 +22,11 @@ class PostBranchSave extends WebController
     public function __invoke(SaveRepo $repo, $branch_id, $post_id = null)
     {
         $branch = $this->request->getAttribute('branch');
-        $data = $this->request->getParsedBody();
-
-        $post_permissions = new PostPermissions($branch, $this->user);
-
+                
         if ($branch->info['current_writer'] === $this->user->id) {
+            $data = $this->request->getParsedBody();
+            $post_permissions = new PostPermissions($branch, $this->user);
+
             switch ($data['sbmt']) {
                 case 'publish':
                     if ($branch->info['moderation'] === 1
@@ -63,26 +63,26 @@ class PostBranchSave extends WebController
                     $post_status = false;
                     break;
             }
-        }
 
-        if ($post_status !== false) {
-            $post_data = [
-                'author_id' => (int) $data['author'],
-                'body' => $data['new_post'],
-                'status' => $post_status,
-                'branch_id' => $branch_id,
-            ];
-
-            if ($post_id) {
-                $post_data['id'] = $post_id;
+            if ($post_status !== false) {
+                $post_data = [
+                    'author_id' => (int) $data['author'],
+                    'body' => $data['new_post'],
+                    'status' => $post_status,
+                    'branch_id' => $branch_id,
+                ];
+    
+                if ($post_id) {
+                    $post_data['id'] = $post_id;
+                }
+    
+                if ($branch->info['current_writer'] === $this->user->id) {
+                    $repo->save($post_data);
+                }
             }
 
-            if ($branch->info['current_writer'] === $this->user->id) {
-                $repo->save($post_data);
-            }
+            $branch->save();
         }
-
-        $branch->save();
 
         return new RedirectResponse(path('branch', ['branch_id' => $branch_id]));
     }
