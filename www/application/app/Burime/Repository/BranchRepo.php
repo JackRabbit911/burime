@@ -44,4 +44,9 @@ class BranchRepo
     {
         $this->modelBranch->setStatus($branch_id, $status);
     }
+
+    public function setPostStatusPublish($branch_id)
+    {
+        $this->modelPost->setPostStatusPublish($branch_id);
+    }
 }

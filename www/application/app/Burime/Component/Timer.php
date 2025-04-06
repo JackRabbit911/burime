@@ -13,6 +13,11 @@ class Timer extends Component
     public function __construct(BranchInterface $branch, PostPermissions $postPermissions)
     {
         $now = time();
+
+        if (!isset($branch->info['time_beguin'])) {
+            $branch->info['time_beguin'] = $now;
+        }
+        
         $tr = ($branch->info['time_limit'] * 60) - ($now - $branch->info['time_beguin']);
 
         if ($tr < 0) {
