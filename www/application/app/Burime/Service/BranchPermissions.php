@@ -57,6 +57,10 @@ Register and indicate your date of birth';
 
     public function first()
     {
+        if (!$this->user) {
+            return false;
+        }
+        
         if (is_null($this->branch->maxWeight)) {
             if ($this->branch->role === BranchRole::Open->value) {
                 return true;
