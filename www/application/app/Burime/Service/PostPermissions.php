@@ -195,7 +195,7 @@ class PostPermissions
     public function comment($post)
     {
         if (!$this->user || $this->user->ownAuthors->empty()
-            || $post->status !== PostStatus::Publish->value) {
+            || $post->status < PostStatus::Publish->value) {
             return false;
         }
 
@@ -205,7 +205,7 @@ class PostPermissions
     public function branch($post)
     {
         if (!$this->user || $this->user->ownAuthors->empty()
-            || $post->status !== PostStatus::Publish->value) {
+            || $post->status < PostStatus::Publish->value) {
             return false;
         }
 
