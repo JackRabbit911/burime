@@ -76,19 +76,28 @@ class ModelPost implements Saveble
             ->update(['status' => $status]);
     }
 
+    public function setPostStatusPublish($branch_id)
+    {
+        $this->qb->table($this->table)
+            ->join('branches_posts', 'branches_posts.post_id', '=', 'posts.id')
+            ->where('branches_posts.branch_id', '=', $branch_id)
+            ->where('posts.status', '=', PostStatus::Moderation->value)
+            ->update(['status' => PostStatus::Publish->value]);
+    }
+
     /**
      * PostSave
      */
-    public function MarkAsExpired($branch_id, $post_id = null): void
-    {
-        $this->qb->table('branches_posts')
-            ->select('posts.*')
-            ->join('posts', 'posts.id', '=', 'branches_posts.post_id')
-            ->where('branch_id', '=', $branch_id)
-            ->where('posts.status', '=', PostStatus::Draft->value)
-            ->where('post_id', '!=', (int) $post_id)
-            ->update(['posts.status' => 10]);
-    }
+    // public function MarkAsExpired($branch_id, $post_id = null): void
+    // {
+    //     $this->qb->table('branches_posts')
+    //         ->select('posts.*')
+    //         ->join('posts', 'posts.id', '=', 'branches_posts.post_id')
+    //         ->where('branch_id', '=', $branch_id)
+    //         ->where('posts.status', '=', PostStatus::Draft->value)
+    //         ->where('post_id', '!=', (int) $post_id)
+    //         ->update(['posts.status' => 10]);
+    // }
 
     /**
      * AuthorPostGuard
@@ -217,12 +226,12 @@ class ModelPost implements Saveble
             ->get()[0] ?? null;
     }
 
-    public function setRating($data)
-    {
-        return $this->qb->table('posts_ratings')
-            ->onDuplicateKeyUpdate($data)
-            ->insert($data);
-    }
+    // public function setRating($data)
+    // {
+    //     return $this->qb->table('posts_ratings')
+    //         ->onDuplicateKeyUpdate($data)
+    //         ->insert($data);
+    // }
 
     public function getPostsAuthorsByBranch($branch_id)
     {
