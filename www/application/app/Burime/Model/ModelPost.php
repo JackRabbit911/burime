@@ -114,6 +114,18 @@ class ModelPost implements Saveble
         return $post;
     }
 
+    public function findOwnerAuthorPostByWeight(int $branch_id, int $weight)
+    {
+        return $this->qb->table('branches_posts')
+            ->select('authors.owner')
+            ->join('posts', 'posts.id', '=', 'branches_posts.post_id')
+            ->join('authors', 'authors.id', '=', 'posts.author_id')
+            ->where('branches_posts.branch_id', '=', $branch_id)
+            ->where('branches_posts.weight', '=', $weight)
+            ->setFetchMode(\PDO::FETCH_COLUMN, 0)
+            ->first();
+    }
+
     public function get($branch_id, $limit, $offset)
     {
         return $this->qb->table('branches_posts')

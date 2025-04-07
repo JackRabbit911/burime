@@ -8,6 +8,7 @@ use App\Burime\Component\PostForm;
 use App\Burime\Component\Timer;
 use App\Burime\Middleware\AuthorPostGuard;
 use App\Burime\Middleware\TimeUpMiddleware;
+use App\Burime\Middleware\CurrentWriterMiddleware;
 use App\Burime\Repository\BranchRepo;
 use App\Burime\Repository\PostsRepo;
 use App\Burime\Service\BranchPermissions;
@@ -49,6 +50,7 @@ class Burime extends WebController
         }
     }
 
+    #[CurrentWriterMiddleware]
     public function __invoke(PostsRepo $repo, $branch_id)
     {
         $this->data['main'] = 'burime/posts';
