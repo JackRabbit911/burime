@@ -52,6 +52,8 @@ class PostControls extends BaseController
         $this->author = $this->authorRepo->findAuthor($this->post->author_id);
         $this->isModerator = $this->permissions->hasRole(AuthorRole::Moderator->value);
         $this->isAuthor = $this->permissions->isAuthor($this->post);
+        $i18n = $this->request->getAttribute('i18n');
+        $i18n->addPath(APPPATH . 'app/Burime/i18n');
 
         $this->uri = path('branch', ['branch_id' => $this->branch->id]);
     }
@@ -75,7 +77,7 @@ class PostControls extends BaseController
             if ($is_delete && $this->isModerator && !$this->isAuthor) {
                 $this->session->flash('to', [$this->post->author_id]);
                 $this->session->flash('subject', 'Your post has been removed by a moderator');
-                $this->session->flash('body', $this->makeBody(8));
+                $this->session->flash('body', __('post.deleted', $this->getDataBody()));
 
                 return new RedirectResponse(path('message', ['action' => 'form']));
             }
@@ -92,18 +94,27 @@ class PostControls extends BaseController
         return new RedirectResponse($this->uri);
     }
 
-    private function makeBody($count_words)
+    public function rewrite(int $branch_id, int $post_id)
     {
-        $substr = Text::catStr($this->post->body, $count_words);
-        $created = $this->post->created;
-        $author = $this->author->alias;
+        $this->branch->status = BranchStatus::Waiting->value;
+        $this->branch->info['time_bequin'] = time();
+        $this->branch->save();
 
-        return <<<EOD
-        Ув., $author! Ваш пост
-        от $created
-        "$substr..."
-        был удалён модератором.
-        Причина:
-        EOD;
+        $this->modelPost->setPostStatus($post_id, PostStatus::Draft->value);
+
+        $this->session->flash('to', [$this->post->author_id]);
+        $this->session->flash('subject', 'Please, edit your post');
+        $this->session->flash('body', __('post.rewrite', $this->getDataBody()));
+
+        return new RedirectResponse(path('message', ['action' => 'form']));
+    }
+
+    private function getDataBody()
+    {
+        return [
+            ':substr' => Text::catStr($this->post->body, 8),
+            ':created' => $this->post->created,
+            ':author' => $this->author->alias,
+            ];
     }
 }
