@@ -3,13 +3,16 @@
 namespace Common\Repository;
 
 use App\Home\Model\ModelAuthors;
+use App\Home\Model\ModelBestPost;
 use App\Home\Model\ModelWorks;
+use Sys\Helper\Facade\Text;
 
 class HomeRepo
 {
     public function __construct(
         private ModelWorks $modelWorks,
-        private ModelAuthors $modelAuthor
+        private ModelAuthors $modelAuthor,
+        private ModelBestPost $modelBestPost
     ) {}
 
     public function getBranchesCount()
@@ -30,5 +33,13 @@ class HomeRepo
     public function getAuthors($limit)
     {
         return $this->modelAuthor->get($limit);
+    }
+
+    public function getBestPost()
+    {
+        $post = $this->modelBestPost->getPost();
+        $post->body = Text::catStr($post->body, 500);
+
+        return $post;
     }
 }

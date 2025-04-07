@@ -1,4 +1,80 @@
 {% extends 'common/layout.twig' %}
+{% import 'home/books/book_card.twig' as b %}
+{% import 'home/authors/author_card.twig' as a %}
 {% block content %}
-{{ __('Hello') }},  {{ app.user.name ?? __('guest') }}!
+<div class="md:flex md:justify-between mb-4">
+    <h1 class="text-2xl md:text-3xl font-medium mt-3">{{ __(title) }}</h1>
+    <div class="stats shadow">
+        <div class="stat">
+            <div class="stat-title">{{ __('Works') }}</div>
+            <div class="stat-value text-primary">{{ count_branches }}</div>
+            <div class="stat-desc">21% more than last month</div>
+        </div>
+        <div class="stat">
+            <div class="stat-title">{{ __('Authors') }}</div>
+            <div class="stat-value text-success">{{ count_authors }}</div>
+            <div class="stat-desc">21% more than last month</div>
+        </div>
+    </div>
+</div>
+<div class="grid md:grid-cols-2 gap-4">
+    <div>
+        <h2 class="text-lg mb-2">
+            {{ __('How to play') }}
+        </h2>
+        <div class="text-center">
+            <a
+                href=""
+                class="btn btn-primary w-full md:w-2/3 mb-3"
+            >
+                {{ __('What is burime') }}
+            </a>
+            <a
+                href=""
+                class="btn btn-primary w-full md:w-2/3 mb-3"
+            >
+                {{ __('Rules of the game') }}
+            </a>
+            <a
+                href=""
+                class="btn btn-success btn-xl w-full md:w-2/3"
+            >
+                {{ __('Start the game') }}
+            </a>
+        </div>
+    </div>
+    <div>
+        <h2 class="text-lg mb-2">
+            {{ __('The best works') }}
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {% for book in books %}
+                <a href="{{ path('branch', {'branch_id': book.id}) }}">
+                    {{ b.book(book) }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        <h2 class="text-lg mb-2">
+            {{ __('The best authors') }}
+        </h2>
+        <div class="grid md:grid-cols-2 gap-4">
+            {% for author in authors %}
+                {{ a.authorcard(author) }}
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        <h2 class="text-lg mb-2">
+            {{ __('The best post') }}
+        </h2>
+        <p>
+            {{ post.body }}
+        </p>
+        <p class="text-end text-xs text-current/100 font-medium mt-1">
+            {{ post.alias }}
+        </p>
+    </div>
+</div>
 {% endblock %}
