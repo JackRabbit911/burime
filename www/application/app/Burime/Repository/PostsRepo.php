@@ -28,10 +28,10 @@ class PostsRepo
         });
     }
 
-    public function getLastPost($posts)
+    public function getLastPost(&$posts)
     {
         $last_post = $posts->last();
 
-        return ($last_post && $last_post->weight === ModelPost::MAX_WEIGHT) ? $last_post : null;
+        return ($last_post && $last_post->weight === ModelPost::MAX_WEIGHT) ? $posts->pop() : null;
     }
 }
