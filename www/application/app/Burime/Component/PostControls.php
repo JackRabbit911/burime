@@ -33,7 +33,7 @@ class PostControls
             'link_delete' => path('post', ['branch_id' => $this->permissions->branch->id, 'action' => 'delete', 'post_id' => $post->id]),
             'allow_approve' => $this->permissions->approve($post),
             'link_approve' => path('post', ['branch_id' => $this->permissions->branch->id, 'action' => 'approve', 'post_id' => $post->id]),
-            'link_rewrite' => path('message', ['action' => 'form', 'author_id' => $this->permissions->getPostAuthor($post)]),
+            'link_rewrite' => path('post', ['branch_id' => $this->permissions->branch->id, 'action' => 'rewrite', 'post_id' => $post->id]),
             'action' => path('branch.post', ['branch_id' => $this->permissions->branch->id, 'action' => 'rating', 'post_id' => $post->id]),
             'form_id' => 'rating-' . $post->id,
             'post' => $post,
