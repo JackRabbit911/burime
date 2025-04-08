@@ -83,7 +83,6 @@ class OAuth
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'phone' => $user->phone,
                 'dob' => $user->dob,
                 'sex' => $user->sex,
             ]
