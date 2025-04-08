@@ -8,6 +8,10 @@ class ModelUserStat extends Model
 {
     public function getMsgCount($ids)
     {
+        if (empty($ids)) {
+            return ['total' => 0, 'new' => 0];
+        }
+        
         $table = $this->qb->table('messages_authors')
             ->whereIn('author_id', $ids);
 
