@@ -1,4 +1,7 @@
-{% extends 'common/layout.twig' %}
-{% block content %}
-<h1>{{ title }}</h1>
-{% endblock content %}
+{% embed 'home/article.twig' %}
+{% block right %}
+<div class="markdown">
+    {{ article|raw }}
+</div>
+{% endblock right %}
+{% endembed %}

@@ -8,3 +8,19 @@ summary.menu-active {
     color: var(--menu-active-fg);
     background-color: var(--menu-active-bg);
 }
+
+div.markdown h3 {
+    @apply text-lg;
+}
+
+div.markdown p {
+    @apply my-2;
+}
+
+div.markdown em {
+    @apply text-current/75;
+}
+
+div.markdown ul {
+    @apply list-disc ms-5;
+}
