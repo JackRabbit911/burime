@@ -15,6 +15,7 @@ use App\Home\Controller\About;
 use App\Home\Controller\AuthorsList;
 use App\Home\Controller\Home;
 use App\Home\Controller\Search;
+use App\Home\Controller\StartGame;
 use App\Home\Controller\Works;
 use App\Message\Controller\Message;
 use App\Private\PrivateController;
@@ -28,6 +29,7 @@ return [
     'works'         => ['/works/{action?}', Works::class],
     'authors'       => ['/authors', AuthorsList::class],
     'search'        => ['/search', Search::class],
+    'start'         => ['/how-to-play/{action}', StartGame::class],
 
     'author.controls'=>['/author/controls/{id?}', Controls::class],
     'author.form'   => ['/author/form/{id?}', Form::class],
