@@ -20,12 +20,10 @@ class UserControls extends Component
             $complete = 50;
     
             switch (true) {
-                case $user->phone:
-                    $complete += 10;
                 case $user->dob:
-                    $complete += 20;
+                    $complete += 25;
                 case $user->sex:
-                    $complete += 20;
+                    $complete += 25;
             }
     
             $this->data['usermenu'] = [
