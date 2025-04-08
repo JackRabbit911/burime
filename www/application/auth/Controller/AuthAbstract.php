@@ -41,9 +41,6 @@ abstract class AuthAbstract extends WebController
 
     protected function _before()
     {
-        $this->tpl->getEngine()->getLoader()
-            ->addPath(realpath($this->tplPath), 'auth');
-
-        // $this->i18n->addPath(APPPATH . 'auth/i18n');
+        $this->tpl->addPath(realpath($this->tplPath), 'auth');
     }
 }

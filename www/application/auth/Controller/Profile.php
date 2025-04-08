@@ -3,12 +3,14 @@
 namespace Auth\Controller;
 
 use Auth\Component\ProfileForm;
+use Auth\Middleware\AuthGuardMiddleware;
 use Auth\Middleware\ProfileValidation;
 use Auth\Model\AvatarRepo;
 use Sys\Template\ComponentForm;
 use Az\Route\Route;
 use HttpSoft\Response\RedirectResponse;
 
+#[AuthGuardMiddleware]
 class Profile extends AuthAbstract
 {
     use ComponentForm;
@@ -17,6 +19,7 @@ class Profile extends AuthAbstract
 
     public function form()
     {
+        $this->user = $this->model->find($this->user->id);
         $this->setReferer();
         return new ProfileForm($this->user);
     }

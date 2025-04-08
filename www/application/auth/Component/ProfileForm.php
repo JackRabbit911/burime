@@ -7,7 +7,7 @@ use Sys\Form\Form;
 
 class ProfileForm extends Form
 {
-    public function __construct(User $user)
+    public function __construct(?User $user)
     {
         $this->title('User profile');
         $this->form('@auth/profile')
