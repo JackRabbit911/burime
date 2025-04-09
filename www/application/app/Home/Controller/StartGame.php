@@ -14,7 +14,11 @@ class StartGame extends WebController
     public function start()
     {
         $data['title'] = $this->title;
+        $data['sidebar'] = 'home/startgame/sidebar.twig';
+        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
         $data['article'] = $this->prologue();
+
+        // dd($data['menu']);
 
         $file = APPPATH . 'common/data/article/startgame.md';
         $content = file_get_contents($file);
