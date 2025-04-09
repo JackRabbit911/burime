@@ -12,6 +12,8 @@ class About extends WebController
     public function burime()
     {
         $data['title'] = 'About Burime';
+        $data['sidebar'] = 'home/startgame/sidebar.twig';
+        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
 
         $file = APPPATH . 'common/data/article/burime.md';
         $content = file_get_contents($file);
@@ -23,7 +25,8 @@ class About extends WebController
     public function rules()
     {
         $data['title'] = 'About rules of burime';
-
+        $data['sidebar'] = 'home/startgame/sidebar.twig';
+        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
         $data['article'] = 'Article about rules';
         
         return view('home/about', $data);
@@ -32,7 +35,8 @@ class About extends WebController
     public function genres()
     {
         $data['title'] = 'About genres';
-
+        $data['sidebar'] = 'home/startgame/sidebar.twig';
+        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
         $data['article'] = 'Article about genres';
         
         return view('home/about', $data);
