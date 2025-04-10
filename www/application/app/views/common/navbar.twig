@@ -1,8 +1,8 @@
 {% import 'common/macro/menu.twig' as m %}
 <div class="glass sticky top-0 z-40">
-    <nav class="navbar lg:container mx-auto flex flex-row justify-between">
-        <div class="dropdown lg:hidden">
-            <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+    <nav class="navbar xl:container mx-auto flex flex-row justify-between">
+        <div class="dropdown md:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost md:hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
             </div>
             <ul
@@ -14,7 +14,7 @@
 
         <div class="flex flex-row">
             <a href="{{ path('home') }}" class="btn btn-ghost text-xl mt-0.5">{{ __(brand) }}</a>
-            <ul class="menu menu-horizontal px-1 hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 hidden md:flex">
                 {{ m.menu(menu) }}
             </ul>
         </div>

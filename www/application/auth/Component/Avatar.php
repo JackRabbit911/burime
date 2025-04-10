@@ -10,7 +10,7 @@ class Avatar extends Component
 {
     private array $data;
 
-    public function __construct(TemplateInterface $tpl, User $user)
+    public function __construct(TemplateInterface $tpl, User $user, ?int $size = null)
     {
         $tpl->addPath(APPPATH . 'auth/views', 'auth');
 
@@ -24,6 +24,7 @@ class Avatar extends Component
 
         $this->data['src'] = str_replace(DOCROOT, '/', $file);
         $this->data['alt'] = $user->name;
+        $this->data['size'] = $size;
     }
 
     public function render()
