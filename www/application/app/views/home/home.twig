@@ -24,13 +24,19 @@
         </h2>
         <div class="text-center">
             <a
-                href=""
+                href="{{ path('about', {action: 'burime'}) }}"
                 class="btn btn-primary w-full md:w-2/3 mb-3"
             >
                 {{ __('What is burime') }}
             </a>
             <a
-                href=""
+                href="{{ path('about', {action: 'glossary'}) }}"
+                class="btn btn-primary w-full md:w-2/3 mb-3"
+            >
+                {{ __('Glossary') }}
+            </a>
+            <a
+                href="{{ path('about', {action: 'rules'}) }}"
                 class="btn btn-primary w-full md:w-2/3 mb-3"
             >
                 {{ __('Rules of the game') }}

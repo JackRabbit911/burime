@@ -14,7 +14,11 @@ class StartGame extends WebController
     public function start()
     {
         $data['title'] = $this->title;
+        $data['sidebar'] = 'home/startgame/sidebar.twig';
+        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
         $data['article'] = $this->prologue();
+
+        // dd($data['menu']);
 
         $file = APPPATH . 'common/data/article/startgame.md';
         $content = file_get_contents($file);
@@ -24,13 +28,22 @@ class StartGame extends WebController
         return view('home/about', $data);
     }
 
+    public function how_create_author()
+    {
+        return 'qq';
+    }
+
+    protected function _before()
+    {
+        $this->i18n->addPath(APPPATH . 'app/Home/i18n');
+    }
+
     private function prologue()
     {
         if (!$this->user) {
-            $href = path('auth', ['action' => 'form']);
-            $link = '<a class="link" href="' . $href . '">' . __('log in') . '</a>';
-
-            return "<p>First of all, you need to $link to our website</p>";
+            return view('home/startgame/no_user');
+        } elseif ($this->user->ownAuthors->empty()) {
+            return view('home/startgame/no_authors');
         } else {
             return '';
         }

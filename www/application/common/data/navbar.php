@@ -10,6 +10,10 @@ return [
                 'href' => path('about', ['action' => 'burime']),
             ],
             [
+                'title' => 'Glossary',
+                'href' => path('about', ['action' => 'glossary']),
+            ],
+            [
                 'title' => 'Rules of the game',
                 'href' => path('about', ['action' => 'rules']),
             ],

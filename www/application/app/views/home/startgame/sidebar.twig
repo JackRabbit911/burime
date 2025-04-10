@@ -1,0 +1,21 @@
+<div class="collapse md:hidden">
+    <input type="checkbox" />
+    <div class="collapse-title font-semibold bg-primary text-primary-content">
+        {{ __('How to create...') }}
+    </div>
+    <div class="collapse-content text-sm p-0!">
+        <ul class="menu bg-base-200 rounded-box w-full">
+            {% for item in menu %}
+            <li><a>{{ item.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<ul class="menu bg-base-200 rounded-box w-full hidden md:block">
+    <div class="p-4 rounded-t-md bg-primary text-primary-content font-semibold">
+        {{ __('How to create...') }}
+    </div>
+    {% for item in menu %}
+    <li><a>{{ item.title }}</a></li>
+    {% endfor %}
+</ul>

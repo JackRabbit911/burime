@@ -24,3 +24,7 @@ div.markdown em {
 div.markdown ul {
     @apply list-disc ms-5;
 }
+
+div.markdown a {
+    @apply link text-primary;
+}
