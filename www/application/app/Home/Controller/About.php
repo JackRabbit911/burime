@@ -11,34 +11,44 @@ class About extends WebController
 
     public function burime()
     {
-        $data['title'] = 'About Burime';
-        $data['sidebar'] = 'home/startgame/sidebar.twig';
-        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
+        $data = $this->getData(__FUNCTION__, 'About burime');
+        return view('home/about', $data);
+    }
 
-        $file = APPPATH . 'common/data/article/burime.md';
-        $content = file_get_contents($file);
-        $data['article'] = $this->parser->text($content);
-        
+    public function glossary()
+    {
+        $data = $this->getData(__FUNCTION__);       
         return view('home/about', $data);
     }
 
     public function rules()
     {
-        $data['title'] = 'About rules of burime';
-        $data['sidebar'] = 'home/startgame/sidebar.twig';
-        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
-        $data['article'] = 'Article about rules';
-        
+        $data = $this->getData(__FUNCTION__, 'Rules of the game');
         return view('home/about', $data);
     }
 
     public function genres()
     {
-        $data['title'] = 'About genres';
-        $data['sidebar'] = 'home/startgame/sidebar.twig';
-        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
-        $data['article'] = 'Article about genres';
-        
+        $data = $this->getData(__FUNCTION__, 'About genres');
         return view('home/about', $data);
+    }
+
+    private function getData($file, $title = null, $menu = null)
+    {
+        $menu = $menu ?: 'startgame'; //$file;
+        $data['title'] = $title ?? ucfirst($file);
+        $data['sidebar'] = 'home/startgame/sidebar.twig';
+        $data['menu'] = require APPPATH . "common/data/article/sidebar/$menu.php";
+
+        $file = APPPATH . "common/data/article/$file.md";
+
+        if (is_file($file)) {
+            $content = file_get_contents($file);
+            $data['article'] = $this->parser->text($content);
+        } else {
+            $data['article'] = 'No contents';
+        }
+
+        return $data;
     }
 }
