@@ -80,7 +80,9 @@ class MsgRepo
             $data['to'] = $this->authorRepo->findAuthor($author_id);
         }
 
-        $data['msg']->view = $data['msg']->view ?: 'message/blank/default';
+        if (!isset($data['msg']->view)) {
+            $data['msg']->view = 'message/blank/default';
+        }
         
         $this->modelMessage->changeStatus($id, $author_id, MsgStatus::Read->value);
 
