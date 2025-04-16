@@ -34,7 +34,7 @@ class BranchRepo
         $branch->authors = new Collection($authors);
 
         $max_weight_count = $this->modelPost->getMaxWeightAndCount($id);
-        $branch->maxWeight = $max_weight_count->max_weight;
+        $branch->maxWeight = $max_weight_count->max_weight ?? 0;
         $branch->postsCount = $max_weight_count->count;
 
         return $branch;
