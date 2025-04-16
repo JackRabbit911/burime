@@ -21,15 +21,15 @@ final class ProfileValidation extends ValidationMiddleware
 
     protected function setRules($request)
     {
-        $email = $request->getAttribute('user')->email;
-        $newEmail = ':value';
+        $user = $request->getAttribute('user');
+        $user = $this->model->find($user->id);
 
         $path = APPPATH . 'auth/messages';
         
         $this->validation->addMsgPath($path)
             ->rule('name', 'required|username')
             ->rule('email', 'required|email')
-            ->rule('email', [$this->model, 'isUniqueOrOwnEmail'], $email)
+            ->rule('email', [$this->model, 'isUniqueOrOwnEmail'], $user->email)
             ->rule('dob', 'validDate')
             ->rule('phone', 'phone')
             ->rule('sex', 'integer')
