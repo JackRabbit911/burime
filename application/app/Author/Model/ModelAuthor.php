@@ -36,13 +36,26 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
         }
 
         if (isset($data['member'])) {
-            $this->setMember($data['id'], $data['member'], 100);
+            $this->setMember((int) $data['id'], (int) $data['member'], 100);
             unset($data['member']);
         }
 
         $data = array_intersect_key($data, array_flip($this->columns($this->table)));
 
         return $this->qb->table($this->table)
+            ->onDuplicateKeyUpdate($data)
+            ->insert($data);
+    }
+
+    public function setMember(int $parent_id, int $child_id, int $role)
+    {
+        $data = [
+            'parent_id' => $parent_id,
+            'child_id' => (int) $child_id,
+            'role' => $role,
+        ];
+
+        return $this->qb->table('authors_authors')
             ->onDuplicateKeyUpdate($data)
             ->insert($data);
     }
