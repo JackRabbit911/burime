@@ -61,7 +61,7 @@ Register and indicate your date of birth';
             return false;
         }
         
-        if (is_null($this->branch->maxWeight)) {
+        if ($this->branch->maxWeight === 0) {
             if ($this->branch->role === BranchRole::Open->value) {
                 return true;
             } elseif (!$this->branch->authors->intersect($this->user->ownAuthors)->empty()
