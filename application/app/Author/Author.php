@@ -12,8 +12,10 @@ class Author extends Entity implements AuthorInterface
     const AVATAR_SRC = 'src';
     const AVATAR_HTML = 'html';
     const AVATAR_NAME = 'name';
-    const NO_AVATAR = '/no_avatar.jpg';
-    const AUTHOR_AVATAR_PATH = DOCROOT . 'avatar/author/';
+    const NO_AVATAR = '/avatar/no_avatar.jpg';
+    const AVATAR_URL = 'avatar/author/';
+    const AVATAR_PATH = PUBPATH . self::AVATAR_URL;
+    const AVATAR_SIZE = 120;
 
     public function __construct()
     {
@@ -49,7 +51,7 @@ class Author extends Entity implements AuthorInterface
 
     public static function getAvatarById($id, $alt = '', $res = self::AVATAR_SRC)
     {
-        $pattern = self::AUTHOR_AVATAR_PATH . $id . '.{jpg,jpeg,png,gif}';
+        $pattern = self::AVATAR_PATH . $id . '.{jpg,jpeg,png,gif}';
         $file = glob($pattern, GLOB_BRACE)[0] ?? '';
 
         if ($res === self::AVATAR_NAME) {
@@ -57,11 +59,14 @@ class Author extends Entity implements AuthorInterface
         }
 
         if (!is_file($file)) {
-            $file = dirname(self::AUTHOR_AVATAR_PATH) . self::NO_AVATAR;
-        } 
+            $src = self::NO_AVATAR;
+        } else {
+            $src = '/' . self::AVATAR_URL . pathinfo($file)['basename'];
+        }
+
         
-        $file = str_replace('//', '/', $file);
-        $src = ltrim($file, '.');    
+        // $file = str_replace('//', '/', $file);
+        // $src = ltrim($file, '.');    
 
         return ($res === self::AVATAR_SRC) ? $src 
                 : '<img src="' . $src . '" alt="' . $alt . '" />';
