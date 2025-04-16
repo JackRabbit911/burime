@@ -7,15 +7,16 @@ chdir(__DIR__);
 
 // echo 'It`s works'; exit;
 
-define('MAINFOLDER', basename(__DIR__) . '/');
-define('DOCROOT', './');
+define('PUBPATH', __DIR__ . '/');
 define('ROOTPATH', '../../');
-define('SYSPATH', ROOTPATH . 'system/');
+define('MAINFOLDER', pathinfo(dirname(__DIR__))['filename'] . '/');
+define('DOCROOT', '../../htdocs/' . MAINFOLDER);
+define('SYSPATH', '../../system/');
 define('FRAMEWORK', SYSPATH . 'vendor/alpha-zeta/framework/src/');
-define('APPPATH', ROOTPATH . MAINFOLDER . 'application/');
-define('STORAGE', ROOTPATH . MAINFOLDER . 'storage/');
+define('APPPATH', '../application/');
+define('STORAGE', '../storage/');
 define('CONFIG', APPPATH . 'common/config/');
-define('ENVPATH', ROOTPATH . MAINFOLDER);
+define('ENVPATH', '../');
 
 require_once SYSPATH . 'vendor/autoload.php';
 require_once FRAMEWORK . 'autoload.php';
