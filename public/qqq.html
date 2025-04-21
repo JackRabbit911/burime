@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>   
+    </head>
+    <body>
+    <button onclick="myFunc()">Click me</button>
+    <p id="target"></p>
+    <script>
+        const myFunc = () => {
+            fetch('http://localhost/api/test', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: "include"
+            })
+            .then((response) => response.json())
+            .then(console.log)
+        }
+    </script>
+    </body>
+</html>
