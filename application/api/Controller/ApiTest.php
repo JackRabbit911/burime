@@ -2,10 +2,12 @@
 
 namespace Api\Controller;
 
+use Auth\Middleware\ApiAuthGuard;
 use HttpSoft\Response\JsonResponse;
 use Az\Route\Route;
 use Sys\Controller\ApiController;
 
+#[ApiAuthGuard]
 class ApiTest extends ApiController
 {
     #[Route(methods: API_ALLOW_METHODS)]

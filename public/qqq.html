@@ -10,6 +10,7 @@
             fetch('http://localhost/api/test', {
                 method: 'GET',
                 headers: {
+                    'Authorization': 'Bearer mytoken123',
                     'Content-Type': 'application/json'
                 },
                 credentials: "include"
