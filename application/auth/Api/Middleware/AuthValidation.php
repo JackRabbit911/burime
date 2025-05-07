@@ -11,19 +11,16 @@ use Az\Validation\Middleware\ValidationMiddleware;
 use HttpSoft\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Sys\Middleware\CORSMiddleware;
 
 #[Attribute]
 final class AuthValidation extends ValidationMiddleware
 {
     private ModelUser $model;
-    private CORSMiddleware $cors;
 
-    public function __construct(Validation $validation, ModelUser $model, CORSMiddleware $cors)
+    public function __construct(Validation $validation, ModelUser $model)
     {
         parent::__construct($validation);
         $this->model = $model;
-        $this->cors = $cors;
     }
 
     protected function setRules($request)
@@ -47,8 +44,6 @@ final class AuthValidation extends ValidationMiddleware
                 ];
         }
 
-        $contract = config('api_contracts', $request->getUri()->getPath());
-        $headers = $this->cors->getHeaders($request, $contract);
-        return new JsonResponse($validationResponse, 200, $headers);
+        return new JsonResponse($validationResponse, 200);
     }
 }
