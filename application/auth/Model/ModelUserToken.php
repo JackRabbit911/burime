@@ -25,18 +25,19 @@ final class ModelUserToken
 
     private $table = 'users_tokens';
 
-    public function create($user_agent, $user_id)
+    public function create($user_agent, $user_id, $role = 0)
     {
         $data['token'] = $this->tokenGenerate();
         $data['user_agent'] = $user_agent;
         $data['user_id'] = $user_id;
+        $data['role'] = $role;
         
         $this->qb->table($this->table)->insert($data);
 
         return $data['token'];
     }
 
-    public function read($token, $lifetime = 0): ?string
+    public function read($token, $lifetime = 0): ?int
     {
         return $this->qb->table($this->table)->select('user_id')
             ->where('last_activity', '>', time() - $lifetime)
@@ -47,7 +48,8 @@ final class ModelUserToken
     public function update($token, $lifetime = 0): string
     {
         $newToken = $this->tokenGenerate();
-        $count = $this->qb->table($this->table)->where('token', '=', $token)
+        $count = $this->qb->table($this->table)
+            ->where('token', '=', $token)
             ->update(['token' => $newToken])
             ->rowCount();
 

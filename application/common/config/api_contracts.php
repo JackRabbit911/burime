@@ -19,6 +19,6 @@ return [
         'patch',
         'delete',
     ],
-    'max_age' => 10,
+    'max_age' => 120,
     'allow_credentials' => true,
 ];

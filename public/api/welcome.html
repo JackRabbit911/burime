@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1 id="welcome"></h1>
+        <button onclick="index('http://localhost/api/test')">
+            Получить секретные данные
+        </button>
+        <button onclick="secret('http://localhost/api/test/secret')">
+            Получить сверхсекретные данные
+        </button>
+        <div id="logger"></div>
+        <script src="http://127.0.0.1:5500/site.zone/www/public/assets/js/api/getdata.js"></script>
+    </body>
+    <script>
+        const index = async (url) => {
+            const data = await getData(url)
+
+            console.log(data)
+
+            logger(data?.user?.name ?? 'Refresh')
+        }
+
+        const secret = async (url) => {
+            const data = await getData(url)
+
+            console.log(data)
+
+            logger(data.foo ?? 'lala')
+        }
+
+        function logger(message) {
+            const logger = document.getElementById('logger')
+            const msg = document.createElement('div')
+            msg.append(`${new Date().toISOString()}: ${message}`)
+
+            logger.append(msg)
+        }
+    </script>
+</html>

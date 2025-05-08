@@ -9,5 +9,5 @@ return [
     'console'   => ['/api/console/{model}/{method}', ConsoleController::class, ['model' => '[\w\/]+']],
     'rating'    => ['/api/rating/{action}/{post_id}', RatingApi::class],
     'post.confirm'=>['/api/post/{action}/{post_id}', DeletePostApi::class],
-    'api.test'  => ['/api/test', ApiTest::class, [], ['options', 'get', 'patch']],
+    'api.test'  => ['/api/test/{action?}', ApiTest::class],
 ];
