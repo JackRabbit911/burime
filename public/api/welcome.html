@@ -2,41 +2,34 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     </head>
     <body>
         <h1 id="welcome"></h1>
-        <button onclick="index('http://localhost/api/test')">
+        <button onclick="index('/test')">
             Получить секретные данные
         </button>
-        <button onclick="secret('http://localhost/api/test/secret')">
+        <button onclick="secret('/test/secret')">
             Получить сверхсекретные данные
         </button>
         <div id="logger"></div>
+        <script>
+            const apiURL = 'http://localhost/api'
+            const baseUrl = 'http://127.0.0.1:5500/site.zone/www/public/api'
+        </script>
+        <script src="http://127.0.0.1:5500/site.zone/www/public/assets/js/api/utils.js"></script>
+        <script src="http://127.0.0.1:5500/site.zone/www/public/assets/js/api/apiLayer.js"></script>
         <script src="http://127.0.0.1:5500/site.zone/www/public/assets/js/api/getdata.js"></script>
     </body>
     <script>
         const index = async (url) => {
             const data = await getData(url)
-
-            console.log(data)
-
             logger(data?.user?.name ?? 'Refresh')
         }
 
         const secret = async (url) => {
             const data = await getData(url)
-
-            console.log(data)
-
             logger(data.foo ?? 'lala')
-        }
-
-        function logger(message) {
-            const logger = document.getElementById('logger')
-            const msg = document.createElement('div')
-            msg.append(`${new Date().toISOString()}: ${message}`)
-
-            logger.append(msg)
         }
     </script>
 </html>
