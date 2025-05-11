@@ -4,19 +4,12 @@ namespace Api\Controller;
 
 use Auth\Api\Middleware\AuthValidation;
 use Auth\Api\Service\OAuthService;
-use Auth\Middleware\ApiAuthGuard;
+use Auth\Api\Middleware\AuthGuard;
 use Auth\Model\ModelUser;
-use Auth\User;
 use Az\Route\Route;
 use stdClass;
 use Sys\Controller\ApiController;
-use Firebase\JWT\ExpiredException;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use Sys\Response\ResponseHeader;
-use Throwable;
 
-// #[ApiAuthGuard]
 #[Route(methods: API_ALLOW_METHODS)]
 class ApiTest extends ApiController
 {
@@ -39,31 +32,31 @@ class ApiTest extends ApiController
         ];
     }
 
-    public function jwt(OAuthService $oauth)
-    {
-        $userDto = new stdClass;
-        $userDto->id = 1;
-        $userDto->name = 'Alexey';
+    // public function jwt(OAuthService $oauth)
+    // {
+    //     $userDto = new stdClass;
+    //     $userDto->id = 1;
+    //     $userDto->name = 'Alexey';
 
-        $accessToken = $oauth->getAccessToken($userDto);
-        $refreshToken = $oauth->getRefreshToken($userDto->id);
+    //     $accessToken = $oauth->getAccessToken($userDto);
+    //     $refreshToken = $oauth->getRefreshToken($userDto->id);
 
-        return [
-            'status' => 'success',
-            'user' => $userDto,
-            'bearer' => $accessToken,
-            'refresh' => $refreshToken,
-        ];
-    }
+    //     return [
+    //         'status' => 'success',
+    //         'user' => $userDto,
+    //         'bearer' => $accessToken,
+    //         'refresh' => $refreshToken,
+    //     ];
+    // }
 
 
-    #[ApiAuthGuard]
+    #[AuthGuard]
     public function __invoke()
     {
         return ['user' => $this->user];
     }
 
-    #[ApiAuthGuard]
+    #[AuthGuard]
     public function secret()
     {
         return ['foo' => 'Сверхсекрет'];
