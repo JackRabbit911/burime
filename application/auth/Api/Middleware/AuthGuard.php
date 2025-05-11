@@ -1,9 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace Auth\Middleware;
+namespace Auth\Api\Middleware;
 
 use Attribute;
-use HttpSoft\Response\EmptyResponse;
 use HttpSoft\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -11,7 +10,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 #[Attribute]
-class ApiAuthGuard implements MiddlewareInterface
+class AuthGuard implements MiddlewareInterface
 {
     public function process(
         ServerRequestInterface $request,
