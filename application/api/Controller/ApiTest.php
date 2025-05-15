@@ -7,7 +7,6 @@ use Auth\Api\Service\OAuthService;
 use Auth\Api\Middleware\AuthGuard;
 use Auth\Model\ModelUser;
 use Az\Route\Route;
-use stdClass;
 use Sys\Controller\ApiController;
 
 #[Route(methods: API_ALLOW_METHODS)]
@@ -32,23 +31,12 @@ class ApiTest extends ApiController
         ];
     }
 
-    // public function jwt(OAuthService $oauth)
-    // {
-    //     $userDto = new stdClass;
-    //     $userDto->id = 1;
-    //     $userDto->name = 'Alexey';
-
-    //     $accessToken = $oauth->getAccessToken($userDto);
-    //     $refreshToken = $oauth->getRefreshToken($userDto->id);
-
-    //     return [
-    //         'status' => 'success',
-    //         'user' => $userDto,
-    //         'bearer' => $accessToken,
-    //         'refresh' => $refreshToken,
-    //     ];
-    // }
-
+    #[Route(methods: ['delete'])]
+    public function logout(OAuthService $oauth)
+    {
+        $refresh = $this->request->getHeaderLine('Refresh');
+        $oauth->logout($refresh);
+    }
 
     #[AuthGuard]
     public function __invoke()

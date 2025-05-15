@@ -24,6 +24,11 @@ class OAuthService
         $this->config = config('api_o2auth');
     }
 
+    public function logout($token)
+    {
+        $this->modelToken->delete($token);
+    }
+
     public function getAccessToken(stdClass $user)
     {
         $now = time();

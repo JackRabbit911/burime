@@ -12,6 +12,9 @@
         <button onclick="secret('/test/secret')">
             Получить сверхсекретные данные
         </button>
+        <button onclick="logout()">
+            Выйти
+        </button>
         <div id="logger"></div>
         <script>
             const apiURL = 'http://localhost/api'
@@ -24,6 +27,7 @@
         <script src="/assets/js/api/utils.js"></script>
         <script src="/assets/js/api/apiLayer.js"></script>
         <script src="/assets/js/api/getdata.js"></script>
+        <script src="/assets/js/api/logout.js"></script>
     </body>
     <script>
         const index = async (url) => {
