@@ -21,8 +21,9 @@ return [
         `token` varchar(128) COLLATE latin1_bin NOT NULL,
         `user_id` int(10) UNSIGNED NULL,
         `user_agent` varchar(32) COLLATE latin1_bin NOT NULL,
+        `role` tinyint(3) unsigned NOT NULL DEFAULT 0,
         `last_activity` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        UNIQUE KEY `token_user_agent` (`token`,`user_agent`),
+        UNIQUE KEY `token_user_agent_role` (`token`,`user_agent`,`role`),
         KEY `user_id` (`user_id`),
         KEY `last_activity` (`last_activity`),
         CONSTRAINT `users_tokens_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

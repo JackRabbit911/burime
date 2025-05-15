@@ -2,15 +2,51 @@
 
 namespace Api\Controller;
 
-use HttpSoft\Response\JsonResponse;
+use Auth\Api\Middleware\AuthValidation;
+use Auth\Api\Service\OAuthService;
+use Auth\Api\Middleware\AuthGuard;
+use Auth\Model\ModelUser;
 use Az\Route\Route;
 use Sys\Controller\ApiController;
 
+#[Route(methods: API_ALLOW_METHODS)]
 class ApiTest extends ApiController
 {
-    #[Route(methods: API_ALLOW_METHODS)]
+    public function __construct(private ModelUser $modelUser){}
+
+    #[AuthValidation]
+    public function login(OAuthService $oauth)
+    {
+        $user = $this->modelUser->getUser();
+        $userDto = $oauth->getUserDto($user);
+
+        $accessToken = $oauth->getAccessToken($userDto);
+        $refreshToken = $oauth->getRefreshToken($user->id);
+
+        return [
+            'status' => 'success',
+            'user' => $userDto,
+            'bearer' => $accessToken,
+            'refresh' => $refreshToken,
+        ];
+    }
+
+    #[Route(methods: ['delete'])]
+    public function logout(OAuthService $oauth)
+    {
+        $refresh = $this->request->getHeaderLine('Refresh');
+        $oauth->logout($refresh);
+    }
+
+    #[AuthGuard]
     public function __invoke()
     {
-        return new JsonResponse(['foo' => 'bar'], 200, $this->headers);
+        return ['user' => $this->user];
     }
+
+    #[AuthGuard]
+    public function secret()
+    {
+        return ['foo' => 'Сверхсекрет'];
+    }    
 }

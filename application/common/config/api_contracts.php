@@ -1,17 +1,25 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 return [
-    '/api/test' => [
-        'hosts' => [
-            'http://127.0.0.1:5500',
-        ],
-        'headers' => [
-            'Content-Type',
-        ],
-        'methods' => [
-            'get', 'post', 'patch',
-        ],
-        'max_age' => 10,
-        'allow_credentials' => true,
-    ]
+    'hosts' => [
+        'http://localhost',
+        'http://127.0.0.1:5500',
+    ],
+    'headers' => [
+        'Authorization',
+        'Content-Type',
+        'Access-Control-Allow-Credentials',
+        'Bearer',
+        'X-Token',
+    ],
+    'methods' => [
+        'get',
+        'post',
+        'patch',
+        'delete',
+    ],
+    'max_age' => 120,
+    'allow_credentials' => true,
 ];
