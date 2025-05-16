@@ -7,6 +7,7 @@ use App\Branch\Controller\Create;
 use App\Branch\Controller\CreateSave;
 use App\Branch\Controller\Edit;
 use App\Branch\Controller\EditSave;
+use App\Burime\Controller\Api as BurimeApi;
 use App\Burime\Controller\Burime;
 use App\Burime\Controller\Participation;
 use App\Burime\Controller\PostBranchSave;
@@ -49,4 +50,6 @@ return [
     'rating'        => ['/rating/{action}/{post_id}', Rating::class],
     'post'          => ['/post/{branch_id}/{action}/{post_id}', PostControls::class],
     // 'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
+
+    'int.savepost'  => ['/internal/burime/{action}', BurimeApi::class],
 ];
