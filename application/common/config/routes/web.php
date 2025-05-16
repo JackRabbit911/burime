@@ -19,9 +19,7 @@ use App\Home\Controller\StartGame;
 use App\Home\Controller\Works;
 use App\Message\Controller\Message;
 use App\Private\PrivateController;
-use App\Message\MessageController;
 use App\Rating\Rating;
-use HttpSoft\Response\HtmlResponse;
 
 return [
     'home'          => ['/', Home::class],
