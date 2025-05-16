@@ -3,9 +3,11 @@ async function logout () {
 
     await api.delete('/test/logout', {
         headers: {
-            'Refresh': refresh
+            'X-Token': refresh
         }
     })
+
+    console.log(refresh);
 
     sessionStorage.clear()
     navigateTo('/login.html')

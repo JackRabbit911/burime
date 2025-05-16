@@ -7,5 +7,5 @@ function logger(message) {
 }
 
 function navigateTo(uri) {
-    window.location.assign(baseUrl + uri)
+    window.location.assign(localBaseUrl + uri)
 }
