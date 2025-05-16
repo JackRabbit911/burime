@@ -8,6 +8,7 @@ use App\Message\Component\MessageForm;
 use App\Message\Middleware\MessageValidation;
 use App\Message\Msg;
 use Common\Middleware\AuthGuard;
+use Common\Contract\IModelGroup;
 use Sys\Controller\WebController;
 use Az\Route\Route;
 use HttpSoft\Response\RedirectResponse;
@@ -141,5 +142,14 @@ class Message extends WebController
     {
         $this->repo->remove($id, $author_id);
         return new RedirectResponse(path('message', ['action' => 'list']));
+    }
+
+    public function forcedelete(IModelGroup $modelGroup, $id, $author_id)
+    {
+        if ($modelGroup->inGroup($this->user->id, $author_id)) {
+            $this->repo->forceDelete($id);
+        }
+
+        return $this->redirect(path('message', ['action' => 'list']));
     }
 }
