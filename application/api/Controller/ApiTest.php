@@ -34,7 +34,7 @@ class ApiTest extends ApiController
     #[Route(methods: ['delete'])]
     public function logout(OAuthService $oauth)
     {
-        $refresh = $this->request->getHeaderLine('Refresh');
+        $refresh = $this->request->getHeaderLine('X-Token');
         $oauth->logout($refresh);
     }
 
