@@ -7,7 +7,6 @@ use App\Branch\Controller\Create;
 use App\Branch\Controller\CreateSave;
 use App\Branch\Controller\Edit;
 use App\Branch\Controller\EditSave;
-use App\Burime\Controller\Api as BurimeApi;
 use App\Burime\Controller\Burime;
 use App\Burime\Controller\Participation;
 use App\Burime\Controller\PostBranchSave;
@@ -21,6 +20,8 @@ use App\Home\Controller\Works;
 use App\Message\Controller\Message;
 use App\Private\PrivateController;
 use App\Rating\Rating;
+use App\Author\Controller\Api as AuthorApi;
+use App\Burime\Controller\Api as BurimeApi;
 
 return [
     'home'          => ['/', Home::class],
@@ -51,5 +52,6 @@ return [
     'post'          => ['/post/{branch_id}/{action}/{post_id}', PostControls::class],
     // 'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
 
-    'int.burime'  => ['/internal/burime/{action}/{id?}', BurimeApi::class],
+    'int.burime'    => ['/internal/burime/{action}/{id?}', BurimeApi::class],
+    'int.author'    => ['/internal/author/{action}/{id?}', AuthorApi::class],
 ];
