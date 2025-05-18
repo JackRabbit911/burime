@@ -16,23 +16,21 @@ class BranchPostCreateRepo
 
     public function save(Branch $branch, array $post)
     {    
-        $branch_id = $this->modelBranch->save($branch);
-        $branch->id = $branch_id;
+        $branch->id = $this->modelBranch->save($branch);
+        $path = path('int.burime', ['action' => 'savepost']);
         
         if (!empty($post['first_post'])) {
             $first = $this->makePostData($branch, $post['first_post']);          
-            $path = path('int.savepost', ['action' => 'savepost']);
             $pid = $this->client->post($path, ['post' => $first]);
         }
 
         if (!empty($post['last_post'])) {
             $last = $this->makePostData($branch, $post['last_post']);
             $last['last'] = true;
-            $path = path('int.savepost', ['action' => 'savepost']);
             $pid = $this->client->post($path, ['post' => $first]);
         }
 
-        return $branch_id;
+        return $branch->id;
     }
 
     private function makePostData(Branch $branch, string $post)

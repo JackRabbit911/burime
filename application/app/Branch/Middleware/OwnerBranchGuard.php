@@ -21,7 +21,7 @@ final class OwnerBranchGuard implements MiddlewareInterface
         $route = $request->getAttribute(Route::class);
         $id = $route->getParameters()['id'] ?? null;
 
-        $path = path('int.savepost', ['action' => 'getbranch', 'id' => $id]);
+        $path = path('int.burime', ['action' => 'getbranch', 'id' => $id]);
         $branch = $this->client->get($path);
         $branch = unserialize($branch);
 

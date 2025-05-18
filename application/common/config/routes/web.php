@@ -51,5 +51,5 @@ return [
     'post'          => ['/post/{branch_id}/{action}/{post_id}', PostControls::class],
     // 'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
 
-    'int.savepost'  => ['/internal/burime/{action}/{id?}', BurimeApi::class],
+    'int.burime'  => ['/internal/burime/{action}/{id?}', BurimeApi::class],
 ];
