@@ -5,7 +5,7 @@ namespace App\Branch\Repository;
 use App\Branch\Branch;
 use App\Branch\Model\ModelBranch;
 use Common\Enum\PostStatus;
-use Sys\InternalRequest\Wrapper;
+use Sys\Request\Internal\Wrapper;
 
 class BranchPostCreateRepo
 {

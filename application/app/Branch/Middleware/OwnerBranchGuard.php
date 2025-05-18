@@ -2,23 +2,18 @@
 
 namespace App\Branch\Middleware;
 
-use Attribute;
-use Common\Repository\BranchRepo;
+use Sys\Request\External\Wrapper;
 use Az\Route\Route;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Attribute;
 
 #[Attribute]
 final class OwnerBranchGuard implements MiddlewareInterface
 {
-    private BranchRepo $repo;
-
-    public function __construct(BranchRepo $repo)
-    {
-        $this->repo = $repo;
-    }
+    public function __construct(private Wrapper $client){}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -26,7 +21,9 @@ final class OwnerBranchGuard implements MiddlewareInterface
         $route = $request->getAttribute(Route::class);
         $id = $route->getParameters()['id'] ?? null;
 
-        $branch = $this->repo->find($id);
+        $path = path('int.savepost', ['action' => 'getbranch', 'id' => $id]);
+        $branch = $this->client->get($path);
+        $branch = unserialize($branch);
 
         if (!$branch || !$user || isset($branch->owner) && $user->id !== $branch->owner) {
             abort();
