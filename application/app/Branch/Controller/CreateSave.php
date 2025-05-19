@@ -10,8 +10,8 @@ use App\Branch\Middleware\BranchGenresValidation;
 use App\Branch\Middleware\RulesValidation;
 use App\Branch\Middleware\BranchAuthorsValidation;
 use App\Branch\Middleware\BranchCoverValidation;
+use App\Branch\Repository\BranchPostCreateRepo;
 use Common\Enum\BranchStatus;
-use Common\Repository\BranchPostCreateRepo;
 use Az\Route\Route;
 
 #[Route(methods: 'post')]

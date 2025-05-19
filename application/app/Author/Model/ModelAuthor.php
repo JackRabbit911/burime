@@ -78,6 +78,14 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
             ->find($id, 'authors.id');
     }
 
+    public function getAlias($id)
+    {
+        return $this->qb->table($this->table)
+            ->select('alias')
+            ->setFetchMode(\PDO::FETCH_COLUMN)
+            ->find($id);
+    }
+
     /**
      * Controller\AuthorsList::makeData
      */

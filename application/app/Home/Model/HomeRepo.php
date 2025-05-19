@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Common\Repository;
+namespace App\Home\Model;
 
 use App\Home\Model\ModelAuthors;
 use App\Home\Model\ModelBestPost;

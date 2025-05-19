@@ -2,7 +2,7 @@
 
 namespace App\Home\Controller;
 
-use Common\Repository\HomeRepo;
+use App\Home\Model\HomeRepo;
 use Sys\Controller\WebController;
 
 class Home extends WebController 

@@ -19,9 +19,9 @@ use App\Home\Controller\StartGame;
 use App\Home\Controller\Works;
 use App\Message\Controller\Message;
 use App\Private\PrivateController;
-use App\Message\MessageController;
 use App\Rating\Rating;
-use HttpSoft\Response\HtmlResponse;
+use App\Author\Controller\Api as AuthorApi;
+use App\Burime\Controller\Api as BurimeApi;
 
 return [
     'home'          => ['/', Home::class],
@@ -51,4 +51,7 @@ return [
     'rating'        => ['/rating/{action}/{post_id}', Rating::class],
     'post'          => ['/post/{branch_id}/{action}/{post_id}', PostControls::class],
     // 'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
+
+    'int.burime'    => ['/internal/burime/{action}/{id?}', BurimeApi::class],
+    'int.author'    => ['/internal/author/{action}/{id?}', AuthorApi::class],
 ];

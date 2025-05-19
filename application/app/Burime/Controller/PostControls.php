@@ -7,40 +7,35 @@ use App\Burime\Model\ModelPost;
 use App\Burime\Repository\BranchRepo;
 use App\Burime\Service\PostPermissions;
 use Common\Contract\BranchInterface;
-use Common\Contract\AuthorInterface;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
-use Common\Repository\AuthorRepo;
 
 use Az\Session\SessionInterface;
 use Sys\Contract\UserInterface;
 use Sys\Controller\BaseController;
 use Sys\Helper\Facade\Text;
 use HttpSoft\Response\RedirectResponse;
+use Sys\Request\Internal\Wrapper;
 
 class PostControls extends BaseController
 {
-    private ModelPost $modelPost;
-    private BranchRepo $branchRepo;
-    private AuthorRepo $authorRepo;
     private PostPermissions $permissions;
     private BranchInterface $branch;
     private EntityPost $post;
-    private AuthorInterface $author;
     private ?UserInterface $user;
     private ?SessionInterface $session;
 
+    private string $authorAlias;
     private bool $isModerator;
     private bool $isAuthor;
     private string $uri;
 
-    public function __construct(ModelPost $modelPost, BranchRepo $branchRepo, AuthorRepo $authorRepo)
-    {
-        $this->modelPost = $modelPost;
-        $this->branchRepo = $branchRepo;
-        $this->authorRepo = $authorRepo;
-    }
+    public function __construct(
+        private ModelPost $modelPost,
+        private BranchRepo $branchRepo,
+        private Wrapper $client
+    ){}
 
     protected function _before()
     {
@@ -49,7 +44,10 @@ class PostControls extends BaseController
         $this->branch = $this->branchRepo->find($this->parameters['branch_id']);
         $this->permissions = new PostPermissions($this->branch, $this->user);
         $this->post = $this->modelPost->findPost($this->parameters['post_id'], $this->parameters['branch_id']);
-        $this->author = $this->authorRepo->findAuthor($this->post->author_id);
+        
+        $path = path('int.author', ['action' => 'getalias', 'id' => $this->post->author_id]);
+        $this->authorAlias = $this->client->get($path);
+
         $this->isModerator = $this->permissions->hasRole(AuthorRole::Moderator->value);
         $this->isAuthor = $this->permissions->isAuthor($this->post);
         $i18n = $this->request->getAttribute('i18n');
@@ -114,7 +112,7 @@ class PostControls extends BaseController
         return [
             ':substr' => Text::catStr($this->post->body, 8),
             ':created' => $this->post->created,
-            ':author' => $this->author->alias,
+            ':author' => $this->authorAlias,
             ];
     }
 }
