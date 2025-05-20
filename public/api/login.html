@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
     <head>
         <meta charset="UTF-8">
     </head>
@@ -13,33 +13,37 @@
         <button onclick="login()">
             Log In
         </button>
-    </body>
-    <script>      
-        const login = async () => {
-            // const host = 'http://127.0.0.1:5500/site.zone/www/public/api/'
-            const host = 'http://localhost/api/'
-
-            const form = document.querySelector('form');
-            const userData = new FormData(form);
-
-            const response = await fetch('https://en.buri.me/api/test/login', {
-                method: 'POST',
-                body: userData
-            });
-
-            const json = await response.json({});
-
-            if (json.status == 'success') {
-                sessionStorage.setItem('Bearer', json.bearer)
-                sessionStorage.setItem('Refresh', json.refresh)
-                sessionStorage.setItem('user', JSON.stringify(json.user))
-                document.location.href = host + 'welcome.html'
-            } else {
-                const emailMsg = document.getElementById('emailMsg')
-                const pawdMsg = document.getElementById('pswdMsg')
-                emailMsg.innerText = json.email.msg
-                pswdMsg.innerText = json.password.msg
+        <script>
+            const login = async () => {
+                // const host = 'http://127.0.0.1:5500/site.zone/www/public/api/'
+                const host = 'http://localhost/api/'
+    
+                const lang = document.querySelector('html').getAttribute('lang')
+    
+                const form = document.querySelector('form');
+                const userData = new FormData(form);
+    
+                const response = await fetch('http://localhost/api/test/login', {
+                    method: 'POST',
+                    headers: {'Accept-Language': lang},
+                    body: userData
+                });
+    
+                const json = await response.json({});
+    
+                if (json.status == 'success') {
+                    sessionStorage.setItem('Bearer', json.bearer)
+                    sessionStorage.setItem('Refresh', json.refresh)
+                    sessionStorage.setItem('user', JSON.stringify(json.user))
+    
+                    document.location.href = host + 'welcome.html'
+                } else {
+                    const emailMsg = document.getElementById('emailMsg')
+                    const pswdMsg = document.getElementById('pswdMsg')
+                    emailMsg.innerText = json.email.msg
+                    pswdMsg.innerText = json.password.msg
+                }
             }
-        }
-    </script>
+        </script>
+    </body>
 </html>
