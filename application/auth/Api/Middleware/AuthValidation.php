@@ -44,6 +44,8 @@ final class AuthValidation extends ValidationMiddleware
                 ];
         }
 
+        $validationResponse['success'] = false;
+
         return new JsonResponse($validationResponse, 200);
     }
 }

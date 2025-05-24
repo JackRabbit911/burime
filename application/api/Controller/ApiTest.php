@@ -24,7 +24,7 @@ class ApiTest extends ApiController
         $refreshToken = $oauth->getRefreshToken($user->id);
 
         return [
-            'status' => 'success',
+            'success' => true,
             'user' => $userDto,
             'bearer' => $accessToken,
             'refresh' => $refreshToken,
