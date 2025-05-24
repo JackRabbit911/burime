@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Auth\Api\Middleware;
 
 use Auth\Api\Service\OAuthService;
-use HttpSoft\Response\EmptyResponse;
 use HttpSoft\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,8 +30,7 @@ final class AuthMiddleware implements MiddlewareInterface
                 $user = $this->oauth->authByJwt($token);
 
                 if ($user) {
-                    $request = $request->withAttribute('user', $user)
-                        ->withAttribute('name', $user->name);
+                    $request = $request->withAttribute('user', $user);
                 } else {
                     return new JsonResponse([], 200, ['X-Token' => 'Refresh']);
                 }
