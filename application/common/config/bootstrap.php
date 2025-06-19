@@ -1,5 +1,7 @@
 <?php
 
+use Sys\Response\ResponseHeader;
+
 date_default_timezone_set(env('APP_TZ'));
 
 define('PRODUCTION', 10);
@@ -28,4 +30,8 @@ define('ROUTE_PATHS', [
     CONFIG . 'routes/' . MODE . '.php',
     APPPATH . 'auth/config/routes.php',
     CONFIG . 'routes/common.php',
-]); 
+]);
+
+if (ENV > PRODUCTION) {
+    ResponseHeader::addHeader('X-Robots-Tag', 'noindex, nofollow, noimageindex');
+}
