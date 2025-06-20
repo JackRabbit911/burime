@@ -17,15 +17,15 @@ return [
         UNIQUE KEY `phone` (`phone`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
 
-    'users_tokens' => "CREATE TABLE `users_tokens` (
+    'refresh_tokens' => "CREATE TABLE `refresh_tokens` (
         `token` varchar(128) COLLATE latin1_bin NOT NULL,
-        `user_id` int(10) UNSIGNED NULL,
+        `user_id` int(10) UNSIGNED NOT NULL,
         `user_agent` varchar(32) COLLATE latin1_bin NOT NULL,
-        `role` tinyint(3) unsigned NOT NULL DEFAULT 0,
-        `last_activity` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        UNIQUE KEY `token_user_agent_role` (`token`,`user_agent`,`role`),
+        `is_api` tinyint(1) unsigned NOT NULL DEFAULT 0,
+        `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        UNIQUE KEY `token_user_agent_is_api` (`token`,`user_agent`,`is_api`),
         KEY `user_id` (`user_id`),
-        KEY `last_activity` (`last_activity`),
+        KEY `updated` (`updated`),
         CONSTRAINT `users_tokens_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;",
 ];
