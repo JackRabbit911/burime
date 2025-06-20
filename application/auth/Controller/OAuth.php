@@ -27,24 +27,24 @@ class OAuth extends AuthAbstract
     public function login(TokenAuth $tokenAuth, ModelOAuth $oAuth)
     {
         $user = $this->model->getUser();
-        
-        $this->session->remove('uid');
-        $this->session->remove('code');
-        $this->session->regenerate(true);
+
+        $referer = $this->getReferer();
+        $this->session->destroy();
         
         $oAuth->login($user);
         $tokenAuth->remember('remember', $user->id);
 
-        return new RedirectResponse($this->getReferer());
+        return new RedirectResponse($referer);
     }
 
     #[AuthGuardMiddleware]
     public function logout(TokenAuth $tokenAuth, ModelOAuth $oAuth)
     {
+        $referer = $this->getReferer();
         $this->session->destroy();
+        
         $tokenAuth->forget($this->request->getCookieParams());
         $oAuth->logout();
-        $referer = $this->getReferer();
         
         return new RedirectResponse($referer);
     }
