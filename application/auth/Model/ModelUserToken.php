@@ -3,63 +3,50 @@
 namespace Auth\Model;
 
 use PDO;
-use Sys\Model\Trait\QueryBuilder;
+use Sys\Model\MysqlModel;
 
-final class ModelUserToken
+class ModelUserToken extends MysqlModel
 {
-    use QueryBuilder;
-    
-    const CREATE_TABLE_USERS_TOKENS = [
-        'mysql' => "CREATE TABLE `users_tokens` (
-            `token` varchar(128) NOT NULL,
-            `user_id` int(11) NOT NULL,
-            `last_activity` int(10) NOT NULL
-          );",
+    private $table = 'refresh_tokens';
 
-        'sqlite' => "CREATE TABLE users_tokens (
-            token text NOT NULL PRIMARY KEY,
-            user_id integer NOT NULL,
-            last_activity integer NOT NULL
-          );",
-        ];
-
-    private $table = 'users_tokens';
-
-    public function create($user_agent, $user_id, $role = 0)
+    public function create(string $user_agent, int $user_id, int $is_api = 0): string
     {
         $data['token'] = $this->tokenGenerate();
         $data['user_agent'] = $user_agent;
         $data['user_id'] = $user_id;
-        $data['role'] = $role;
+        $data['is_api'] = $is_api;
         
         $this->qb->table($this->table)->insert($data);
 
         return $data['token'];
     }
 
-    public function read($token, $lifetime = 0): ?int
+    public function read(string $token, string $user_agent, int $lifetime = 0): ?int
     {
         return $this->qb->table($this->table)->select('user_id')
-            ->where('last_activity', '>', time() - $lifetime)
+            ->where('updated', '>', time() - $lifetime)
             ->setFetchMode(PDO::FETCH_COLUMN)
             ->find($token, 'token');
     }
 
-    public function update($token, $lifetime = 0): string
+    public function update(string $token, string $user_agent, int $lifetime = 0): string
     {
         $newToken = $this->tokenGenerate();
         $count = $this->qb->table($this->table)
             ->where('token', '=', $token)
+            ->where('user_agent', '=', $user_agent)
             ->update(['token' => $newToken])
             ->rowCount();
 
         return ($count > 0) ? $newToken : $token;
     }
 
-    public function delete($token)
+    public function delete(string $token, string $user_agent)
     {
         $this->qb->table($this->table)
-            ->where('token', '=', $token)->delete();
+            ->where('token', '=', $token)
+            ->where('user_agent', '=', $user_agent)
+            ->delete();
     }
 
     public function clear($user_agent, $user_id)
@@ -67,13 +54,15 @@ final class ModelUserToken
         $this->qb->table($this->table)
             ->where('user_agent', '=', $user_agent)
             ->where('user_id', '=', $user_id)
+            ->where('is_api', '=', 0)
             ->delete();
     }
 
     public function gc($lifetime = 3600)
     {
         return $this->qb->table($this->table)
-            ->where($this->qb->raw('NOW() - `last_activity` > ' . $lifetime))
+            ->where($this->qb->raw('NOW() - `updated` > ' . $lifetime))
+            ->where('is_api', '=', 0)
             ->delete();
     }
 
