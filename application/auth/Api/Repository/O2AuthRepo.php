@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Auth\Api\Repository;
 
 use Auth\Api\UserDTO;
-use App\Model\ModelRefreshToken;
+use Auth\Api\Model\ModelRefreshToken;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -85,7 +85,7 @@ class O2AuthRepo
             $last_activity = strtotime($row->updated);
             if ($last_activity + $refresh_period < time()) {
                 $data = $this->generateRefreshToken($row->user_id);
-                $this->model->update($token, ['token' => $data['token']]);
+                $this->model->update($token, $user_agent, ['token' => $data['token']]);
                 $row->token = $data['token'];
             }
         } else {
