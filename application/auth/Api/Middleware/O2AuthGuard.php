@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Middleware;
+namespace Auth\Api\Middleware;
 
 use Auth\Api\UserDTO;
 use Auth\Api\Enum\TokenType;
 use Auth\Api\Model\ModelAuth;
 use Auth\Api\Repository\O2AuthRepo;
-use Sys\PostProcessHandler\ResponseHeaders;
+use Sys\Response\ResponseHeader;
 use HttpSoft\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,7 +20,6 @@ class O2AuthGuard implements MiddlewareInterface
     public function __construct(
         private O2AuthRepo $repo,
         private ModelAuth $modelAuth,
-        private ResponseHeaders $responseHeaders
     ){}
 
     public function process(
@@ -51,7 +50,8 @@ class O2AuthGuard implements MiddlewareInterface
                 if ($result instanceof ResponseInterface) {
                     return $result;
                 } else {
-                    $this->responseHeaders->add(['X-Bearer' => $result]);
+                    ResponseHeader::addHeader('X-Bearer', $result);
+                    // $this->responseHeaders->add(['X-Bearer' => $result]);
                 }
             } else {
                 return new EmptyResponse(401);
@@ -82,7 +82,8 @@ class O2AuthGuard implements MiddlewareInterface
 
         if ($result) {
             if ($result->token !== $token) {
-                 $this->responseHeaders->add(['X-Refresh' => $result->token]);
+                ResponseHeader::addHeader('X-Refresh', $result->token);
+                //  $this->responseHeaders->add(['X-Refresh' => $result->token]);
             }
 
             $user = $this->modelAuth->find($result->user_id);
@@ -97,7 +98,7 @@ class O2AuthGuard implements MiddlewareInterface
     {
         $uri = $request->getUri()->getPath();
 
-        foreach (config('o2auth', 'exclude_urls') as $start) {
+        foreach (config('api_o2auth', 'exclude_urls') as $start) {
             if (str_starts_with($uri, $start)) {
                 return true;
             }
