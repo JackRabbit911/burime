@@ -8,8 +8,10 @@ return [
     'refresh_lifetime' => 3600 * 2,
     'refresh_update' => 3600,
     'exclude_urls' => [
-        '/auth/login',
-        '/auth/logout',
-        '/console'
+        '/api/auth/login',
+        '/api/auth/logout',
+        '/api/console',
+        '/api/rating',
+        '/api/post',
     ]
 ];
