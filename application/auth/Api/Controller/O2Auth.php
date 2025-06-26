@@ -22,9 +22,11 @@ class O2Auth extends ApiController
 
         return new JsonResponse([
             'success' => true,
-            'Bearer' => $repo->encodeJWT($user),
-            'Refresh' => $repo->createRefreshToken($user->id),
-            'user' => $user,
+            'result' => [
+                'bearer' => $repo->encodeJWT($user),
+                'refresh' => $repo->createRefreshToken($user->id),
+                'user' => $user,
+            ]
         ]);
     }
 
@@ -32,8 +34,9 @@ class O2Auth extends ApiController
     public function logout(ModelRefreshToken $model)
     {
         $data = $this->request->getBody()->getContents();
-        $user_agent = $this->request->getServerParams()['HTTP_USER_AGENT'] ?? null;
+        $user_agent = md5($this->request->getServerParams()['HTTP_USER_AGENT']) ?? null;
         $token = json_decode($data)->token;
+        logger($token);
         $model->delete($token, $user_agent);
         return new EmptyResponse(205);
     }
