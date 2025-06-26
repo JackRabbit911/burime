@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Auth\Api\Middleware;
 
 use Attribute;
-use Auth\Model\ModelUser;
+use Auth\Api\Model\ModelAuth;
 use Az\Validation\Validation;
 use Az\Validation\Middleware\ValidationMiddleware;
 use HttpSoft\Response\JsonResponse;
@@ -15,9 +15,9 @@ use Psr\Http\Message\ResponseInterface;
 #[Attribute]
 final class AuthValidation extends ValidationMiddleware
 {
-    private ModelUser $model;
+    private ModelAuth $model;
 
-    public function __construct(Validation $validation, ModelUser $model)
+    public function __construct(Validation $validation, ModelAuth $model)
     {
         parent::__construct($validation);
         $this->model = $model;
@@ -44,8 +44,11 @@ final class AuthValidation extends ValidationMiddleware
                 ];
         }
 
-        $validationResponse['success'] = false;
+        $response = [
+            'success' => false,
+            'error' => $validationResponse,
+        ];
 
-        return new JsonResponse($validationResponse, 200);
+        return new JsonResponse($response, 200);
     }
 }

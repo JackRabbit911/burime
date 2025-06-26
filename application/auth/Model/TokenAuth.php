@@ -7,20 +7,20 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class TokenAuth
 {
-    private ServerRequestInterface $request;
-    private $cookieName = 'UAT';
-    private $model;
-    private $options = [
+    private string $userAgent;
+    private string $cookieName = 'UAT';
+    private array $options = [
         'expires'   => 0,
         'path'      => '/',
         'secure'    => false,
         'httponly'  => true,
     ];
 
-    public function __construct(ModelUserToken $userTokenModel, ServerRequestInterface $request)
+    public function __construct(
+        private ModelUserToken $model,
+        private ServerRequestInterface $request)
     {
-        $this->model = $userTokenModel;
-        $this->request = $request;
+        $this->userAgent = md5($request->getServerParams()['HTTP_USER_AGENT']) ?? null;
     }
 
     public function auth()
@@ -29,14 +29,14 @@ final class TokenAuth
         $token = $this->request->getCookieParams()[$this->cookieName] ?? null;
 
         if ($token) {
-            $user_id = $this->model->read($token);
+            $user_id = $this->model->read($token, $this->userAgent);
         }
 
         if ($user_id) {
-            $token = $this->model->update($token);
+            $token = $this->model->update($token, $this->userAgent);
             setcookie($this->cookieName, $token, $this->options);
         } elseif ($token) {
-            $this->model->delete($token);
+            $this->model->delete($token, $this->userAgent);
         }
 
         return $user_id;
@@ -46,11 +46,8 @@ final class TokenAuth
     {
         $remember = (isset($this->request->getParsedBody()[$key])) ? true : false;
 
-        $user_agent = $this->request->getServerParams()['HTTP_USER_AGENT'] ?? null;
-        $user_agent = ($user_agent) ? md5($user_agent) : null;
-
         if ($remember) {          
-            $token = $this->model->create($user_agent, $user_id);
+            $token = $this->model->create($this->userAgent, $user_id);
             setcookie($this->cookieName, $token, $this->options);
         }
     }
@@ -61,7 +58,7 @@ final class TokenAuth
         setcookie($this->cookieName, '', $this->options);
 
         if ($token) {
-            $this->model->delete($token);
+            $this->model->delete($token, $this->userAgent);
         }
     }
 }

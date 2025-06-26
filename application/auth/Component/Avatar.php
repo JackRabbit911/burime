@@ -14,17 +14,26 @@ class Avatar extends Component
     {
         $tpl->addPath(APPPATH . 'auth/views', 'auth');
 
-        $config = config('user');
+        $this->data['src'] = self::getSrc($user->id);
+        $this->data['alt'] = $user->name;
+        $this->data['size'] = $size;
+    }
 
-        $path = $config['avatar_path'] . $user->id;
+    public static function getSrc(int $user_id): string
+    {
+        static $config;
+
+        if (!$config) {
+            $config = config('user');
+        }
+
+        $path = $config['avatar_path'] . $user_id;
         $pattern = $path . '.{jpg,jpeg,png,gif}';
 
         $file = glob($pattern, GLOB_BRACE)[0] ?? null;
         $file = $file ?: $config['no_avatar'];
 
-        $this->data['src'] = str_replace(DOCROOT, '/', $file);
-        $this->data['alt'] = $user->name;
-        $this->data['size'] = $size;
+        return str_replace(DOCROOT, '/', $file);
     }
 
     public function render()
