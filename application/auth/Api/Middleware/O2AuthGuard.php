@@ -51,7 +51,6 @@ class O2AuthGuard implements MiddlewareInterface
                     return $result;
                 } else {
                     ResponseHeader::addHeader('X-Bearer', $result);
-                    // $this->responseHeaders->add(['X-Bearer' => $result]);
                 }
             } else {
                 return new EmptyResponse(401);
@@ -83,7 +82,6 @@ class O2AuthGuard implements MiddlewareInterface
         if ($result) {
             if ($result->token !== $token) {
                 ResponseHeader::addHeader('X-Refresh', $result->token);
-                //  $this->responseHeaders->add(['X-Refresh' => $result->token]);
             }
 
             $user = $this->modelAuth->find($result->user_id);
