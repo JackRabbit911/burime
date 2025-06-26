@@ -6,6 +6,7 @@ namespace Auth\Api\Repository;
 
 use Auth\Api\UserDTO;
 use Auth\Api\Model\ModelRefreshToken;
+use Auth\Api\UserJWT;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -50,7 +51,7 @@ class O2AuthRepo
         return $row;
     }
   
-    public function encodeJWT(UserDTO $user, ?int $iat = null): string
+    public function encodeJWT(UserJWT|UserDTO $user, ?int $iat = null): string
     {
         $iat = $iat ?? time();
 
@@ -58,10 +59,11 @@ class O2AuthRepo
             'iss' => $this->config['iss'],
             'iat' => $iat,
             'exp' => $iat + $this->config['lifetime'],
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-            ]
+            'user' =>
+                [
+                    'id' => $user->id,
+                    'role' => $user->role,
+                ]
         ];
         
         return JWT::encode($payload, $this->config['key'], $this->config['algo']);
