@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Auth\Api\Model;
 
 use Auth\Api\UserDTO;
+use Auth\Api\UserJWT;
+use Auth\Component\Avatar;
 use Pecee\Pixie\QueryBuilder\IQueryBuilderHandler;
+use stdClass;
 use Sys\Model\MysqlModel;
 
 class ModelAuth extends MysqlModel
 {
-    private UserDTO $user;
+    private int $adminGroupId = 19;
+    private stdClass $user;
 
     public function __construct(protected IQueryBuilderHandler $qb)
     {
@@ -28,24 +32,41 @@ class ModelAuth extends MysqlModel
         }
 
         if (password_verify($password, $user->password)) {
-            $this->user = UserDTO::fromObject($user);
+            $this->user = $user;
             return true;
         } else {
             return false;
         }
     }
 
-    public function find(int|string $id, string $column = 'id'): ?UserDTO
+    public function find(int|string $id, string $column = 'user_id'): ?UserJWT
     {
-        $user = $this->qb->table('users')
-            ->select('id', 'name')
+        $user = $this->qb->table('users_authors')
+            ->select($this->qb->raw('user_id as id'))
+            ->select('role')
+            ->where('author_id', '=', $this->adminGroupId)
             ->find($id, $column);
 
-        return ($user) ? UserDTO::fromObject($user) : null;
+        if (!$user) {
+            return null;
+        }
+        
+        $user->avatar = Avatar::getSrc($id);
+
+        return ($user) ? UserJWT::fromObject($user) : null;
     }
 
-    public function get()
+    public function get(): UserDTO
     {
-        return $this->user ?? null;
+        $user = $this->qb->table('users_authors')
+            ->select('role')
+            ->where('author_id', '=', $this->adminGroupId)
+            ->find($this->user->id, 'user_id');
+
+        $user->id = $this->user->id;
+        $user->name = $this->user->name;
+        $user->avatar = Avatar::getSrc($this->user->id);
+
+        return UserDTO::fromObject($user);
     }
 }
