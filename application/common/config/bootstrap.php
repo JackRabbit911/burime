@@ -9,6 +9,10 @@ define('STAGE', 20);
 define('TESTING', 30);
 define('DEVELOPMENT', 40);
 
+define('ROOTPATH', '../../');
+define('DOCROOT', './');
+define('STORAGE', '../storage/');
+
 define('ENV', env('APP_ENV'));
 
 define('DISPLAY_ERRORS', (ENV >= TESTING) ? true : false);
