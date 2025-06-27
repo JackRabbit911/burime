@@ -15,9 +15,10 @@ use Psr\Http\Message\ResponseInterface;
 #[Attribute]
 final class AuthValidation extends ValidationMiddleware
 {
-    private ModelAuth $model;
-
-    public function __construct(Validation $validation, ModelAuth $model)
+    public function __construct(
+        protected Validation $validation,
+        private ModelAuth $model
+    )
     {
         parent::__construct($validation);
         $this->model = $model;
