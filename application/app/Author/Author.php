@@ -14,7 +14,7 @@ class Author extends Entity implements AuthorInterface
     const AVATAR_NAME = 'name';
     const NO_AVATAR = '/avatar/no_avatar.jpg';
     const AVATAR_URL = 'avatar/author/';
-    const AVATAR_PATH = PUBPATH . self::AVATAR_URL;
+    const AVATAR_PATH = DOCROOT . self::AVATAR_URL;
     const AVATAR_SIZE = 120;
 
     public function __construct()
