@@ -2,16 +2,24 @@
 
 use Sys\Response\ResponseHeader;
 
+define('SYSPATH', DOCROOT . '../../system/');
+define('FRAMEWORK', SYSPATH . 'vendor/alpha-zeta/framework/src/');
+define('APPPATH', DOCROOT . '../application/');
+define('CONFIG', APPPATH . 'common/config/');
+define('ENVPATH', DOCROOT . '../');
+define('ROOTPATH', DOCROOT . '../../');
+define('STORAGE', DOCROOT . '../storage/');
+
+require_once SYSPATH . 'vendor/autoload.php';
+require_once FRAMEWORK . 'autoload.php';
+require_once FRAMEWORK . 'library.php';
+
 date_default_timezone_set(env('APP_TZ'));
 
 define('PRODUCTION', 10);
 define('STAGE', 20);
 define('TESTING', 30);
 define('DEVELOPMENT', 40);
-
-define('ROOTPATH', '../../');
-define('DOCROOT', './');
-define('STORAGE', '../storage/');
 
 define('ENV', env('APP_ENV'));
 

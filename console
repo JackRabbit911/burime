@@ -1,23 +1,9 @@
 #!/usr/bin/php
 <?php
 
-define ('FRAMEWORK', 'vendor/alpha-zeta/framework/src/');
-define('DOCROOT', '../htdocs/' . basename(__DIR__) .'/');
-define('ROOTPATH', '../');
-define('SYSPATH', '../system/');
-define('APPPATH', './application/');
-define('STORAGE', './storage/');
-define('CONFIG', APPPATH . 'common/config/');
-define('ENVPATH', './');
+use Sys\AppFactory;
 
-require_once SYSPATH . 'vendor/autoload.php';
-require_once SYSPATH . FRAMEWORK . 'autoload.php';
-require_once SYSPATH . FRAMEWORK . 'library.php';
-require_once CONFIG . 'bootstrap.php';
+define('DOCROOT', './public/');
+require_once 'application/common/config/bootstrap.php';
 
-
-$container = (new \Sys\ContainerFactory('cli'))
-    ->create(new \DI\ContainerBuilder());
-
-$app = $container->get('\Sys\Console\App');
-$app->run();
+AppFactory::console()->run();
