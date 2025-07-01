@@ -12,7 +12,7 @@ require_once './application/common/config/bootstrap.php';
 
 $container = AppFactory::getContainer();
 
-if (is_file(SYSPATH . 'console_commands.php')) {
+if (is_file(FRAMEWORK . 'Console/console_commands.php')) {
     $commands = require_once FRAMEWORK . 'Console/console_commands.php';
 } else {
     $commands = [];
