@@ -1,9 +1,29 @@
 #!/usr/bin/php
 <?php
 
+declare(strict_types=1);
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\CommandLoader\FactoryCommandLoader;
 use Sys\AppFactory;
 
 define('DOCROOT', './public/');
-require_once 'application/common/config/bootstrap.php';
+require_once './application/common/config/bootstrap.php';
 
-AppFactory::console()->run();
+$container = AppFactory::getContainer();
+
+if (is_file(FRAMEWORK . 'Console/console_commands.php')) {
+    $commands = require_once FRAMEWORK . 'Console/console_commands.php';
+} else {
+    $commands = [];
+}
+
+$custom_commands = config('console_commands', null, []);
+$commands = array_merge($commands, $custom_commands);
+
+$commandLoader = new FactoryCommandLoader($commands);
+
+$application = $container->get(Application::class);
+$application->setCommandLoader($commandLoader);
+
+$application->run();
