@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Auth\Api\Middleware;
 
-use Auth\Api\UserDTO;
 use Auth\Api\Enum\TokenType;
 use Auth\Api\Model\ModelAuth;
 use Auth\Api\Repository\O2AuthRepo;
+use Auth\Api\UserJWT;
 use Sys\Response\ResponseHeader;
 use HttpSoft\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -62,7 +62,7 @@ class O2AuthGuard implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    private function checkBearer(string $token): UserDTO|ResponseInterface
+    private function checkBearer(string $token): UserJWT|ResponseInterface
     {
         $token = str_replace('Bearer ', '', $token);
         $result = $this->repo->decodeJWT($token);
@@ -70,7 +70,7 @@ class O2AuthGuard implements MiddlewareInterface
         return match ($result) {
             true => new EmptyResponse(204, ['X-Refresh' => '']),
             false => new EmptyResponse(401),
-            default => UserDTO::fromObject($result->user),
+            default => UserJWT::fromObject($result->user),
         };
     }
 
