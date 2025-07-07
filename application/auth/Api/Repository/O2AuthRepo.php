@@ -19,7 +19,7 @@ class O2AuthRepo
 
     public function __construct(private ModelRefreshToken $model)
     {
-        $this->config = config('o2auth');
+        $this->config = config('api_o2auth');
     }
 
     public function generateRefreshToken($user_id): array
