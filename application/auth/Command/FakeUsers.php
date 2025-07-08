@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Auth\Command;
 
 use Sys\Console\CallApi;
-use App\Dev\FakeUsersGenerator;
+use Auth\Dev\FakeUsersGenerator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +22,7 @@ class FakeUsers extends Command
             ->setDescription('Creates fake users.')
             ->setHelp('This command allows you to create fake users...')
             ->addArgument('count', InputArgument::REQUIRED, 'count of users')
-            ->addArgument('locale', InputArgument::OPTIONAL, 'locale (en-Us)')
+            ->addArgument('locale', InputArgument::OPTIONAL, 'locale (en-US)')
             ;
     }
 
