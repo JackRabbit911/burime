@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Dev;
+namespace Auth\Dev;
 
 use Sys\Model\MysqlModel;
 
