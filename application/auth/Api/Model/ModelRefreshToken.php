@@ -17,7 +17,7 @@ class ModelRefreshToken extends MysqlModel
         $this->qb->table($this->table)->insert($data);
     }
 
-    public function read(string $token, string $user_agent, int $lifetime): stdClass|false
+    public function read(string $token, string $user_agent, int $lifetime): stdClass|null
     {
         $expire = date('Y-m-d h:i:s', time() - $lifetime);
 
