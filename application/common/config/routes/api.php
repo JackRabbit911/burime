@@ -13,5 +13,5 @@ return [
     'rating'        => ['/api/rating/{action}/{post_id}', RatingApi::class],
     'post.confirm'  => ['/api/post/{action}/{post_id}', DeletePostApi::class],
     'api.auth'      => ['/api/auth/{action}', O2Auth::class],
-    'api.adm.users' => ['/api/adm/users', Users::class],
+    'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
 ];

@@ -31,7 +31,12 @@ class ModelUsers extends MysqlModel
 
     public function create(array $data){}
 
-    public function read(int $id){}
+    public function read(int $id)
+    {
+        return $this->qb->table($this->table)
+            ->select('id', 'name', 'dob', 'sex', 'created')
+            ->find($id);
+    }
 
     public function update(int $id, array $data){}
 
