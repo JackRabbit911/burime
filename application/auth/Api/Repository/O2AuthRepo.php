@@ -40,7 +40,7 @@ class O2AuthRepo
         return $data['token'];
     }
 
-    public function checkRefreshToken($token): stdClass|false
+    public function checkRefreshToken($token): stdClass|null
     {
         $user_agent = md5($_SERVER['HTTP_USER_AGENT']);
         $lifetime = $this->config['refresh_lifetime'];
