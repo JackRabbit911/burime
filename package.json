@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "@tailwindcss/cli": "^4.0.17",
-    "tailwindcss": "^4.0.17"
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
-    "daisyui": "^5.0.9"
+    "daisyui": "^5.0.47"
   },
   "scripts": {
-    "dev": "npx @tailwindcss/cli -i input.css -o output.css -m --cwd ./htdocs/www/assets"
+    "dev": "npx @tailwindcss/cli -i input.css -o output.css -m --cwd ./public/assets"
   }
 }
