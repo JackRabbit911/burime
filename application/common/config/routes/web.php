@@ -22,6 +22,7 @@ use App\Private\PrivateController;
 use App\Rating\Rating;
 use App\Author\Controller\Api as AuthorApi;
 use App\Burime\Controller\Api as BurimeApi;
+use App\Chat\Controller\Chat;
 
 return [
     'home'          => ['/', Home::class],
@@ -44,6 +45,7 @@ return [
     'create.save'   => ['/create/{action}', CreateSave::class],
 
     'message'       => ['/message/{action}/{id?}/{author_id?}', Message::class],
+    'chat'          => ['/chat/{action?}/{room_id}/{author_id}', Chat::class],
 
     'private'       => ['/private/{action}', PrivateController::class],
 
