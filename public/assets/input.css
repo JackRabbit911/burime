@@ -26,5 +26,5 @@ div.markdown ul {
 }
 
 div.markdown a {
-    @apply link text-primary;
+    @apply link text-primary dark:text-info;
 }
