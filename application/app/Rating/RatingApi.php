@@ -4,9 +4,11 @@ namespace App\Rating;
 
 use App\Rating\Component\CmpRating;
 use Az\Route\Route;
-use HttpSoft\Response\JsonResponse;
 use Sys\Contract\DtoInterface;
+use Auth\Middleware\OAuthMiddleware;
+use HttpSoft\Response\JsonResponse;
 
+#[OAuthMiddleware]
 class RatingApi extends RatingAbstract
 {
     private function dtoBranch($id, $rating)

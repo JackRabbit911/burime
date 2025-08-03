@@ -7,8 +7,10 @@ namespace Adm\Controller;
 use Adm\Model\ModelUsers;
 use Adm\Middleware\SearchValidation;
 use Auth\Component\Avatar;
+use Auth\Api\Middleware\O2AuthGuard;
 use Sys\Controller\ApiController;
 
+#[O2AuthGuard]
 #[SearchValidation]
 class Users extends ApiController
 {

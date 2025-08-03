@@ -2,13 +2,12 @@
 
 namespace App\Rating;
 
-use Auth\User;
-use Sys\Controller\BaseController;
+use Sys\Controller\ApiController;
 
-abstract class RatingAbstract extends BaseController
+abstract class RatingAbstract extends ApiController
 {
     protected ModelRating $model;
-    protected ?User $user;
+    protected $user;
 
     protected $like = 5;
     protected $dislike = 2;
@@ -16,10 +15,5 @@ abstract class RatingAbstract extends BaseController
     public function __construct(ModelRating $model)
     {
         $this->model = $model;
-    }
-
-    protected function _before()
-    {
-        $this->user = $this->request->getAttribute('user');
     }
 }
