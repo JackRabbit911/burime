@@ -46,4 +46,16 @@ class ModelRefreshToken extends MysqlModel
             ->where('is_api', '=', 1)
             ->delete();
     }
+
+    public function gc(int $lifetime): mixed
+    {
+        $query = $this->qb->table($this->table)
+            ->where('updated', '<', $this->qb->raw("NOW() - INTERVAL $lifetime SECOND"))
+            ->where('is_api', '=', 1);
+        
+        $count = $query->count();
+        $query->delete();
+
+        return $count;
+    }
 }
