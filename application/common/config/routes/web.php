@@ -3,6 +3,7 @@
 use App\Author\Controller\Author;
 use App\Author\Controller\Controls;
 use App\Author\Controller\Form;
+use App\Author\Controller\NoAuthor;
 use App\Branch\Controller\Create;
 use App\Branch\Controller\CreateSave;
 use App\Branch\Controller\Edit;
@@ -35,6 +36,7 @@ return [
     'author.controls'=>['/author/controls/{id?}', Controls::class],
     'author.form'   => ['/author/form/{id?}', Form::class],
     'author.save'   => ['/author/save/{id?}', [Form::class, 'save']],
+    'author.guard'  => ['/author/need_create', NoAuthor::class],
     'author'        => ['/author/{action?}/{id}', Author::class],
 
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
