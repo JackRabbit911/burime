@@ -96,9 +96,12 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
         return $table->get();
     }
 
-    public function save(Msg $msg)
+    public function save(Msg|array $data)
     {
-        $data = $msg->prepareProps()->toArray();
+        if ($data instanceof Msg) {
+            $data = $data->prepareProps()->toArray();
+        }
+
         unset($data['path']);
 
         $status = (isset($data['important'])) ? 120 : 100;
@@ -142,7 +145,6 @@ final class ModelMessage extends Model implements Saveble, IModelMessage
         $this->qb->table('messages_authors')
             ->where('message_id' , '=', $id)
             ->where('author_id' , '=', $author_id)
-            // ->where('user_id' , '=', $user_id)
             ->delete();
     }
 
