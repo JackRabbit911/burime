@@ -76,10 +76,10 @@
             {{ __('Random excerpt from the book') }}
         </h2>
         <p>
-            {{ post.body }}
+            {{ post.body ?? 'No content' }}
         </p>
         <p class="text-end text-xs text-current/100 font-medium mt-1">
-            {{ post.alias }}
+            {{ post.alias ?? '' }}
         </p>
     </div>
 </div>
