@@ -25,22 +25,23 @@ class BranchPostCreateRepo
         }
 
         if (!empty($post['last_post'])) {
-            $last = $this->makePostData($branch, $post['last_post']);
+            $last = $this->makePostData($branch, $post['last_post'], true);
             $last['last'] = true;
-            $pid = $this->client->post($path, ['post' => $first]);
+            $pid = $this->client->post($path, ['post' => $last]);
         }
 
         return $branch->id;
     }
 
-    private function makePostData(Branch $branch, string $post)
+    private function makePostData(Branch $branch, string $body, bool $is_last = false)
     {
         return [
-            'id' => (int) $post['first_id'] ?? null,
+            'id' => null,
             'author_id' => $branch->master->id,
-            'body' => $post['first_post'],
+            'body' => $body,
             'status' => PostStatus::Publish->value,
             'branch_id' => $branch->id,
+            'last' => $is_last,
         ];
     }
 }

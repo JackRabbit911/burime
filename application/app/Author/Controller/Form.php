@@ -8,7 +8,6 @@ use App\Author\Middleware\AuthorValidation;
 use App\Author\Repo\Avatar;
 use App\Author\Component\AuthorForm;
 use App\Author\Author;
-use App\Author\Model\ModelUserGroup;
 
 use Az\Route\Route;
 use Sys\Controller\WebController;
@@ -23,7 +22,7 @@ class Form extends WebController
     }
 
     #[OwnerGuard]
-    public function __invoke(ModelUserGroup $modelUserGroup, $id = null)
+    public function __invoke()
     {
         $data['author'] = $this->request->getAttribute('author');
         return new AuthorForm($data['author'], $this->user->ownAuthors);
@@ -42,6 +41,7 @@ class Form extends WebController
             $author = new Author;
             $author->id = $id;
             $author->owner = $this->user->id;
+            $author->created = date("Y-m-d H:i:s");
         }
 
         $author->update($data)->save();
