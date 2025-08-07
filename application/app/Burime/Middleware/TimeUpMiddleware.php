@@ -26,6 +26,11 @@ class TimeUpMiddleware implements MiddlewareInterface
         $branch_id = $request->getAttribute(Route::class)->getParameters()['branch_id'];
         $branch = $this->repo->find($branch_id);
 
+        if (is_string($branch->info)) {
+            $branch->info = trim(str_replace(['\\'], '', $branch->info), '"');
+            $branch->info = json_decode($branch->info, true);
+        }
+
         $branch->info['time_up'] = (isset($branch->info['time_beguin'])) 
             ? time() - $branch->info['time_beguin'] > $branch->info['time_limit'] * 60
             : false;

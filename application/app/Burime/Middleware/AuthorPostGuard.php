@@ -38,18 +38,18 @@ final class AuthorPostGuard implements MiddlewareInterface
 
         $postPermissions = new PostPermissions($branch, $user);
 
-
         if (isset($params['post_id'])) {
             $post_current = $this->modelPost->findPost($params['post_id'], $branch->id);
 
             if (!$postPermissions->edit($post_current)) {
                 redirect($redirect, 302);
             }
-        } else {
-            if (!$postPermissions->write($post_last)) {
-                redirect($redirect, 302);
-            }
-        }
+        } 
+        // else {
+        //     if (!$postPermissions->write($post_last)) {
+        //         redirect($redirect, 302);
+        //     }
+        // }
 
         $request = $request->withAttribute('branch', $branch)
             ->withAttribute('last', $post_last);

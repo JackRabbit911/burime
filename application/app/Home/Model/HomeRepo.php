@@ -38,7 +38,10 @@ class HomeRepo
     public function getBestPost()
     {
         $post = $this->modelBestPost->getPost();
-        $post->body = Text::catStr($post->body, 500);
+
+        if ($post) {
+            $post->body = Text::catStr($post->body, 500);
+        }
 
         return $post;
     }
