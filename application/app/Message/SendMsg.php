@@ -4,21 +4,21 @@ namespace App\Message;
 
 use App\Message\Model\ModelMessage;
 use App\Message\Msg;
-use Sys\Observer\Interface\Listener;
-use Psr\Container\ContainerInterface;
+use Sys\Observer\Interface\ObserverInterface;
 use Attribute;
 
 #[Attribute]
-class SendMsg implements Listener
+class SendMsg implements ObserverInterface
 {
     private $object;
 
-    public function __construct(ContainerInterface $c, string $_class)
+    public function update(string|object $object): self
     {
-        $this->object = $c->get($_class);
+        $this->object = is_string($object) ? container()->get($object) : $object;
+        return $this;
     }
 
-    public function handle()
+    public function handle(): void
     {
         Msg::fromArray($this->object->msg)
             ->save(ModelMessage::class);

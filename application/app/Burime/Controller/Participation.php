@@ -6,7 +6,6 @@ use App\Burime\Model\BranchAuthor;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorStatus;
 use Common\Contract\IModelGroup;
-// use Auth\User;
 use HttpSoft\Response\RedirectResponse;
 use Sys\Contract\UserInterface;
 use Sys\Controller\BaseController;
@@ -31,12 +30,16 @@ class Participation extends BaseController
 
     public function accept($branch_id, $author_id)
     {
-        return $this->setAuthorStatus($branch_id, $author_id, BranchAuthorStatus::Participant);
+        $this->setAuthorStatus($branch_id, $author_id, BranchAuthorStatus::Participant);
+        $uri = path('branch', ['branch_id' => $branch_id]);
+        return new RedirectResponse($uri);
     }
 
     public function refuse($branch_id, $author_id)
     {
-        return $this->setAuthorStatus($branch_id, $author_id, BranchAuthorStatus::Refused);
+        $this->setAuthorStatus($branch_id, $author_id, BranchAuthorStatus::Refused);
+        $uri = path('message', ['action' => 'list']);
+        return new RedirectResponse($uri);
     }
 
     public function recall($branch_id, $author_id)
@@ -45,7 +48,8 @@ class Participation extends BaseController
             $this->modelBranchAuthor->deleteAuthor((int) $branch_id, (int) $author_id);
         }
         
-        return $this->redirect($branch_id);
+        $uri = path('branch', ['branch_id' => $branch_id]);
+        return new RedirectResponse($uri);
     }
 
     #[Route(methods: 'post')]
@@ -68,15 +72,5 @@ class Participation extends BaseController
         if ($this->modelGroup->inGroup($this->user->id, $author_id)) {
             $this->modelBranchAuthor->setAuthorStatus((int) $branch_id, (int) $author_id, $this->user->id, $status);
         }
-
-        return $this->redirect($branch_id);
-    }
-
-    private function redirect($branch_id)
-    {
-        $default = path('branch', ['branch_id' => $branch_id]);
-        $uri = $this->request->getServerParams()['HTTP_REFERER'] ?? $default;
-        
-        return new RedirectResponse($uri);
     }
 }
