@@ -5,3 +5,5 @@ no-order: Not assigned
 circle: Sequence in a circle
 random: Random sequence
 manual: Assigned manually
+
+invite.body: I invite you to participate in the project as a co-author

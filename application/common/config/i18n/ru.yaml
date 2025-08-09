@@ -21,6 +21,10 @@ Go to messages list: К списку сообщений
 Delete this message: Удалить это сообщение
 Delete for everyone: Удалить у всех
 
+Accept: Согласиться
+Refuse: Отказаться
+invite.body: Приглашаю к участию проекте в качестве соавтора
+
 Welcome, :name!: Добро пожаловать, :name!
 Welcome, : Добро пожаловать, 
 Guest: Гость
