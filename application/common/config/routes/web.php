@@ -1,5 +1,6 @@
 <?php declare(strict_types = 1);
 
+use App\Api\UserGuest;
 use App\Author\Controller\Author;
 use App\Author\Controller\Controls;
 use App\Author\Controller\Form;
@@ -58,4 +59,6 @@ return [
 
     'int.burime'    => ['/internal/burime/{action}/{id?}', BurimeApi::class],
     'int.author'    => ['/internal/author/{action}/{id?}', AuthorApi::class],
+
+    'lab.react'     => ['/whoami', UserGuest::class],
 ];
