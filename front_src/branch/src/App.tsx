@@ -1,13 +1,14 @@
-import { useState } from "react"
 import Genres from "./steps/Genres"
 import Rules from "./steps/Rules"
 import StepControls from "./steps/StepControls"
+import { useUnit } from "effector-react"
+import { $step, stepChanged } from "./store/common"
 
 function App() {
-  const [step, setStep] = useState(1)
+  const step = useUnit($step)
 
   const onStep = (newStep: number) => () => {
-    setStep(newStep)
+    stepChanged(newStep)
   }
 
   return (
@@ -46,7 +47,7 @@ function App() {
           </ul>
           {step===1 &&<Genres />}
           {step===2 &&<Rules />}
-          <StepControls step={step} setStep={setStep} />
+          <StepControls />
         </div>
       </div>
     </>

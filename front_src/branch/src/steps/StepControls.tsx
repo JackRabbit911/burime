@@ -1,14 +1,16 @@
-type Props = {
-    step: number;
-    setStep: React.Dispatch<React.SetStateAction<number>>;
-}
-const StepControls = ({ step, setStep }: Props) => {
+import { useUnit } from "effector-react"
+import { $step, stepChanged } from "../store/common"
+import FinalControls from "./FinalControls"
+
+const StepControls = () => {
+    const step = useUnit($step)
+
     const onNextStep = () => {
-        setStep(step + 1)
+        stepChanged(step + 1)
     }
 
     const onPrevStep = () => {
-        setStep(step - 1)
+        stepChanged(step - 1)
     }
 
     return (
@@ -16,9 +18,13 @@ const StepControls = ({ step, setStep }: Props) => {
             <button className="btn btn-primary" onClick={onPrevStep} disabled={step===1}>
                 Prev
             </button>
-            <button className="btn btn-primary" onClick={onNextStep}>
-                Next
-            </button>
+            {step === 5 ? (
+                <FinalControls />
+            ) : (
+                <button className="btn btn-primary" onClick={onNextStep}>
+                    Next
+                </button>
+            )}
         </div>
     )
 }
