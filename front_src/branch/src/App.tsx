@@ -3,9 +3,15 @@ import Rules from "./steps/Rules"
 import StepControls from "./steps/StepControls"
 import { useUnit } from "effector-react"
 import { $step, stepChanged } from "./store/common"
+import { getVocabulariesFx } from "./store/vocabularies"
+import { useEffect } from "react"
 
 function App() {
   const step = useUnit($step)
+
+  useEffect(() => {
+    getVocabulariesFx()
+  }, [])
 
   const onStep = (newStep: number) => () => {
     stepChanged(newStep)
