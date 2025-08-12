@@ -19,7 +19,7 @@ function App() {
             Create the book
           </h1>
           <ul className="steps w-full my-4">
-            <li className="step step-primary">
+            <li className="step step-primary dark:step-info">
               <button className="btn btn-link" onClick={onStep(1)}>
                 Genres
               </button>

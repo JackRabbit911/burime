@@ -15,13 +15,13 @@ const StepControls = () => {
 
     return (
         <div className="flex flex-row justify-between mt-4">
-            <button className="btn btn-primary" onClick={onPrevStep} disabled={step===1}>
+            <button className="btn btn-primary dark:btn-info" onClick={onPrevStep} disabled={step===1}>
                 Prev
             </button>
             {step === 5 ? (
                 <FinalControls />
             ) : (
-                <button className="btn btn-primary" onClick={onNextStep}>
+                <button className="btn btn-primary dark:btn-info" onClick={onNextStep}>
                     Next
                 </button>
             )}

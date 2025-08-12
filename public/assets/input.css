@@ -3,6 +3,7 @@
 @source "../../../www/application/app/views";
 @source "../../../www/application/auth/views";
 @source "js";
+@source "../../../www/front_src/branch/src/";
 
 summary.menu-active {
     color: var(--menu-active-fg);
