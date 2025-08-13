@@ -9,4 +9,4 @@ export const $selectedGenres = createStore<number[]>([])
 
 export const rwModeToggled = createEvent<number>()
 export const $selectedRWMode = createStore(0)
-    .on(rwModeToggled, (_, id) => id)
+    .on(rwModeToggled, (_, role) => role)
