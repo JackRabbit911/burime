@@ -21,10 +21,8 @@ class Create extends ApiController
             'success' => true,
             'result' => [
                 'genres' => $total_genres,
-                'user' => $this->user,
+                'branch' => new BranchDTO($this->user->id),
             ],
         ];
     }
-
-
 }
