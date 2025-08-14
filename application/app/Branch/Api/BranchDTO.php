@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Branch\Api;
 
+use stdClass;
+
 class BranchDTO
 {
     public readonly ?int $id;
@@ -13,6 +15,8 @@ class BranchDTO
     public readonly int $role;
     public readonly int $age_limit;
     public readonly ?string $cover;
+    public readonly stdClass $info;
+    public readonly array $genres;
 
     public function __construct(int $owner, ?array $params = null)
     {
@@ -23,5 +27,17 @@ class BranchDTO
         $this->role = $params['role'] ?? 0;
         $this->age_limit = $params['age_limit'] ?? 0;
         $this->cover = $params['cover'] ?? null;
+        $this->genres = $params['genres'] ?? [];
+
+        $rules = new stdClass();
+        $rules->moderation = $params['info']['moderation'] ?? 0;
+        $rules->allow_comments = $params['info']['allow_comments'] ?? 1;
+        $rules->signature = $params['info']['signature'] ?? 0;
+        $rules->post_size = $params['info']['post_size'] ?? 200;
+        $rules->time_limit = $params['info']['time_limit'] ?? 120;
+        $rules->description = $params['info']['description'] ?? '';
+        $rules->rules = $params['info']['rules'] ?? '';
+
+        $this->info = $rules;
     }
 }
