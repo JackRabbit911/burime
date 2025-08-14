@@ -3,7 +3,7 @@
 // use Api\Controller\ApiTest;
 
 use Adm\Controller\Users;
-use App\Branch\Api\Create;
+use App\Branch\Api\Controller\Branch;
 use App\Burime\Controller\DeletePostApi;
 use App\Rating\RatingApi;
 use Auth\Api\Controller\O2Auth;
@@ -15,5 +15,5 @@ return [
     'post.confirm'  => ['/api/post/{action}/{post_id}', DeletePostApi::class],
     'api.auth'      => ['/api/auth/{action}', O2Auth::class],
     'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
-    'branch.create' => ['/api/branch/create/{action}', Create::class],
+    'branch.create' => ['/api/branch/create/{action}', Branch::class],
 ];
