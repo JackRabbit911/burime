@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Branch\Api\Model;
 
-use Sys\Model\MysqlModel;
+use App\Branch\Api\AuthorDTO;
 use Common\Enum\MemberRole;
+use Sys\Model\MysqlModel;
 
 class Authors extends MysqlModel
 {
@@ -27,5 +28,13 @@ class Authors extends MysqlModel
         }
 
         return $table->get();
+    }
+
+    public function getByUser($user_id)
+    {
+        return $this->qb->table('authors')
+            ->select('id', 'alias')
+            ->where('owner', '=', $user_id)
+            ->asObject(AuthorDTO::class)->get();
     }
 }
