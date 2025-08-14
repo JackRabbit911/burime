@@ -17,4 +17,3 @@ export const $vocabularies = createStore<Vocabularies | null>(null)
     .on(getVocabulariesFx.doneData, (_, data) => data.result)
 
 export const $sameWeightGenres = combine($vocabularies, (data) => getSameWeightGenres(data?.genres || []))
-export const $branch = combine($vocabularies, (data) => data?.branch || null)

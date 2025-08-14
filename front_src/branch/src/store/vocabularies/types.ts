@@ -4,6 +4,16 @@ export type Genre = {
     weight: number;
 }
 
+export type Info = {
+    moderation: number;
+    allow_comments: number;
+    signature: number;
+    post_size: number;
+    time_limit: number;
+    description: string;
+    rules:string;
+}
+
 export type Branch = {
     id: number | null;
     parent_id: number | null;
@@ -12,6 +22,8 @@ export type Branch = {
     role: number;
     age_limit: number;
     cover: string | null;
+    info: Info;
+    genres: number[];
 }
 
 export type Vocabularies = {
