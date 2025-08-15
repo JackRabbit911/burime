@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Branch\Api\Controller;
 
+use App\Branch\Api\BranchDTO;
 use App\Branch\Api\Repository\BranchAuthorsRepo;
 use App\Branch\Model\ModelGenre;
 use Auth\Middleware\OAuthMiddleware;
