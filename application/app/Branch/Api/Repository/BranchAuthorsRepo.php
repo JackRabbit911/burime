@@ -18,7 +18,7 @@ class BranchAuthorsRepo
         $authors = $this->modelAuthors->getByFilter($filter, $exception);
 
         return [
-            'own_authors' => $own_authors,
+            'ownAuthors' => $own_authors,
             'authors' => $authors,
         ];
     }
