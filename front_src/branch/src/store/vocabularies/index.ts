@@ -8,7 +8,6 @@ export const getVocabulariesFx = createEffect(
     async () => {
         const response = await ajax.get<ApiResponse<Vocabularies>>('/branch/create/vocabularies')
 
-        console.log(response.data.result)
         return response.data
     }
 )

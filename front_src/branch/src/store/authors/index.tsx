@@ -9,7 +9,6 @@ export const getAuthorsFx = createEffect(
     async () => {
         const response = await ajax.get<ApiResponse<Authors>>('/branch/create/authors')
 
-        console.log(response.data.result)
         return response.data
     }
 )
