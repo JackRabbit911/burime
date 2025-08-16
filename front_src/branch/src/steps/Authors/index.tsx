@@ -1,7 +1,7 @@
 import { useUnit } from "effector-react"
-import { $authors, $ownAuthors, masterSelected } from "../store/authors"
-import Select, { type Option } from "../reused/Select"
-import { $masterId } from "../store/branch"
+import { $authors, $ownAuthors, masterSelected } from "../../store/authors"
+import Select, { type Option } from "../../reused/Select"
+import { $masterId } from "../../store/branch"
 
 const Authors = () => {
     const authors = useUnit($authors)
