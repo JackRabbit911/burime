@@ -4,6 +4,7 @@ import type { ApiResponse } from "../../api/types";
 import type { Author, Authors } from "./types";
 
 export const masterSelected = createEvent<string>()
+export const authorInvited = createEvent<number>()
 
 export const getAuthorsFx = createEffect(
     async () => {

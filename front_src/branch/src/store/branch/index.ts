@@ -2,8 +2,9 @@ import { combine, createEvent, createStore } from "effector";
 import type { Branch } from "../vocabularies/types";
 import { getVocabulariesFx } from "../vocabularies";
 import { calcSelectedGenres, getBranchMasterId, numberInfoUpdate, textInfoUpdate, toggleInfo } from "./utils";
-import { masterSelected } from "../authors";
-import { selectMaster } from "../authors/utils";
+import { authorInvited, masterSelected } from "../authors";
+import { addAuthor, selectMaster } from "../authors/utils";
+import { debug } from "patronum";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
@@ -31,8 +32,12 @@ export const $branch = createStore<Branch | null>(null)
     .on(decriptionChanged, textInfoUpdate('description'))
     .on(rulesChanged, textInfoUpdate('rules'))
     .on(masterSelected, selectMaster)
+    .on(authorInvited, addAuthor)
 
 export const $selectedGenres = combine($branch, (branch) => branch?.genres || [])
 export const $selectedRWMode = combine($branch, (branch) => branch?.role || 0)
 
 export const $masterId = combine($branch, getBranchMasterId)
+export const $branchAuthors = combine($branch, (branch) => branch?.authors || [])
+
+debug($branch)
