@@ -17,8 +17,9 @@ class BranchDTO
     public readonly ?string $cover;
     public readonly stdClass $info;
     public readonly array $genres;
+    public readonly array $authors;
 
-    public function __construct(int $owner, ?array $params = null)
+    public function __construct(int $owner)
     {
         $this->id = $params['id'] ?? null;
         $this->parent_id = $params['parent_id'] ?? null;
@@ -28,6 +29,7 @@ class BranchDTO
         $this->age_limit = $params['age_limit'] ?? 0;
         $this->cover = $params['cover'] ?? null;
         $this->genres = $params['genres'] ?? [];
+        $this->authors = $params['authors'] ?? [];
 
         $rules = new stdClass();
         $rules->moderation = $params['info']['moderation'] ?? 0;
