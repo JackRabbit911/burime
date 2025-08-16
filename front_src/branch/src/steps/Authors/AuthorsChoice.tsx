@@ -1,15 +1,11 @@
 import { useUnit } from "effector-react";
-import { authorInvited } from "../../store/authors";
-import type { Author } from "../../store/authors/types"
+import { $authors, authorInvited } from "../../store/authors";
 import { isAuthorInBranch } from "../../store/authors/utils";
 import { $branchAuthors } from "../../store/branch";
 
-type Props = {
-  authors: Author[];
-}
-
-const AuthorsChoice = ({ authors }: Props) => {
+const AuthorsChoice = () => {
   const branchAuthors = useUnit($branchAuthors)
+  const authors = useUnit($authors)
   const inviteHandle = (id: number) => () => {authorInvited(id)}
 
   return (

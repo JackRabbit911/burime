@@ -1,11 +1,10 @@
 import { useUnit } from "effector-react"
-import { $authors, $ownAuthors, masterSelected } from "../../store/authors"
+import { $ownAuthors, masterSelected } from "../../store/authors"
 import Select, { type Option } from "../../reused/Select"
 import { $masterId } from "../../store/branch"
 import AuthorsChoice from "./AuthorsChoice"
 
 const Authors = () => {
-  const authors = useUnit($authors)
   const ownAuthors = useUnit($ownAuthors)
   const masterId = useUnit($masterId)
 
@@ -27,7 +26,7 @@ const Authors = () => {
         />
       </fieldset>
       <div className="md:col-span-2">
-        <AuthorsChoice authors={authors} />
+        <AuthorsChoice />
       </div>
     </div>
   )
