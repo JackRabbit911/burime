@@ -1,7 +1,7 @@
-import { combine, createEffect, createStore } from "effector"
+import { createEffect, createStore } from "effector"
 import ajax from "../../api/ajax"
 import type { ApiResponse } from "../../api/types"
-import type { Vocabularies } from "./types"
+import type { SameWeightGenres, Vocabularies } from "./types"
 import { getSameWeightGenres } from "./utils"
 
 export const getVocabulariesFx = createEffect(
@@ -13,7 +13,5 @@ export const getVocabulariesFx = createEffect(
     }
 )
 
-export const $vocabularies = createStore<Vocabularies | null>(null)
-    .on(getVocabulariesFx.doneData, (_, data) => data.result)
-
-export const $sameWeightGenres = combine($vocabularies, (data) => getSameWeightGenres(data?.genres || []))
+export const $sameWeightGenres = createStore<SameWeightGenres[]>([])
+    .on(getVocabulariesFx.doneData, (_, data) => getSameWeightGenres(data?.result?.genres || []))

@@ -5,12 +5,15 @@ import { useUnit } from "effector-react"
 import { $step, stepChanged } from "./store/common"
 import { getVocabulariesFx } from "./store/vocabularies"
 import { useEffect } from "react"
+import { getAuthorsFx } from "./store/authors"
+import Authors from "./steps/Authors"
 
 function App() {
   const step = useUnit($step)
 
   useEffect(() => {
     getVocabulariesFx()
+    getAuthorsFx()
   }, [])
 
   const onStep = (newStep: number) => () => {
@@ -53,6 +56,7 @@ function App() {
           </ul>
           {step===1 &&<Genres />}
           {step===2 &&<Rules />}
+          {step===3 &&<Authors />}
           <StepControls />
         </div>
       </div>

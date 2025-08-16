@@ -1,3 +1,5 @@
+import type { BranchAuthor } from "../authors/types";
+
 export type Genre = {
     id: number;
     title: string;
@@ -24,6 +26,7 @@ export type Branch = {
     cover: string | null;
     info: Info;
     genres: number[];
+    authors: BranchAuthor[];
 }
 
 export type Vocabularies = {

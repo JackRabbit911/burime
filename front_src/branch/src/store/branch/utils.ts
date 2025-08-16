@@ -76,4 +76,18 @@ export function textInfoUpdate(key: keyof Info) {
         }
     }
 }
+
+export const getBranchMasterId = (
+    branch: Branch | null,
+): number | null => {
+    if (!branch) {
+        return null;
+    }
+
+    const master = branch.authors.find(
+        ({ role }) => role === 150
+    )
+
+    return !master ? null : master.id
+}
  
