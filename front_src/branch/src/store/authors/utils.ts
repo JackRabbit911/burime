@@ -1,11 +1,7 @@
 import type { Branch } from "../vocabularies/types";
 import type { BranchAuthor } from "./types";
 
-export const selectMaster = (branch: Branch | null, id: string): Branch | null => {
-    if (!branch) {
-        return null;
-    }
-
+export const selectMaster = (branch: Branch, id: string): Branch => {
     // убрать всех с ролью 150
     const authors = branch.authors.filter(
         ({role}) => role < 150
@@ -24,11 +20,7 @@ export const selectMaster = (branch: Branch | null, id: string): Branch | null =
     }
 }
 
-export const addAuthor = (branch: Branch | null, id: number): Branch | null => {
-    if (!branch) {
-        return null;
-    }
-
+export const addAuthor = (branch: Branch, id: number): Branch => {
     if (isAuthorInBranch(branch.authors, id)) {
         return branch
     }
@@ -45,8 +37,11 @@ export const addAuthor = (branch: Branch | null, id: number): Branch | null => {
     }
 }
 
-export const isAuthorInBranch = (array: BranchAuthor[], id: number): boolean => {
-    const index = array.findIndex((elem: BranchAuthor) => elem.id === id)
-
-    return index === -1 ? false : true
+export function isAuthorInBranch (
+    array: BranchAuthor[],
+    id: number,
+): boolean {
+    return Boolean (
+        array.find((elem: BranchAuthor) => elem.id === id)
+    )
 }

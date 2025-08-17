@@ -1,13 +1,27 @@
 import type { Branch, Info } from "../vocabularies/types";
 
-export const calcSelectedGenres = (
-    branch: Branch | null,
-    genreID: number,
-): Branch | null => {
-    if (!branch) {
-        return null;
-    }
+export const branchInit = () => ({
+    id: null,
+    parent_id: null,
+    owner: 0,
+    title: null,
+    role: 0,
+    age_limit: 0,
+    cover: null,
+    info: {
+        moderation: 0,
+        allow_comments: 1,
+        signature: 0,
+        post_size: 200,
+        time_limit: 120,
+        description: '',
+        rules: '',
+    },
+    genres: [],
+    authors: [],
+})
 
+export const calcSelectedGenres = (branch: Branch, genreID: number): Branch => {
     const isExist = branch.genres.includes(genreID)
 
     if (isExist) {
@@ -24,11 +38,7 @@ export const calcSelectedGenres = (
 }
 
 export function toggleInfo(key: keyof Info) {
-    return function (branch: Branch | null) {
-        if (!branch) {
-            return null;
-        }
-
+    return function (branch: Branch) {
         const info: Info = {
             ...branch.info,
             [key]: branch.info[key] === 0 ? 1 : 0,
@@ -42,11 +52,7 @@ export function toggleInfo(key: keyof Info) {
 }
 
 export function numberInfoUpdate(key: keyof Info) {
-    return function (branch: Branch | null, value: number) {
-        if (!branch) {
-            return null;
-        }
-
+    return function (branch: Branch, value: number) {
         const info: Info = {
             ...branch.info,
             [key]: value,
@@ -60,11 +66,7 @@ export function numberInfoUpdate(key: keyof Info) {
 }
 
 export function textInfoUpdate(key: keyof Info) {
-    return function (branch: Branch | null, value: string) {
-        if (!branch) {
-            return null;
-        }
-
+    return function (branch: Branch, value: string) {
         const info: Info = {
             ...branch.info,
             [key]: value,
@@ -77,13 +79,7 @@ export function textInfoUpdate(key: keyof Info) {
     }
 }
 
-export const getBranchMasterId = (
-    branch: Branch | null,
-): number | null => {
-    if (!branch) {
-        return null;
-    }
-
+export const getBranchMasterId = (branch: Branch): number | null => {
     const master = branch.authors.find(
         ({ role }) => role === 150
     )

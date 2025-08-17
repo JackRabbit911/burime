@@ -1,7 +1,7 @@
 import { combine, createEvent, createStore } from "effector";
 import type { Branch } from "../vocabularies/types";
 import { getVocabulariesFx } from "../vocabularies";
-import { calcSelectedGenres, getBranchMasterId, numberInfoUpdate, textInfoUpdate, toggleInfo } from "./utils";
+import { branchInit, calcSelectedGenres, getBranchMasterId, numberInfoUpdate, textInfoUpdate, toggleInfo } from "./utils";
 import { authorInvited, masterSelected } from "../authors";
 import { addAuthor, selectMaster } from "../authors/utils";
 import { debug } from "patronum";
@@ -18,17 +18,17 @@ export const titleChanged = createEvent<string>()
 export const decriptionChanged = createEvent<string>()
 export const rulesChanged = createEvent<string>()
 
-export const $branch = createStore<Branch | null>(null)
-    .on(getVocabulariesFx.doneData, (_, data) => data?.result?.branch || null)
+export const $branch = createStore<Branch>(branchInit())
+    .on(getVocabulariesFx.doneData, (_, data) => data?.result?.branch)
     .on(genreToggled, calcSelectedGenres)
-    .on(rwModeToggled, (branch, role) => !branch ? null : {...branch, role})
+    .on(rwModeToggled, (branch, role) => ({...branch, role}))
     .on(moderationToggled, toggleInfo('moderation'))
     .on(allowCommentToggled, toggleInfo('allow_comments'))
     .on(signatureToggled, toggleInfo('signature'))
-    .on(ageLimitChanged, (branch, age_limit) => !branch ? null : {...branch, age_limit})
+    .on(ageLimitChanged, (branch, age_limit) => ({...branch, age_limit}))
     .on(postSizeChanged, numberInfoUpdate('post_size'))
     .on(timeLimitChanged, numberInfoUpdate('time_limit'))
-    .on(titleChanged, (branch, title) => !branch ? null : {...branch, title})
+    .on(titleChanged, (branch, title) => ({...branch, title}))
     .on(decriptionChanged, textInfoUpdate('description'))
     .on(rulesChanged, textInfoUpdate('rules'))
     .on(masterSelected, selectMaster)
