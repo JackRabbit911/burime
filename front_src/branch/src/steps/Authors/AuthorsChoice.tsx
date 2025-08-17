@@ -11,11 +11,12 @@ const AuthorsChoice = () => {
   return (
     <>
       <div className="flex flex-wrap gap-2">
-        {authors.map((item) => (
+        {authors.map((item, key) => (
           <button
             className="btn btn-soft btn-outline btn-sm"
             onClick={inviteHandle(item.id)}
             disabled={isAuthorInBranch(branchAuthors, item.id)}
+            key={key}
           >
             {item.alias}
           </button>
