@@ -12,4 +12,5 @@ export type BranchAuthor = {
     id: number;
     role: number;
     status: number;
+    alias: string;
 }

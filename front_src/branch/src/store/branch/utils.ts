@@ -86,4 +86,3 @@ export const getBranchMasterId = (branch: Branch): number | null => {
 
     return !master ? null : master.id
 }
- 

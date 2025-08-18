@@ -1,8 +1,9 @@
 import { useUnit } from "effector-react"
-import { $ownAuthors, masterSelected } from "../../store/authors"
+import { $ownAuthors, masterIdSelected } from "../../store/authors"
 import Select, { type Option } from "../../reused/Select"
 import { $masterId } from "../../store/branch"
 import AuthorsChoice from "./AuthorsChoice"
+import BranchAuthors from "./BranchAuthors"
 
 const Authors = () => {
   const ownAuthors = useUnit($ownAuthors)
@@ -22,8 +23,9 @@ const Authors = () => {
           label="Team leader"
           value={masterId}
           options={options}
-          onChange={masterSelected}
+          onChange={masterIdSelected}
         />
+        <BranchAuthors />
       </fieldset>
       <div className="md:col-span-2">
         <AuthorsChoice />

@@ -1,10 +1,13 @@
 import { createEffect, createEvent, createStore } from "effector";
 import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
-import type { Author, Authors } from "./types";
+import type { Author, Authors, BranchAuthor } from "./types";
 
-export const masterSelected = createEvent<string>()
-export const authorInvited = createEvent<number>()
+export const masterIdSelected = createEvent<string>()
+export const authorInvited = createEvent<Author>()
+export const authorRemoved = createEvent<BranchAuthor>()
+export const masterSelected = createEvent<Author | undefined>()
+export const authorRoleToggled = createEvent<BranchAuthor>()
 
 export const getAuthorsFx = createEffect(
     async () => {
