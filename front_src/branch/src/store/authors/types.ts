@@ -14,3 +14,7 @@ export type BranchAuthor = {
     status: number;
     alias: string;
 }
+
+export type AuthorsPayload = {
+    filter: string;
+}

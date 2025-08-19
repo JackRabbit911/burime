@@ -11,9 +11,13 @@ import Authors from "./steps/Authors"
 function App() {
   const step = useUnit($step)
 
+  const authorsPayload = {
+    filter: ''
+  }
+
   useEffect(() => {
     getVocabulariesFx()
-    getAuthorsFx()
+    getAuthorsFx(authorsPayload)
   }, [])
 
   const onStep = (newStep: number) => () => {
