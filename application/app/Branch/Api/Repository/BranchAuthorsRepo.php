@@ -10,12 +10,16 @@ class BranchAuthorsRepo
 {
     public function __construct(private Authors $modelAuthors){}
 
-    public function getAuthorsByFilter($user_id, ?string $filter = null)
+    public function getAuthorsByFilter(
+        $user_id,
+        ?string $filter = null,
+        ?string $search = null,
+    )
     {
         $own_authors = $this->modelAuthors->getByUser($user_id);
         $exception = array_map(fn($v) => $v->id, $own_authors);
 
-        $authors = $this->modelAuthors->getByFilter($filter, $exception);
+        $authors = $this->modelAuthors->getByFilter($filter, $search, $exception);
 
         return [
             'ownAuthors' => $own_authors,

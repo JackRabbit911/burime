@@ -26,7 +26,10 @@ class Branch extends ApiContractController
 
     public function authors(BranchAuthorsRepo $repo)
     {
-        $filter = $this->request->getQueryParams()['filter'] ?? null;
-        return $repo->getAuthorsByFilter($this->user->id, $filter);
+        $query_params = $this->request->getQueryParams();
+        $filter = $query_params['filter'] ?? null;
+        $search = $query_params['search'] ?? null;
+
+        return $repo->getAuthorsByFilter($this->user->id, $filter, $search);
     }
 }

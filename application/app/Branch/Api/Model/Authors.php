@@ -10,9 +10,13 @@ use Sys\Model\MysqlModel;
 
 class Authors extends MysqlModel
 {
-    public function getByFilter(?string $filter = null, array $except = [])
+    public function getByFilter(
+        ?string $filter = null,
+        ?string $search = null,
+        array $except = []
+    )
     {
-        $role = MemberRole::getByFilter($filter);
+        $role = MemberRole::getByFilter($filter, $search);
 
         $table = $this->qb->table('authors')
             ->selectDistinct('id')
@@ -21,6 +25,10 @@ class Authors extends MysqlModel
         if ($role) {
             $table->join('users_authors', 'users_authors.author_id', '=', 'authors.id')
                 ->where('role', '=', $role);
+        }
+
+        if ($search) {
+            $table->where('alias', 'LIKE', "%$search%");
         }
 
         if (!empty($except)) {
