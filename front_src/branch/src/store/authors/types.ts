@@ -17,4 +17,5 @@ export type BranchAuthor = {
 
 export type AuthorsPayload = {
     filter: string;
+    search: string;
 }

@@ -11,7 +11,6 @@ import {
 } from "./utils";
 import { $ownAuthors, authorInvited, authorRemoved, authorRoleToggled, masterIdSelected, masterSelected } from "../authors";
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
-import { debug } from "patronum";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
@@ -62,4 +61,4 @@ sample({
     target: masterSelected
 })
 
-debug({$branch, $branchAuthors})
+// debug({$branch, $branchAuthors})

@@ -12,7 +12,8 @@ function App() {
   const step = useUnit($step)
 
   const authorsPayload = {
-    filter: ''
+    filter: '',
+    search: '',
   }
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { combine, createEffect, createEvent, createStore, sample } from "effecto
 import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
 import type { Author, Authors, AuthorsPayload, BranchAuthor } from "./types";
+import { debug } from "patronum";
 
 export const masterIdSelected = createEvent<string>()
 export const authorInvited = createEvent<Author>()
@@ -9,6 +10,8 @@ export const authorRemoved = createEvent<BranchAuthor>()
 export const masterSelected = createEvent<Author | undefined>()
 export const authorRoleToggled = createEvent<BranchAuthor>()
 export const authorsFilterChanged = createEvent<string>()
+export const authorSearchChanged = createEvent<string>()
+export const authorSearchClicked = createEvent()
 
 export const getAuthorsFx = createEffect(
     async (payload: AuthorsPayload) => {
@@ -29,15 +32,21 @@ export const $ownAuthors = createStore<Author[]>([])
 export const $authorsFilter = createStore('')
     .on(authorsFilterChanged, (_, filter) => filter)
 
+export const $authorSearch = createStore('')
+    .on(authorSearchChanged, (_, search) => search)
+
 const $authorsPayload = combine(
-    $authorsFilter,
-    (authorsFilter) => ({
-        filter: authorsFilter
+    $authorsFilter, $authorSearch,
+    (authorsFilter, authorSearch) => ({
+        filter: authorsFilter,
+        search: authorSearch,
     })
 )
 
 sample({
-    clock: authorsFilterChanged,
+    clock: [authorsFilterChanged, authorSearchClicked],
     source: $authorsPayload,
     target: getAuthorsFx,
 })
+
+debug($authorSearch)

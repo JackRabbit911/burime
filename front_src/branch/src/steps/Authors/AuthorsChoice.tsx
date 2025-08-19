@@ -4,6 +4,7 @@ import { isAuthorInBranch } from "../../store/authors/utils";
 import { $branchAuthors } from "../../store/branch";
 import type { Author } from "../../store/authors/types";
 import AuthorsFilter from "./AuthorsFilter";
+import AuthorSearch from "./AuthorSearch";
 
 const AuthorsChoice = () => {
   const branchAuthors = useUnit($branchAuthors)
@@ -13,6 +14,7 @@ const AuthorsChoice = () => {
   return (
     <>
       <AuthorsFilter />
+      <AuthorSearch />
       <div className="flex flex-wrap gap-2">
         {authors.map((author, key) => (
           <button
