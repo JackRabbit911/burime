@@ -10,7 +10,7 @@ class BranchDTO
 {
     public readonly ?int $id;
     public readonly ?int $parent_id;
-    public readonly int $owner;
+    public readonly ?int $owner;
     public readonly ?string $title;
     public readonly int $role;
     public readonly int $age_limit;
@@ -19,11 +19,11 @@ class BranchDTO
     public readonly array $genres;
     public readonly array $authors;
 
-    public function __construct(int $owner)
+    public function __construct(array $params = [])
     {
         $this->id = $params['id'] ?? null;
         $this->parent_id = $params['parent_id'] ?? null;
-        $this->owner = $owner;
+        $this->owner = $params['owner'] ?? null;
         $this->title = $params['title'] ?? null;
         $this->role = $params['role'] ?? 0;
         $this->age_limit = $params['age_limit'] ?? 0;
