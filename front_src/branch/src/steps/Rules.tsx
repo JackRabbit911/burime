@@ -1,6 +1,18 @@
 import { useUnit } from "effector-react"
 import RadioBox from "../reused/RadioBox"
-import { $branch, ageLimitChanged, allowCommentToggled, decriptionChanged, moderationToggled, postSizeChanged, rulesChanged, rwModeToggled, signatureToggled, timeLimitChanged, titleChanged } from "../store/branch"
+import {
+  $branch,
+  ageLimitChanged,
+  allowCommentToggled,
+  decriptionChanged,
+  moderationToggled,
+  postSizeChanged,
+  rulesChanged,
+  rwModeToggled,
+  signatureToggled,
+  timeLimitChanged,
+  titleChanged
+} from "../store/branch"
 import CheckBox from "../reused/CheckBox"
 import NumberInput from "../reused/NumberInput"
 import TextInput from "../reused/TextInput"

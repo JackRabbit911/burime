@@ -1,20 +1,19 @@
 import { useUnit } from "effector-react"
-import { $ownAuthors, masterIdSelected } from "../../store/authors"
-import Select, { type Option } from "../../reused/Select"
+import { $authorsPayload, $ownAuthorsOptions, getAuthorsFx, masterIdSelected } from "../../store/authors"
+import Select from "../../reused/Select"
 import { $masterId } from "../../store/branch"
 import AuthorsChoice from "./AuthorsChoice"
 import BranchAuthors from "./BranchAuthors"
+import { useEffect } from "react"
 
 const Authors = () => {
-  const ownAuthors = useUnit($ownAuthors)
+  const authorsPayload = useUnit($authorsPayload)
   const masterId = useUnit($masterId)
+  const options = useUnit($ownAuthorsOptions)
 
-  const options: Option[] = ownAuthors.map(
-    ({ id, alias }) => ({
-      value: id,
-      name: alias,
-    })
-  )
+  useEffect(() => {
+    getAuthorsFx(authorsPayload)
+  }, [])
 
   return (
     <div className="grid md:grid-cols-3 gap-4">

@@ -3,22 +3,15 @@ import Rules from "./steps/Rules"
 import StepControls from "./steps/StepControls"
 import { useUnit } from "effector-react"
 import { $step, stepChanged } from "./store/common"
-import { getVocabulariesFx } from "./store/vocabularies"
 import { useEffect } from "react"
-import { getAuthorsFx } from "./store/authors"
 import Authors from "./steps/Authors"
+import { getBootstrapFx } from "./store/bootstrap"
 
 function App() {
   const step = useUnit($step)
 
-  const authorsPayload = {
-    filter: '',
-    search: '',
-  }
-
   useEffect(() => {
-    getVocabulariesFx()
-    getAuthorsFx(authorsPayload)
+    getBootstrapFx()
   }, [])
 
   const onStep = (newStep: number) => () => {
