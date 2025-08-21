@@ -27,19 +27,15 @@ class BranchRepo
         return $branch_id ? $this->modelBranch->getBranchAuthors($branch_id) : [];
     }
 
-    public function getAuthors(int $user_id, array $branch_authors, array $query_params = [])
+    public function getAuthors(int $user_id, array $query_params = [])
     {
         $own_authors = $this->modelAuthors->getByUser($user_id);
-
-        $own_authors_ids = array_map(fn($author) => $author->id, $own_authors);
-        $branch_authors_ids = array_map(fn($author) => $author->author_id, $branch_authors);
-
-        $except = array_unique(array_merge($own_authors_ids, $branch_authors_ids));
+        $except = array_map(fn($author) => $author->id, $own_authors);
 
         $filter = $query_params['filter'] ?? null;
         $search = $query_params['search'] ?? null;
         $page = $query_params['page'] ?? 1;
-        $limit = $query_params['limit'] ?? 10;
+        $limit = $query_params['limit'] ?? 25;
         $offset = ((int) $page - 1) * (int) $limit;
 
         $authors = $this->modelAuthors->getByFilter(

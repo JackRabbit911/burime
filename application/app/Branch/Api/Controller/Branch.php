@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Branch\Api\Controller;
 
 use App\Branch\Api\BranchDTO;
-use App\Branch\Api\Repository\BranchAuthorsRepo;
+use App\Branch\Api\Repository\BranchRepo;
 use App\Branch\Model\ModelGenre;
 use Auth\Middleware\OAuthMiddleware;
 use Auth\Middleware\AuthGuardMiddleware;
@@ -14,6 +14,34 @@ use Auth\Middleware\AuthGuardMiddleware;
 #[AuthGuardMiddleware]
 class Branch extends ApiContractController
 {
+    public function __construct(private BranchRepo $repo){}
+
+
+    public function bootstrap(?int $branch_id = null)
+    {
+        $data['branch'] = $branch_id ? $this->repo->findBranch($branch_id) : new BranchDTO();
+        $data['genres'] = $this->repo->getGenres();
+
+        return $data;
+    }
+
+    public function authors()
+    {
+        $query_params = $this->request->getQueryParams();
+
+        [
+            $authors_count,
+            $authors,
+            $own_authors,
+        ] = $this->repo->getAuthors($this->user->id, $query_params);
+
+        return [
+            'authors' => $authors,
+            'authorsCount' => $authors_count,
+            'ownAuthors' => $own_authors,
+        ];
+    }
+
     public function vocabularies(ModelGenre $model_genre)
     {
         $total_genres = $model_genre->getTitles();
@@ -22,14 +50,5 @@ class Branch extends ApiContractController
             'genres' => $total_genres,
             'branch' => new BranchDTO($this->user->id),
         ];
-    }
-
-    public function authors(BranchAuthorsRepo $repo)
-    {
-        $query_params = $this->request->getQueryParams();
-        $filter = $query_params['filter'] ?? null;
-        $search = $query_params['search'] ?? null;
-
-        return $repo->getAuthorsByFilter($this->user->id, $filter, $search);
     }
 }
