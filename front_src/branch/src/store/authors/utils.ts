@@ -1,4 +1,4 @@
-import type { Branch } from "../vocabularies/types";
+import type { Branch } from "../bootstrap/types";
 import type { Author, BranchAuthor } from "./types";
 
 export const selectMaster = (branch: Branch, author?: Author): Branch => {

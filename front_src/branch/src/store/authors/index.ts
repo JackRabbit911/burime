@@ -26,6 +26,9 @@ export const getAuthorsFx = createEffect(
 export const $authors = createStore<Author[]>([])
     .on(getAuthorsFx.doneData, (_, data) => data.result.authors)
 
+export const $authorsCount = createStore(0)
+    .on(getAuthorsFx.doneData, (_, data) => data.result.authorsCount)
+
 export const $ownAuthors = createStore<Author[]>([])
     .on(getAuthorsFx.doneData, (_, data) => data.result.ownAuthors)
 
@@ -35,7 +38,7 @@ export const $authorsFilter = createStore('')
 export const $authorSearch = createStore('')
     .on(authorSearchChanged, (_, search) => search)
 
-const $authorsPayload = combine(
+export const $authorsPayload = combine(
     $authorsFilter, $authorSearch,
     (authorsFilter, authorSearch) => ({
         filter: authorsFilter,
@@ -43,10 +46,19 @@ const $authorsPayload = combine(
     })
 )
 
+export const $ownAuthorsOptions = combine($ownAuthors, (ownAuthors) => (
+    ownAuthors.map(
+        ({ id, alias }) => ({
+            value: id,
+            name: alias,
+        })
+    )
+))
+
 sample({
     clock: [authorsFilterChanged, authorSearchClicked],
     source: $authorsPayload,
     target: getAuthorsFx,
 })
 
-debug($authorSearch)
+debug($authorsPayload)

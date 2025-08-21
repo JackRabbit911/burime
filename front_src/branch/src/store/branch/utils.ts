@@ -1,4 +1,4 @@
-import type { Branch, Info } from "../vocabularies/types";
+import type { Branch, Info } from "../bootstrap/types"
 
 export const branchInit = () => ({
     id: null,

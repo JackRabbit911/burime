@@ -4,8 +4,9 @@ export type Author = {
 }
 
 export type Authors = {
-    ownAuthors: Author[];
     authors: Author[];
+    authorsCount: number;
+    ownAuthors: Author[];
 }
 
 export type BranchAuthor = {

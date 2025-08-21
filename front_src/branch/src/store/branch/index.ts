@@ -1,6 +1,4 @@
 import { combine, createEvent, createStore, sample } from "effector";
-import type { Branch } from "../vocabularies/types";
-import { getVocabulariesFx } from "../vocabularies";
 import {
     branchInit,
     calcSelectedGenres,
@@ -9,8 +7,17 @@ import {
     textInfoUpdate, 
     toggleInfo,
 } from "./utils";
-import { $ownAuthors, authorInvited, authorRemoved, authorRoleToggled, masterIdSelected, masterSelected } from "../authors";
+import {
+    $ownAuthors,
+    authorInvited,
+    authorRemoved,
+    authorRoleToggled,
+    masterIdSelected,
+    masterSelected
+} from "../authors";
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
+import { getBootstrapFx } from "../bootstrap";
+import type { Branch } from "../bootstrap/types";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
@@ -25,7 +32,7 @@ export const decriptionChanged = createEvent<string>()
 export const rulesChanged = createEvent<string>()
 
 export const $branch = createStore<Branch>(branchInit())
-    .on(getVocabulariesFx.doneData, (_, data) => data?.result?.branch)
+    .on(getBootstrapFx.doneData, (_, data) => data.result.branch)
     .on(genreToggled, calcSelectedGenres)
     .on(rwModeToggled, (branch, role) => ({...branch, role}))
     .on(moderationToggled, toggleInfo('moderation'))
