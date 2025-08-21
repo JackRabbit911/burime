@@ -3,6 +3,7 @@ import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
 import type { Author, Authors, AuthorsPayload, BranchAuthor } from "./types";
 import { debug } from "patronum";
+import type { Pagination } from "../../reused/Paginator/types";
 
 export const masterIdSelected = createEvent<string>()
 export const authorInvited = createEvent<Author>()
@@ -12,6 +13,8 @@ export const authorRoleToggled = createEvent<BranchAuthor>()
 export const authorsFilterChanged = createEvent<string>()
 export const authorSearchChanged = createEvent<string>()
 export const authorSearchClicked = createEvent()
+export const authorsPageChanged = createEvent<number>()
+export const authorsLimitChanged = createEvent<number>()
 
 export const getAuthorsFx = createEffect(
     async (payload: AuthorsPayload) => {
@@ -38,11 +41,17 @@ export const $authorsFilter = createStore('')
 export const $authorSearch = createStore('')
     .on(authorSearchChanged, (_, search) => search)
 
+export const $authorsPagination = createStore<Pagination>({page: 1, limit: 4})
+    .on(authorsPageChanged, (store, page) => ({...store, page}))
+    .on(authorsLimitChanged, (store, limit) => ({...store, page:1, limit}))
+
 export const $authorsPayload = combine(
-    $authorsFilter, $authorSearch,
-    (authorsFilter, authorSearch) => ({
+    $authorsFilter, $authorSearch, $authorsPagination,
+    (authorsFilter, authorSearch, {page, limit}) => ({
         filter: authorsFilter,
         search: authorSearch,
+        page: page,
+        limit: limit,
     })
 )
 
@@ -56,9 +65,14 @@ export const $ownAuthorsOptions = combine($ownAuthors, (ownAuthors) => (
 ))
 
 sample({
-    clock: [authorsFilterChanged, authorSearchClicked],
+    clock: [
+        authorsFilterChanged,
+        authorSearchClicked,
+        authorsPageChanged,
+        authorsLimitChanged,
+    ],
     source: $authorsPayload,
     target: getAuthorsFx,
 })
 
-debug($authorsPayload)
+debug({$authorsPagination})

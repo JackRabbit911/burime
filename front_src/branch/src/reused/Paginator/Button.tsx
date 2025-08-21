@@ -1,18 +1,23 @@
-import { type PaginationButton } from "./utils";
+import type { PaginationButton } from "./types";
 
 type Props = PaginationButton & {
-  setPageNumber: (pageNumber: number) => void;
+  setPageNumber: (page: number) => void;
 }
 
-const Button = ({ pageNumber, isActive, label, setPageNumber }: Props) => {
-  const className = `join-item btn btn-sm ${isActive ? ' btn-active' : ''}`
+const Button = ({ page, isActive, label, setPageNumber }: Props) => {
+  const className = `join-item btn btn-sm${isActive ? ' btn-active' : ''}`
 
   const onSetPageNumber = () => {
-    setPageNumber(pageNumber)
+    setPageNumber(page)
+    console.log(page)
   }
 
   return (
-    <button className={className} onClick={onSetPageNumber}>
+    <button
+      className={className}
+      disabled={isActive}
+      onClick={onSetPageNumber}
+    >
       {label}
     </button>
   )

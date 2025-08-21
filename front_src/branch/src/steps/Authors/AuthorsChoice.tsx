@@ -5,6 +5,7 @@ import { $branchAuthors } from "../../store/branch";
 import type { Author } from "../../store/authors/types";
 import AuthorsFilter from "./AuthorsFilter";
 import AuthorSearch from "./AuthorSearch";
+import Pagination from "./Pagination";
 
 const AuthorsChoice = () => {
   const branchAuthors = useUnit($branchAuthors)
@@ -27,6 +28,7 @@ const AuthorsChoice = () => {
           </button>
         ))}
       </div>
+      <Pagination />
     </>
   )
 }

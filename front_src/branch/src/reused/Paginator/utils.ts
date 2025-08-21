@@ -1,10 +1,5 @@
 import type { Props } from ".";
-
-export type PaginationButton = {
-    pageNumber: number;
-    isActive: boolean;
-    label: number | string;
-}
+import type { PaginationButton } from "./types";
 
 const ellipsisLeft = (pageNumber: number, lastPage: number) => {
     let max = 0

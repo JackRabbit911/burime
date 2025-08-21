@@ -1,18 +1,18 @@
 type Props = {
   perPages?: number[];
-  perPage?: number;
+  limit?: number;
   setPerPage: (perPage: number) => void;
 }
 
 const PerPage = ({
   perPages = [4, 50, 100],
-  perPage = 1,
+  limit,
   setPerPage,
 }: Props) => {
   const onSetPerPage = (count: number) => () => setPerPage(count)
 
   const getClassName = (count: number) =>
-    `join-item btn btn-sm ${perPage === count ? 'btn-active' : ''}`
+    `join-item btn btn-sm ${limit === count ? 'btn-active' : ''}`
 
   return (
     <div className="join">
@@ -22,6 +22,7 @@ const PerPage = ({
           <button
             className={getClassName(count)}
             onClick={onSetPerPage(count)}
+            disabled={limit === count}
             key={key}
           >
             {count}
