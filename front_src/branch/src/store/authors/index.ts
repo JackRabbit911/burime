@@ -44,6 +44,7 @@ export const $authorSearch = createStore('')
 export const $authorsPagination = createStore<Pagination>({page: 1, limit: 4})
     .on(authorsPageChanged, (store, page) => ({...store, page}))
     .on(authorsLimitChanged, (store, limit) => ({...store, page:1, limit}))
+    .on(authorsFilterChanged, (store) => ({...store, page:1}))
 
 export const $authorsPayload = combine(
     $authorsFilter, $authorSearch, $authorsPagination,
