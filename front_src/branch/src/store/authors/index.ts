@@ -2,8 +2,8 @@ import { combine, createEffect, createEvent, createStore, sample } from "effecto
 import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
 import type { Author, Authors, AuthorsPayload, BranchAuthor } from "./types";
-import { debug } from "patronum";
 import type { Pagination } from "../../reused/Paginator/types";
+// import { debug } from "patronum";
 
 export const masterIdSelected = createEvent<string>()
 export const authorInvited = createEvent<Author>()
@@ -76,4 +76,4 @@ sample({
     target: getAuthorsFx,
 })
 
-debug({$authorsPagination})
+// debug({$authorsPagination})
