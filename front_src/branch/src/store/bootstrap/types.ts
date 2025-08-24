@@ -8,6 +8,8 @@ export type Info = {
     time_limit: number;
     description: string;
     rules:string;
+    bg_color: string;
+    text_color: string;
 }
 
 export type Genre = {

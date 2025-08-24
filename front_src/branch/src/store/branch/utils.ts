@@ -16,6 +16,8 @@ export const branchInit = () => ({
         time_limit: 120,
         description: '',
         rules: '',
+        bg_color: '#eeeeee',
+        text_color: '#333333',
     },
     genres: [],
     authors: [],

@@ -6,6 +6,7 @@ import { $step, stepChanged } from "./store/common"
 import { useEffect } from "react"
 import Authors from "./steps/Authors"
 import { getBootstrapFx } from "./store/bootstrap"
+import Cover from "./steps/Cover"
 
 function App() {
   const step = useUnit($step)
@@ -55,6 +56,7 @@ function App() {
           {step===1 &&<Genres />}
           {step===2 &&<Rules />}
           {step===3 &&<Authors />}
+          {step===4 &&<Cover />}
           <StepControls />
         </div>
       </div>
