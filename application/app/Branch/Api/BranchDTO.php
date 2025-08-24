@@ -30,15 +30,17 @@ class BranchDTO
         $this->cover = $params['cover'] ?? null;
         $this->genres = $params['genres'] ?? [];
         $this->authors = $params['authors'] ?? [];
-
+        
         $rules = new stdClass();
-        $rules->moderation = $params['info']['moderation'] ?? 0;
-        $rules->allow_comments = $params['info']['allow_comments'] ?? 1;
-        $rules->signature = $params['info']['signature'] ?? 0;
-        $rules->post_size = $params['info']['post_size'] ?? 200;
-        $rules->time_limit = $params['info']['time_limit'] ?? 120;
-        $rules->description = $params['info']['description'] ?? '';
-        $rules->rules = $params['info']['rules'] ?? '';
+        $rules->moderation = $params['info']->moderation ?? 0;
+        $rules->allow_comments = $params['info']->allow_comments ?? 1;
+        $rules->signature = $params['info']->signature ?? 0;
+        $rules->post_size = $params['info']->post_size ?? 200;
+        $rules->time_limit = $params['info']->time_limit ?? 120;
+        $rules->description = $params['info']->description ?? '';
+        $rules->rules = $params['info']->rules ?? '';
+        $rules->bg_color = $params['info']->bg_color ?? '#eeeeee';
+        $rules->text_color = $params['info']->text_color ?? '#333333';
 
         $this->info = $rules;
     }

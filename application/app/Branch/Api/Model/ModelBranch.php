@@ -15,6 +15,7 @@ class ModelBranch extends MysqlModel
             ->setFetchMode(PDO::FETCH_NAMED)
             ->find($id);
 
+        $branch['info'] = json_decode($branch['info']);
         $branch['authors'] = $this->getBranchAuthors($id);
         $branch['genres'] = $this->getBranchGenres($id);
 
