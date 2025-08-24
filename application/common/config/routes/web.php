@@ -44,7 +44,7 @@ return [
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
     'edit'          => ['/edit/{action}/{id}', Edit::class],
     'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],
-    'create'        => ['/create/{action}', Create::class],
+    'create'        => ['/create/{action}/{id?}', Create::class],
     'create.save'   => ['/create/{action}', CreateSave::class],
 
     'message'       => ['/message/{action}/{id?}/{author_id?}', Message::class],

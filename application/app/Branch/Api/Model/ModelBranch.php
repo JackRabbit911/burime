@@ -16,15 +16,26 @@ class ModelBranch extends MysqlModel
             ->find($id);
 
         $branch['authors'] = $this->getBranchAuthors($id);
+        $branch['genres'] = $this->getBranchGenres($id);
 
         return $branch;
     }
 
     public function getBranchAuthors($branch_id)
     {
-        return $this->qb->table('branches_authors')
-            ->select('author_id', 'role', 'status')
+        return $this->qb->table('authors')
+            ->select('id', 'role', 'status', 'alias')
+            ->join('branches_authors', 'author_id', '=', 'id')
             ->where('branch_id', '=', $branch_id)
+            ->get();
+    }
+
+    public function getBranchGenres($branch_id)
+    {
+        return $this->qb->table('branches_genres')
+            ->select('genre_id')
+            ->where('branch_id', '=', $branch_id)
+            ->setFetchMode(PDO::FETCH_COLUMN)
             ->get();
     }
 

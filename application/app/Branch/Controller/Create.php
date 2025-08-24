@@ -25,7 +25,7 @@ class Create extends WebController
         $this->data['title'] = __('Create the book');
     }
 
-    public function branch()
+    public function branch($id = null)
     {
         $this->app->js('/assets/js/branch.js');
         return view('branch/create/branch');

@@ -17,9 +17,9 @@ class Branch extends ApiContractController
     public function __construct(private BranchRepo $repo){}
 
 
-    public function bootstrap(?int $branch_id = null)
+    public function bootstrap(?int $id = null)
     {
-        $data['branch'] = $branch_id ? $this->repo->findBranch($branch_id) : new BranchDTO();
+        $data['branch'] = $id ? $this->repo->findBranch($id) : new BranchDTO();
         $data['genres'] = $this->repo->getGenres();
 
         return $data;
