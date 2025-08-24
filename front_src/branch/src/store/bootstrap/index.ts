@@ -6,7 +6,16 @@ import { getSameWeightGenres } from "./utils";
 
 export const getBootstrapFx = createEffect(
     async () => {
-        const response = await ajax.get<ApiResponse<Bootstrap>>('/branch/create/bootstrap')
+        const path = window.location.pathname
+        const last = path.split('/').pop()
+        
+        let uri = '/branch/create/bootstrap'
+        
+        if (!isNaN(Number(last))) (
+            uri += '/' + last
+        )
+
+        const response = await ajax.get<ApiResponse<Bootstrap>>(uri)
 
         return response.data
     }
