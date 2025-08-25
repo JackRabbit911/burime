@@ -24,7 +24,7 @@ class BranchDTO
         $this->id = $params['id'] ?? null;
         $this->parent_id = $params['parent_id'] ?? null;
         $this->owner = $params['owner'] ?? null;
-        $this->title = $params['title'] ?? null;
+        $this->title = $params['title'] ?? 'Про маньяка, который на самом деле был очень хорошим человеком';
         $this->role = $params['role'] ?? 0;
         $this->age_limit = $params['age_limit'] ?? 0;
         $this->cover = $params['cover'] ?? null;
@@ -41,6 +41,7 @@ class BranchDTO
         $rules->rules = $params['info']->rules ?? '';
         $rules->bg_color = $params['info']->bg_color ?? '#eeeeee';
         $rules->text_color = $params['info']->text_color ?? '#333333';
+        $rules->text_size = $params['info']->text_size ?? 20;
 
         $this->info = $rules;
     }
