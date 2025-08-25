@@ -41,7 +41,7 @@ const BookCover = ({ authors, genres, title, info }: Props) => {
       className="border border-neutral-content bg-cover aspect-2/3 p-2
         flex flex-col justify-between text-center shadow overflow-hidden"
       style={{
-        background: info.bg_color,
+        backgroundColor: info.bg_color,
         color: info.text_color,
       }}
     >
