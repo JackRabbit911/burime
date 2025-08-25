@@ -24,7 +24,7 @@ class BranchDTO
         $this->id = $params['id'] ?? null;
         $this->parent_id = $params['parent_id'] ?? null;
         $this->owner = $params['owner'] ?? null;
-        $this->title = $params['title'] ?? 'Про маньяка, который на самом деле был очень хорошим человеком';
+        $this->title = $params['title'] ?? '';
         $this->role = $params['role'] ?? 0;
         $this->age_limit = $params['age_limit'] ?? 0;
         $this->cover = $params['cover'] ?? null;
