@@ -18,6 +18,7 @@ export const branchInit = () => ({
         rules: '',
         bg_color: '#eeeeee',
         text_color: '#333333',
+        cover: '',
     },
     genres: [],
     authors: [],

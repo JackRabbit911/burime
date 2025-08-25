@@ -10,6 +10,7 @@ export type Info = {
     rules:string;
     bg_color: string;
     text_color: string;
+    cover: string;
 }
 
 export type Genre = {
