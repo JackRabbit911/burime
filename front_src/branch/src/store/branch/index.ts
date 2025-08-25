@@ -18,6 +18,7 @@ import {
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
 import { getBootstrapFx } from "../bootstrap";
 import type { Branch } from "../bootstrap/types";
+import { debug } from "patronum";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
@@ -32,6 +33,7 @@ export const decriptionChanged = createEvent<string>()
 export const rulesChanged = createEvent<string>()
 export const bgColorChanged = createEvent<string>()
 export const textColorChanged = createEvent<string>()
+export const textSizeChanged = createEvent<number>()
 export const coverFileChanged = createEvent<string>()
 
 export const $branch = createStore<Branch>(branchInit())
@@ -53,6 +55,7 @@ export const $branch = createStore<Branch>(branchInit())
     .on(authorRoleToggled, authorRoleChange)
     .on(bgColorChanged, textInfoUpdate('bg_color'))
     .on(textColorChanged, textInfoUpdate('text_color'))
+    .on(textSizeChanged, numberInfoUpdate('text_size'))
     .on(coverFileChanged, textInfoUpdate('cover'))
 
 export const $selectedGenres = combine($branch, (branch) => branch?.genres || [])
@@ -74,4 +77,4 @@ sample({
     target: masterSelected
 })
 
-// debug({$branch, $branchAuthors})
+debug({$branch})
