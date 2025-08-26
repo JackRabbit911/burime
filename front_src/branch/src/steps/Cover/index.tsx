@@ -1,9 +1,9 @@
 import { useUnit } from "effector-react"
 import { $branch } from "../../store/branch"
-import BookCover from "./BookCover"
 import CoverControls from "./CoverControls"
 import { getMasterAlias } from "./utils"
 import Alert from "./Alert"
+import CoverWrapper from "./CoverWrapper"
 
 const Cover = () => {
   const { authors, genres, title, info } = useUnit($branch)
@@ -19,7 +19,7 @@ const Cover = () => {
   return ( authorExists && genresExists && titleExists )
   ? (
     <div className="grid md:grid-cols-3 gap-4">
-      <BookCover
+      <CoverWrapper
         authors={authors}
         genres={genres}
         title={title}
