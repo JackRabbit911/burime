@@ -18,8 +18,8 @@ import {
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
 import { getBootstrapFx } from "../bootstrap";
 import type { Branch } from "../bootstrap/types";
+import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived } from "../common";
 import { debug } from "patronum";
-import { coverNameRecived } from "../common";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
@@ -56,7 +56,8 @@ export const $branch = createStore<Branch>(branchInit())
     .on(bgColorChanged, textInfoUpdate('bg_color'))
     .on(textColorChanged, textInfoUpdate('text_color'))
     .on(textSizeChanged, numberInfoUpdate('text_size'))
-    .on(coverNameRecived, textInfoUpdate('cover'))
+    .on([coverNameRecived, coverNameCancelled], textInfoUpdate('cover'))
+    .on([bgNameRecived, bgNameCancelled], textInfoUpdate('bg_img'))
 
 export const $selectedGenres = combine($branch, (branch) => branch?.genres || [])
 export const $selectedRWMode = combine($branch, (branch) => branch?.role || 0)

@@ -1,30 +1,43 @@
-import { coverFileChanged } from "../store/common";
+import { bgFileCancelled, bgFileChanged, coverFileCancelled, coverFileChanged } from "../store/common";
 
 type Props = {
   label: string;
   optional: string;
-  // onChange: (value: string) => void;
+  event: string;
 }
 
-const FileInput = ({ label, optional }: Props) => {
+const FileInput = ({ label, optional, event = 'background' }: Props) => {
+
+  const fileChangeEvent = event === 'background' ? bgFileChanged : coverFileChanged
+  const fileCancelEvent = event === 'background' ? bgFileCancelled : coverFileCancelled
+
   const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement> | undefined) => {
     if (event?.target.files && event.target.files[0]) {
-      coverFileChanged(event.target.files[0])
+      fileChangeEvent(event.target.files[0])
     }
   }
 
   return (
-    <div>
+    <div className="basis-3/4">
       <label className="fieldset-label flex justify-between">
         <legend className="fieldset-legend">
           {label}
         </legend>
         <span className="label-text">{optional}</span>
       </label>
-      <input type="file"
-        className="file-input w-full"
-        onChange={onChangeHandle}
-      />
+      <div className="join w-full">
+        <input type="file"
+          className="file-input w-full join-item"
+          onChange={onChangeHandle}
+        />
+        <button
+          className="btn basis-1/4 join-item border-base-100"
+          onClick={() => fileCancelEvent()}
+        >
+          Cansel
+        </button >
+
+      </div>
     </ div>
   )
 }

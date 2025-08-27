@@ -1,6 +1,6 @@
 import { useUnit } from "effector-react"
 import type { Info } from "../../store/bootstrap/types"
-import { $coverUrl } from "../../store/common"
+import { $bgUrl, $coverUrl } from "../../store/common"
 
 type Props = {
   info: Info;
@@ -8,6 +8,7 @@ type Props = {
 
 const BgLayers = ({ info }: Props) => {
   const coverUrl = useUnit($coverUrl)
+  const bgUrl = useUnit($bgUrl)
 
   return (
     <>
@@ -17,8 +18,8 @@ const BgLayers = ({ info }: Props) => {
       ></div>
       {info.bg_img &&
         <div
-          className="absolute top-0 left-0 w-full h-full z-10"
-          style={{ backgroundColor: "yellow" }}
+          className="absolute top-0 left-0 w-full h-full z-10 bg-cover bg-center"
+          style={{ backgroundImage: `url(${bgUrl})` }}
         ></div>
       }
       {info.cover &&

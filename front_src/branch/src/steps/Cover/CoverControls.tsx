@@ -35,10 +35,18 @@ const CoverControls = ({ info }: Props) => {
         onChange={textSizeChanged}
       />
       <div className="divider my-8 text-lg text-current/75">or</div>
-      <FileInput
-        label="Cover image"
-        optional="Up to 2Mb"
-      />
+
+        <FileInput
+          label="Cover image"
+          optional="Up to 2Mb"
+          event="cover"
+        />
+        <FileInput
+          label="Background image"
+          optional="Up to 2Mb"
+          event="background"
+        />
+
     </fieldset>
   )
 }
