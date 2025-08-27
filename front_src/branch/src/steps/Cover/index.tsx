@@ -13,8 +13,6 @@ const Cover = () => {
   const authorExists = typeof author === 'undefined' ? false : true
   const genresExists = genres.length === 0 ? false : true
   const titleExists = !title ? false : true
-
-  console.log({authorExists, genresExists, titleExists})
   
   return ( authorExists && genresExists && titleExists )
   ? (
