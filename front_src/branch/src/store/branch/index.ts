@@ -19,6 +19,7 @@ import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../auth
 import { getBootstrapFx } from "../bootstrap";
 import type { Branch } from "../bootstrap/types";
 import { debug } from "patronum";
+import { coverNameRecived } from "../common";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
@@ -34,7 +35,6 @@ export const rulesChanged = createEvent<string>()
 export const bgColorChanged = createEvent<string>()
 export const textColorChanged = createEvent<string>()
 export const textSizeChanged = createEvent<number>()
-export const coverFileChanged = createEvent<string>()
 
 export const $branch = createStore<Branch>(branchInit())
     .on(getBootstrapFx.doneData, (_, data) => data.result.branch)
@@ -56,7 +56,7 @@ export const $branch = createStore<Branch>(branchInit())
     .on(bgColorChanged, textInfoUpdate('bg_color'))
     .on(textColorChanged, textInfoUpdate('text_color'))
     .on(textSizeChanged, numberInfoUpdate('text_size'))
-    .on(coverFileChanged, textInfoUpdate('cover'))
+    .on(coverNameRecived, textInfoUpdate('cover'))
 
 export const $selectedGenres = combine($branch, (branch) => branch?.genres || [])
 export const $selectedRWMode = combine($branch, (branch) => branch?.role || 0)

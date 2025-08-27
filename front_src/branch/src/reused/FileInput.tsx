@@ -1,13 +1,16 @@
+import { coverFileChanged } from "../store/common";
+
 type Props = {
   label: string;
-  value: string;
   optional: string;
-  onChange: (value: string) => void;
+  // onChange: (value: string) => void;
 }
 
-const FileInput = ({ label, value, optional, onChange }: Props) => {
-  const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value)
+const FileInput = ({ label, optional }: Props) => {
+  const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement> | undefined) => {
+    if (event?.target.files && event.target.files[0]) {
+      coverFileChanged(event.target.files[0])
+    }
   }
 
   return (
@@ -20,7 +23,6 @@ const FileInput = ({ label, value, optional, onChange }: Props) => {
       </label>
       <input type="file"
         className="file-input w-full"
-        value={value}
         onChange={onChangeHandle}
       />
     </ div>

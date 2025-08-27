@@ -2,7 +2,7 @@ import ColorPicker from "../../reused/ColorPicker"
 import FileInput from "../../reused/FileInput"
 import Range from "../../reused/Range"
 import type { Info } from "../../store/bootstrap/types"
-import { bgColorChanged, coverFileChanged, textColorChanged, textSizeChanged } from "../../store/branch"
+import { bgColorChanged, textColorChanged, textSizeChanged } from "../../store/branch"
 
 type Props = {
   info: Info
@@ -37,9 +37,7 @@ const CoverControls = ({ info }: Props) => {
       <div className="divider my-8 text-lg text-current/75">or</div>
       <FileInput
         label="Cover image"
-        value={info.cover}
         optional="Up to 2Mb"
-        onChange={coverFileChanged}
       />
     </fieldset>
   )
