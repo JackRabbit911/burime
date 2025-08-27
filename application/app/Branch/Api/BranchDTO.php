@@ -42,6 +42,8 @@ class BranchDTO
         $rules->bg_color = $params['info']->bg_color ?? '#eeeeee';
         $rules->text_color = $params['info']->text_color ?? '#333333';
         $rules->text_size = $params['info']->text_size ?? 20;
+        $rules->cover = $params['info']->cover ?? '';
+        $rules->bg_img = $params['info']->bg_img ?? '';
 
         $this->info = $rules;
     }

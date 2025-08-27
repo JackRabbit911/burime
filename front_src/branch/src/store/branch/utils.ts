@@ -20,6 +20,7 @@ export const branchInit = () => ({
         text_color: '#333333',
         text_size: 20,
         cover: '',
+        bg_img: '',
     },
     genres: [],
     authors: [],

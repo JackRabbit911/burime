@@ -12,6 +12,7 @@ export type Info = {
     text_color: string;
     text_size: number;
     cover: string;
+    bg_img: string;
 }
 
 export type Genre = {
