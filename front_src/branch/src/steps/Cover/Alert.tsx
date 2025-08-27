@@ -1,10 +1,14 @@
-type Props = {
-  authorExists: boolean;
-  genresExists: boolean;
-  titleExists: boolean;
-}
+import { useUnit } from "effector-react"
+import { $readyToPublish, $requiredFields } from "../../store/validation"
 
-const Alert = ({ authorExists, genresExists, titleExists }: Props) => {
+const Alert = () => {
+  const { authorExists, genresExists, titleExists } = useUnit($requiredFields)
+  const readyToPublish = useUnit($readyToPublish)
+
+  if (readyToPublish) {
+    return null
+  }
+
   let messages: string[] = []
 
   if (!genresExists) {

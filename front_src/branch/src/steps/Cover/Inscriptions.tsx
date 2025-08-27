@@ -1,8 +1,9 @@
 import { useUnit } from "effector-react";
 import type { BranchAuthor } from "../../store/authors/types"
 import { $sameWeightGenres } from "../../store/bootstrap";
-import { getGenreString, getMasterAlias } from "./utils";
+import { getGenreString } from "./utils";
 import type { Info } from "../../store/bootstrap/types";
+import { getMasterAlias } from "../../store/validation/utils";
 
 type Props = {
   authors: BranchAuthor[];

@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import type { BranchAuthor } from "../../store/authors/types";
-import type { Info } from "../../store/bootstrap/types";
 import Inscriptions from "./Inscriptions";
 import BgLayers from "./BgLayers";
+import { useUnit } from "effector-react";
+import { $branch } from "../../store/branch";
+import { $readyToPublish } from "../../store/validation";
+import CoverControls from "./CoverControls";
 
-type Props = {
-  authors: BranchAuthor[];
-  genres: number[];
-  title: string | null;
-  info: Info;
-}
 
-const CoverWrapper = ({ authors, genres, title, info }: Props) => {
+const CoverWrapper = () => {
+  const { authors, genres, title, info } = useUnit($branch)
+  const readyToPublish = useUnit($readyToPublish)
+
+  if (!readyToPublish) {
+    return null
+  }
+
   const coverRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState<number>(0);
 
@@ -31,19 +34,22 @@ const CoverWrapper = ({ authors, genres, title, info }: Props) => {
   }, [info]);
 
   return (
-    <div
-      className="relative border border-neutral-content bg-cover bg-center aspect-2/3"
-      ref={coverRef}
-    >
-      <BgLayers info={info} />
-      <Inscriptions
-        authors={authors}
-        genres={genres}
-        title={title}
-        info={info}
-        width={width}
-      />
-    </div>
+    <div className="grid md:grid-cols-3 gap-4">
+      <div
+        className="relative border border-neutral-content bg-cover bg-center aspect-2/3"
+        ref={coverRef}
+      >
+        <BgLayers info={info} />
+        <Inscriptions
+          authors={authors}
+          genres={genres}
+          title={title}
+          info={info}
+          width={width}
+        />
+      </div>
+      <CoverControls info={info} />
+     </div>
   )
 }
 

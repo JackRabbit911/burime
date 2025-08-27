@@ -1,11 +1,11 @@
 import ColorPicker from "../../reused/ColorPicker"
 import FileInput from "../../reused/FileInput"
 import Range from "../../reused/Range"
-import type { Info } from "../../store/bootstrap/types"
 import { bgColorChanged, textColorChanged, textSizeChanged } from "../../store/branch"
+import type { Info } from "../../store/bootstrap/types"
 
 type Props = {
-  info: Info
+  info: Info;
 }
 
 const CoverControls = ({ info }: Props) => {
