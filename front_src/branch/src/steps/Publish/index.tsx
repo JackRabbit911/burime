@@ -1,4 +1,4 @@
-import Alert from "./Cover/Alert"
+import Alert from "../../reused/Alert"
 
 const Publish = () => {
     return (

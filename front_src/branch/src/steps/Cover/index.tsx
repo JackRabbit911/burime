@@ -1,4 +1,4 @@
-import Alert from "./Alert"
+import Alert from "../../reused/Alert"
 import CoverWrapper from "./CoverWrapper"
 
 const Cover = () => {
