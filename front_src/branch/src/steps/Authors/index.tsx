@@ -5,11 +5,14 @@ import { $masterId } from "../../store/branch"
 import AuthorsChoice from "./AuthorsChoice"
 import BranchAuthors from "./BranchAuthors"
 import { useEffect } from "react"
+import { $requiredFields } from "../../store/validation"
 
 const Authors = () => {
   const authorsPayload = useUnit($authorsPayload)
   const masterId = useUnit($masterId)
   const options = useUnit($ownAuthorsOptions)
+  const { authorExists } = useUnit($requiredFields)
+  const alert = authorExists ? '' : 'Required field'
 
   useEffect(() => {
     getAuthorsFx(authorsPayload)
@@ -22,6 +25,7 @@ const Authors = () => {
           label="Team leader"
           value={masterId}
           options={options}
+          alert={alert}
           onChange={masterIdSelected}
         />
         <BranchAuthors />

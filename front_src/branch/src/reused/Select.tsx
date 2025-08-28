@@ -7,27 +7,30 @@ type Props = {
   label: string;
   value: number | string | null;
   options: Option[];
+  alert: string;
   onChange: (value: string) => void;
 }
 
-const Select = ({ label, value, options, onChange }: Props) => {
+const Select = ({ label, value, options, alert, onChange }: Props) => {
   const onChangeHandle = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value)
   }
 
   return (
     <>
+    <label className="fieldset-label flex justify-between">
       <legend className="fieldset-legend">
         {label}
       </legend>
+      {alert && <span className="label-text text-error">{alert}</span>}
+    </label>
       <select
         className="select"
         value={value || ''}
-        aria-placeholder="Select please"
         onChange={onChangeHandle}
       >
-        {value === null && (
-          <option value=""></option>
+        {!value && (
+          <option value="" disabled>Choice Your author</option>
         )}
         {options.map(
           ({ value, name }, key) => (
