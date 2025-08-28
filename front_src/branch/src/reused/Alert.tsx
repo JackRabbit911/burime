@@ -1,5 +1,5 @@
 import { useUnit } from "effector-react"
-import { $readyToPublish, $requiredFields } from "../../store/validation"
+import { $readyToPublish, $requiredFields } from "../store/validation"
 
 const Alert = () => {
   const { authorExists, genresExists, titleExists } = useUnit($requiredFields)
