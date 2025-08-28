@@ -3,10 +3,11 @@ type Props = {
   value: string;
   placeholder: string;
   optional: string;
+  alert: string;
   onChange: (value: string) => void;
 }
 
-const TextInput = ({ label, value, placeholder, optional, onChange }: Props) => {
+const TextInput = ({ label, value, placeholder, optional, alert, onChange }: Props) => {
   const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value)
   }
@@ -17,6 +18,7 @@ const TextInput = ({ label, value, placeholder, optional, onChange }: Props) => 
         <legend className="fieldset-legend">
           {label}
         </legend>
+        {alert && <span className="label-text text-error">{alert}</span>}
         <span className="label-text">{optional}</span>
       </label>
       <input type={'text'}

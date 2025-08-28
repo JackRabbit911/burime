@@ -17,9 +17,12 @@ import CheckBox from "../reused/CheckBox"
 import NumberInput from "../reused/NumberInput"
 import TextInput from "../reused/TextInput"
 import Textarea from "../reused/Textarea"
+import { $requiredFields } from "../store/validation"
 
 const Rules = () => {
   const branch = useUnit($branch);
+  const { titleExists } = useUnit($requiredFields)
+  const alert = titleExists ? '' : 'Required field'
 
   return (
     <fieldset className="fieldset">
@@ -85,6 +88,7 @@ const Rules = () => {
               value={branch?.title || ''}
               placeholder="Введите название произведения"
               optional="Up to 8 words"
+              alert={alert}
               onChange={titleChanged}
             />
             <Textarea
