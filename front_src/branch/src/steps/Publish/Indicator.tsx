@@ -26,7 +26,7 @@ const Indicator = () => {
           {progress}%
         </div>
       </div>
-      <ul className="list-disc">
+      <ul className="list-disc mt-4">
         {recommendations}
       </ul>
     </div>
