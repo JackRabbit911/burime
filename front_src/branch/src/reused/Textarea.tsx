@@ -1,13 +1,14 @@
 type Props = {
   label: string;
-  value: string;
+  value?: string;
   placeholder: string;
   rows: number;
-  optional: string;
+  optional?: string;
+  disabled?: boolean;
   onChange: (value: string) => void;
 }
 
-const Textarea = ({ label, value, placeholder, rows, optional, onChange }: Props) => {
+const Textarea = ({ label, value, placeholder, rows, optional = '', disabled = false, onChange }: Props) => {
   const onChangeHandle = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(event.target.value)
   }
@@ -23,6 +24,7 @@ const Textarea = ({ label, value, placeholder, rows, optional, onChange }: Props
         placeholder={placeholder}
         value={value}
         rows={rows}
+        disabled={disabled}
         onChange={onChangeHandle}
       />
     </ div>
