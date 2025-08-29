@@ -1,4 +1,5 @@
 import type { BranchAuthor } from "../authors/types";
+import type { Posts } from "../posts/types";
 
 export type Info = {
     moderation: number;
@@ -37,6 +38,7 @@ export type Branch = {
 export type Bootstrap = {
     genres: Genre[];
     branch: Branch;
+    posts: Posts;
 }
 
 export type SameWeightGenres = {
