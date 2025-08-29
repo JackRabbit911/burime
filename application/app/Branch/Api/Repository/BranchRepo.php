@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Branch\Api\Repository;
 
 use App\Branch\Api\BranchDTO;
+use App\Branch\Api\FirstLastDTO;
 use App\Branch\Api\Model\ModelAuthors;
 use App\Branch\Api\Model\ModelBranch;
+use App\Burime\Model\ModelPost;
 
 class BranchRepo
 {
@@ -54,5 +56,15 @@ class BranchRepo
     public function getGenres()
     {
         return $this->modelBranch->getGenres();
+    }
+
+    public function getFirstLastPosts($branch_id)
+    {
+        $params = [
+            'first' => $this->modelBranch->findPostByWeight($branch_id, 1),
+            'last' => $this->modelBranch->findPostByWeight($branch_id, ModelPost::MAX_WEIGHT),
+        ];
+
+        return new FirstLastDTO($params);
     }
 }

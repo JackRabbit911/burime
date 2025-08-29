@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Branch\Api\Controller;
 
 use App\Branch\Api\BranchDTO;
+use App\Branch\Api\FirstLastDTO;
 use App\Branch\Api\Repository\BranchRepo;
 use App\Branch\Model\ModelGenre;
 use Auth\Middleware\OAuthMiddleware;
@@ -21,6 +22,7 @@ class Branch extends ApiContractController
     {
         $data['branch'] = $id ? $this->repo->findBranch($id) : new BranchDTO();
         $data['genres'] = $this->repo->getGenres();
+        $data['posts'] = $id ? $this->repo->getFirstLastPosts($id) : new FirstLastDTO();
 
         return $data;
     }
