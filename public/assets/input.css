@@ -29,3 +29,7 @@ div.markdown ul {
 div.markdown a {
     @apply link text-primary dark:text-info;
 }
+
+div.inline-size {
+    container-type: inline-size;
+}
