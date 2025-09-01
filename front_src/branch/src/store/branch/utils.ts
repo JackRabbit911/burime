@@ -18,7 +18,7 @@ export const branchInit = () => ({
         rules: '',
         bg_color: '#eeeeee',
         text_color: '#333333',
-        text_size: 20,
+        text_size: 12,
         cover: '',
         bg_img: '',
     },
