@@ -10,10 +10,9 @@ type Props = {
   genres: number[];
   title: string | null;
   info: Info;
-  width: number;
 }
 
-const Inscriptions = ({ authors, genres, title, info, width }: Props) => {
+const Inscriptions = ({ authors, genres, title, info }: Props) => {
   const totalGenres = useUnit($sameWeightGenres)
   const authorName = getMasterAlias(authors)
   const genreStr = getGenreString(totalGenres, genres)
@@ -25,13 +24,13 @@ const Inscriptions = ({ authors, genres, title, info, width }: Props) => {
         color: info.text_color,
       }}
     >
-      <div className="z-20" style={{ fontSize: `${width / 17}px` }}>
+      <div className="z-20" style={{ fontSize: '6cqw' }}>
         {authorName}
       </div>
       <div
         className="z-20"
         style={{
-          fontSize: `${width * info.text_size / 200}px`,
+          fontSize: `${info.text_size}cqw`,
           lineHeight: 'normal',
         }}
       >
@@ -39,7 +38,7 @@ const Inscriptions = ({ authors, genres, title, info, width }: Props) => {
       </div>
       <div
         className="z-20"
-        style={{ fontSize: `${width / 22}px` }}>
+        style={{ fontSize: '5cqw' }}>
         {genreStr}
       </div>
     </div>

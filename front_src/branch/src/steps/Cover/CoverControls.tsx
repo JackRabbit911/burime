@@ -27,7 +27,7 @@ const CoverControls = ({ info }: Props) => {
         />
       </div>
       <Range
-        min={10}
+        min={5}
         max={50}
         step={1}
         value={info.text_size}
