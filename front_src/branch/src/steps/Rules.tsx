@@ -15,7 +15,6 @@ import {
 import CheckBox from "../reused/CheckBox"
 import NumberInput from "../reused/NumberInput"
 import Textarea from "../reused/Textarea"
-import Dialog from "../reused/Dialog"
 
 const Rules = () => {
   const branch = useUnit($branch);
@@ -100,9 +99,6 @@ const Rules = () => {
           </div>
         </div>
       </fieldset>
-      <Dialog>
-        Ну и чего тебе не понятно-то?
-      </Dialog>
     </>
   )
 }

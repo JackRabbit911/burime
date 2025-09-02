@@ -3,7 +3,6 @@ import { $selectedGenres, genreToggled } from "../store/branch"
 import CheckBox from "../reused/CheckBox"
 import { $sameWeightGenres } from "../store/bootstrap"
 import { $requiredFields } from "../store/validation"
-import Dialog from "../reused/Dialog"
 
 const Genres = () => {
   const sameWeightGenres = useUnit($sameWeightGenres)
@@ -44,9 +43,6 @@ const Genres = () => {
           )
         )}
       </fieldset>
-      <Dialog>
-        Ну и чего тебе не понятно про жанры?
-      </Dialog>
     </>
   )
 }
