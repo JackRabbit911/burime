@@ -1,15 +1,12 @@
 import { useUnit } from "effector-react";
-import { $isOpen, modalClicked } from "./store";
+import { $component, componentRemoved } from "./store";
 
-type Props = {
-  children?: React.ReactNode
-}
-
-const Dialog = ({ children }: Props) => {
-  const isOpen = useUnit($isOpen);
+const Dialog = () => {
+  const component = useUnit($component)
+  const isOpen = Boolean(component);
 
   const onClose = () => {
-    modalClicked(false)
+    componentRemoved()
   }
 
   return (
@@ -21,7 +18,7 @@ const Dialog = ({ children }: Props) => {
         >
           ✕
         </button>
-        {children}
+        {component}
       </div>
     </dialog>
   );
