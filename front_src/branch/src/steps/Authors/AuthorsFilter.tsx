@@ -9,7 +9,7 @@ const AuthorsFilter = () => {
   }
 
   return (
-    <div className="filter">
+    <div className="filter mt-1.5">
       <input className="btn btn-sm filter-reset"
         type="radio"
         name="metaframeworks"
