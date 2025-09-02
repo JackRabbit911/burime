@@ -8,13 +8,12 @@ import Authors from "./steps/Authors"
 import { getBootstrapFx } from "./store/bootstrap"
 import Cover from "./steps/Cover"
 import Publish from "./steps/Publish"
-import Step from "./reused/Step"
-import { $requiredFields } from "./store/validation"
 import { $branch } from "./store/branch"
+import Steps from "./steps/Steps"
+import TitleInput from "./steps/TileInput"
 
 function App() {
   const step = useUnit($step)
-  const { authorExists, titleExists, genresExists } = useUnit($requiredFields)
   const { id, title } = useUnit($branch)
   const h1 = id ? `Edit the book: "${title}"` : 'Create the book'
 
@@ -29,31 +28,8 @@ function App() {
           <h1 className="text-2xl mt-2 mb-3">
             {h1}
           </h1>
-          <ul className="steps w-full my-4">
-            <Step
-              step={1}
-              title="Genres"
-              isError={!genresExists && step > 1}
-            />
-            <Step
-              step={2}
-              title="Rules"
-              isError={!titleExists && step > 2}
-            />
-            <Step
-              step={3}
-              title="Authors"
-              isError={!authorExists && step > 3}
-            />
-            <Step
-              step={4}
-              title="Cover"
-            />
-            <Step
-              step={5}
-              title="Publish"
-            />
-          </ul>
+          <Steps step={step} />
+          <TitleInput />
           {step === 1 && <Genres />}
           {step === 2 && <Rules />}
           {step === 3 && <Authors />}
