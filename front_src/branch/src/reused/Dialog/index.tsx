@@ -13,7 +13,7 @@ const Dialog = ({ children }: Props) => {
   }
 
   return (
-    <dialog id="my_modal_3" className="modal" open={isOpen}>
+    <dialog id="my_modal" className="modal" open={isOpen}>
       <div className="modal-box">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
