@@ -11,6 +11,7 @@ import Publish from "./steps/Publish"
 import { $branch } from "./store/branch"
 import Steps from "./steps/Steps"
 import TitleInput from "./steps/TileInput"
+import Dialog from "./reused/Dialog"
 
 function App() {
   const step = useUnit($step)
@@ -38,6 +39,7 @@ function App() {
           <StepControls />
         </div>
       </div>
+      <Dialog />
     </>
   )
 }
