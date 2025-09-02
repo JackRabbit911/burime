@@ -1,13 +1,13 @@
-import { modalClicked } from "../../reused/Dialog/store"
+import { componentRemoved } from "../../reused/Dialog/store"
 
 const Cancel = () => {
   const onNo = () => {
-    modalClicked(false)
+    componentRemoved()
   }
 
   const onYes = () => {
     window.location.href = '/'
-    modalClicked(false)
+    componentRemoved()
   }
 
   return (
