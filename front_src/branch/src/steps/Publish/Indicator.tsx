@@ -15,7 +15,7 @@ const Indicator = () => {
   }
 
   return (
-    <div>
+    <div className="mt-3">
       <div className="text-center">
         <div
           className="radial-progress text-primary dark:text-info"
