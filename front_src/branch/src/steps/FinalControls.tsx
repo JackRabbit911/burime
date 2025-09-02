@@ -1,7 +1,6 @@
 import { useUnit } from "effector-react"
 import { $readyToPublish, $requiredFields } from "../store/validation"
-import { modalClicked } from "../reused/Dialog/store"
-import Dialog from "../reused/Dialog"
+import { componentAdded } from "../reused/Dialog/store"
 import Cancel from "./Publish/Cancel"
 
 const FinalControls = () => {
@@ -13,7 +12,7 @@ const FinalControls = () => {
   }
 
   const onCancel = () => {
-    modalClicked(true)
+    componentAdded(<Cancel />)
   }
 
   return (
@@ -39,9 +38,6 @@ const FinalControls = () => {
           Publish
         </button>
       </div>
-      <Dialog>
-        <Cancel />
-      </Dialog>
     </>
   )
 }
