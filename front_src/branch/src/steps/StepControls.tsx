@@ -4,36 +4,38 @@ import FinalControls from "./FinalControls"
 import { modalClicked } from "../reused/Dialog/store"
 
 const StepControls = () => {
-    const step = useUnit($step)
+  const step = useUnit($step)
 
-    const onNextStep = () => {
-        stepChanged(step + 1)
-    }
+  const onNextStep = () => {
+    stepChanged(step + 1)
+  }
 
-    const onPrevStep = () => {
-        stepChanged(step - 1)
-    }
+  const onPrevStep = () => {
+    stepChanged(step - 1)
+  }
 
-    return (
-        <div className="flex flex-row justify-between mt-4">
-            <button className="btn btn-primary dark:btn-info" onClick={onPrevStep} disabled={step===1}>
-                Prev
-            </button>
-            <button
-          className="btn btn-link dark:text-info"
-          onClick={()=>{modalClicked(true)}}
+  return (
+    <div className="flex flex-row justify-between mt-4">
+      <button className="btn btn-primary dark:btn-info" onClick={onPrevStep} disabled={step === 1}>
+        Prev
+      </button>
+      {(step < 5) && (
+        <button
+          className="btn btn-circle btn-success text-2xl"
+          onClick={() => { modalClicked(true) }}
         >
-          More info...
+          ?
         </button>
-            {step === 5 ? (
-                <FinalControls />
-            ) : (
-                <button className="btn btn-primary dark:btn-info" onClick={onNextStep}>
-                    Next
-                </button>
-            )}
-        </div>
-    )
+      )}
+      {step === 5 ? (
+        <FinalControls />
+      ) : (
+        <button className="btn btn-primary dark:btn-info" onClick={onNextStep}>
+          Next
+        </button>
+      )}
+    </div>
+  )
 }
 
 export default StepControls
