@@ -11,7 +11,7 @@ summary.menu-active {
 }
 
 div.markdown h3 {
-    @apply text-lg;
+    @apply text-xl;
 }
 
 div.markdown p {
@@ -28,6 +28,10 @@ div.markdown ul {
 
 div.markdown a {
     @apply link text-primary dark:text-info;
+}
+
+div.markdown ol {
+    @apply list-decimal ms-4;
 }
 
 div.inline-size {
