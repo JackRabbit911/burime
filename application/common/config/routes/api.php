@@ -4,6 +4,7 @@
 
 use Adm\Controller\Users;
 use App\Branch\Api\Controller\Branch;
+use App\Branch\Api\Controller\BranchHelp;
 use App\Burime\Controller\DeletePostApi;
 use App\Rating\RatingApi;
 use Auth\Api\Controller\O2Auth;
@@ -16,4 +17,5 @@ return [
     'api.auth'      => ['/api/auth/{action}', O2Auth::class],
     'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
     'branch.create' => ['/api/branch/create/{action}/{id?}', Branch::class],
+    'branch.help'   => ['/api/branch/help/{action}', BranchHelp::class],
 ];
