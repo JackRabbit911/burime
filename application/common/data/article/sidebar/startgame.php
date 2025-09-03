@@ -3,11 +3,11 @@
 return [
     [
         'title' => 'a new project',
-        'href' => '',
+        'href' => path('about.create', ['action' => 'new_branch']),
     ],
     [
         'title' => 'a branch in the project',
-        'href' => '',
+        'href' => path('about.create', ['action' => 'child_branch']),
     ],
     [
         'title' => 'an author',

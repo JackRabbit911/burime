@@ -25,9 +25,11 @@ use App\Rating\Rating;
 use App\Author\Controller\Api as AuthorApi;
 use App\Burime\Controller\Api as BurimeApi;
 use App\Chat\Controller\Chat;
+use App\Home\Controller\AboutHowToCreate;
 
 return [
     'home'          => ['/', Home::class],
+    'about.create'  => ['/about/how_to_create/{action}', AboutHowToCreate::class],
     'about'         => ['/about/{action}', About::class],
     'works'         => ['/works/{action?}', Works::class],
     'authors'       => ['/authors', AuthorsList::class],
