@@ -1,0 +1,46 @@
+import { combine, createEvent, createStore } from "effector";
+
+export const stepChanged = createEvent<number>()
+
+export const coverFileChanged = createEvent<File>()
+export const coverNameRecived = coverFileChanged
+    .map(({ name }) => name)
+
+export const coverFileCancelled = createEvent()
+export const coverNameCancelled = coverFileCancelled
+    .map(() => '')
+
+export const bgFileChanged = createEvent<File>()
+export const bgNameRecived = bgFileChanged
+    .map(({ name }) => name)
+
+export const bgFileCancelled = createEvent()
+export const bgNameCancelled = bgFileCancelled
+    .map(() => '')
+
+export const $step = createStore(1)
+    .on(stepChanged, (_, newStep) => newStep)
+
+export const $coverFile = createStore<File | null>(null)
+    .on(coverFileChanged, (_, data) => data)
+    .reset(coverFileCancelled)
+
+export const $coverUrl = combine($coverFile, (coverFile) => {
+    if (!coverFile) {
+        return ''
+    }
+
+    return URL.createObjectURL(coverFile)
+})
+
+export const $bgFile = createStore<File | null>(null)
+    .on(bgFileChanged, (_, data) => data)
+    .reset(bgFileCancelled)
+
+export const $bgUrl = combine($bgFile, (bgFile) => {
+    if (!bgFile) {
+        return ''
+    }
+
+    return URL.createObjectURL(bgFile)
+})

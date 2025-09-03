@@ -25,6 +25,12 @@ class Create extends WebController
         $this->data['title'] = __('Create the book');
     }
 
+    public function branch($id = null)
+    {
+        $this->app->js('/assets/js/branch.js');
+        return view('branch/create/branch');
+    }
+
     public function genres(ModelGenre $modelGenre)
     {
         $totalGenres = new Collection($modelGenre->getTitles());

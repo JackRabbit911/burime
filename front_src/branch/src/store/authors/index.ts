@@ -1,0 +1,79 @@
+import { combine, createEffect, createEvent, createStore, sample } from "effector";
+import ajax from "../../api/ajax";
+import type { ApiResponse } from "../../api/types";
+import type { Author, Authors, AuthorsPayload, BranchAuthor } from "./types";
+import type { Pagination } from "../../reused/Paginator/types";
+// import { debug } from "patronum";
+
+export const masterIdSelected = createEvent<string>()
+export const authorInvited = createEvent<Author>()
+export const authorRemoved = createEvent<BranchAuthor>()
+export const masterSelected = createEvent<Author | undefined>()
+export const authorRoleToggled = createEvent<BranchAuthor>()
+export const authorsFilterChanged = createEvent<string>()
+export const authorSearchChanged = createEvent<string>()
+export const authorSearchClicked = createEvent()
+export const authorsPageChanged = createEvent<number>()
+export const authorsLimitChanged = createEvent<number>()
+
+export const getAuthorsFx = createEffect(
+    async (payload: AuthorsPayload) => {
+        const response = await ajax.get<ApiResponse<Authors>>('/branch/create/authors', {
+            params: payload
+        })
+
+        return response.data
+    }
+)
+
+export const $authors = createStore<Author[]>([])
+    .on(getAuthorsFx.doneData, (_, data) => data.result.authors)
+
+export const $authorsCount = createStore(0)
+    .on(getAuthorsFx.doneData, (_, data) => data.result.authorsCount)
+
+export const $ownAuthors = createStore<Author[]>([])
+    .on(getAuthorsFx.doneData, (_, data) => data.result.ownAuthors)
+
+export const $authorsFilter = createStore('')
+    .on(authorsFilterChanged, (_, filter) => filter)
+
+export const $authorSearch = createStore('')
+    .on(authorSearchChanged, (_, search) => search)
+
+export const $authorsPagination = createStore<Pagination>({page: 1, limit: 4})
+    .on(authorsPageChanged, (store, page) => ({...store, page}))
+    .on(authorsLimitChanged, (store, limit) => ({...store, page:1, limit}))
+    .on(authorsFilterChanged, (store) => ({...store, page:1}))
+
+export const $authorsPayload = combine(
+    $authorsFilter, $authorSearch, $authorsPagination,
+    (authorsFilter, authorSearch, {page, limit}) => ({
+        filter: authorsFilter,
+        search: authorSearch,
+        page: page,
+        limit: limit,
+    })
+)
+
+export const $ownAuthorsOptions = combine($ownAuthors, (ownAuthors) => (
+    ownAuthors.map(
+        ({ id, alias }) => ({
+            value: id,
+            name: alias,
+        })
+    )
+))
+
+sample({
+    clock: [
+        authorsFilterChanged,
+        authorSearchClicked,
+        authorsPageChanged,
+        authorsLimitChanged,
+    ],
+    source: $authorsPayload,
+    target: getAuthorsFx,
+})
+
+// debug({$authorsPagination})

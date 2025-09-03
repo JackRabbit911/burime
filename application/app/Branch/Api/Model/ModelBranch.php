@@ -1,0 +1,59 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Branch\Api\Model;
+
+use Sys\Model\MysqlModel;
+use PDO;
+
+class ModelBranch extends MysqlModel
+{
+    public function find(int $id)
+    {
+        $branch = $this->qb->table('branches')
+            ->setFetchMode(PDO::FETCH_NAMED)
+            ->find($id);
+
+        $branch['info'] = json_decode($branch['info']);
+        $branch['authors'] = $this->getBranchAuthors($id);
+        $branch['genres'] = $this->getBranchGenres($id);
+
+        return $branch;
+    }
+
+    public function getBranchAuthors($branch_id)
+    {
+        return $this->qb->table('authors')
+            ->select('id', 'role', 'status', 'alias')
+            ->join('branches_authors', 'author_id', '=', 'id')
+            ->where('branch_id', '=', $branch_id)
+            ->get();
+    }
+
+    public function getBranchGenres($branch_id)
+    {
+        return $this->qb->table('branches_genres')
+            ->select('genre_id')
+            ->where('branch_id', '=', $branch_id)
+            ->setFetchMode(PDO::FETCH_COLUMN)
+            ->get();
+    }
+
+    public function getGenres()
+    {
+        return $this->qb->table('genres')
+            ->select('id', 'title', 'weight')
+            ->get();
+    }
+
+    public function findPostByWeight(int $branch_id, int $weight)
+    {
+        return $this->qb->table('branches_posts')
+            ->select('posts.body')
+            ->join('posts', 'posts.id', '=', 'post_id')
+            ->where('branch_id', '=', $branch_id)
+            ->setFetchMode(PDO::FETCH_COLUMN)
+            ->find($weight, 'weight');
+    }
+}
