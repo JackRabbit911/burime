@@ -16,7 +16,7 @@ import Dialog from "./reused/Dialog"
 function App() {
   const step = useUnit($step)
   const { id, title } = useUnit($branch)
-  const h1 = id ? `Edit the book: "${title}"` : 'Create the book'
+  const h1 = id ? `Edit the book: "${title}"` : `Create the book: "${title}"`
 
   useEffect(() => {
     getBootstrapFx()
@@ -29,8 +29,8 @@ function App() {
           <h1 className="text-2xl mt-2 mb-3">
             {h1}
           </h1>
-          <Steps step={step} />
           <TitleInput />
+          <Steps step={step} />
           {step === 1 && <Genres />}
           {step === 2 && <Rules />}
           {step === 3 && <Authors />}

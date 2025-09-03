@@ -10,7 +10,7 @@ const Steps = ({ step }: Props) => {
   const { authorExists, genresExists } = useUnit($requiredFields)
 
   return (
-    <ul className="steps w-full mb-4 mt-1">
+    <ul className="steps w-full my-4">
       <Step
         step={1}
         title="Genres"

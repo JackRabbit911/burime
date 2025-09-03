@@ -7,7 +7,7 @@ const TitleInput = () => {
   const alert = Boolean(title) ? '' : 'Required field'
 
   return (
-    <fieldset className="fieldset mb-2">
+    <fieldset className="fieldset">
       <TextInput
         label="Title"
         value={title || ''}
