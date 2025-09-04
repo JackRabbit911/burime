@@ -18,7 +18,7 @@ import {
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
 import { getBootstrapFx } from "../bootstrap";
 import type { Branch } from "../bootstrap/types";
-import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived } from "../common";
+import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived, globalReset } from "../common";
 import { debug } from "patronum";
 
 export const genreToggled = createEvent<number>()
@@ -35,10 +35,8 @@ export const rulesChanged = createEvent<string>()
 export const bgColorChanged = createEvent<string>()
 export const textColorChanged = createEvent<string>()
 export const textSizeChanged = createEvent<number>()
-export const branchCanged = createEvent<Partial<Branch>>()
 
 export const $branch = createStore<Branch>(branchInit())
-    .on(branchCanged, (store, partial) => ({...store, ...partial}))
     .on(getBootstrapFx.doneData, (_, data) => data.result.branch)
     .on(genreToggled, calcSelectedGenres)
     .on(rwModeToggled, (branch, role) => ({...branch, role}))
@@ -60,6 +58,7 @@ export const $branch = createStore<Branch>(branchInit())
     .on(textSizeChanged, numberInfoUpdate('text_size'))
     .on([coverNameRecived, coverNameCancelled], textInfoUpdate('cover'))
     .on([bgNameRecived, bgNameCancelled], textInfoUpdate('bg_img'))
+    .reset(globalReset)
 
 export const $selectedGenres = combine($branch, (branch) => branch?.genres || [])
 export const $selectedRWMode = combine($branch, (branch) => branch?.role || 0)
