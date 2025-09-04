@@ -1,4 +1,5 @@
 import { componentRemoved } from "../../reused/Dialog/store"
+import { globalReset } from "../../store/common"
 
 const Cancel = () => {
   const onNo = () => {
@@ -8,6 +9,7 @@ const Cancel = () => {
   const onYes = () => {
     window.location.href = '/'
     componentRemoved()
+    globalReset()
   }
 
   return (
