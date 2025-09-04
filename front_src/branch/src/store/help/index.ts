@@ -1,7 +1,6 @@
 import { createEffect, createEvent, createStore, sample } from "effector";
 import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
-import { debug } from "patronum";
 import type { Help } from "./types";
 
 export const helpBtnClicked = createEvent<number>()
@@ -9,7 +8,6 @@ export const helpBtnClicked = createEvent<number>()
 export const getHelpDataFx = createEffect(
     (step: number) => {
         const uri = '/branch/help/' + step.toString()
-
         return ajax.get<ApiResponse<string>>(uri)
     }
 )
@@ -34,5 +32,3 @@ sample({
     }],
     target: $hepls,
 })
-
-debug({ $hepls, getHelpDataFx, helpBtnClicked })
