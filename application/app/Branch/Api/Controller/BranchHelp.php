@@ -8,11 +8,8 @@ use App\Branch\Api\Repository\HelpRepo;
 
 class BranchHelp extends ApiContractController
 {
-    public function __construct(private HelpRepo $repo){}
-
-
-    public function genres()
+    public function __invoke(HelpRepo $repo, int $step)
     {
-        return $this->repo->genres();
+        return $repo->getHelp($step);
     }
 }
