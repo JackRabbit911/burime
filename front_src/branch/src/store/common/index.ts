@@ -1,6 +1,7 @@
 import { combine, createEvent, createStore } from "effector";
 
 export const stepChanged = createEvent<number>()
+export const globalReset = createEvent()
 
 export const coverFileChanged = createEvent<File>()
 export const coverNameRecived = coverFileChanged
