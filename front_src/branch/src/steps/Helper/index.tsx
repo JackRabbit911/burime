@@ -1,24 +1,19 @@
-import { helpContents } from "./constants";
+import { useUnit } from "effector-react";
+import type { Help } from "../../store/help/types";
+import { $hepls } from "../../store/help";
 
 type Props = {
     step: number;
 }
 
+const getHelp = (helps: Help[], step: number) =>
+    helps.find((help: Help) => help.step === step)?.body || 'huy'
+
 const Helper = ({ step }: Props) => {
-    const help = helpContents.find(([id]) => id === step)
+    const help = getHelp(useUnit($hepls), step)
 
     return !help ? <h1>Ничего нет</h1> : (
-        <div>
-            <div>
-                {help[0]}
-            </div>
-            <div>
-                {help[1]}
-            </div>
-            <div>
-                {help[2]}
-            </div>
-        </div>
+       <div className="markdown" dangerouslySetInnerHTML={{ __html: help}} />
     )
 }
 

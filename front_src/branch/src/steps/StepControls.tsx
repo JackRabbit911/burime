@@ -1,6 +1,7 @@
 import { useUnit } from "effector-react"
 import { $step, stepChanged } from "../store/common"
 import FinalControls from "./FinalControls"
+import { helpBtnClicked } from "../store/help"
 import { componentAdded } from "../reused/Dialog/store"
 import Helper from "./Helper"
 
@@ -16,6 +17,7 @@ const StepControls = () => {
   }
 
   const onClick = (step: number) => () => {
+    helpBtnClicked(step)
     componentAdded(<Helper step={step} />)
   }
 
