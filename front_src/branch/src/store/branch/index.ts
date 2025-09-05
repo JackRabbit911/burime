@@ -1,4 +1,4 @@
-import { combine, createEvent, createStore, sample } from "effector";
+import { combine, createEvent, createStore } from "effector";
 import {
     branchInit,
     calcSelectedGenres,
@@ -8,11 +8,9 @@ import {
     toggleInfo,
 } from "./utils";
 import {
-    $ownAuthors,
     authorInvited,
     authorRemoved,
     authorRoleToggled,
-    masterIdSelected,
     masterSelected
 } from "../authors";
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
@@ -67,16 +65,5 @@ export const $masterId = combine($branch, getBranchMasterId)
 export const $branchAuthors = combine($branch, (branch) => (branch?.authors || []).filter(
     (author) => author.role < 150
 ))
-
-sample({
-    clock: masterIdSelected,
-    source: $ownAuthors,
-    fn: (authors, id) => {
-        const author = authors.find((author) => author.id.toString() === id)
-
-        return author
-    },
-    target: masterSelected
-})
 
 debug({$branch})

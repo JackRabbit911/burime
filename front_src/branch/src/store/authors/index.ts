@@ -3,7 +3,6 @@ import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
 import type { Author, Authors, AuthorsPayload, BranchAuthor } from "./types";
 import type { Pagination } from "../../reused/Paginator/types";
-// import { debug } from "patronum";
 
 export const masterIdSelected = createEvent<string>()
 export const authorInvited = createEvent<Author>()
@@ -76,4 +75,13 @@ sample({
     target: getAuthorsFx,
 })
 
-// debug({$authorsPagination})
+sample({
+    clock: masterIdSelected,
+    source: $ownAuthors,
+    fn: (authors, id) => {
+        const author = authors.find((author) => author.id.toString() === id)
+
+        return author
+    },
+    target: masterSelected
+})
