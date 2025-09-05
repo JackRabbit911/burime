@@ -32,6 +32,8 @@ class BranchDTO
         $this->authors = $params['authors'] ?? [];
         
         $rules = new stdClass();
+        $params['info'] = (object) $params['info'];
+        
         $rules->moderation = $params['info']->moderation ?? 0;
         $rules->allow_comments = $params['info']->allow_comments ?? 1;
         $rules->signature = $params['info']->signature ?? 0;
