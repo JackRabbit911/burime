@@ -27,8 +27,8 @@ class BranchValidation extends ApiValidationMiddleware
             ->rule('info[bg_color]', 'hex_color')
             ->rule('info[text_color]', 'hex_color')
             ->rule('info[text_size]', 'required|integer|inRange(5, 50)')
-            ->rule('info[bg_img]', 'alpha_num_utf8')
-            ->rule('info[cover]', 'alpha_num_utf8')
+            ->rule('info[bg_img]', 'text_utf8')
+            ->rule('info[cover]', 'text_utf8')
             ->rule('genres', 'integer')
         ;
     }
