@@ -6,11 +6,6 @@
 {% set title_size = book.info.text_size ?? 12 %}
 {% set style_title_size = 'style="font-size: ' ~  title_size ~ 'cqw;"' %}
 
-{# {% if book.info.bg_img is defined and book.info.bg_img %}
-{% set style_bg_img = 'style="backgroundImage: url(' ~ book.info.bg_img ~ ');"' %}
-{% endif %} #}
-
-
 <div
     class="relative border border-neutral-content bg-cover aspect-2/3 book-cover inline-size"
     data-title-size="{{ title_size }}"
@@ -47,5 +42,4 @@
     </div>
     {% endif %}
 </div>
-{# {{ dump(book.info) }} #}
 {% endmacro %}
