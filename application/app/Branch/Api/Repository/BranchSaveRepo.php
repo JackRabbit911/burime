@@ -28,7 +28,7 @@ class BranchSaveRepo
         }
 
         if (isset($files['cover'])) {
-            $branch['info']['cover'] = 'background' . $this->getExt($files['cover']);
+            $branch['info']['cover'] = 'cover' . $this->getExt($files['cover']);
         }
 
         $branch_id = $this->saveBranch($branch, $user_id);
