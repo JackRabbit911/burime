@@ -8,21 +8,26 @@ import Authors from "./steps/Authors"
 import { getBootstrapFx } from "./store/bootstrap"
 import Cover from "./steps/Cover"
 import Publish from "./steps/Publish"
-import { $branch } from "./store/branch"
+import { $branch, $isBranchLoaded } from "./store/branch"
 import Steps from "./steps/Steps"
 import TitleInput from "./steps/TileInput"
 import Dialog from "./reused/Dialog"
+import Loader from "./reused/Loading"
 
 function App() {
   const step = useUnit($step)
+  const isBranchLoaded = useUnit($isBranchLoaded)
   const { id, title } = useUnit($branch)
   const h1 = id ? `Edit the book: "${title}"` : `Create the book: "${title}"`
+
 
   useEffect(() => {
     getBootstrapFx()
   }, [])
 
-  return (
+  return  !isBranchLoaded ? (
+    <Loader message="Загрузка" />
+  ) : (
     <>
       <div className="flex flex-row justify-center">
         <div className="w-full md:w-2xl lg:w-4xl bg-base-100 p-4">

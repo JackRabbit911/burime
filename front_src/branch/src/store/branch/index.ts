@@ -59,6 +59,9 @@ export const $branch = createStore<Branch>(branchInit())
     .on([bgNameRecived, bgNameCancelled], textInfoUpdate('bg_img'))
     .reset(globalReset)
 
+export const $isBranchLoaded = createStore(false)
+    .on(getBootstrapFx.doneData, () => true)
+
 export const $selectedGenres = combine($branch, (branch) => branch?.genres || [])
 export const $selectedRWMode = combine($branch, (branch) => branch?.role || 0)
 export const $masterId = combine($branch, getBranchMasterId)
