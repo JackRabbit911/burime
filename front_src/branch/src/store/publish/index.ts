@@ -10,9 +10,7 @@ import { $bgFile, $coverFile } from "../common";
 export const published = createEvent()
 
 const sendFormDataFx = createEffect(
-    (data: Payload) => {
-        return ajax.postForm<ApiResponse<Payload>>('branch/save', data)
-    }
+    (data: Payload) => ajax.postForm<ApiResponse<Payload>>('branch/save', data)
 )
 
 sample({
