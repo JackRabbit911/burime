@@ -22,7 +22,6 @@ const FirstLastPost = () => {
               value={last}
               placeholder="Если хотите, напишите последние строки вашего произведения"
               rows={6}
-              disabled={Boolean(id)}
               onChange={lastPostChanged}
             />
         </fieldset>
