@@ -1,4 +1,4 @@
-import { bgFileCancelled, bgFileChanged, coverFileCancelled, coverFileChanged } from "../store/common";
+import { bgFileCancelled, bgFileChanged, coverFileCancelled, coverFileChanged } from "../store/cover";
 
 type Props = {
   label: string;

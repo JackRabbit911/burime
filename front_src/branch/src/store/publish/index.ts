@@ -4,7 +4,7 @@ import type { ApiResponse } from "../../api/types";
 import { $branch } from "../branch";
 import type { Payload } from "./types";
 import { $posts } from "../posts";
-import { $bgFile, $coverFile } from "../common";
+import { $bgFile, $coverFile } from "../cover";
 // import { debug } from "patronum";
 
 export const published = createEvent()

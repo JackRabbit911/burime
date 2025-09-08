@@ -16,8 +16,9 @@ import {
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
 import { getBootstrapFx } from "../bootstrap";
 import type { Branch } from "../bootstrap/types";
-import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived, globalReset } from "../common";
+import { globalReset } from "../common";
 import { debug } from "patronum";
+import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived } from "../cover";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
