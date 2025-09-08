@@ -23,11 +23,21 @@ class BranchSaveRepo
 
         unset($post, $branch['authors'], $branch['genres']);
 
+        if (isset($files['bg_img'])) {
+            $branch['info']['bg_img'] = 'background' . $this->getExt($files['bg_img']);
+        }
+
+        if (isset($files['cover'])) {
+            $branch['info']['cover'] = 'background' . $this->getExt($files['cover']);
+        }
+
         $branch_id = $this->saveBranch($branch, $user_id);
         $this->model->saveBranchAuthors($authors, $branch_id);
         $this->model->saveBranchGenres($genres, $branch_id);
         $this->model->saveBranchPosts($posts, $branch_id, $master_id);
         $this->saveCover($files, $branch_id);
+
+        return $files;
     }
 
     private function saveBranch(array $branch, int $user_id)
@@ -44,8 +54,8 @@ class BranchSaveRepo
 
     private function saveCover(array $files, int $branch_id)
     {
-        if (isset($files['bgFile'])) {
-                $this->saveUploadFile('background', $files['bgFile'], $branch_id);
+        if (isset($files['bg_img'])) {
+                $this->saveUploadFile('background', $files['bg_img'], $branch_id);
         } else {
             $this->deleteFile('background', $branch_id);
         }
@@ -70,12 +80,7 @@ class BranchSaveRepo
             mkdir($dir, 0777, true);
         }
 
-        $ext = match ($file->getClientMediaType()) {
-            'image/jpeg' => '.jpg',
-            'image/png' => '.png',
-        };
-
-        $filename = $dir . '/' . $filename . $ext;
+        $filename = $dir . '/' . $filename . $this->getExt($file);
         $file->moveTo($filename);
         chmod($filename, 0777);
 
@@ -86,6 +91,13 @@ class BranchSaveRepo
     {
         $pattern = $this->prefix . $dir . '/' . $pattern . '.*';
         array_map('unlink', glob($pattern));
+    }
+
+    private function getExt($file) {
+        return match ($file->getClientMediaType()) {
+            'image/jpeg' => '.jpg',
+            'image/png' => '.png',
+        };
     }
 
     private function prepareBranchAuthors(array $authors)
