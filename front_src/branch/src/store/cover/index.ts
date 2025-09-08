@@ -1,4 +1,6 @@
-import { combine, createEvent, createStore } from "effector";
+import { combine, createEvent, createStore, sample } from "effector";
+import { getBootstrapFx } from "../bootstrap";
+import { base64ToFile } from "./utils";
 
 export const coverFileChanged = createEvent<File>()
 export const coverNameRecived = coverFileChanged
@@ -38,4 +40,18 @@ export const $bgUrl = combine($bgFile, (bgFile) => {
     }
 
     return URL.createObjectURL(bgFile)
+})
+
+sample({
+    clock: getBootstrapFx.doneData,
+    filter: (response) => Boolean(response.result.files.bg_img),
+    fn: (response) => base64ToFile(response.result.files.bg_img),
+    target: $bgFile,
+})
+
+sample({
+    clock: getBootstrapFx.doneData,
+    filter: (response) => Boolean(response.result.files.cover),
+    fn: (response) => base64ToFile(response.result.files.cover),
+    target: $coverFile,
 })
