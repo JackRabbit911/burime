@@ -3,6 +3,7 @@ import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
 import type { Author, Authors, AuthorsPayload, BranchAuthor } from "./types";
 import type { Pagination } from "../../reused/Paginator/types";
+import { globalReset } from "store/common";
 
 export const masterIdSelected = createEvent<string>()
 export const authorInvited = createEvent<Author>()
@@ -27,23 +28,29 @@ export const getAuthorsFx = createEffect(
 
 export const $authors = createStore<Author[]>([])
     .on(getAuthorsFx.doneData, (_, data) => data.result.authors)
+    .reset(globalReset)
 
 export const $authorsCount = createStore(0)
     .on(getAuthorsFx.doneData, (_, data) => data.result.authorsCount)
+    .reset(globalReset)
 
 export const $ownAuthors = createStore<Author[]>([])
     .on(getAuthorsFx.doneData, (_, data) => data.result.ownAuthors)
+    .reset(globalReset)
 
 export const $authorsFilter = createStore('')
     .on(authorsFilterChanged, (_, filter) => filter)
+    .reset(globalReset)
 
 export const $authorSearch = createStore('')
     .on(authorSearchChanged, (_, search) => search)
+    .reset(globalReset)
 
 export const $authorsPagination = createStore<Pagination>({page: 1, limit: 25})
     .on(authorsPageChanged, (store, page) => ({...store, page}))
     .on(authorsLimitChanged, (store, limit) => ({...store, page:1, limit}))
     .on(authorsFilterChanged, (store) => ({...store, page:1}))
+    .reset(globalReset)
 
 export const $authorsPayload = combine(
     $authorsFilter, $authorSearch, $authorsPagination,

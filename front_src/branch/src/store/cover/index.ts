@@ -1,6 +1,7 @@
 import { combine, createEvent, createStore, sample } from "effector";
 import { getBootstrapFx } from "../bootstrap";
 import { base64ToFile } from "./utils";
+import { globalReset } from "store/common";
 
 export const coverFileChanged = createEvent<File>()
 export const coverNameRecived = coverFileChanged
@@ -20,7 +21,7 @@ export const bgNameCancelled = bgFileCancelled
 
 export const $coverFile = createStore<File | null>(null)
     .on(coverFileChanged, (_, data) => data)
-    .reset(coverFileCancelled)
+    .reset(coverFileCancelled, globalReset)
 
 export const $coverUrl = combine($coverFile, (coverFile) => {
     if (!coverFile) {
@@ -32,7 +33,7 @@ export const $coverUrl = combine($coverFile, (coverFile) => {
 
 export const $bgFile = createStore<File | null>(null)
     .on(bgFileChanged, (_, data) => data)
-    .reset(bgFileCancelled)
+    .reset(bgFileCancelled, globalReset)
 
 export const $bgUrl = combine($bgFile, (bgFile) => {
     if (!bgFile) {
