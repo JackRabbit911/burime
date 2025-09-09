@@ -37,7 +37,7 @@ class BranchSaveRepo
         $this->model->saveBranchPosts($posts, $branch_id, $master_id);
         $this->saveCover($files, $branch_id);
 
-        return $files;
+        return $branch_id;
     }
 
     private function saveBranch(array $branch, int $user_id)

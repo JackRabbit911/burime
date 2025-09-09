@@ -18,7 +18,7 @@ class BranchSave extends ApiContractController
     {
         $post = $this->request->getParsedBody();
         $files = $this->request->getUploadedFiles();
-        $id = $repo->save($post, $files, $this->user->id);
-        return $id;
+
+        return $repo->save($post, $files, $this->user->id);
     }
 }
