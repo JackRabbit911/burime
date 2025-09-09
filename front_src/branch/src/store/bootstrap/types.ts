@@ -35,13 +35,26 @@ export type Branch = {
     authors: BranchAuthor[];
 }
 
+export type CoverFile = {
+    filename: string;
+    mime: string;
+    base64: string;
+}
+
+export type FilesBase64 = {
+    cover: CoverFile | null;
+    bg_img: CoverFile | null;
+}
+
 export type Bootstrap = {
     genres: Genre[];
     branch: Branch;
     posts: Posts;
+    files: FilesBase64;
 }
 
 export type SameWeightGenres = {
     weight: number;
     genres: Genre[];
 };
+

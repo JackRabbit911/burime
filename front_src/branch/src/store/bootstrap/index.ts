@@ -3,6 +3,7 @@ import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
 import type { Bootstrap, SameWeightGenres } from "./types";
 import { getSameWeightGenres } from "./utils";
+import { globalReset } from "store/common";
 
 export const getBootstrapFx = createEffect(
     async () => {
@@ -23,3 +24,4 @@ export const getBootstrapFx = createEffect(
 
 export const $sameWeightGenres = createStore<SameWeightGenres[]>([])
     .on(getBootstrapFx.doneData, (_, data) => getSameWeightGenres(data?.result?.genres || []))
+    .reset(globalReset)

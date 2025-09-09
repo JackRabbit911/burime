@@ -1,6 +1,6 @@
 import { useUnit } from "effector-react"
-import { $readyToPublish, $requiredFields } from "../store/validation"
-import { componentAdded } from "../reused/Dialog/store"
+import { $readyToPublish, $requiredFields, published } from "store"
+import { componentAdded } from "reused/Dialog/store"
 import Cancel from "./Publish/Cancel"
 
 const FinalControls = () => {
@@ -8,7 +8,8 @@ const FinalControls = () => {
   const readyToPublish = useUnit($readyToPublish)
 
   const onPublish = () => {
-    window.location.href = '/private/books'
+    published()
+    // window.location.href = '/private/books'
   }
 
   const onCancel = () => {

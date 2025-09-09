@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Branch\Api\Controller;
 
-use App\Branch\Api\BranchDTO;
-use App\Branch\Api\FirstLastDTO;
 use App\Branch\Api\Repository\BranchRepo;
-use App\Branch\Model\ModelGenre;
 use Auth\Middleware\OAuthMiddleware;
 use Auth\Middleware\AuthGuardMiddleware;
 
@@ -20,9 +17,10 @@ class Branch extends ApiContractController
 
     public function bootstrap(?int $id = null)
     {
-        $data['branch'] = $id ? $this->repo->findBranch($id) : new BranchDTO();
+        $data['branch'] = $this->repo->findBranch($id);
         $data['genres'] = $this->repo->getGenres();
-        $data['posts'] = $id ? $this->repo->getFirstLastPosts($id) : new FirstLastDTO();
+        $data['posts'] = $this->repo->getFirstLastPosts($id);
+        $data['files'] = $this->repo->getCoverFiles($id);
 
         return $data;
     }
@@ -41,16 +39,6 @@ class Branch extends ApiContractController
             'authors' => $authors,
             'authorsCount' => $authors_count,
             'ownAuthors' => $own_authors,
-        ];
-    }
-
-    public function vocabularies(ModelGenre $model_genre)
-    {
-        $total_genres = $model_genre->getTitles();
-
-        return [
-            'genres' => $total_genres,
-            'branch' => new BranchDTO($this->user->id),
         ];
     }
 }

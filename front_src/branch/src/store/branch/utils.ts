@@ -11,7 +11,7 @@ export const branchInit = () => ({
     info: {
         moderation: 0,
         allow_comments: 1,
-        signature: 0,
+        signature: 1,
         post_size: 200,
         time_limit: 120,
         description: '',

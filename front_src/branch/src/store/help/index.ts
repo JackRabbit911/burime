@@ -2,6 +2,7 @@ import { createEffect, createEvent, createStore, sample } from "effector";
 import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
 import type { Help } from "./types";
+import { globalReset } from "store/common";
 
 export const helpBtnClicked = createEvent<number>()
 
@@ -13,6 +14,7 @@ export const getHelpDataFx = createEffect(
 )
 
 export const $hepls = createStore<Help[]>([])
+    .reset(globalReset)
 
 sample({
     clock: helpBtnClicked,

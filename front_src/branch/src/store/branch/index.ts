@@ -1,4 +1,4 @@
-import { combine, createEvent, createStore, sample } from "effector";
+import { combine, createEvent, createStore } from "effector";
 import {
     branchInit,
     calcSelectedGenres,
@@ -8,18 +8,18 @@ import {
     toggleInfo,
 } from "./utils";
 import {
-    $ownAuthors,
     authorInvited,
     authorRemoved,
     authorRoleToggled,
-    masterIdSelected,
     masterSelected
 } from "../authors";
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
 import { getBootstrapFx } from "../bootstrap";
 import type { Branch } from "../bootstrap/types";
-import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived, globalReset } from "../common";
+import { globalReset } from "../common";
 import { debug } from "patronum";
+import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived } from "../cover";
+// import { branchIdRecived } from "../publish";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
@@ -58,7 +58,11 @@ export const $branch = createStore<Branch>(branchInit())
     .on(textSizeChanged, numberInfoUpdate('text_size'))
     .on([coverNameRecived, coverNameCancelled], textInfoUpdate('cover'))
     .on([bgNameRecived, bgNameCancelled], textInfoUpdate('bg_img'))
+    // .on(branchIdRecived, (branch, id) => ({...branch, id}))
     .reset(globalReset)
+
+export const $isBranchLoaded = createStore(false)
+    .on(getBootstrapFx.doneData, () => true)
 
 export const $selectedGenres = combine($branch, (branch) => branch?.genres || [])
 export const $selectedRWMode = combine($branch, (branch) => branch?.role || 0)
@@ -67,16 +71,5 @@ export const $masterId = combine($branch, getBranchMasterId)
 export const $branchAuthors = combine($branch, (branch) => (branch?.authors || []).filter(
     (author) => author.role < 150
 ))
-
-sample({
-    clock: masterIdSelected,
-    source: $ownAuthors,
-    fn: (authors, id) => {
-        const author = authors.find((author) => author.id.toString() === id)
-
-        return author
-    },
-    target: masterSelected
-})
 
 debug({$branch})

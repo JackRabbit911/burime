@@ -5,7 +5,7 @@ type Props = {
 }
 
 const PerPage = ({
-  perPages = [4, 50, 100],
+  perPages = [25, 50, 100],
   limit,
   setPerPage,
 }: Props) => {

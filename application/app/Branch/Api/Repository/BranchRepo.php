@@ -12,14 +12,16 @@ use App\Burime\Model\ModelPost;
 
 class BranchRepo
 {
+    private string $prefix = './img/branch/';
+
     public function __construct(
         private ModelBranch $modelBranch,
         private ModelAuthors $modelAuthors
     ){}
 
-    public function findBranch(int $branch_id)
+    public function findBranch(?int $branch_id)
     {
-        $params = $this->modelBranch->find($branch_id);
+        $params = $branch_id ? $this->modelBranch->find($branch_id) : [];
 
         return new BranchDTO($params);
     }
@@ -58,13 +60,41 @@ class BranchRepo
         return $this->modelBranch->getGenres();
     }
 
-    public function getFirstLastPosts($branch_id)
+    public function getFirstLastPosts(?int $branch_id)
     {
-        $params = [
+        $params = $branch_id ? [
             'first' => $this->modelBranch->findPostByWeight($branch_id, 1),
             'last' => $this->modelBranch->findPostByWeight($branch_id, ModelPost::MAX_WEIGHT),
-        ];
+        ] : [];
 
         return new FirstLastDTO($params);
+    }
+
+    public function getCoverFiles(?int $branch_id)
+    {
+        $data['cover'] = $this->fileEncode($branch_id, 'cover');
+        $data['bg_img'] = $this->fileEncode($branch_id, 'background');
+
+        return $data;
+    }
+
+    private function fileEncode(?int $branch_id, string $filename)
+    {
+        if (!$branch_id) {
+            return null;
+        }
+        
+        $pattern = $this->prefix . $branch_id . '/' . $filename . '.{jpg,png}';
+        $file = glob($pattern, GLOB_BRACE)[0] ?? null;
+
+        if (!$file) {
+            return null;
+        }
+
+        $data['filename'] = pathinfo($file, PATHINFO_BASENAME);
+        $data['mime'] = mime_content_type($file);
+        $data['base64'] = base64_encode(file_get_contents($file));
+
+        return $data;
     }
 }

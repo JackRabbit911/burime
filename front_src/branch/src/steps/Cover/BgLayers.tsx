@@ -1,6 +1,6 @@
 import { useUnit } from "effector-react"
 import type { Info } from "../../store/bootstrap/types"
-import { $bgUrl, $coverUrl } from "../../store/common"
+import { $bgUrl, $coverUrl } from "../../store/cover";
 
 type Props = {
   info: Info;
