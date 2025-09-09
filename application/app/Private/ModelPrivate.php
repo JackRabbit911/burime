@@ -10,6 +10,7 @@ use Common\Enum\BranchAuthorStatus;
 
 use Sys\Model\Model;
 use Psr\Container\ContainerInterface;
+use PDO;
 
 class ModelPrivate extends Model
 {
@@ -28,6 +29,15 @@ class ModelPrivate extends Model
         $master_role = AuthorRole::Master->value;
         $status = BranchAuthorStatus::Invited->value;
 
+        $params = $this->qb->table('authors')
+            ->select('id')
+            ->where('owner', '=', $user_id)
+            ->setFetchMode(PDO::FETCH_COLUMN)
+            ->get();
+
+        $str = implode(',', array_fill(0, count($params), '?'));        
+        $params[] = $status;
+
         $sql = "SELECT branches.*, ba.role AS author_role,
         GROUP_CONCAT(DISTINCT `master`.`alias` SEPARATOR ', ') AS alias,
         GROUP_CONCAT(DISTINCT `genres`.`title` ORDER BY genres.weight SEPARATOR ', ') AS genreStr
@@ -37,11 +47,11 @@ class ModelPrivate extends Model
         JOIN authors AS master ON master.id = bm.author_id
         JOIN branches_genres AS bg ON bg.branch_id = branches.id
         JOIN genres ON genres.id = bg.genre_id AND genres.weight > 0
-        WHERE ba.user_id = ? AND ba.status >= $status
+        WHERE ba.author_id IN ($str) AND ba.status > ?
         GROUP BY branches.id, author_role
         ORDER BY author_role DESC, branches.created DESC";
 
-        return $this->qb->query($sql, [$user_id])
+        return $this->qb->query($sql, $params)
             ->asObject($this->branchClass)
             ->get();
     }
