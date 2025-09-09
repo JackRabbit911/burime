@@ -9,7 +9,6 @@ import { debug } from "patronum";
 
 export const published = createEvent()
 export const allRightChanged = createEvent<boolean>()
-const branchIdRecived = createEvent<number>()
 
 const sendFormDataFx = createEffect(
     (data: Payload) => ajax.postForm<ApiResponse<number>>('branch/save', data)
@@ -36,11 +35,13 @@ sample({
 
 sample({
     clock: sendFormDataFx.doneData,
-    filter: (response) => Boolean(response?.data?.success),
-    fn: (response) => response?.data?.result,
-    target: branchIdRecived, 
+    source: $branch,
+    filter: (_, response) => Boolean(response?.data?.success),
+    fn: (branch, response) => ({
+        ...branch,
+        id: response.data.result,
+    }),
+    target: $branch, 
 })
-
-$branch.on(branchIdRecived, (branch, id) => ({...branch, id}))
 
 debug({$allRight, allRightChanged})
