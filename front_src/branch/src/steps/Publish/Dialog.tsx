@@ -6,7 +6,7 @@ const Dialog = () => {
         componentRemoved()
         allRightChanged(false)
         globalReset()
-        window.location.href = '/private/books'
+        window.location.replace('/private/books')
     }
 
     return (
