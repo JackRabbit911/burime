@@ -1,8 +1,7 @@
 import { useUnit } from "effector-react"
-import { $readyToPublish, $requiredFields } from "../store/validation"
-import { componentAdded } from "../reused/Dialog/store"
+import { $readyToPublish, $requiredFields, published } from "store"
+import { componentAdded } from "reused/Dialog/store"
 import Cancel from "./Publish/Cancel"
-import { published } from "../store/publish"
 
 const FinalControls = () => {
   const { titleExists } = useUnit($requiredFields)

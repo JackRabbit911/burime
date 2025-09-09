@@ -1,7 +1,6 @@
 import { useUnit } from "effector-react"
-import Textarea from "../../reused/Textarea"
-import { $posts, firstPostChanged, lastPostChanged } from "../../store/posts"
-import { $branch } from "../../store/branch"
+import Textarea from "reused/Textarea"
+import { $branch, $posts, firstPostChanged, lastPostChanged } from "store"
 
 const FirstLastPost = () => {
     const {first, last} = useUnit($posts)

@@ -1,5 +1,5 @@
-import { componentRemoved } from "../../reused/Dialog/store"
-import { globalReset } from "../../store/common"
+import { componentRemoved } from "reused/Dialog/store"
+import { globalReset } from "store"
 
 const Cancel = () => {
   const onNo = () => {
