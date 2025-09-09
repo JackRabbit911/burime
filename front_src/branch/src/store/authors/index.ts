@@ -40,7 +40,7 @@ export const $authorsFilter = createStore('')
 export const $authorSearch = createStore('')
     .on(authorSearchChanged, (_, search) => search)
 
-export const $authorsPagination = createStore<Pagination>({page: 1, limit: 4})
+export const $authorsPagination = createStore<Pagination>({page: 1, limit: 25})
     .on(authorsPageChanged, (store, page) => ({...store, page}))
     .on(authorsLimitChanged, (store, limit) => ({...store, page:1, limit}))
     .on(authorsFilterChanged, (store) => ({...store, page:1}))
