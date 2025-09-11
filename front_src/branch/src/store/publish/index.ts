@@ -5,7 +5,6 @@ import { $branch } from "store";
 import type { Payload } from "./types";
 import { $posts } from "../posts";
 import { $bgFile, $coverFile } from "../cover";
-import { debug } from "patronum";
 
 export const published = createEvent()
 export const allRightChanged = createEvent<boolean>()
@@ -43,5 +42,3 @@ sample({
     }),
     target: $branch, 
 })
-
-debug({$allRight, allRightChanged})
