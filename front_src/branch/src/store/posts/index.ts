@@ -1,6 +1,5 @@
 import { createEvent, createStore } from "effector";
 import type { Posts } from "./types";
-import { debug } from "patronum";
 import { getBootstrapFx } from "../bootstrap";
 import { globalReset } from "store/common";
 
@@ -12,5 +11,3 @@ export const $posts = createStore<Posts>({first: '', last: ''})
     .on(firstPostChanged, (store, first) => ({...store, first}))
     .on(lastPostChanged, (store, last) => ({...store, last}))
     .reset(globalReset)
-
-debug({$posts})
