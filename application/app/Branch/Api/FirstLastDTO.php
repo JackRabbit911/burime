@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace App\Branch\Api;
 
+use stdClass;
+
 class FirstLastDTO
 {
-    public readonly string $first;
-    public readonly string $last;
+    public readonly ?object $first;
+    public readonly ?object $last;
 
     public function __construct(array $params = [])
     {
-        $this->first = $params['first'] ?? '';
-        $this->last = $params['last'] ?? '';
+        $default = new stdClass;
+        $default->id = null;
+        $default->body = '';
+
+        $this->first = $params['first'] ?? $default;
+        $this->last = $params['last'] ?? $default;
     }
 }

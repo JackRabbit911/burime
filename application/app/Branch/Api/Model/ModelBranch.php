@@ -50,10 +50,9 @@ class ModelBranch extends MysqlModel
     public function findPostByWeight(int $branch_id, int $weight)
     {
         return $this->qb->table('branches_posts')
-            ->select('posts.body')
+            ->select('post_id', 'posts.body')
             ->join('posts', 'posts.id', '=', 'post_id')
             ->where('branch_id', '=', $branch_id)
-            ->setFetchMode(PDO::FETCH_COLUMN)
             ->find($weight, 'weight');
     }
 }
