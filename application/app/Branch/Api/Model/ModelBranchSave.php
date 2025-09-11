@@ -64,27 +64,38 @@ class ModelBranchSave extends MysqlModel
         $this->tablePosts = $this->qb->table('posts');
         $this->branchesPosts = $this->qb->table('branches_posts');
 
+        $first_id = $last_id = null;
+
         if (!empty($posts['first'])) {
-            $this->setPost($posts['first'], $master_id, $branch_id, 1);
+            $first_id = $this->setPost($posts['first'], $master_id, $branch_id, 1);
         }
 
         if (!empty($posts['last'])) {
-            $this->setPost($posts['last'], $master_id, $branch_id, self::MAX_WEIGHT);
+            $last_id = $this->setPost($posts['last'], $master_id, $branch_id, self::MAX_WEIGHT);
         }
+
+        return ['first_id' => $first_id, 'last_id' => $last_id]; 
     }
 
-    private function setPost(string $body, int $author_id, int $branch_id, int $weight)
+    private function setPost(array $post, int $author_id, int $branch_id, int $weight)
     {
-        $post_id = $this->tablePosts->insert([
-                'author_id' => $author_id,
-                'body' => $body,
-                'status' => PostStatus::Approved->value,
-            ]);
+        $data = [
+            'id' => $post['id'] ?? null,
+            'author_id' => $author_id,
+            'body' => $post['body'],
+            'status' => PostStatus::Approved->value,
+        ];
 
-        $this->branchesPosts->insert([
+        $post_id = $this->tablePosts
+            ->onDuplicateKeyUpdate($data)
+            ->insert($data);
+
+        $this->branchesPosts->insertIgnore([
             'branch_id' => $branch_id,
-            'post_id' => $post_id,
+            'post_id' => $post['id'] ?: $post_id,
             'weight' => $weight,
         ]);
+
+        return $post['id'] ?: $post_id;
     }
 }
