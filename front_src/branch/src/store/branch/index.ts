@@ -19,7 +19,6 @@ import type { Branch } from "../bootstrap/types";
 import { globalReset } from "../common";
 import { debug } from "patronum";
 import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived } from "../cover";
-// import { branchIdRecived } from "../publish";
 
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
@@ -58,7 +57,6 @@ export const $branch = createStore<Branch>(branchInit())
     .on(textSizeChanged, numberInfoUpdate('text_size'))
     .on([coverNameRecived, coverNameCancelled], textInfoUpdate('cover'))
     .on([bgNameRecived, bgNameCancelled], textInfoUpdate('bg_img'))
-    // .on(branchIdRecived, (branch, id) => ({...branch, id}))
     .reset(globalReset)
 
 export const $isBranchLoaded = createStore(false)
