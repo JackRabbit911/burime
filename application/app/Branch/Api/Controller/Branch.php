@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Branch\Api\Controller;
 
+use App\Branch\Api\Middleware\OwnerBranchGuard;
 use App\Branch\Api\Repository\BranchRepo;
 use Auth\Middleware\OAuthMiddleware;
 use Auth\Middleware\AuthGuardMiddleware;
 
 #[OAuthMiddleware]
 #[AuthGuardMiddleware]
+#[OwnerBranchGuard]
 class Branch extends ApiContractController
 {
     public function __construct(private BranchRepo $repo){}

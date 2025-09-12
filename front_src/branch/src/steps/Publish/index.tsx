@@ -3,7 +3,7 @@ import FirstLastPost from "./FirstLastPost"
 import Indicator from "./Indicator"
 import { $allRight } from "store"
 import { useEffect } from "react"
-import { componentAdded } from "reused/Dialog/store"
+import { closeBtn, componentAdded } from "reused/Dialog/store"
 import Dialog from "./Dialog"
 
 const Publish = () => {
@@ -11,6 +11,7 @@ const Publish = () => {
 
   useEffect(() => {
     if (allRight) {
+      closeBtn(false)
       componentAdded(<Dialog />)
     }
   }, [allRight])

@@ -1,15 +1,15 @@
 import { useUnit } from "effector-react"
-import { $readyToPublish, $requiredFields, published } from "store"
+import { $allRight, $readyToPublish, $requiredFields, published } from "store"
 import { componentAdded } from "reused/Dialog/store"
 import Cancel from "./Publish/Cancel"
 
 const FinalControls = () => {
   const { titleExists } = useUnit($requiredFields)
   const readyToPublish = useUnit($readyToPublish)
+  const allRight = useUnit($allRight)
 
   const onPublish = () => {
     published()
-    // window.location.href = '/private/books'
   }
 
   const onCancel = () => {
@@ -22,18 +22,19 @@ const FinalControls = () => {
         <button
           className="btn btn-error"
           onClick={onCancel}
+          disabled={allRight}
         >
           Cancel
         </button>
         <button
           className="btn"
-          disabled={!titleExists}
+          disabled={!titleExists || allRight}
         >
           Draft
         </button>
         <button
           className="btn btn-primary dark:btn-info"
-          disabled={!readyToPublish}
+          disabled={!readyToPublish || allRight}
           onClick={onPublish}
         >
           Publish

@@ -1,12 +1,15 @@
+import { useUnit } from "effector-react"
 import { componentRemoved } from "reused/Dialog/store"
-import { allRightChanged, globalReset } from "store"
+import { $branch, allRightChanged, globalReset } from "store"
 
 const Dialog = () => {
+    const { id } = useUnit($branch)
+    
     const onClick = () => {
         componentRemoved()
         allRightChanged(false)
         globalReset()
-        window.location.replace('/private/books')
+        window.location.replace('/branch/' + id)
     }
 
     return (
