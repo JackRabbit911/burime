@@ -1,11 +1,13 @@
-import { createEffect, createStore } from "effector";
+import { createEffect, createStore, sample } from "effector";
 import ajax from "../../api/ajax";
 import type { ApiResponse } from "../../api/types";
 import type { Bootstrap, SameWeightGenres } from "./types";
 import { getSameWeightGenres } from "./utils";
 import { globalReset } from "store/common";
+// import { debug } from "patronum";
+import type { AxiosError } from "axios";
 
-export const getBootstrapFx = createEffect(
+export const getBootstrapFx = createEffect<void, ApiResponse<Bootstrap>, AxiosError>(
     async () => {
         const path = window.location.pathname
         const last = path.split('/').pop()
@@ -25,3 +27,12 @@ export const getBootstrapFx = createEffect(
 export const $sameWeightGenres = createStore<SameWeightGenres[]>([])
     .on(getBootstrapFx.doneData, (_, data) => getSameWeightGenres(data?.result?.genres || []))
     .reset(globalReset)
+
+export const $bootstrapStatus = createStore(200)
+
+sample({
+    clock: getBootstrapFx.failData,
+    fn: (response) => response.status!,
+    target: $bootstrapStatus,
+})
+
