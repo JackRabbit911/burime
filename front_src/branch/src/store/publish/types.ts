@@ -7,3 +7,9 @@ export type Payload = {
     bg_img: File | null;
     cover: File | null;
 }
+
+export type SaveResponse = {
+    'branch_id': number;
+    'first_id': number;
+    'last_id': number;
+}

@@ -34,10 +34,12 @@ class BranchSaveRepo
         $branch_id = $this->saveBranch($branch, $user_id);
         $this->model->saveBranchAuthors($authors, $branch_id);
         $this->model->saveBranchGenres($genres, $branch_id);
-        $this->model->saveBranchPosts($posts, $branch_id, $master_id);
+        $result = $this->model->saveBranchPosts($posts, $branch_id, $master_id);
         $this->saveCover($files, $branch_id);
 
-        return $branch_id;
+        $result['branch_id'] = $branch_id;
+
+        return $result;
     }
 
     private function saveBranch(array $branch, int $user_id)
@@ -78,6 +80,10 @@ class BranchSaveRepo
 
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
+        }
+
+        if (!is_writable($dir)) {
+            chmod($dir, 0777);
         }
 
         $filename = $dir . '/' . $filename . $this->getExt($file);

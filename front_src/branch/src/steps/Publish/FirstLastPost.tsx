@@ -11,14 +11,14 @@ const FirstLastPost = () => {
              <Textarea
               label="First post"
               placeholder="Напишите что-нибудь"
-              value={first}
+              value={first.body}
               rows={6}
               disabled={Boolean(id)}
               onChange={firstPostChanged}
             />
             <Textarea
               label="Last post"
-              value={last}
+              value={last.body}
               placeholder="Если хотите, напишите последние строки вашего произведения"
               rows={6}
               onChange={lastPostChanged}

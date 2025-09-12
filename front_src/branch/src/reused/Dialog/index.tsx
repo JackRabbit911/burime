@@ -1,7 +1,8 @@
 import { useUnit } from "effector-react";
-import { $component, componentRemoved } from "./store";
+import { $closeBtn, $component, componentRemoved } from "./store";
 
 const Dialog = () => {
+  const closeBtn = useUnit($closeBtn)
   const component = useUnit($component)
   const isOpen = Boolean(component);
 
@@ -12,12 +13,15 @@ const Dialog = () => {
   return (
     <dialog id="my_modal" className="modal" open={isOpen}>
       <div className="modal-box">
-        <button
-          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={onClose}
-        >
-          ✕
-        </button>
+        {closeBtn ? (
+          <button
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            onClick={onClose}
+          >
+            ✕
+          </button>
+        ) : null
+        }
         {component}
       </div>
     </dialog>

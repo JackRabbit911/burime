@@ -1,4 +1,9 @@
+type Post = {
+    id: number | null;
+    body: string;
+}
+
 export type Posts = {
-    first: string;
-    last: string;
+    first: Post;
+    last: Post;
 }
