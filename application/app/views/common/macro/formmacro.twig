@@ -1,5 +1,5 @@
 {% macro input(attr) %}
-    {% if attr.status is defined and (attr.value or attr.status == 'error') %}
+    {% if attr.status is defined and attr.status == 'error' %}
         {% set validate = ' input-error' %}
     {% else %}
         {% set validate = '' %}
@@ -20,8 +20,8 @@
 {% endmacro input %}
 
 {% macro file(attr) %}
-{% if attr.status is defined and (attr.value or attr.status == 'error') %}
-{% set validate = ' file-input-' ~ attr.status %}
+{% if attr.status is defined and attr.status == 'error' %}
+{% set validate = ' file-input-error' %}
 {% else %}
 {% set validate = '' %}
 {% endif %}
@@ -49,6 +49,11 @@
     {% else %}
         {% set checked = '' %}
     {% endif %}
+
+    {% if attr.value is defined and attr.value is null %}
+        {% set checked = '' %}
+    {% endif %}
+
     <label class="fieldset-label flex justify-between">
         <legend class="fieldset-legend me-2 pb-1 pt-0">{{ __(attr.label)|raw }}</legend>
         <input name="{{ attr.name }}" id="{{ attr.id ?? attr.name }}"
@@ -88,8 +93,8 @@
 {% endmacro radio %}
 
 {% macro textarea(attr) %}
-{% if attr.status is defined %}
-{% set validate = ' textarea-' ~ attr.status %}
+{% if attr.status is defined and attr.status == 'error'%}
+{% set validate = ' textarea-error' %}
 {% else %}
 {% set validate = ' textarea-bordered' %}
 {% endif %}
@@ -110,8 +115,8 @@
 {% endmacro textarea %}
 
 {% macro select(attr) %}
-{% if attr.status is defined %}
-{% set validate = ' select-' ~ attr.status %}
+{% if attr.status is defined and attr.status == 'error' %}
+{% set validate = ' select-error' %}
 {% else %}
 {% set validate = ' select-bordered' %}
 {% endif %}

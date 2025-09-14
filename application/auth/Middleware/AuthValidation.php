@@ -35,7 +35,7 @@ final class AuthValidation extends ValidationMiddleware
         $validationResponse = $this->validation->getResponse();
 
         if ($validationResponse['password']['status'] === 'error' 
-            && $validationResponse['password']['key'] === 'isPairEmailPswd') {
+            && $validationResponse['password']['msg'] === $this->validation->getMessage('isPairEmailPswd')) {
                 $validationResponse['email'] = [
                     'status' => 'error',
                     'value' => '',
