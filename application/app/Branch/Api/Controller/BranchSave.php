@@ -11,7 +11,7 @@ use Az\Route\Route;
 
 #[Route(methods: 'post')]
 #[SantizeFormData]
-// #[BranchValidation]
+#[BranchValidation]
 class BranchSave extends ApiContractController
 {
     public function __invoke(BranchSaveRepo $repo)
