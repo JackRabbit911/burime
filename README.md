@@ -12,8 +12,9 @@
    7. `composer require alpha-zeta/framework`
    8. `cd ../htdocs`
    9. `ln -s ../www/public www`
-   10. `mkdir -p storage/logs storage/sessions storage/uploads`
-   11. `chmod -R 777 storage`
+   10. `cd ../www`
+   11. `mkdir -p storage/logs storage/sessions storage/uploads`
+   12. `chmod -R 777 storage`
 4.  `mv <path>/.env .env` 
 5. отредактировать .env
 6. `./console mk:db`
