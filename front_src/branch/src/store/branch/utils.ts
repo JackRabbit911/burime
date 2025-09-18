@@ -26,20 +26,17 @@ export const branchInit = () => ({
     authors: [],
 })
 
-export const calcSelectedGenres = (branch: Branch, genreID: number): Branch => {
-    const isExist = branch.genres.includes(genreID)
+export const toggleGenre = (
+    store: Branch,
+    genreID: number,
+): Branch => {
+    const oldGenres = store?.genres || []
 
-    if (isExist) {
-        return {
-            ...branch,
-            genres: branch.genres.filter((currentGenreId) => currentGenreId !== genreID)
-        }
-    }
+    const genres = oldGenres.includes(genreID) ?
+        oldGenres.filter((id) => id !== genreID) :
+        [...oldGenres, genreID]
 
-    return {
-        ...branch,
-        genres: [...branch?.genres, genreID]
-    }
+    return { ...store, genres }
 }
 
 export function toggleInfo(key: keyof Info) {

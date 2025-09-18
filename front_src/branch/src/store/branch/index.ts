@@ -1,7 +1,7 @@
 import { combine, createEvent, createStore } from "effector";
 import {
     branchInit,
-    calcSelectedGenres,
+    toggleGenre,
     getBranchMasterId,
     numberInfoUpdate,
     textInfoUpdate, 
@@ -37,7 +37,7 @@ export const textSizeChanged = createEvent<number>()
 
 export const $branch = createStore<Branch>(branchInit())
     .on(getBootstrapFx.doneData, (_, data) => data.result.branch)
-    .on(genreToggled, calcSelectedGenres)
+    .on(genreToggled, toggleGenre)
     .on(rwModeToggled, (branch, role) => ({...branch, role}))
     .on(moderationToggled, toggleInfo('moderation'))
     .on(allowCommentToggled, toggleInfo('allow_comments'))
