@@ -15,7 +15,7 @@ import Dialog from "./reused/Dialog"
 import Loader from "./reused/Loading"
 import Wrapper from "reused/Wrapper"
 import ErrorCmp from "reused/ErrorCmp"
-import { appStarted } from "store/bootstrap/actions/prepare"
+import { appStarted } from "store/bootstrap/actions/appStarted"
 
 function App() {
   const status = useUnit($bootstrapStatus)
