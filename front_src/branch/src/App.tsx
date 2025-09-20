@@ -5,7 +5,7 @@ import { useUnit } from "effector-react"
 import { $step } from "./store/common"
 import { useEffect } from "react"
 import Authors from "./steps/Authors"
-import { $bootstrapStatus, getBootstrapFx } from "./store/bootstrap"
+import { $bootstrapStatus } from "./store/bootstrap"
 import Cover from "./steps/Cover"
 import Publish from "./steps/Publish"
 import { $branch, $isBranchLoaded } from "./store/branch"
@@ -15,6 +15,7 @@ import Dialog from "./reused/Dialog"
 import Loader from "./reused/Loading"
 import Wrapper from "reused/Wrapper"
 import ErrorCmp from "reused/ErrorCmp"
+import { appStarted } from "store/bootstrap/actions/appStarted"
 
 function App() {
   const status = useUnit($bootstrapStatus)
@@ -23,9 +24,10 @@ function App() {
   const { id, title } = useUnit($branch)
   const h1 = id ? `Edit the book: "${title}"` : `Create the book: "${title}"`
 
+  console.log({ pn: window.location.pathname })
 
   useEffect(() => {
-    getBootstrapFx()
+    appStarted()
   }, [])
 
   if (status >= 400) {
