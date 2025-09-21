@@ -1,4 +1,6 @@
 import { combine, createEvent, createStore } from "effector";
+import { debug } from "patronum";
+
 import {
     branchInit,
     toggleGenre,
@@ -14,12 +16,13 @@ import {
     masterSelected
 } from "../authors";
 import { addAuthor, authorRoleChange, removeAuthor, selectMaster } from "../authors/utils";
-import { getBootstrapFx } from "../bootstrap";
-import type { Branch } from "../bootstrap/types";
 import { globalReset } from "../common";
-import { debug } from "patronum";
 import { bgNameCancelled, bgNameRecived, coverNameCancelled, coverNameRecived } from "../cover";
 
+import type { Bootstrap, Branch } from "../bootstrap/types";
+
+// Events
+export const branchFromBootstrap = createEvent<Bootstrap>()
 export const genreToggled = createEvent<number>()
 export const rwModeToggled = createEvent<number>()
 export const moderationToggled = createEvent<number>()
@@ -35,8 +38,9 @@ export const bgColorChanged = createEvent<string>()
 export const textColorChanged = createEvent<string>()
 export const textSizeChanged = createEvent<number>()
 
+// Stores
 export const $branch = createStore<Branch>(branchInit())
-    .on(getBootstrapFx.doneData, (_, data) => data.result.branch)
+    .on(branchFromBootstrap, (_, result) => result.branch)
     .on(genreToggled, toggleGenre)
     .on(rwModeToggled, (branch, role) => ({...branch, role}))
     .on(moderationToggled, toggleInfo('moderation'))
@@ -60,7 +64,7 @@ export const $branch = createStore<Branch>(branchInit())
     .reset(globalReset)
 
 export const $isBranchLoaded = createStore(false)
-    .on(getBootstrapFx.doneData, () => true)
+    .on(branchFromBootstrap, () => true)
 
 export const $selectedGenres = combine($branch, (branch) => branch?.genres || [])
 export const $selectedRWMode = combine($branch, (branch) => branch?.role || 0)

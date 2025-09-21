@@ -1,8 +1,9 @@
 import { combine, createEvent, createStore, sample } from "effector";
-import { getBootstrapFx } from "../bootstrap";
 import { base64ToFile } from "./utils";
 import { globalReset } from "store/common";
+import type { Bootstrap } from "store/bootstrap/types";
 
+// Events
 export const coverFileChanged = createEvent<File>()
 export const coverNameRecived = coverFileChanged
     .map(({ name }) => name)
@@ -19,10 +20,18 @@ export const bgFileCancelled = createEvent()
 export const bgNameCancelled = bgFileCancelled
     .map(() => '')
 
+export const coverFromBootstrap = createEvent<Bootstrap>()
+
+// Stores
 export const $coverFile = createStore<File | null>(null)
     .on(coverFileChanged, (_, data) => data)
     .reset(coverFileCancelled, globalReset)
 
+export const $bgFile = createStore<File | null>(null)
+    .on(bgFileChanged, (_, data) => data)
+    .reset(bgFileCancelled, globalReset)
+
+// Readonly Stores
 export const $coverUrl = combine($coverFile, (coverFile) => {
     if (!coverFile) {
         return ''
@@ -31,9 +40,6 @@ export const $coverUrl = combine($coverFile, (coverFile) => {
     return URL.createObjectURL(coverFile)
 })
 
-export const $bgFile = createStore<File | null>(null)
-    .on(bgFileChanged, (_, data) => data)
-    .reset(bgFileCancelled, globalReset)
 
 export const $bgUrl = combine($bgFile, (bgFile) => {
     if (!bgFile) {
@@ -44,15 +50,15 @@ export const $bgUrl = combine($bgFile, (bgFile) => {
 })
 
 sample({
-    clock: getBootstrapFx.doneData,
-    filter: (response) => Boolean(response.result.files.bg_img),
-    fn: (response) => base64ToFile(response.result.files.bg_img),
+    clock: coverFromBootstrap,
+    filter: (result) => Boolean(result?.files?.bg_img),
+    fn: (result) => base64ToFile(result.files.bg_img),
     target: $bgFile,
 })
 
 sample({
-    clock: getBootstrapFx.doneData,
-    filter: (response) => Boolean(response.result.files.cover),
-    fn: (response) => base64ToFile(response.result.files.cover),
+    clock: coverFromBootstrap,
+    filter: (result) => Boolean(result?.files?.cover),
+    fn: (result) => base64ToFile(result.files.cover),
     target: $coverFile,
 })

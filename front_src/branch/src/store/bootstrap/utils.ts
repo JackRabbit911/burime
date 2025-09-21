@@ -1,19 +1,41 @@
-import type { Genre, SameWeightGenres } from "./types";
+import type { Bootstrap, Genre, SameWeightGenres } from "./types";
 
-export const getSameWeightGenres = (genres: Genre[]): SameWeightGenres[] => {
-    const result: SameWeightGenres[] = []
-    genres.forEach((genre) => {
-        const find = result.find((item) => item.weight === genre.weight)
+export const getOrderedSameWeightGenres = (
+    _: SameWeightGenres[],
+    result: Bootstrap,
+): SameWeightGenres[] =>
+    sortByWeight(
+        (result?.genres || []).reduce(
+            prepareWeightOrderedGenres,
+            [] as SameWeightGenres[],
+        ),
+    )
 
-        if (!find) {
-            result.push({
+function prepareWeightOrderedGenres(
+    result: SameWeightGenres[],
+    genre: Genre
+) {
+    if (!result.find(
+        (weightOrderedGenre) => weightOrderedGenre.weight === genre.weight
+    )) {
+        return [
+            ...result,
+            {
                 weight: genre.weight,
-                genres: [genre]
-            })
-        } else {
-            find.genres.push(genre)
-        }
-    })
+                genres: [genre],
+            }
+        ]
+    }
 
-    return result
+    return result.map(
+        (weightOrderedGenre) => weightOrderedGenre.weight === genre.weight ?
+            { ...weightOrderedGenre, genres: [...weightOrderedGenre.genres, genre] } :
+            weightOrderedGenre
+    )
+}
+
+function sortByWeight(genres: SameWeightGenres[]) {
+    return genres.sort(
+        ({ weight: weightA }, { weight: weightB }) => weightA - weightB
+    )
 }

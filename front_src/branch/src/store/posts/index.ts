@@ -1,18 +1,24 @@
 import { createEvent, createStore, sample } from "effector";
-import type { Posts } from "./types";
-import { getBootstrapFx } from "../bootstrap";
-import { globalReset } from "store/common";
 import { debug } from "patronum";
 
+import { globalReset } from "store/common";
+
+import type { Posts } from "./types";
+import type { Bootstrap } from "store/bootstrap/types";
+
+// Events
 export const firstPostChanged = createEvent<string>()
 export const lastPostChanged = createEvent<string>()
+export const postFromBootstrap = createEvent<Bootstrap>()
 
+// Store
 export const $posts = createStore<Posts>({
     first: {id: null, body: ''},
     last: {id: null, body: ''},
-}).on(getBootstrapFx.doneData, (_, data) => data.result.posts)
+}).on(postFromBootstrap, (_, result) => result?.posts)
     .reset(globalReset)
 
+// Business logic
 sample({
     clock: firstPostChanged,
     source: $posts,
