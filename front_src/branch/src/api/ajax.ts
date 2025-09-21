@@ -16,10 +16,13 @@ export default ajax;
 ajax.interceptors.response.use(
     (response) => response,
     (error) => {
-    if (error instanceof AxiosError) {
-        if (error.status === 403) {
-            window.location.reload()
+        // Handle 401 Unauthorized
+        if (error instanceof AxiosError) {
+            if (error.status === 401) {
+                window.location.reload()
+            }
         }
+
+        return Promise.reject(error);
     }
-    console.log(error)
-})
+)
