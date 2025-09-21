@@ -2,7 +2,7 @@ type Props = {
     status: number;
 }
 
-const reasonPhrase = (status: number) => {
+const getReasonPhrase = (status: number) => {
     switch (status) {
         case 401:
             return '401 | Unauthorized'
@@ -19,15 +19,12 @@ const reasonPhrase = (status: number) => {
     }
 }
 
-const ErrorCmp = ({ status }: Props) => {
-    console.log(status)
-    return (
-        <div className="h-96 flex flex-col justify-center">
-            <h1 className="text-center text-3xl">
-                {reasonPhrase(status)}
-            </h1>
-        </div>
-    )
-}
+const ErrorCmp = ({ status }: Props) => (
+    <div className="h-96 flex flex-col justify-center">
+        <h1 className="text-center text-3xl">
+            {getReasonPhrase(status)}
+        </h1>
+    </div>
+)
 
 export default ErrorCmp
