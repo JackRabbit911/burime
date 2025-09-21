@@ -14,6 +14,8 @@ const reasonPhrase = (status: number) => {
             return '500 | Internal server error'
         case 503:
             return '503 | Service Unavailable'
+        default:
+            return `${status} | Хз, что это...`
     }
 }
 
