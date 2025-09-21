@@ -7,10 +7,10 @@ namespace App\Branch\Api\Controller;
 use App\Branch\Api\Middleware\OwnerBranchGuard;
 use App\Branch\Api\Repository\BranchRepo;
 use Auth\Middleware\OAuthMiddleware;
-use Auth\Middleware\AuthGuardMiddleware;
+use App\Branch\Api\Middleware\AuthGuard;
 
 #[OAuthMiddleware]
-#[AuthGuardMiddleware]
+#[AuthGuard]
 #[OwnerBranchGuard]
 class Branch extends ApiContractController
 {
