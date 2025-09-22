@@ -1,30 +1,13 @@
-import { createEffect, createEvent, sample } from "effector";
+import { createEvent, sample } from "effector";
 
-import type { AxiosError, AxiosResponse } from "axios";
-
-import { getIdWithValidation } from "./utils";
-import ajax from "api/ajax";
-import { bootstrapUri } from "./constants";
 import { $bootstrapStatus, genresFromBootstrap } from "store/bootstrap";
 import { postFromBootstrap } from "store/posts";
 import { coverFromBootstrap } from "store/cover";
 import { branchFromBootstrap } from "store/branch";
-
-import type { Bootstrap } from "store/bootstrap/types";
-import type { ApiResponse } from "api/types";
+import { getBootstrapFx, getIdWithValidationFx } from "./fx";
 
 // Events
 export const appStarted = createEvent()
-
-// Side Effects
-const getIdWithValidationFx = createEffect(getIdWithValidation);
-
-const getBootstrapFx = createEffect<string, AxiosResponse<ApiResponse<Bootstrap>>, AxiosError>(
-    (id: string) =>
-        ajax.get<ApiResponse<Bootstrap>>(
-            [bootstrapUri, id].filter(Boolean).join('/')
-        )
-)
 
 // Business Logic
 
