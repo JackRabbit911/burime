@@ -18,7 +18,7 @@ class AuthGuard implements MiddlewareInterface
     ): ResponseInterface
     {
         if (!$request->getAttribute('user')) {
-            return new EmptyResponse(403);
+            return new EmptyResponse(401);
         }
 
         return $handler->handle($request);
