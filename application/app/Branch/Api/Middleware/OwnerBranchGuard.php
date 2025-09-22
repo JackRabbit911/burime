@@ -7,6 +7,7 @@ namespace App\Branch\Api\Middleware;
 use App\Branch\Api\Repository\BranchRepo;
 use Az\Route\Route;
 use HttpSoft\Response\EmptyResponse;
+use HttpSoft\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -30,6 +31,10 @@ class OwnerBranchGuard implements MiddlewareInterface
         }
         
         $branch = $this->repo->findBranch((int)$id);
+
+        if (!$branch) {
+            return new EmptyResponse(404);
+        }
 
         if ($branch->owner !== $user->id) {
             return new EmptyResponse(403);

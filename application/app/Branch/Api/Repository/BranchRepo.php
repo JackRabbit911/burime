@@ -23,7 +23,7 @@ class BranchRepo
     {
         $params = $branch_id ? $this->modelBranch->find($branch_id) : [];
 
-        return new BranchDTO($params);
+        return is_null($params) ? null : new BranchDTO($params);
     }
 
     public function getBranchAuthors(?int $branch_id)

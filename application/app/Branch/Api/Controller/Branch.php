@@ -7,10 +7,10 @@ namespace App\Branch\Api\Controller;
 use App\Branch\Api\Middleware\OwnerBranchGuard;
 use App\Branch\Api\Repository\BranchRepo;
 use Auth\Middleware\OAuthMiddleware;
-use Auth\Middleware\AuthGuardMiddleware;
+use App\Branch\Api\Middleware\AuthGuard;
 
 #[OAuthMiddleware]
-#[AuthGuardMiddleware]
+#[AuthGuard]
 #[OwnerBranchGuard]
 class Branch extends ApiContractController
 {
@@ -19,7 +19,7 @@ class Branch extends ApiContractController
 
     public function bootstrap(?int $id = null)
     {
-        $data['branch'] = $this->repo->findBranch($id);
+        $data['branch'] = $this->request->getAttribute('branch') ?? $this->repo->findBranch($id);
         $data['genres'] = $this->repo->getGenres();
         $data['posts'] = $this->repo->getFirstLastPosts($id);
         $data['files'] = $this->repo->getCoverFiles($id);

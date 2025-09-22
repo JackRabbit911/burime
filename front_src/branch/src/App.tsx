@@ -15,7 +15,7 @@ import Dialog from "./reused/Dialog"
 import Loader from "./reused/Loading"
 import Wrapper from "reused/Wrapper"
 import ErrorCmp from "reused/ErrorCmp"
-import { appStarted } from "store/bootstrap/actions/appStarted"
+import { appStarted } from "store"
 
 function App() {
   const status = useUnit($bootstrapStatus)
@@ -23,8 +23,6 @@ function App() {
   const isBranchLoaded = useUnit($isBranchLoaded)
   const { id, title } = useUnit($branch)
   const h1 = id ? `Edit the book: "${title}"` : `Create the book: "${title}"`
-
-  console.log({ pn: window.location.pathname })
 
   useEffect(() => {
     appStarted()
