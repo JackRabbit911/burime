@@ -27,8 +27,9 @@ class Create extends WebController
 
     public function branch($id = null)
     {
+        $title = $id ? 'Edit branch' : 'Create branch';
         $this->app->js('/assets/js/branch.js');
-        return view('branch/create/branch');
+        return view('branch/create/branch', ['title' => $title]);
     }
 
     public function genres(ModelGenre $modelGenre)
