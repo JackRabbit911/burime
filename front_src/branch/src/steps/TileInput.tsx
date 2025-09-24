@@ -4,7 +4,7 @@ import { $branch, titleChanged } from "../store/branch"
 
 const TitleInput = () => {
   const { title } = useUnit($branch)
-  const alert = Boolean(title) ? '' : 'Required field'
+  const alert = title ? '' : 'Required field'
 
   return (
     <fieldset className="fieldset">
