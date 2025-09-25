@@ -1,9 +1,9 @@
 import type { Rules } from "./types";
 
 export const titleRules: Rules = {
-    required: 'Пожалуйста, заполните поле',
-    maxLength: {
-        value: 120,
-        message: 'Не больше 120 символов!!!',
+    required: 'Required',
+    pattern: {
+        value: /^(\S*\s){0,7}\S*$/gmi,
+        message: 'Не больше 8 слов',
     },
 }

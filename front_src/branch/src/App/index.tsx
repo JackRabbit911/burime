@@ -19,7 +19,7 @@ type Form = {
 function App() {
   const methods = useForm<Form>({
     defaultValues: {
-      title: "lkjlkjlkjlkjl",
+      title: "",
     },
     mode: "onChange",
   })
@@ -50,7 +50,12 @@ function App() {
   ) : (
     <FormProvider {...methods}>
       <Wrapper title={h1}>
-        <TextInput label="Title" fieldName="title" optional="Куку!" rules={titleRules} />
+        <TextInput
+          label="Title"
+          fieldName="title"
+          optional="Up to 8 words"
+          placeholder="Введите название произведения"
+          rules={titleRules} />
       </Wrapper>
     </FormProvider>
   )

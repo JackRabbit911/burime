@@ -31,7 +31,7 @@ const TextInput = ({
         console.log(fieldName, field, errors)
 
         return (
-          <div>
+          <fieldset className="fieldset">
             <label className="fieldset-label flex justify-between">
               <legend className="fieldset-legend">{label}</legend>
               {alert && <span className="label-text text-error">{alert}</span>}
@@ -43,10 +43,10 @@ const TextInput = ({
               className="input w-full"
               placeholder={placeholder}
             />
-            <div className="text-error">
+            <div className="fieldset-label text-error">
               {(errors[fieldName] as FieldError)?.message || ''}
             </div>
-          </ div>
+          </ fieldset>
         );
       }}
     />
