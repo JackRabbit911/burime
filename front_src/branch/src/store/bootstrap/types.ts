@@ -20,6 +20,7 @@ export type Genre = {
     id: number;
     title: string;
     weight: number;
+    checked?: boolean;
 }
 
 export type Branch = {

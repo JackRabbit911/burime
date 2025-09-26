@@ -16,9 +16,9 @@ const TextInput = ({
   fieldName,
   placeholder = '',
   optional = '',
-  alert = '',
+  // alert = '',
   type = 'text',
-  rules = {},
+  // rules = {},
 }: Props) => {
   const methods = useFormContext()
 
@@ -26,21 +26,20 @@ const TextInput = ({
     <Controller
       control={methods.control}
       name={fieldName}
-      rules={rules}
+      // rules={rules}
       render={({ field, formState: { errors } }) => {
-        console.log(fieldName, field, errors)
-
+        const invalid = methods.getFieldState(fieldName).invalid
         return (
           <fieldset className="fieldset">
             <label className="fieldset-label flex justify-between">
               <legend className="fieldset-legend">{label}</legend>
-              {alert && <span className="label-text text-error">{alert}</span>}
+              {/* {alert && <span className="label-text text-error">{alert}</span>} */}
               <span className="label-text">{optional}</span>
             </label>
             <input
               {...field}
               type={type}
-              className="input w-full"
+              className={invalid ? "input w-full input-error" : "input w-full"}
               placeholder={placeholder}
             />
             <div className="fieldset-label text-error">
