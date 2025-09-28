@@ -1,17 +1,23 @@
 import { useUnit } from "effector-react";
+import { useFormContext } from "react-hook-form";
 
 import {
   $step,
   $allRight,
-  published,
+  // published,
   globalReset,
   messageAdded,
   messageRemoved,
   $readyToPublish,
   $requiredFields,
+  $sameWeightGenres,
 } from "store";
+import { getSelectedGenreIds } from "./utils";
 
 const FinalControls = () => {
+  const sameWeightGenres = useUnit($sameWeightGenres);
+  const { getValues } = useFormContext();
+
   const [
     step,
     { titleExists },
@@ -24,10 +30,6 @@ const FinalControls = () => {
     $allRight,
   ]);
 
-  const onCancelNo = () => {
-    messageRemoved();
-  };
-
   const onCancelYes = () => {
     window.location.href = '/'
     messageRemoved();
@@ -36,16 +38,23 @@ const FinalControls = () => {
 
   const onCancelPrompt = () => {
     messageAdded({
+      hideCloseButton: true,
       title: "Вы уверены, что хотите прервать создание/изменение ветки?",
       actions: [
         { label: "Yes", onClick: onCancelYes },
-        { label: "No", onClick: onCancelNo },
+        { label: "No" },
       ],
     });
   };
 
   const onPublish = () => {
-    published();
+    const {
+      title,
+      genres,
+    } = getValues();
+    const selectedGenreIds = getSelectedGenreIds(genres, sameWeightGenres);
+
+    console.log({ title, selectedGenreIds });    
   };
 
   return step !== 5 ? null : (

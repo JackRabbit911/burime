@@ -19,7 +19,7 @@ const Form = () => {
     defaultValues: branchFormValues,
     mode: "onChange",
     resolver: yupResolver(schema),
-  })
+  });
 
   useEffect(() => {
     methods.reset(branchFormValues)
