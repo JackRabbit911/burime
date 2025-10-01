@@ -1,9 +1,11 @@
 import axios, { AxiosError } from "axios";
 
 const lang = document.querySelector('html')?.getAttribute('lang');
+const { protocol, hostname } = window.location
+const host = `${protocol}//${hostname}`
 
 const ajax = axios.create({
-    baseURL: `/api`,
+    baseURL: `${host}/api`,
     timeout: 1000,
     headers: {
         'Accept-Language': lang,
@@ -16,7 +18,11 @@ ajax.interceptors.response.use(
     (error) => {
         if (error instanceof AxiosError) {
             if (error.status === 401) {
-                window.location.reload();
+                if (hostname === 'localhost') {
+                    window.location.href = `${host}:80`
+                } else {
+                    window.location.reload();
+                }
             }
         }
         

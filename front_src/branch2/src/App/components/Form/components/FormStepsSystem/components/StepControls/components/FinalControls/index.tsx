@@ -31,7 +31,7 @@ const FinalControls = () => {
   ]);
 
   const onCancelYes = () => {
-    window.location.href = '/'
+    window.location.href = window.location.hostname === 'localhost' ? 'http://localhost:80' : '/'
     messageRemoved();
     globalReset();
   };
