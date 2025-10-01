@@ -17,6 +17,8 @@ final class OAuthMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $user = $this->oAuth->auth($request);
+
         if (ENV === DEVELOPMENT) {
             $from_url = $request->getHeaderLine('Origin');
             $from_port = parse_url($from_url, PHP_URL_PORT);
@@ -24,8 +26,6 @@ final class OAuthMiddleware implements MiddlewareInterface
             if ($from_port === env('DEV_FROM_PORT', 5173)) {
                 $user = $this->model->find(env('DEV_UID'));
             }
-        } else {
-            $user = $this->oAuth->auth($request);
         }
 
         if ($user) {
