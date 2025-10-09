@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
 import Wrapper from "reused/Wrapper";
-import { formSchema } from "Schema";
+import { formSchema } from "schema/output";
 import Title from "../Title";
 import Genres from "../Genres";
 import { genres } from "mock/genres";

@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-export const branchTitle = z.string()
+const branchTitle = z.string()
   .min(1, { message: 'Required' })
   .regex(/^[^<>;]*$/, 'Invalid input!')
   .refine((value) => value.trim().split(' ').length <= 3, 'Up to 3 words!')
