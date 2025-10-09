@@ -27,6 +27,16 @@ class Branch extends ApiContractController
         return $data;
     }
 
+    public function getbootstrap(?int $id = null)
+    {
+        $data['branch'] = $this->request->getAttribute('branch') ?? $this->repo->findBranch($id);
+        $data['genres'] = $this->repo->getTotalGenres();
+        $data['posts'] = $this->repo->getFirstLastPosts($id);
+        $data['files'] = $this->repo->getCoverFiles($id);
+
+        return $data;
+    }
+
     public function authors()
     {
         $query_params = $this->request->getQueryParams();
