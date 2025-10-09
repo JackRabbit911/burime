@@ -55,6 +55,15 @@ class BranchRepo
         return $authors;
     }
 
+    public function getTotalGenres()
+    {
+        $genres = $this->modelBranch->getTotalGenres();
+
+        return array_map(function ($v) {
+            return json_decode($v);
+        }, $genres);
+    }
+
     public function getGenres()
     {
         return $this->modelBranch->getGenres();

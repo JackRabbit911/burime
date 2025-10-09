@@ -48,6 +48,17 @@ class ModelBranch extends MysqlModel
     {
         return $this->qb->table('genres')
             ->select('id', 'title', 'weight')
+            ->orderBy('weight')
+            ->get();
+    }
+
+    public function getTotalGenres()
+    {
+        return $this->qb->table('genres')
+            ->select($this->qb->raw("JSON_ARRAYAGG(JSON_OBJECT('id', id, 'title', title))"))
+            ->groupBy('weight')
+            ->orderBy('weight')
+            ->setFetchMode(PDO::FETCH_COLUMN)
             ->get();
     }
 
