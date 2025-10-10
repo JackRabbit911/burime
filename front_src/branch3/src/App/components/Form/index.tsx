@@ -5,27 +5,29 @@ import Wrapper from "reused/Wrapper";
 import { formSchema } from "schema/output";
 import Title from "../Title";
 import Genres from "../Genres";
-import { genres } from "mock/genres";
+import type { Bootstrap } from "schema/input";
 
-const branchGenres: number[] = []// [1, 2]
+type Props = {
+  bootstrap: Bootstrap;
+}
 
-const Form = () => {
+const Form = ({ bootstrap: bootstrap }: Props) => {
+  const branchGenres = bootstrap?.branch.genres as number[];
+
   const methods = useForm({
     resolver: zodResolver(formSchema),
     mode: "all",
     defaultValues: {
-      branchTitle: 'rer',
-      genres: branchGenres,
+      branchTitle: bootstrap?.branch.title || '',
+      genres: bootstrap?.branch.genres || [],
     },
   });
-
-  console.log(methods.getValues())
 
   return (
     <FormProvider {...methods}>
       <Wrapper title="Laboratorium">
         <Title />
-        <Genres genres={genres} checked={branchGenres} />
+        <Genres genres={bootstrap?.genres || []} checked={branchGenres} />
       </Wrapper>
     </FormProvider>
   )
