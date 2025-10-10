@@ -3,6 +3,7 @@ import Form from "./components/Form"
 import { $bootstrap, appStarted } from "store/bootstrap";
 import { useUnit } from "effector-react";
 import { bootstrapSch } from "schema/input";
+import Loader from "reused/Loading";
 
 const App = () => {
   const bootstrap = useUnit($bootstrap)
@@ -16,7 +17,7 @@ const App = () => {
 
       if (!valid.success) {
         console.log(valid.error)
-        return 'Invalid input data'
+        return <Loader message='Invalid input data' />
       }
   }
 
@@ -24,7 +25,7 @@ const App = () => {
     <>
       <Form bootstrap={bootstrap}/>
     </>
-  ) : 'загрузка';
+  ) : <Loader message="Загрузка" />
 };
 
 export default App;
