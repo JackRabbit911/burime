@@ -60,7 +60,11 @@ class BranchRepo
         $genres = $this->modelBranch->getTotalGenres();
 
         return array_map(function ($v) {
-            return json_decode($v);
+            $array = json_decode($v);
+            usort($array, function ($a, $b) {
+                return $a->id < $b->id ? -1 : 1;
+            });
+            return $array;
         }, $genres);
     }
 
