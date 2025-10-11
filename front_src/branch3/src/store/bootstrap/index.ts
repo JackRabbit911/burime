@@ -25,7 +25,7 @@ const getBranchIdFx = createEffect(() => {
     return { id, success }
 })
 
-export const getBootstrapFx = createEffect<string, AxiosApiResponse, AxiosError>(
+const getBootstrapFx = createEffect<string, AxiosApiResponse, AxiosError>(
     (id: string) =>
         ajax.get<ApiResponse<Bootstrap>>(
             [bootstrapUri, id].filter(Boolean).join('/'),
