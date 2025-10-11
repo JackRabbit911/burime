@@ -8,21 +8,20 @@ import Genres from "../Genres";
 import type { Bootstrap } from "schema/input";
 import Steps from "../Steps";
 import StepControls from "../StepControls";
+import Rules from "../Rules";
+import { getDefaults } from "./utils";
 
 type Props = {
   bootstrap: Bootstrap;
 }
 
-const Form = ({ bootstrap: bootstrap }: Props) => {
+const Form = ({ bootstrap }: Props) => {
   const branchGenres = bootstrap?.branch.genres as number[];
 
   const methods = useForm({
     resolver: zodResolver(formSchema),
     mode: "all",
-    defaultValues: {
-      branchTitle: bootstrap?.branch.title || '',
-      genres: branchGenres || [],
-    },
+    defaultValues: getDefaults(bootstrap?.branch)
   });
 
   return (
@@ -31,6 +30,7 @@ const Form = ({ bootstrap: bootstrap }: Props) => {
         <Title />
         <Steps />
         <Genres genres={bootstrap?.genres || []} checked={branchGenres} />
+        <Rules />
         <StepControls />
       </Wrapper>
     </FormProvider>
