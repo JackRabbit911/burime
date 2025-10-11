@@ -7,6 +7,7 @@ import Title from "../Title";
 import Genres from "../Genres";
 import type { Bootstrap } from "schema/input";
 import Steps from "../Steps";
+import StepControls from "../StepControls";
 
 type Props = {
   bootstrap: Bootstrap;
@@ -30,6 +31,7 @@ const Form = ({ bootstrap: bootstrap }: Props) => {
         <Title />
         <Steps />
         <Genres genres={bootstrap?.genres || []} checked={branchGenres} />
+        <StepControls />
       </Wrapper>
     </FormProvider>
   )
