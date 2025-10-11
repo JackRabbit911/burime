@@ -31,7 +31,7 @@ const Step = ({ step, title, isError = false }: Props) => {
       <button
         className={btnClassName}
         onClick={onStep(step)}
-        disabled={true}
+        disabled={disabled}
       >
         {title}
       </button>
