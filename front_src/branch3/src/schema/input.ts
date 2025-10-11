@@ -71,3 +71,4 @@ export const bootstrapSch = z.object({
 
 export type Bootstrap = z.infer<typeof bootstrapSch>
 export type GenresType = z.infer<typeof genresSch>
+export type Branch = z.infer<typeof branch>
