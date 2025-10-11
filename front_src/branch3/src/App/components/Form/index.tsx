@@ -6,6 +6,7 @@ import { formSchema } from "schema/output";
 import Title from "../Title";
 import Genres from "../Genres";
 import type { Bootstrap } from "schema/input";
+import Steps from "../Steps";
 
 type Props = {
   bootstrap: Bootstrap;
@@ -19,7 +20,7 @@ const Form = ({ bootstrap: bootstrap }: Props) => {
     mode: "all",
     defaultValues: {
       branchTitle: bootstrap?.branch.title || '',
-      genres: bootstrap?.branch.genres || [],
+      genres: branchGenres || [],
     },
   });
 
@@ -27,6 +28,7 @@ const Form = ({ bootstrap: bootstrap }: Props) => {
     <FormProvider {...methods}>
       <Wrapper title="Laboratorium">
         <Title />
+        <Steps />
         <Genres genres={bootstrap?.genres || []} checked={branchGenres} />
       </Wrapper>
     </FormProvider>
