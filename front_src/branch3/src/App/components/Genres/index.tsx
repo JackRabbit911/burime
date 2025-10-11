@@ -16,13 +16,15 @@ const Genres = ({ genres, checked, fieldName = 'genres' }: Props) => {
 
   checked = getValues(fieldName) || checked
 
+  // console.log(errors)
+
   return step === 1 ? (
     <fieldset className="fieldset">
       <legend className="fieldset-legend my-3">{"Genres"}</legend>
       {genres.map((group, key) => (
         <div key={key}>
           {key as number > 0 ? <div className="divider w-full my-0"></div> : null}
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             <SameWeightGenres
               genres={group}
               checked={checked}

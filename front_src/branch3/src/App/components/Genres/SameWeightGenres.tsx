@@ -1,5 +1,5 @@
 import type { TotalGenres } from "mock/genres";
-import CheckBox from "reused/CheckBox";
+import GenreCheckBox from "App/components/Genres/GenreCheckBox";
 
 type Props = {
   genres: TotalGenres;
@@ -10,7 +10,7 @@ type Props = {
 const SameWeightGenres = ({ genres, checked, fieldName = 'genres' }: Props) => {
   return (
     genres.map((option, key) => (
-      <CheckBox
+      <GenreCheckBox
         key={key}
         fieldName={fieldName}
         label={option.title}
