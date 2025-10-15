@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-const info = z.object({
+const info = z.strictObject({
     moderation: z.number(),
     allow_comments: z.number(),
     signature: z.number(),
@@ -50,7 +50,7 @@ const posts = z.object({
 
 export const genresSch = z.array(z.array(genre))
 
-export const branch = z.object({
+export const branch = z.strictObject({
     id: z.number().positive().nullable(),
     parent_id: z.number().positive().nullable(),
     owner: z.number().positive().nullable(),
