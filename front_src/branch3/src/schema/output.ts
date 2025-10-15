@@ -6,16 +6,21 @@ const branchTitle = z.string()
   .regex(/^[^<>;]*$/, 'Invalid input!')
   .refine((value) => value.trim().split(' ').length <= 3, 'Up to 3 words!')
 
+const intro = (max: number) => z.string()
+  .trim()
+  .regex(/^[^<>;]*$/, 'Invalid input!')
+  .refine((value) => value.trim().split(' ').length <= max, `Up to ${max} words!`)
+
 export const formSchema = z.object({
   branchTitle,
   genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
-  branchRole: z.coerce.number().nonnegative(),
+  branchRole: z.coerce.number().int().min(0).max(2),
   moderation: z.boolean(),
   comments: z.boolean(),
   signature: z.boolean(),
-  ageLimit: z.coerce.number().nonnegative(),
-  postSize: z.coerce.number().positive(),
-  timeLimit: z.coerce.number().positive(),
-  description: z.string().trim().regex(/^[^<>;]*$/, 'Invalid input!'),
-  rules: z.string().trim().regex(/^[^<>;]*$/, 'Invalid input!'),
+  ageLimit: z.coerce.number().int().nonnegative().max(21),
+  postSize: z.coerce.number().int().positive(),
+  timeLimit: z.coerce.number().int().positive(),
+  description: intro(200),
+  rules: intro(200)
 });
