@@ -6,7 +6,7 @@ namespace App\Branch\Api\Controller;
 
 use Sys\Controller\ApiController;
 
-class ApiContractController extends ApiController
+abstract class ApiContractController extends ApiController
 {
     protected function _after(&$response)
     {
