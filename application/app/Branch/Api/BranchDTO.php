@@ -14,7 +14,6 @@ class BranchDTO
     public readonly ?string $title;
     public readonly int $role;
     public readonly int $age_limit;
-    public readonly ?string $cover;
     public readonly stdClass $info;
     public readonly array $genres;
     public readonly array $authors;
@@ -27,7 +26,6 @@ class BranchDTO
         $this->title = $params['title'] ?? '';
         $this->role = $params['role'] ?? 0;
         $this->age_limit = $params['age_limit'] ?? 0;
-        $this->cover = $params['cover'] ?? null;
         $this->genres = $params['genres'] ?? [];
         $this->authors = $params['authors'] ?? [];
         
