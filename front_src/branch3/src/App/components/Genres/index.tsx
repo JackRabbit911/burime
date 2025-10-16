@@ -1,8 +1,6 @@
 import { type TotalGenres } from "mock/genres";
 import { useFormContext } from "react-hook-form";
 import SameWeightGenres from "./SameWeightGenres";
-import { useUnit } from "effector-react";
-import { $step } from "store/step";
 
 type Props = {
   genres: TotalGenres[];
@@ -12,13 +10,10 @@ type Props = {
 
 const Genres = ({ genres, checked, fieldName = 'genres' }: Props) => {
   const { getValues, formState: { errors } } = useFormContext();
-  const step = useUnit($step)
 
   checked = getValues(fieldName) || checked
 
-  // console.log(errors)
-
-  return step === 1 ? (
+  return (
     <fieldset className="fieldset">
       <legend className="fieldset-legend my-3">{"Genres"}</legend>
       {genres.map((group, key) => (
@@ -36,7 +31,7 @@ const Genres = ({ genres, checked, fieldName = 'genres' }: Props) => {
         {errors[fieldName]?.message as string}
       </div>
     </fieldset>
-  ) : null;
+  )
 };
 
 export default Genres;

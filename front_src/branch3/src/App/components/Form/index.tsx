@@ -10,12 +10,16 @@ import Steps from "../Steps";
 import StepControls from "../StepControls";
 import Rules from "../Rules";
 import { getDefaults } from "./utils";
+import Authors from "../Authors";
+import { useUnit } from "effector-react";
+import { $step } from "store/step";
 
 type Props = {
   bootstrap: Bootstrap;
 }
 
 const Form = ({ bootstrap }: Props) => {
+  const step = useUnit($step)
   const branchGenres = bootstrap?.branch.genres as number[];
 
   const methods = useForm({
@@ -29,8 +33,9 @@ const Form = ({ bootstrap }: Props) => {
       <Wrapper title="Laboratorium">
         <Title />
         <Steps />
-        <Genres genres={bootstrap?.genres || []} checked={branchGenres} />
-        <Rules />
+        {step === 1 ? <Genres genres={bootstrap?.genres || []} checked={branchGenres} /> : null}
+        {step ===2 ? <Rules /> : null}
+        {step === 3 ? <Authors /> : null}
         <StepControls />
       </Wrapper>
     </FormProvider>
