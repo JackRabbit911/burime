@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { branchAuthor } from "./authors";
 
 const branchTitle = z.string()
   .trim()
@@ -22,5 +23,7 @@ export const formSchema = z.object({
   postSize: z.coerce.number().int().positive(),
   timeLimit: z.coerce.number().int().positive(),
   description: intro(200),
-  rules: intro(200)
+  rules: intro(200),
+  masterId: z.coerce.number().positive(),
+  authors: z.array(branchAuthor),
 });

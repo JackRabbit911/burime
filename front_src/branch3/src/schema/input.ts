@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { ownAuthors } from "./authors"
 
 const info = z.strictObject({
     moderation: z.number(),
@@ -48,9 +49,9 @@ const posts = z.object({
     last: post,
 })
 
-export const genresSch = z.array(z.array(genre))
+const genresSch = z.array(z.array(genre))
 
-export const branch = z.strictObject({
+const branch = z.strictObject({
     id: z.number().positive().nullable(),
     parent_id: z.number().positive().nullable(),
     owner: z.number().positive().nullable(),
@@ -67,8 +68,9 @@ export const bootstrapSch = z.object({
     branch: branch,
     posts: posts,
     files: filesBase64,
+    ownAuthors: ownAuthors,
 })
 
 export type Bootstrap = z.infer<typeof bootstrapSch>
-export type GenresType = z.infer<typeof genresSch>
-export type Branch = z.infer<typeof branch>
+// export type GenresType = z.infer<typeof genresSch>
+// export type Branch = z.infer<typeof branch>
