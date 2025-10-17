@@ -13,15 +13,27 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     timeLimit: bootstrap.branch.info.time_limit,
     description: bootstrap.branch.info.description,
     rules: bootstrap.branch.info.rules,
-    authors: bootstrap.branch.authors,
+    authors: getBranchAuthors(bootstrap.branch.authors),
     masterId: getMasterId(bootstrap.branch.authors, bootstrap.ownAuthors),
-    // ownAuthors: null,
+    moderator: getModerators(bootstrap.branch.authors)
 })
 
-export function getMasterId(authors: BranchAuthor[], ownAuthors: OwnAuthors) {
+function getMasterId(authors: BranchAuthor[], ownAuthors: OwnAuthors) {
     const master = authors.find(
         ({ role }) => role >= 150
     )
 
     return !master ? ownAuthors[0].id : master.id
+}
+
+function getBranchAuthors(authors: BranchAuthor[]) {
+    return authors.filter((author) => author.role < 150)
+}
+
+function getModerators(authors: BranchAuthor[]) {
+    return authors.map((author) => {
+        if (author.role === 100) {
+            return author.id
+        }
+    }).filter((elem) => elem !== undefined)
 }
