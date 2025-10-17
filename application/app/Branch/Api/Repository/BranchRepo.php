@@ -50,9 +50,14 @@ class BranchRepo
             $except
         );
 
-        $authors[] = $own_authors;
+        // $authors[] = $own_authors;
 
         return $authors;
+    }
+
+    public function getOwnAuthors($user_id)
+    {
+        return $this->modelAuthors->getByUser($user_id);
     }
 
     public function getTotalGenres()

@@ -33,6 +33,7 @@ class Branch extends ApiContractController
         $data['genres'] = $this->repo->getTotalGenres();
         $data['posts'] = $this->repo->getFirstLastPosts($id);
         $data['files'] = $this->repo->getCoverFiles($id);
+        $data['ownAuthors'] = $this->repo->getOwnAuthors($this->user->id);
 
         return $data;
     }
@@ -44,13 +45,13 @@ class Branch extends ApiContractController
         [
             $authors_count,
             $authors,
-            $own_authors,
+            // $own_authors,
         ] = $this->repo->getAuthors($this->user->id, $query_params);
 
         return [
             'authors' => $authors,
             'authorsCount' => $authors_count,
-            'ownAuthors' => $own_authors,
+            // 'ownAuthors' => $own_authors,
         ];
     }
 }
