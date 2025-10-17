@@ -25,8 +25,10 @@ const Form = ({ bootstrap }: Props) => {
   const methods = useForm({
     resolver: zodResolver(formSchema),
     mode: "all",
-    defaultValues: getDefaults(bootstrap?.branch)
+    defaultValues: getDefaults(bootstrap)
   });
+
+  // console.log(methods.formState.errors.masterId, getMasterId(bootstrap.branch.authors), bootstrap.branch.authors)
 
   return (
     <FormProvider {...methods}>
@@ -35,7 +37,7 @@ const Form = ({ bootstrap }: Props) => {
         <Steps />
         {step === 1 ? <Genres genres={bootstrap?.genres || []} checked={branchGenres} /> : null}
         {step ===2 ? <Rules /> : null}
-        {step === 3 ? <Authors /> : null}
+        {step === 3 ? <Authors bootstrap={bootstrap} /> : null}
         <StepControls />
       </Wrapper>
     </FormProvider>

@@ -1,19 +1,34 @@
-import { useUnit } from "effector-react"
 import { useEffect } from "react"
-import { $authors, getAuthorsFx } from "store/authors"
+import Select from "reused/Select"
+import type { Bootstrap } from "schema/input"
+import { getAuthorsFx } from "store/authors"
 
-const Authors = () => {
-    const authors = useUnit($authors)
+type Props = {
+  bootstrap: Bootstrap;
+}
 
-    useEffect(() => {
-        getAuthorsFx()
-    }, [])
+const Authors = ({ bootstrap }: Props) => {
+  useEffect(() => {
+    getAuthorsFx()
+  }, [])
 
-    console.log(authors)
+  // console.log(authors)
 
-    return (
-        <>rere</>
-    )
+  return (
+    <div className="grid md:grid-cols-3 gap-4">
+      <fieldset className="fieldset">
+        <Select
+          fieldName="masterId"
+          label="Team leader"
+          options={bootstrap.ownAuthors}
+
+        />
+      </fieldset>
+      <div className="md:col-span-2">
+
+      </div>
+    </div>
+  )
 }
 
 export default Authors
