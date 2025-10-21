@@ -12,21 +12,25 @@ const isInvited = (
     )
 )
 
-const AuthorsChoice = () => {
-    const { getValues, setValue } = useFormContext()
-
-  const authors = useUnit($authors)
-  const invited = getValues('authors')
-  const inviteHandle = (invited: BranchAuthor[], author: Author) => () => {
-    const invitedAuthor = {
+const addNewMember = (members: BranchAuthor[], author: Author) => {
+   const newMember = {
         id: author.id,
         role: 50,
         status: 70,
         alias: author.alias,
     }
 
-    const branchAuthors = [...invited, invitedAuthor]
+    return [...members, newMember]
+}
 
+const AuthorsChoice = () => {
+  const { getValues, setValue } = useFormContext()
+
+  const authors = useUnit($authors)
+  const members = getValues('authors')
+
+  const inviteHandle = (members: BranchAuthor[], author: Author) => () => {
+    const branchAuthors = addNewMember(members, author)
     setValue('authors', branchAuthors, { shouldValidate: true, shouldDirty: true })
   }
 
@@ -38,8 +42,8 @@ const AuthorsChoice = () => {
         {authors?.authors.map((author, key) => (
           <button
             className="btn btn-soft btn-outline btn-sm"
-            disabled={isInvited(invited, author.id)}
-            onClick={inviteHandle(invited, author)}
+            disabled={isInvited(members, author.id)}
+            onClick={inviteHandle(members, author)}
             key={key}
           >
             {author.alias}
