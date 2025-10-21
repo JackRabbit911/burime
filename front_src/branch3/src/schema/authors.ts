@@ -18,9 +18,14 @@ const authors = z.object({
     ownAuthors:  z.array(author),
 })
 
+const authorsPayload = z.object({
+    filter: z.string().optional(),
+})
+
 export const ownAuthors = z.array(author)
 
 export type BranchAuthor = z.infer<typeof branchAuthor>
 export type Author = z.infer<typeof author>
 export type Authors = z.infer<typeof authors>
 export type OwnAuthors = z.infer<typeof ownAuthors>
+export type AuthorsPayload = z.infer<typeof authorsPayload>

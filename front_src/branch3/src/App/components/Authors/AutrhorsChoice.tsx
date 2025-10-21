@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form"
 import { $authors } from "store/authors"
 import type { Author, BranchAuthor } from "schema/authors"
 import { addNewMember, isInvited } from "./utils"
+import AuthorsFilter from "./AuthorsFilter"
 
 const AuthorsChoice = () => {
   const { getValues, setValue } = useFormContext()
@@ -17,8 +18,8 @@ const AuthorsChoice = () => {
 
   return (
     <>
-      {/* <AuthorsFilter />
-      <AuthorSearch /> */}
+      <AuthorsFilter />
+      {/* <AuthorSearch /> */}
       <div className="flex flex-wrap gap-2">
         {authors?.authors.map((author, key) => (
           <button

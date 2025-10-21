@@ -1,19 +1,28 @@
-import { createEffect, createStore } from "effector"
-import type { Authors } from "schema/authors"
+import { combine, createEffect, createEvent, createStore } from "effector"
+import type { Authors, AuthorsPayload } from "schema/authors"
 import ajax from "services/ajax"
 import type { ApiResponse } from "services/ajax/types"
+import { globalReset } from "store/step"
+
+export const authorsFilterChanged = createEvent<string>()
 
 export const getAuthorsFx = createEffect(
-    () => ajax.get<ApiResponse<Authors>>('/branch/create/authors')
-
-    // async () => {
-    //     const response = await ajax.get<ApiResponse<Authors>>('/branch/create/authors', {
-    //         // params: payload
-    //     })
-
-    //     return response.data
-    // }
+    (payload: AuthorsPayload) => ajax.get<ApiResponse<Authors>>(
+        '/branch/create/authors', {
+            params: payload,
+        })
 )
 
 export const $authors = createStore<Authors | null>(null)
     .on(getAuthorsFx.doneData, (_, response) => response.data.result)
+
+export const $authorsFilter = createStore('')
+    .on(authorsFilterChanged, (_, filter) => filter)
+    .reset(globalReset)
+
+export const $authorsPayload = combine(
+    $authorsFilter,
+    (authorsFilter) => ({
+        filter: authorsFilter,
+    })
+)
