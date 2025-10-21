@@ -2,26 +2,7 @@ import { useUnit } from "effector-react"
 import { useFormContext } from "react-hook-form"
 import { $authors } from "store/authors"
 import type { Author, BranchAuthor } from "schema/authors"
-
-const isInvited = (
-    array: BranchAuthor[],
-    id: number,
-): boolean => (
-    Boolean(
-        array.find((elem: BranchAuthor) => elem.id === id)
-    )
-)
-
-const addNewMember = (members: BranchAuthor[], author: Author) => {
-   const newMember = {
-        id: author.id,
-        role: 50,
-        status: 70,
-        alias: author.alias,
-    }
-
-    return [...members, newMember]
-}
+import { addNewMember, isInvited } from "./utils"
 
 const AuthorsChoice = () => {
   const { getValues, setValue } = useFormContext()
