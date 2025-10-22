@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { branchAuthor } from "./authors";
+import { authorsPayload, branchAuthor } from "./authors";
 
 const branchTitle = z.string()
   .trim()
@@ -27,4 +27,5 @@ export const formSchema = z.object({
   masterId: z.coerce.number().positive(),
   moderator: z.array(z.coerce.number().positive()),
   authors: z.array(branchAuthor),
+  authorsPayload,
 });

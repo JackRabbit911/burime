@@ -7,6 +7,16 @@ export const branchAuthor = z.object({
     alias: z.string(),
 })
 
+export const authorsSearch = z.string()
+    .trim()
+    .regex(/^[^<>]*$/, 'Invalid input!')
+    .optional()
+
+export const authorsFilter = z.string()
+    .trim()
+    .regex(/^[^<>;]*$/, 'Invalid input!')
+    .optional()
+
 const author = z.object({
     id: z.number().positive(),
     alias: z.string(),
@@ -18,9 +28,10 @@ const authors = z.object({
     ownAuthors:  z.array(author),
 })
 
-const authorsPayload = z.object({
-    filter: z.string().optional(),
-})
+export const authorsPayload = z.object({
+    filter: z.optional(authorsFilter),
+    search: z.optional(authorsSearch),
+}).optional()
 
 export const ownAuthors = z.array(author)
 
