@@ -1,4 +1,4 @@
-import { combine, createEffect, createEvent, createStore } from "effector"
+import { createEffect, createEvent, createStore } from "effector"
 import type { Authors, AuthorsPayload } from "schema/authors"
 import ajax from "services/ajax"
 import type { ApiResponse } from "services/ajax/types"
@@ -15,14 +15,4 @@ export const getAuthorsFx = createEffect(
 
 export const $authors = createStore<Authors | null>(null)
     .on(getAuthorsFx.doneData, (_, response) => response.data.result)
-
-export const $authorsFilter = createStore('')
-    .on(authorsFilterChanged, (_, filter) => filter)
     .reset(globalReset)
-
-export const $authorsPayload = combine(
-    $authorsFilter,
-    (authorsFilter) => ({
-        filter: authorsFilter,
-    })
-)
