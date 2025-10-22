@@ -5,7 +5,6 @@ type Props = {
   fieldName: string;
   label: string;
   options: OwnAuthors;
-  // alert?: string;
 }
 
 const Select = ({ fieldName, label, options }: Props) => {
@@ -13,12 +12,9 @@ const Select = ({ fieldName, label, options }: Props) => {
 
   return (
     <>
-      <label className="fieldset-label flex justify-between">
-        <legend className="fieldset-legend">
-          {label}
-        </legend>
-        {/* {alert && <span className="label-text text-error">{alert}</span>} */}
-      </label>
+      <legend className="fieldset-legend flex justify-between w-full">
+        {label}
+      </legend>
       <select
         className="select"
         {...register(fieldName, { required: true })}
