@@ -38,6 +38,18 @@ class Branch extends ApiContractController
         return $data;
     }
 
+    public function getauthors()
+    {
+        $query_params = $this->request->getQueryParams();
+
+        [$authors_count, $authors_list] = $this->repo->getAuthors($this->user->id, $query_params);
+
+        return [
+            'list' => $authors_list,
+            'count' => $authors_count,
+        ];
+    }
+
     public function authors()
     {
         $query_params = $this->request->getQueryParams();
@@ -45,13 +57,13 @@ class Branch extends ApiContractController
         [
             $authors_count,
             $authors,
-            // $own_authors,
+            $own_authors,
         ] = $this->repo->getAuthors($this->user->id, $query_params);
 
         return [
             'authors' => $authors,
             'authorsCount' => $authors_count,
-            // 'ownAuthors' => $own_authors,
+            'ownAuthors' => $own_authors,
         ];
     }
 }
