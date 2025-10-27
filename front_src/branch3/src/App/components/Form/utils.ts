@@ -1,4 +1,5 @@
-import type { BranchAuthor, OwnAuthors } from "schema/authors";
+import { perPages } from "constants";
+import type { AuthorsPayload, BranchAuthor, OwnAuthors } from "schema/authors";
 import type { Bootstrap } from "schema/input";
 
 export const getDefaults = (bootstrap: Bootstrap) => ({
@@ -15,8 +16,18 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     rules: bootstrap.branch.info.rules,
     authors: getBranchAuthors(bootstrap.branch.authors),
     masterId: getMasterId(bootstrap.branch.authors, bootstrap.ownAuthors),
-    moderator: getModerators(bootstrap.branch.authors)
+    moderator: getModerators(bootstrap.branch.authors),
+    authorsPayload: setAuthorsPayload(),
 })
+
+export function setAuthorsPayload(limit = perPages[0]): AuthorsPayload {
+    return {
+        filter: null,
+        search: null,
+        page: 1,
+        limit: limit,
+    }
+}
 
 function getMasterId(authors: BranchAuthor[], ownAuthors: OwnAuthors) {
     const master = authors.find(

@@ -9,7 +9,6 @@ const Button = ({ page, isActive, label, setPageNumber }: Props) => {
 
   const onSetPageNumber = () => {
     setPageNumber(page)
-    console.log(page)
   }
 
   return (

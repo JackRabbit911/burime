@@ -5,6 +5,7 @@ import type { Author, BranchAuthor } from "schema/authors"
 import { addNewMember, isInvited } from "./utils"
 import AuthorSearch from "./AuthorSearch"
 import { useEffect } from "react"
+import Pagination from "./Pagination"
 
 const AuthorsChoice = () => {
   const { getValues, setValue } = useFormContext()
@@ -26,7 +27,7 @@ const AuthorsChoice = () => {
     <>
       <AuthorSearch />
       <div className="flex flex-wrap gap-2 mt-1">
-        {authors?.authors.map((author, key) => (
+        {authors?.list.map((author, key) => (
           <button
             className="btn btn-soft btn-outline btn-sm"
             disabled={isInvited(members, author.id)}
@@ -37,7 +38,7 @@ const AuthorsChoice = () => {
           </button>
         ))}
       </div>
-      {/* <Pagination /> */}
+      <Pagination />
     </>
   )
 }

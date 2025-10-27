@@ -10,11 +10,13 @@ export const branchAuthor = z.object({
 export const authorsSearch = z.string()
     .trim()
     .regex(/^[^<>]*$/, 'Invalid input!')
+    .nullable()
     .optional()
 
 export const authorsFilter = z.string()
     .trim()
     .regex(/^[^<>;]*$/, 'Invalid input!')
+    .nullable()
     .optional()
 
 const author = z.object({
@@ -23,14 +25,15 @@ const author = z.object({
 })
 
 const authors = z.object({
-    authors: z.array(author),
-    authorsCount: z.number().nonnegative().int(),
-    ownAuthors:  z.array(author),
+    list: z.array(author),
+    count: z.number().nonnegative().int(),
 })
 
 export const authorsPayload = z.object({
     filter: z.optional(authorsFilter),
     search: z.optional(authorsSearch),
+    page: z.optional(z.number().positive()),
+    limit: z.optional(z.number().positive()),
 }).optional()
 
 export const ownAuthors = z.array(author)

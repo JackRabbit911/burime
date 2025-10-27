@@ -4,11 +4,12 @@ import ajax from "services/ajax"
 import type { ApiResponse } from "services/ajax/types"
 import { globalReset } from "store/step"
 
-export const authorsFilterChanged = createEvent<string>()
+export const authorsPageChanged = createEvent<number>()
+export const authorsLimitChanged = createEvent<number>()
 
 export const getAuthorsFx = createEffect(
     (payload: AuthorsPayload) => ajax.get<ApiResponse<Authors>>(
-        '/branch/create/authors', {
+        '/branch/create/getauthors', {
             params: payload,
         })
 )

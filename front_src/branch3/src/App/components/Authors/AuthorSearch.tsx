@@ -1,6 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { useFormContext, type FieldError, type FieldErrorsImpl, type Merge } from "react-hook-form";
 import { getAuthorsFx } from "store/authors";
+import { setAuthorsPayload } from "../Form/utils";
 
 type ErrorPayload = {
   search: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
@@ -8,7 +9,7 @@ type ErrorPayload = {
 }
 
 const AuthorSearch = () => {
-  const { register, getValues, setValue, resetField, formState: { errors } } = useFormContext();
+  const { register, getValues, setValue, formState: { errors } } = useFormContext();
 
   const filterFn = 'authorsPayload.filter'
   const searchFn = 'authorsPayload.search'
@@ -32,11 +33,10 @@ const AuthorSearch = () => {
   }
 
   const onReset = () => {
-    setValue('authorsPayload', null)
+    const limit = getValues('authorsPayload')?.limit
+    setValue('authorsPayload', setAuthorsPayload(limit))
     const authorsPayload = getValues('authorsPayload')
     getAuthorsFx(authorsPayload)
-    resetField(searchFn)
-    resetField(filterFn)
   }
 
   return (
