@@ -1,5 +1,5 @@
 import { perPages } from "constants";
-import type { AuthorsPayload, BranchAuthor, OwnAuthors } from "schema/authors";
+import type { AuthorsPayload, Member, OwnAuthors } from "schema/authors";
 import type { Bootstrap } from "schema/input";
 
 export const getDefaults = (bootstrap: Bootstrap) => ({
@@ -14,7 +14,7 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     timeLimit: bootstrap.branch.info.time_limit,
     description: bootstrap.branch.info.description,
     rules: bootstrap.branch.info.rules,
-    members: getBranchAuthors(bootstrap.branch.members),
+    members: getMembers(bootstrap.branch.members),
     masterId: getMasterId(bootstrap.branch.members, bootstrap.ownAuthors),
     moderator: getModerators(bootstrap.branch.members),
     authorsPayload: setAuthorsPayload(),
@@ -29,7 +29,7 @@ export function setAuthorsPayload(limit = perPages[0]): AuthorsPayload {
     }
 }
 
-function getMasterId(authors: BranchAuthor[], ownAuthors: OwnAuthors) {
+function getMasterId(authors: Member[], ownAuthors: OwnAuthors) {
     const master = authors.find(
         ({ role }) => role >= 150
     )
@@ -37,14 +37,14 @@ function getMasterId(authors: BranchAuthor[], ownAuthors: OwnAuthors) {
     return !master ? ownAuthors[0].id : master.id
 }
 
-function getBranchAuthors(authors: BranchAuthor[]) {
-    return authors.filter((author) => author.role < 150)
+function getMembers(members: Member[]) {
+    return members.filter((member) => member.role < 150)
 }
 
-function getModerators(authors: BranchAuthor[]) {
-    return authors.map((author) => {
-        if (author.role === 100) {
-            return author.id
+function getModerators(members: Member[]) {
+    return members.map((member) => {
+        if (member.role === 100) {
+            return member.id
         }
     }).filter((elem) => elem !== undefined)
 }

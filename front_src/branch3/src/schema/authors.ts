@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-export const branchAuthor = z.object({
+export const member = z.object({
     id: z.number().int().positive(),
     role: z.number().int().min(0).max(255),
     status: z.number().int().min(0).max(255),
@@ -38,7 +38,7 @@ export const authorsPayload = z.object({
 
 export const ownAuthors = z.array(author)
 
-export type BranchAuthor = z.infer<typeof branchAuthor>
+export type Member = z.infer<typeof member>
 export type Author = z.infer<typeof author>
 export type Authors = z.infer<typeof authors>
 export type OwnAuthors = z.infer<typeof ownAuthors>

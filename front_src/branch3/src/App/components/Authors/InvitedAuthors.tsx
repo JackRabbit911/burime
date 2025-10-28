@@ -1,9 +1,9 @@
 import { useFormContext } from "react-hook-form";
-import type { BranchAuthor } from "schema/authors";
+import type { Member } from "schema/authors";
 
 type Props = {
   fieldName: string;
-  author: BranchAuthor;
+  author: Member;
 }
 
 const InvitedAuthors = ({ fieldName, author }: Props) => {
@@ -11,8 +11,8 @@ const InvitedAuthors = ({ fieldName, author }: Props) => {
 
   const checked = getValues('moderator').includes(author.id)
 
-  const deleteMember = (author: BranchAuthor) => () => {
-    const members = watch('members').filter((item: BranchAuthor) => item.id !== author.id)
+  const deleteMember = (author: Member) => () => {
+    const members = watch('members').filter((item: Member) => item.id !== author.id)
     setValue('members', members)
   }
 

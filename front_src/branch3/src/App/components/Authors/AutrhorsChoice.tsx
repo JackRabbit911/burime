@@ -1,7 +1,7 @@
 import { useUnit } from "effector-react"
 import { useFormContext } from "react-hook-form"
 import { $authors, getAuthorsFx } from "store/authors"
-import type { Author, BranchAuthor } from "schema/authors"
+import type { Author, Member } from "schema/authors"
 import { addNewMember, isInvited } from "./utils"
 import AuthorSearch from "./AuthorSearch"
 import { useEffect } from "react"
@@ -14,9 +14,8 @@ const AuthorsChoice = () => {
   const members = getValues('members')
   const authorsPayload = getValues('authorsPayload')
 
-  const inviteHandle = (members: BranchAuthor[], author: Author) => () => {
+  const inviteHandle = (members: Member[], author: Author) => () => {
     const branchMembers = addNewMember(members, author)
-    console.log(branchMembers)
     setValue('members', branchMembers, { shouldValidate: true, shouldDirty: true })
   }
 

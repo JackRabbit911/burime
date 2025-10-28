@@ -1,8 +1,8 @@
 import { useFormContext } from "react-hook-form";
-import type { BranchAuthor } from "schema/authors"
+import type { Member } from "schema/authors"
 import InvitedAuthors from "./InvitedAuthors";
 
-const BranchAuthors = () => {
+const Members = () => {
   const { getValues } = useFormContext()
   const authors = getValues('members')
 
@@ -16,7 +16,7 @@ const BranchAuthors = () => {
       </div>
       <div className="flex flex-col gap-2">
         {authors.map(
-          (author: BranchAuthor) => (
+          (author: Member) => (
             <InvitedAuthors fieldName="moderator" author={author} key={author.id} />
           )
         )}
@@ -25,4 +25,4 @@ const BranchAuthors = () => {
   )
 }
 
-export default BranchAuthors
+export default Members

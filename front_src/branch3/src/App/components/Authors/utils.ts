@@ -1,15 +1,15 @@
-import type { Author, BranchAuthor } from "schema/authors"
+import type { Author, Member } from "schema/authors"
 
 export const isInvited = (
-    array: BranchAuthor[],
+    array: Member[],
     id: number,
 ): boolean => (
     Boolean(
-        array.find((elem: BranchAuthor) => elem.id === id)
+        array.find((elem: Member) => elem.id === id)
     )
 )
 
-export const addNewMember = (members: BranchAuthor[], author: Author) => {
+export const addNewMember = (members: Member[], author: Author) => {
    const newMember = {
         id: author.id,
         role: 50,
