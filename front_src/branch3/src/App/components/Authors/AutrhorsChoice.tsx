@@ -1,16 +1,18 @@
-import { useUnit } from "effector-react"
 import { useFormContext } from "react-hook-form"
-import { $authors, getAuthorsFx } from "store/authors"
-import type { Author, Member } from "schema/authors"
+import { useEffect } from "react"
+import { getAuthorsFx } from "store/authors"
 import { addNewMember, isInvited } from "./utils"
 import AuthorSearch from "./AuthorSearch"
-import { useEffect } from "react"
 import Pagination from "./Pagination"
+import type { Author, Authors, Member } from "schema/authors"
 
-const AuthorsChoice = () => {
+type Props = {
+  authors: Authors | null;
+}
+
+const AuthorsChoice = ({ authors }: Props) => {
   const { getValues, setValue } = useFormContext()
 
-  const authors = useUnit($authors)
   const members = getValues('members')
   const authorsPayload = getValues('authorsPayload')
 

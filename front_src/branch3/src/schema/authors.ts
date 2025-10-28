@@ -24,7 +24,7 @@ const author = z.object({
     alias: z.string(),
 })
 
-const authors = z.object({
+export const authorsSch = z.object({
     list: z.array(author),
     count: z.number().nonnegative().int(),
 })
@@ -40,6 +40,6 @@ export const ownAuthors = z.array(author)
 
 export type Member = z.infer<typeof member>
 export type Author = z.infer<typeof author>
-export type Authors = z.infer<typeof authors>
+export type Authors = z.infer<typeof authorsSch>
 export type OwnAuthors = z.infer<typeof ownAuthors>
 export type AuthorsPayload = z.infer<typeof authorsPayload>
