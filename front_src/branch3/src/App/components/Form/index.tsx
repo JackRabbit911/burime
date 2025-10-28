@@ -28,7 +28,7 @@ const Form = ({ bootstrap }: Props) => {
     defaultValues: getDefaults(bootstrap)
   });
 
-  // console.log(methods.formState.errors.masterId, getMasterId(bootstrap.branch.authors), bootstrap.branch.authors)
+  // console.log(methods.getValues('members'))
 
   return (
     <FormProvider {...methods}>

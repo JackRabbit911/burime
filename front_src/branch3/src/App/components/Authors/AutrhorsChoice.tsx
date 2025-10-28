@@ -11,12 +11,13 @@ const AuthorsChoice = () => {
   const { getValues, setValue } = useFormContext()
 
   const authors = useUnit($authors)
-  const members = getValues('authors')
+  const members = getValues('members')
   const authorsPayload = getValues('authorsPayload')
 
   const inviteHandle = (members: BranchAuthor[], author: Author) => () => {
-    const branchAuthors = addNewMember(members, author)
-    setValue('authors', branchAuthors, { shouldValidate: true, shouldDirty: true })
+    const branchMembers = addNewMember(members, author)
+    console.log(branchMembers)
+    setValue('members', branchMembers, { shouldValidate: true, shouldDirty: true })
   }
 
   useEffect(() => {

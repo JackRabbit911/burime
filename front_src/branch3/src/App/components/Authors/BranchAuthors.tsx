@@ -4,7 +4,7 @@ import InvitedAuthors from "./InvitedAuthors";
 
 const BranchAuthors = () => {
   const { getValues } = useFormContext()
-  const authors = getValues('authors')
+  const authors = getValues('members')
 
   return (
     <>

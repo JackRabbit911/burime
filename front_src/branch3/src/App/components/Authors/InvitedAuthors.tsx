@@ -11,9 +11,9 @@ const InvitedAuthors = ({ fieldName, author }: Props) => {
 
   const checked = getValues('moderator').includes(author.id)
 
-  const deleteBranchAuthor = (author: BranchAuthor) => () => {
-    const authors = watch('authors').filter((item: BranchAuthor) => item.id !== author.id)
-    setValue('authors', authors)
+  const deleteMember = (author: BranchAuthor) => () => {
+    const members = watch('members').filter((item: BranchAuthor) => item.id !== author.id)
+    setValue('members', members)
   }
 
   return (
@@ -30,7 +30,7 @@ const InvitedAuthors = ({ fieldName, author }: Props) => {
       </label>
       <button
         className="btn btn-outline btn-square btn-xs rounded-lg"
-        onClick={deleteBranchAuthor(author)}
+        onClick={deleteMember(author)}
       >
         <span className=" text-red-600">X</span>
       </button>

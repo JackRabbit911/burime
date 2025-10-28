@@ -60,7 +60,7 @@ const branch = z.strictObject({
     age_limit: z.number().nonnegative(),
     info: info,
     genres: z.array(z.number().positive().nullable()),
-    authors: z.array(branchAuthor),
+    members: z.array(branchAuthor),
 })
 
 export const bootstrapSch = z.object({

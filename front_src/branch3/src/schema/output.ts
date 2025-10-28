@@ -26,6 +26,6 @@ export const formSchema = z.object({
   rules: intro(200),
   masterId: z.coerce.number().positive(),
   moderator: z.array(z.coerce.number().positive()),
-  authors: z.array(branchAuthor),
+  members: z.array(branchAuthor),
   authorsPayload,
 });

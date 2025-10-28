@@ -14,9 +14,9 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     timeLimit: bootstrap.branch.info.time_limit,
     description: bootstrap.branch.info.description,
     rules: bootstrap.branch.info.rules,
-    authors: getBranchAuthors(bootstrap.branch.authors),
-    masterId: getMasterId(bootstrap.branch.authors, bootstrap.ownAuthors),
-    moderator: getModerators(bootstrap.branch.authors),
+    members: getBranchAuthors(bootstrap.branch.members),
+    masterId: getMasterId(bootstrap.branch.members, bootstrap.ownAuthors),
+    moderator: getModerators(bootstrap.branch.members),
     authorsPayload: setAuthorsPayload(),
 })
 
