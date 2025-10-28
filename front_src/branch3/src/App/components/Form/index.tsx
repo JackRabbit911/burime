@@ -1,18 +1,17 @@
+import { useUnit } from "effector-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-
-import Wrapper from "reused/Wrapper";
 import { formSchema } from "schema/output";
+import { getDefaults } from "./utils";
+import { $step } from "store/step";
+import type { Bootstrap } from "schema/input";
+import Wrapper from "reused/Wrapper";
 import Title from "../Title";
 import Genres from "../Genres";
-import type { Bootstrap } from "schema/input";
 import Steps from "../Steps";
-import StepControls from "../StepControls";
 import Rules from "../Rules";
-import { getDefaults } from "./utils";
 import Authors from "../Authors";
-import { useUnit } from "effector-react";
-import { $step } from "store/step";
+import StepControls from "../StepControls";
 
 type Props = {
   bootstrap: Bootstrap;
@@ -27,8 +26,6 @@ const Form = ({ bootstrap }: Props) => {
     mode: "all",
     defaultValues: getDefaults(bootstrap)
   });
-
-  // console.log(methods.getValues('members'))
 
   return (
     <FormProvider {...methods}>
