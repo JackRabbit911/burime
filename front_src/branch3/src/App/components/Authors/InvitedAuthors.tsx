@@ -14,6 +14,8 @@ const InvitedAuthors = ({ fieldName, author }: Props) => {
   const deleteMember = (author: Member) => () => {
     const members = watch('members').filter((item: Member) => item.id !== author.id)
     setValue('members', members)
+    const moderators = getValues('moderator').filter((item: number) => Number(item) !== author.id)
+    setValue('moderator', moderators)
   }
 
   return (
