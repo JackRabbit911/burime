@@ -16,7 +16,7 @@ class BranchDTO
     public readonly int $age_limit;
     public readonly stdClass $info;
     public readonly array $genres;
-    public readonly array $authors;
+    public readonly array $members;
 
     public function __construct(array $params = [])
     {
@@ -27,7 +27,7 @@ class BranchDTO
         $this->role = $params['role'] ?? 0;
         $this->age_limit = $params['age_limit'] ?? 0;
         $this->genres = $params['genres'] ?? [];
-        $this->authors = $params['authors'] ?? [];
+        $this->members = $params['authors'] ?? [];
         
         $rules = new stdClass();
 
