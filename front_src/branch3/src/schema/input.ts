@@ -16,7 +16,7 @@ const info = z.strictObject({
     bg_img: z.string(),
 })
 
-const branchAuthor = z.object({
+const member = z.object({
     id: z.number().positive(),
     role: z.number().positive(),
     status: z.number().positive(),
@@ -60,7 +60,7 @@ const branch = z.strictObject({
     age_limit: z.number().nonnegative(),
     info: info,
     genres: z.array(z.number().positive().nullable()),
-    members: z.array(branchAuthor),
+    members: z.array(member),
 })
 
 export const bootstrapSch = z.object({
@@ -72,5 +72,3 @@ export const bootstrapSch = z.object({
 })
 
 export type Bootstrap = z.infer<typeof bootstrapSch>
-// export type GenresType = z.infer<typeof genresSch>
-// export type Branch = z.infer<typeof branch>
