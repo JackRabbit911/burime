@@ -32,7 +32,7 @@ class Branch extends ApiContractController
         $data['branch'] = $this->request->getAttribute('branch') ?? $this->repo->findBranch($id);
         $data['genres'] = $this->repo->getTotalGenres();
         $data['posts'] = $this->repo->getFirstLastPosts($id);
-        $data['files'] = $this->repo->getCoverFiles($id);
+        $data['files'] = $this->repo->getBase64CoverFiles($id);
         $data['ownAuthors'] = $this->repo->getOwnAuthors($this->user->id);
 
         return $data;
