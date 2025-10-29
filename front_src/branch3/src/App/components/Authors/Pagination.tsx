@@ -4,11 +4,11 @@ import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
 import Paginator from "reused/Paginator"
 import PerPage from "reused/Paginator/PerPage"
-import { $authors, getAuthorsFx } from "store/authors"
+import { $total, getAuthorsFx } from "store/authors"
 
 const Pagination = () => {
   const { getValues, setValue } = useFormContext();
-  const total = useUnit($authors)?.count
+  const total = useUnit($total)
   const authorsPayload = getValues('authorsPayload')
 
   const setPage = (page: number) => {

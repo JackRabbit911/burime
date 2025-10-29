@@ -1,4 +1,4 @@
-import { createEffect, createEvent, createStore } from "effector"
+import { combine, createEffect, createEvent, createStore } from "effector"
 import type { Authors, AuthorsPayload } from "schema/authors"
 import ajax from "services/ajax"
 import type { ApiResponse } from "services/ajax/types"
@@ -17,3 +17,5 @@ export const getAuthorsFx = createEffect(
 export const $authors = createStore<Authors | null>(null)
     .on(getAuthorsFx.doneData, (_, response) => response.data.result)
     .reset(globalReset)
+
+export const $total = combine($authors, (authors) => authors?.count || 0)

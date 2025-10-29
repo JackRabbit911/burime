@@ -2,7 +2,7 @@ import { getPaginationData } from "./utils";
 import Button from "./Button";
 
 export type Props = {
-  total: number | undefined;
+  total: number;
   page: number;
   limit: number;
   setPage: (page: number) => void;
