@@ -28,15 +28,9 @@ const genre = z.object({
     title: z.string(),
 })
 
-const coverFile = z.object({
-    filename: z.string(),
-    mime: z.string(),
-    base64: z.string(),
-})
-
-export const filesBase64 = z.object({
-    cover: coverFile.nullable(),
-    bg_img: coverFile.nullable(),
+const filesBase64 = z.object({
+    cover: z.string().nullable(),
+    bg_img: z.string().nullable(),
 })
 
 const post = z.object({
@@ -72,5 +66,4 @@ export const bootstrapSch = z.object({
 })
 
 export type Bootstrap = z.infer<typeof bootstrapSch>
-export type CoverFile = z.infer<typeof coverFile>
 export type Genres = z.infer<typeof genresSch>
