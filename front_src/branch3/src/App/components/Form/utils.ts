@@ -17,6 +17,12 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     members: getMembers(bootstrap.branch.members),
     masterId: getMasterId(bootstrap.branch.members, bootstrap.ownAuthors),
     moderator: getModerators(bootstrap.branch.members),
+    cover: bootstrap.branch.info.cover,
+    bg_color: bootstrap.branch.info.bg_color,
+    bg_img: bootstrap.branch.info.bg_img,
+    text_size: bootstrap.branch.info.text_size,
+    text_color: bootstrap.branch.info.text_color,
+    files: bootstrap.files,
     authorsPayload: setAuthorsPayload(),
 })
 

@@ -1,5 +1,6 @@
 import * as z from "zod"
 import { authorsPayload, member } from "./authors";
+import { filesBase64 } from "./input";
 
 const branchTitle = z.string()
   .trim()
@@ -27,5 +28,11 @@ export const formSchema = z.object({
   masterId: z.coerce.number().positive(),
   moderator: z.array(z.coerce.number().positive()),
   members: z.array(member),
+  cover: z.string(),
+  bg_color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid hex color format."),
+  bg_img: z.string(),
+  text_size: z.number(),
+  text_color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid hex color format."),
+  files: filesBase64,
   authorsPayload,
 });

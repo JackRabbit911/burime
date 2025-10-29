@@ -34,7 +34,7 @@ const coverFile = z.object({
     base64: z.string(),
 })
 
-const filesBase64 = z.object({
+export const filesBase64 = z.object({
     cover: coverFile.nullable(),
     bg_img: coverFile.nullable(),
 })
@@ -72,3 +72,5 @@ export const bootstrapSch = z.object({
 })
 
 export type Bootstrap = z.infer<typeof bootstrapSch>
+export type CoverFile = z.infer<typeof coverFile>
+export type Genres = z.infer<typeof genresSch>

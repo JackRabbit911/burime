@@ -12,6 +12,7 @@ import Steps from "../Steps";
 import Rules from "../Rules";
 import Authors from "../Authors";
 import StepControls from "../StepControls";
+import Cover from "../Cover";
 
 type Props = {
   bootstrap: Bootstrap;
@@ -27,6 +28,8 @@ const Form = ({ bootstrap }: Props) => {
     defaultValues: getDefaults(bootstrap)
   });
 
+  // console.log(methods.getValues('genres'), bootstrap.genres)
+
   return (
     <FormProvider {...methods}>
       <Wrapper title="Laboratorium">
@@ -35,6 +38,7 @@ const Form = ({ bootstrap }: Props) => {
         {step === 1 ? <Genres genres={bootstrap?.genres || []} checked={branchGenres} /> : null}
         {step ===2 ? <Rules /> : null}
         {step === 3 ? <Authors bootstrap={bootstrap} /> : null}
+        {step === 4 ? <Cover /> : null}
         <StepControls />
       </Wrapper>
     </FormProvider>
