@@ -1,4 +1,5 @@
 import BgLayers from "./BgLayers"
+import CoverControls from "./CoverControls"
 
 const CoverWrapper = () => {
 
@@ -14,8 +15,8 @@ const CoverWrapper = () => {
       <div className="relative border border-neutral-content bg-cover bg-center aspect-2/3 inline-size">
         <BgLayers />
       </div>
-      <div>controls</div>
-      {/* <CoverControls info={info} /> */}
+      {/* <div>controls</div> */}
+      <CoverControls />
      </div>
   )
 }

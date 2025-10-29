@@ -1,26 +1,29 @@
 import { useUnit } from "effector-react"
 import { useFormContext } from "react-hook-form";
 import { $bootstrap } from "store/bootstrap";
-import { coverFileToUrl, getGenreString, getMasterAlias } from "./utils";
+import { fileToUrl, getGenreString, getMasterAlias } from "./utils";
 
 const BgLayers = () => {
   const bootstrap = useUnit($bootstrap)
-  const { getValues } = useFormContext()
+  const { getValues, watch } = useFormContext()
 
   const ownAuthors = bootstrap?.ownAuthors || []
   const masterId = getValues('masterId')
 
   const authorName = getMasterAlias(ownAuthors, masterId)
   const title = getValues('branchTitle')
-  const textSize = getValues('text_size')
-  const textColor = getValues('text_color')
-  const bgColor = getValues('bg_color')
-  const { bg_img, cover } = getValues('files')
-  const bgUrl = coverFileToUrl(bg_img)
-  const coverUrl = coverFileToUrl(cover)
+  const textSize = watch('text_size')
+  const textColor = watch('text_color')
+  const bgColor = watch('bg_color')
+  const bgImg = watch('bgImg')
+  const cover = watch('cover')
+  const bgUrl = fileToUrl(bgImg)
+  const coverUrl = fileToUrl(cover)
   const branchGenres = getValues('genres')
   const totalGenres = bootstrap?.genres || []
   const genreStr = getGenreString(totalGenres, branchGenres)
+
+  console.log(bgImg?.name, cover?.name)
 
   return (
     <>
@@ -28,7 +31,7 @@ const BgLayers = () => {
         className="absolute top-0 left-0 w-full h-full"
         style={{ backgroundColor: bgColor }}
       ></div>
-      {Boolean(bg_img) &&
+      {Boolean(bgImg) &&
         <div
           className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
           style={{ backgroundImage: `url(${bgUrl})` }}
