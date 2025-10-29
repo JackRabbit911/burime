@@ -26,7 +26,6 @@ const CoverControls = () => {
         step={1}
       />
       <div className="divider mt-8 mb-4 text-lg text-current/75">or</div>
-
         <FileInput
           fieldName="cover"
           label="Cover image"
@@ -37,7 +36,6 @@ const CoverControls = () => {
           label="Background image"
           optional="Up to 2Mb"
         />
-
     </fieldset>
   )
 }
