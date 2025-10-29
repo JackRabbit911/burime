@@ -16,7 +16,7 @@ const ColorPicker = ({ fieldName, label }: Props) => {
         </legend>
       </label>
       <input type="color"
-        className="input input-bordered input-md w-14 p-1 input-error"
+        className="input input-bordered input-md w-14 p-1"
         {...register(fieldName)}
       />
     </ div>
