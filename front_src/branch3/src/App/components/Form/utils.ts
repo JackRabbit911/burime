@@ -17,12 +17,11 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     members: getMembers(bootstrap.branch.members),
     masterId: getMasterId(bootstrap.branch.members, bootstrap.ownAuthors),
     moderator: getModerators(bootstrap.branch.members),
-    cover: bootstrap.branch.info.cover,
     bg_color: bootstrap.branch.info.bg_color,
-    bg_img: bootstrap.branch.info.bg_img,
     text_size: bootstrap.branch.info.text_size,
     text_color: bootstrap.branch.info.text_color,
-    files: bootstrap.files,
+    cover: base64ToFile(bootstrap.files.cover, 'cover'),
+    bgImg: base64ToFile(bootstrap.files.bg_img, 'background'),
     authorsPayload: setAuthorsPayload(),
 })
 
@@ -53,4 +52,26 @@ function getModerators(members: Member[]) {
             return member.id
         }
     }).filter((elem) => elem !== undefined)
+}
+
+function base64ToFile(data: string | null, filename: string) {
+    if (!data) {
+        return null
+    }
+
+    const arr = data.split(',')
+    const f = arr[0].match(/:(.*?);/)
+    const mime = f ? f[0] : ''
+    const ext = mime.split('/')[1].replace(/;/, '')
+    const bstr = atob(arr[arr.length - 1])
+    const len = bstr.length
+    const bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; i++) {
+        bytes[i] = bstr.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], { type: mime });
+
+    return new File([blob], filename + '.' + ext, { type: mime, lastModified: Date.now() });
 }
