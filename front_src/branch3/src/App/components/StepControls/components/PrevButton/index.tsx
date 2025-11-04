@@ -1,4 +1,5 @@
 import { useUnit } from "effector-react";
+import { useFormContext } from "react-hook-form";
 import { $step, stepChanged } from "store/step";
 
 const PrevButton = () => {
@@ -8,10 +9,12 @@ const PrevButton = () => {
     stepChanged(step - 1);
   }
 
+  const { formState: { isValid } } = useFormContext();
+
   return (
     <button
       onClick={onPrevStep}
-      disabled={step === 1}
+      disabled={step === 1 || !isValid}
       className="btn btn-primary dark:btn-info"
     >
       Prev
