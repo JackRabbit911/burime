@@ -37,7 +37,7 @@ const FileInput = ({ fieldName, label, optional }: Props) => {
               onBlur={onBlur}
               onChange={(e) => {
                 const file = e.target.files?.[0];
-                onChange(file); // Update the form value with the selected File object
+                onChange(file);
               }}
               ref={ref}
             />
