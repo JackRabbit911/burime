@@ -22,6 +22,8 @@ const getBranchIdFx = createEffect(() => {
     const id = pathname.replace(firstSegsRegular, '');
     const success = idSch.safeParse(id).success;
 
+    console.log(id, success)
+
     return { id, success }
 })
 
@@ -60,3 +62,19 @@ sample({
     fn: (response) => response.data.result,
     target: $bootstrap,
 });
+
+sample({
+    clock: getBootstrapFx.doneData,
+    filter: (response) => !response?.data?.success,
+    fn: () => 404,
+    target: $bootstrapStatus,
+});
+
+sample({
+    clock: getBootstrapFx.failData,
+    fn: (error) => {
+        return error?.status || 503
+    },
+    target: $bootstrapStatus,
+});
+
