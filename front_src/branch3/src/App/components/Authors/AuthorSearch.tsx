@@ -52,7 +52,7 @@ const AuthorSearch = () => {
           {...register(searchFn)}
         />
         <select
-          className="select select-sm join-item w-1/6"
+          className="select join-item w-1/5"
           defaultValue=""
           {...register(filterFn)}
         >
