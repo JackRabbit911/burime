@@ -13,6 +13,7 @@ import Rules from "../Rules";
 import Authors from "../Authors";
 import StepControls from "../StepControls";
 import Cover from "../Cover";
+import Modal from "reused/Modal";
 
 type Props = {
   bootstrap: Bootstrap;
@@ -28,8 +29,6 @@ const Form = ({ bootstrap }: Props) => {
     defaultValues: getDefaults(bootstrap)
   });
 
-  // console.log(methods.getValues('genres'), bootstrap.genres)
-
   return (
     <FormProvider {...methods}>
       <Wrapper title="Laboratorium">
@@ -40,6 +39,7 @@ const Form = ({ bootstrap }: Props) => {
         {step === 3 ? <Authors bootstrap={bootstrap} /> : null}
         {step === 4 ? <Cover /> : null}
         <StepControls />
+        <Modal />
       </Wrapper>
     </FormProvider>
   )
