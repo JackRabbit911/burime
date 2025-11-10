@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
-import type { Bootstrap } from "schema/input";
+import { bootstrapSch, type Bootstrap } from "schema/input";
 
 type AxiosApiResponse = AxiosResponse<ApiResponse<Bootstrap>>;
 
@@ -58,6 +58,21 @@ sample({
 
 sample({
     clock: getBootstrapFx.doneData,
+    filter: (response) => {
+        const valid = bootstrapSch.safeParse(response?.data?.result)
+
+        if (Boolean(valid.error)) {
+            console.log(valid.error)
+        }
+
+        return Boolean(valid.error)
+    },
+    fn: () => 555,
+    target: $bootstrapStatus,
+})
+
+sample({
+    clock: getBootstrapFx.doneData,
     filter: (response) => Boolean(response?.data?.success),
     fn: (response) => response.data.result,
     target: $bootstrap,
@@ -66,7 +81,7 @@ sample({
 sample({
     clock: getBootstrapFx.doneData,
     filter: (response) => !response?.data?.success,
-    fn: () => 404,
+    fn: () => 400,
     target: $bootstrapStatus,
 });
 
@@ -77,4 +92,3 @@ sample({
     },
     target: $bootstrapStatus,
 });
-
