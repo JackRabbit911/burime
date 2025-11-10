@@ -20,7 +20,13 @@ class HelpRepo
 
     public function getHelp(int $key)
     {
-        $file = $this->filePrefix . $this->stepHelps[$key] . '.md';
+        $filename = $this->stepHelps[$key] ?? false;
+
+        if (!$filename) {
+            return false;
+        }
+
+        $file = $this->filePrefix . $filename . '.md';
         $content = is_file($file) ? file_get_contents($file) : null;
 
         return $content ? $this->parser->text($content) : 'no content';

@@ -10,6 +10,8 @@ class BranchHelp extends ApiContractController
 {
     public function __invoke(HelpRepo $repo, int $step)
     {
-        return $repo->getHelp($step);
+        $help = $repo->getHelp($step);
+
+        return $help ? $help : $this->_error('Not found', 404);
     }
 }
