@@ -6,14 +6,13 @@ namespace App\Branch\Api\Controller;
 
 use HttpSoft\Response\JsonResponse;
 use Az\Route\Route;
-use HttpSoft\Response\EmptyResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 use Sys\Controller\InvokeTrait;
 use Sys\I18n\I18n;
 use Throwable;
-use Whoops\Handler\JsonResponseHandler;
 
 abstract class ApiContractController implements RequestHandlerInterface // extends BaseController
 {
@@ -24,6 +23,7 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
     protected array $headers;
     protected $user;
     protected I18n $i18n;
+    protected int $status = 200;
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -43,15 +43,10 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
                 return $response;
             }
 
-            $response = [
-                'success' => true,
-                'result' => $response,
-            ];
-
-            $this->_after($response);
-
-            return new JsonResponse($response, 200);
+            return $this->_success($response);
         } catch (Throwable $e) {
+            $this->logger($e);
+
             return ENV >= TESTING ? new JsonResponse([
                 'success' => false,
                 'error' => [
@@ -63,7 +58,31 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
         }
     }
 
-    protected function _before() {}
+    protected function _success(string|array $response): ResponseInterface
+    {
+        $response = [
+            'success' => true,
+            'result' => $response,
+        ];
 
-    protected function _after(&$response) {}
+        return new JsonResponse($response, $this->status);
+    }
+
+    protected function _error(string|array $error, int $status): ResponseInterface
+    {
+        $response = [
+            'success' => false,
+            'error' => $error,
+        ];
+
+        return new JsonResponse($response, $status);
+    }
+
+    protected function logger(Throwable $e): void
+    {
+        $logger = container()->get(LoggerInterface::class);
+        $logger->error($e->getMessage() . ' ' . $e->getFile(), [$e->getLine()]);
+    }
+
+    protected function _before() {}
 }
