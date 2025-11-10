@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import Form from "./components/Form"
 import { $bootstrap, $bootstrapStatus, appStarted } from "store/bootstrap";
 import { useUnit } from "effector-react";
-import { bootstrapSch } from "schema/input";
 import Loader from "reused/Loading";
 import ErrorCmp from "reused/ErrorCmp";
 
@@ -13,15 +12,6 @@ const App = () => {
   useEffect(() => {
     appStarted()
   }, [])
-  
-  if (bootstrap) {
-      const valid = bootstrapSch.safeParse(bootstrap)
-
-      if (!valid.success) {
-        console.log(valid.error)
-        return <Loader message='Invalid input data' />
-      }
-  }
 
   if (status >= 400) {
     return (
