@@ -1,8 +1,9 @@
 import { createEffect, createEvent, createStore, sample } from "effector";
 import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
-import type { Help } from "./schema";
+import { helpInputSch, type Help } from "./schema";
 import { globalReset } from "store/step";
+import { $bootstrapStatus } from "store/bootstrap";
 
 export const helpBtnClicked = createEvent<number>()
 
@@ -25,6 +26,29 @@ sample({
 })
 
 sample({
+    clock: getHelpDataFx.doneData,
+    filter: (response) => {
+        const valid = helpInputSch.safeParse(response?.data?.result)
+
+        if (Boolean(valid.error)) {
+            console.log(valid.error)
+        }
+
+        return Boolean(valid.error)
+    },
+    fn: () => 555,
+    target: $bootstrapStatus,
+})
+
+sample({
+    clock: getHelpDataFx.doneData,
+    source: $hepls,
+    filter: (_, response) => !response?.data?.success,
+    fn: () => 400,
+    target: $bootstrapStatus,
+})
+
+sample({
     clock: getHelpDataFx.done,
     source: $hepls,
     filter: (_, response) => Boolean(response?.result?.data?.success),
@@ -34,4 +58,3 @@ sample({
     }],
     target: $hepls,
 })
-
