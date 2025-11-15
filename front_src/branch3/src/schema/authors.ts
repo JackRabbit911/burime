@@ -16,7 +16,7 @@ export const authorsSearch = z.string()
     .nullable()
     .optional()
 
-const authorsFiltersSch = z.enum(['friends', 'favorites', 'addressbook'], 'Invalid input!')
+const authorsFiltersSch = z.enum(['friends', 'favorites', 'addressbook']).nullable()
 
 // export const authorsFilter = z.string()
 //     .trim()
