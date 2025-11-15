@@ -5,7 +5,7 @@ import { fileToUrl, getGenreString, getMasterAlias } from "./utils";
 
 const BgLayers = () => {
   const bootstrap = useUnit($bootstrap)
-  const { getValues, watch } = useFormContext()
+  const { getValues, watch, formState: { errors } } = useFormContext()
 
   const ownAuthors = bootstrap?.ownAuthors || []
   const masterId = getValues('masterId')
@@ -15,15 +15,13 @@ const BgLayers = () => {
   const textSize = watch('text_size')
   const textColor = watch('text_color')
   const bgColor = watch('bg_color')
-  const bgImg = watch('bgImg')
-  const cover = watch('cover')
+  const bgImg = errors.bgImg ? null : watch('bgImg')
+  const cover = errors.cover ? null : watch('cover')
   const bgUrl = fileToUrl(bgImg)
   const coverUrl = fileToUrl(cover)
   const branchGenres = getValues('genres')
   const totalGenres = bootstrap?.genres || []
   const genreStr = getGenreString(totalGenres, branchGenres)
-
-  console.log(bgImg?.name, cover?.name)
 
   return (
     <>
