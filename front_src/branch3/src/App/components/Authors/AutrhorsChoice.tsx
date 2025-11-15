@@ -5,12 +5,14 @@ import { addNewMember, isInvited } from "./utils"
 import AuthorSearch from "./AuthorSearch"
 import Pagination from "./Pagination"
 import type { Author, Authors, Member } from "schema/authors"
+import type { AuthorsFilters } from "schema/input"
 
 type Props = {
   authors: Authors | null;
+  filters: AuthorsFilters;
 }
 
-const AuthorsChoice = ({ authors }: Props) => {
+const AuthorsChoice = ({ authors, filters }: Props) => {
   const { getValues, setValue } = useFormContext()
 
   const members = getValues('members')
@@ -27,7 +29,7 @@ const AuthorsChoice = ({ authors }: Props) => {
 
   return (
     <>
-      <AuthorSearch />
+      <AuthorSearch filters={filters} />
       <div className="flex flex-wrap gap-2 mt-1">
         {authors?.list.map((author, key) => (
           <button

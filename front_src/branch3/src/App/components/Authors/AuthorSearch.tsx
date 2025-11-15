@@ -2,27 +2,38 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useFormContext, type FieldError, type FieldErrorsImpl, type Merge } from "react-hook-form";
 import { getAuthorsFx } from "store/authors";
 import { setAuthorsPayload } from "../Form/utils";
+import type { AuthorsFilters } from "schema/input";
 
 type ErrorPayload = {
   search: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   filter: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
 
-const AuthorSearch = () => {
-  const { register, getValues, setValue, formState: { errors } } = useFormContext();
+type Props = {
+  filters: AuthorsFilters,
+}
+
+const AuthorSearch = ({ filters }: Props) => {
+  const { register, getValues, setValue, clearErrors, formState: { errors } } = useFormContext();
 
   const filterFn = 'authorsPayload.filter'
   const searchFn = 'authorsPayload.search'
   const err = errors?.authorsPayload as ErrorPayload
   const placeholder = "Search"
+
   const inputClassName =
     !err?.search ?
       "input join-item w-full" :
-      "input join-item w-full input-error";
+      "input join-item w-full input-error"
 
-  const alert = !err?.search ? null : <ErrorMessage
+  const selectClassName =
+    !err?.filter ?
+      "select join-item w-1/5" :
+      "select join-item w-1/5 select-error"
+
+  const alert = !err ? null : <ErrorMessage
     as="div"
-    name={searchFn}
+    name={err.search ? searchFn : filterFn}
     errors={errors}
     className="fieldset-label text-error"
   />
@@ -37,6 +48,7 @@ const AuthorSearch = () => {
     setValue('authorsPayload', setAuthorsPayload(limit))
     const authorsPayload = getValues('authorsPayload')
     getAuthorsFx(authorsPayload)
+    clearErrors('authorsPayload')
   }
 
   return (
@@ -52,14 +64,14 @@ const AuthorSearch = () => {
           {...register(searchFn)}
         />
         <select
-          className="select join-item w-1/5"
+          className={selectClassName}
           defaultValue=""
           {...register(filterFn)}
         >
           <option value="" disabled>Filter</option>
-          <option value="friends">friends</option>
-          <option value="favorites">favorites</option>
-          <option value="addressbook">addressbook</option>
+          {filters.map((item, key) => (
+            <option key={key} value={item}>{item}</option>
+          ))}
         </select>
         <button
           className="btn btm-sm join-item"

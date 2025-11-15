@@ -23,7 +23,10 @@ const Authors = ({ bootstrap }: Props) => {
         <Members />
       </fieldset>
       <div className="md:col-span-2">
-        <AuthorsChoice authors={authors} />
+        <AuthorsChoice
+          authors={authors}
+          filters={bootstrap.authorsFilters}
+        />
       </div>
     </div>
   )
