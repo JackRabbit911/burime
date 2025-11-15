@@ -12,6 +12,17 @@ const intro = (max: number) => z.string()
   .regex(/^[^<>;]*$/, 'Invalid input!')
   .refine((value) => value.trim().split(' ').length <= max, `Up to ${max} words!`)
 
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 2; // 2MB
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif"]
+
+const imageFile = z.instanceof(File).refine(
+    (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+    "Only images (JPEG, PNG, GIF) are allowed"
+  ).refine(
+    (file) => file.size <= MAX_UPLOAD_SIZE,
+    "File size must be less than 2MB"
+  ).nullable()
+
 export const formSchema = z.object({
   branchTitle,
   genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
@@ -30,7 +41,7 @@ export const formSchema = z.object({
   bg_color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid hex color format."),
   text_size: z.coerce.number().int().min(5).max(50),
   text_color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid hex color format."),
-  bgImg: z.instanceof(File).nullable(),
-  cover: z.instanceof(File).nullable(),
+  bgImg: imageFile,
+  cover: imageFile,
   authorsPayload,
 });
