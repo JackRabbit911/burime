@@ -7,13 +7,14 @@ type Props = {
 }
 
 const FileInput = ({ fieldName, label, optional }: Props) => {
-  const { control, watch, setValue } = useFormContext()
+  const { control, watch, setValue, clearErrors, formState: { errors } } = useFormContext()
 
   const file = watch(fieldName)
   const fileName = file?.name || 'Файл не выбран'
 
   const reset = (fieldName: string) => {
     setValue(fieldName, null)
+    clearErrors(fieldName)
   }
 
   return (
@@ -32,7 +33,7 @@ const FileInput = ({ fieldName, label, optional }: Props) => {
             <input
               type="file"
               style={{display: "none"}}
-              id="image"
+              id={fieldName}
               name={name}
               onBlur={onBlur}
               onChange={(e) => {
@@ -44,16 +45,20 @@ const FileInput = ({ fieldName, label, optional }: Props) => {
           )}
         />
         <div className="join w-full border border-zinc-600 rounded-sm">
+        {/* <div className="join w-full border border-red-500 rounded-sm"> */}
           <div className="w-1/2 sm:w-1/3 bg-base-300 text-center flex flex-col justify-center">Выберите файл</div>
           <div className="w-1/2 sm:w-2/3 text-center  flex flex-col justify-center">{fileName}</div>
           <button
-            className="btn basis-1/4 join-item border-base-100"
+            className="btn basis-1/4 join-item"
             onClick={() => reset(fieldName)}
           >
             Cansel
           </button >
         </div>
       </label>
+      <div className="fieldset-label text-error mt-1">
+        {errors[fieldName]?.message as string}
+      </div>
     </ div>
   )
 }
