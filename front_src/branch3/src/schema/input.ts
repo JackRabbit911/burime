@@ -45,6 +45,8 @@ const posts = z.object({
 
 const genresSch = z.array(z.array(genre))
 
+const authorsFilters = z.array(z.string())
+
 const branch = z.strictObject({
     id: z.number().positive().nullable(),
     parent_id: z.number().positive().nullable(),
@@ -63,7 +65,9 @@ export const bootstrapSch = z.object({
     posts: posts,
     files: filesBase64,
     ownAuthors: ownAuthors,
+    authorsFilters,
 })
 
 export type Bootstrap = z.infer<typeof bootstrapSch>
 export type Genres = z.infer<typeof genresSch>
+export type AuthorsFilters = z.infer<typeof authorsFilters>
