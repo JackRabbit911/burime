@@ -17,4 +17,13 @@ enum MemberRole: int
             default => null,
         };
     }
+
+    public static function getFilters()
+    {
+        return [
+            'friends',
+            'favorites',
+            'addressbook',
+        ];
+    }
 }

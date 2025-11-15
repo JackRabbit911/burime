@@ -9,6 +9,7 @@ use App\Branch\Api\FirstLastDTO;
 use App\Branch\Api\Model\ModelAuthors;
 use App\Branch\Api\Model\ModelBranch;
 use App\Burime\Model\ModelPost;
+use Common\Enum\MemberRole;
 
 class BranchRepo
 {
@@ -71,6 +72,11 @@ class BranchRepo
             });
             return $array;
         }, $genres);
+    }
+
+    public function getAuthorsFilters()
+    {
+        return MemberRole::getFilters();
     }
 
     public function getGenres()

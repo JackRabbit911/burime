@@ -34,6 +34,7 @@ class Branch extends ApiContractController
         $data['posts'] = $this->repo->getFirstLastPosts($id);
         $data['files'] = $this->repo->getBase64CoverFiles($id);
         $data['ownAuthors'] = $this->repo->getOwnAuthors($this->user->id);
+        $data['authorsFilters'] = $this->repo->getAuthorsFilters();
 
         return $data;
     }
