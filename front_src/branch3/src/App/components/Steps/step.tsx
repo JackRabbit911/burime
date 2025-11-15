@@ -2,6 +2,7 @@ import { useUnit } from "effector-react";
 import { useFormContext } from "react-hook-form";
 import { $darkMode } from "store/colorScheme";
 import { $step, stepChanged } from "store/step";
+import { isObjectEmpty } from "utils";
 
 type Props = {
   step: number;
@@ -11,8 +12,8 @@ type Props = {
 
 const Step = ({ step, title, isError = false }: Props) => {
   const [currentStep, darkMode] = useUnit([$step, $darkMode]);
-  const { formState: { isValid } } = useFormContext();
-  const disabled = !isValid
+  const { formState: { errors } } = useFormContext();
+  const disabled = !isObjectEmpty(errors)
   const color = darkMode ? 'step step-info' : 'step step-primary';
   const liClassName = currentStep >= step ? color : 'step';
 
