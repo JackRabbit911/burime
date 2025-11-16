@@ -30,9 +30,11 @@ class AuthorsSearchFilterValidation extends ApiValidationMiddleware
     {
         return $check
             ? $handler->handle($request)
-            : new JsonResponse([
-                'success' => false,
-                'error' => $this->validation->getResponse(true)
-            ]);
+            : (ENV > STAGE
+                ? new JsonResponse([
+                    'success' => false,
+                    'error' => $this->validation->getResponse(true),
+                ])
+                : new JsonResponse('Bad request', 400));
     }
 }
