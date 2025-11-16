@@ -8,6 +8,7 @@ use App\Branch\Api\Middleware\OwnerBranchGuard;
 use App\Branch\Api\Repository\BranchRepo;
 use Auth\Middleware\OAuthMiddleware;
 use App\Branch\Api\Middleware\AuthGuard;
+use App\Branch\Api\Middleware\AuthorsSearchFilterValidation;
 
 #[OAuthMiddleware]
 #[AuthGuard]
@@ -39,6 +40,7 @@ class Branch extends ApiContractController
         return $data;
     }
 
+    #[AuthorsSearchFilterValidation]
     public function getauthors()
     {
         $query_params = $this->request->getQueryParams();
