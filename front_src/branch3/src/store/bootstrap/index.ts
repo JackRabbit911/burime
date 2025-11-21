@@ -22,8 +22,6 @@ const getBranchIdFx = createEffect(() => {
     const id = pathname.replace(firstSegsRegular, '');
     const success = idSch.safeParse(id).success;
 
-    console.log(id, success)
-
     return { id, success }
 })
 
