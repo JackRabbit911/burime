@@ -1,7 +1,4 @@
-// import { $bootstrap } from "store/bootstrap"
 import * as z from "zod"
-
-// export const bs = $bootstrap.getState()
 
 export const member = z.object({
     id: z.number().int().positive(),
@@ -16,13 +13,7 @@ export const authorsSearch = z.string()
     .nullable()
     .optional()
 
-const authorsFiltersSch = z.enum(['friends', 'favorites', 'addressbook']).nullable()
-
-// export const authorsFilter = z.string()
-//     .trim()
-//     .regex(/^[^<>;]*$/, 'Invalid input!')
-//     .nullable()
-//     .optional()
+const authorsFiltersSch = z.enum(['friends', 'favorites', 'addressbook', '']).nullable().optional()
 
 const author = z.object({
     id: z.number().positive(),

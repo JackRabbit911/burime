@@ -1,6 +1,4 @@
 import { useFormContext } from "react-hook-form"
-import { useEffect } from "react"
-import { getAuthorsFx } from "store/authors"
 import { addNewMember, isInvited } from "./utils"
 import AuthorSearch from "./AuthorSearch"
 import Pagination from "./Pagination"
@@ -16,16 +14,11 @@ const AuthorsChoice = ({ authors, filters }: Props) => {
   const { getValues, setValue } = useFormContext()
 
   const members = getValues('members')
-  const authorsPayload = getValues('authorsPayload')
 
   const inviteHandle = (members: Member[], author: Author) => () => {
     const branchMembers = addNewMember(members, author)
     setValue('members', branchMembers, { shouldValidate: true, shouldDirty: true })
   }
-
-  useEffect(() => {
-    getAuthorsFx(authorsPayload)
-  }, [])
 
   return (
     <>
