@@ -44,4 +44,6 @@ export const formSchema = z.object({
   bgImg: imageFile,
   cover: imageFile,
   authorsPayload,
+  firstPost: intro(200),
+  lastPost: intro(200),
 });

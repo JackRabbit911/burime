@@ -23,6 +23,8 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     cover: base64ToFile(bootstrap.files.cover, 'cover'),
     bgImg: base64ToFile(bootstrap.files.bg_img, 'background'),
     authorsPayload: setAuthorsPayload(),
+    firstPost: bootstrap.posts.first.body || '',
+    lastPost: bootstrap.posts.last.body || '',
 })
 
 export function setAuthorsPayload(limit = perPages[0]): AuthorsPayload {
