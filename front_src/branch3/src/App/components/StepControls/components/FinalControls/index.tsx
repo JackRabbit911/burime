@@ -1,20 +1,26 @@
 import { isReady } from "App/utils";
 import { useUnit } from "effector-react"
 import { useFormContext } from "react-hook-form";
+import { modalOpened } from "reused/Modal/store";
 import { $step } from "store/step"
 import { isObjectEmpty } from "utils";
+import CancelDialog from "../CancelDialog";
 
 const FinalControls = () => {
   const step = useUnit($step)
   const { watch, formState: { errors } } = useFormContext();
   const values = watch()
 
+  const onCancel = () => {
+    modalOpened(<CancelDialog />)
+  }
+
   return step < 5 ? null : (
     <>
       <div className="flex flex-row justify-between gap-2">
         <button
           className="btn btn-error"
-        // onClick={onCancel}
+        onClick={onCancel}
         >
           Cancel
         </button>
