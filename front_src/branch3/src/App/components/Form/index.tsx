@@ -14,6 +14,7 @@ import Authors from "../Authors";
 import StepControls from "../StepControls";
 import Cover from "../Cover";
 import Modal from "reused/Modal";
+import Publish from "../Publish";
 
 type Props = {
   bootstrap: Bootstrap;
@@ -35,9 +36,10 @@ const Form = ({ bootstrap }: Props) => {
         <Title />
         <Steps />
         {step === 1 ? <Genres genres={bootstrap?.genres || []} checked={branchGenres} /> : null}
-        {step ===2 ? <Rules /> : null}
+        {step === 2 ? <Rules /> : null}
         {step === 3 ? <Authors bootstrap={bootstrap} /> : null}
         {step === 4 ? <Cover /> : null}
+        {step === 5 ? <Publish /> : null}
         <StepControls />
         <Modal />
       </Wrapper>
