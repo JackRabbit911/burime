@@ -5,6 +5,7 @@ import { z } from "zod";
 import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
 import { bootstrapSch, type Bootstrap } from "schema/input";
+import { globalReset } from "store/step";
 
 type AxiosApiResponse = AxiosResponse<ApiResponse<Bootstrap>>;
 
@@ -33,7 +34,10 @@ const getBootstrapFx = createEffect<string, AxiosApiResponse, AxiosError>(
 );
 
 export const $bootstrap = createStore<Bootstrap | null>(null)
+    .reset(globalReset)
+
 export const $bootstrapStatus = createStore(200)
+    .reset(globalReset)
 
 sample({
     clock: appStarted,
