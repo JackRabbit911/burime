@@ -6,9 +6,10 @@ namespace App\Branch\Api\Controller;
 
 use App\Branch\Api\Middleware\OwnerBranchGuard;
 use App\Branch\Api\Repository\BranchRepo;
-use Auth\Middleware\OAuthMiddleware;
 use App\Branch\Api\Middleware\AuthGuard;
 use App\Branch\Api\Middleware\AuthorsSearchFilterValidation;
+use Auth\Middleware\OAuthMiddleware;
+use Az\Route\Route;
 
 #[OAuthMiddleware]
 #[AuthGuard]
@@ -51,6 +52,15 @@ class Branch extends ApiContractController
             'list' => $authors_list,
             'count' => $authors_count,
         ];
+    }
+
+    #[Route(methods: 'post')]
+    public function gettranslate()
+    {
+        $json = $this->request->getBody()->getContents();
+        $data = json_decode($json);
+       
+        return $this->i18n->getMap($data->filter);
     }
 
     public function authors()
