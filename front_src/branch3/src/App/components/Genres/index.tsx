@@ -1,6 +1,7 @@
 import { type TotalGenres } from "mock/genres";
 import { useFormContext } from "react-hook-form";
 import SameWeightGenres from "./SameWeightGenres";
+import { t } from "i18n/utils";
 
 type Props = {
   genres: TotalGenres[];
@@ -15,7 +16,7 @@ const Genres = ({ genres, checked, fieldName = 'genres' }: Props) => {
 
   return (
     <fieldset className="fieldset">
-      <legend className="fieldset-legend my-3">{"Genres"}</legend>
+      <legend className="fieldset-legend my-3">{t("Genres")}</legend>
       {genres.map((group, key) => (
         <div key={key}>
           {key as number > 0 ? <div className="divider w-full my-0"></div> : null}

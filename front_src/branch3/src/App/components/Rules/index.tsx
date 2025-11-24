@@ -2,6 +2,7 @@ import RadioBox from "reused/RadioBox";
 import CheckBox from "reused/CheckBox";
 import NumberInput from "reused/NumberInput";
 import Textarea from "reused/Textarea";
+import { t } from "i18n/utils";
 
 const Rules = () => {
   return (
@@ -18,34 +19,34 @@ const Rules = () => {
           <div className="flex flex-col gap-3">
             <CheckBox
               fieldName={'moderation'}
-              label={'Pre-moderation'}
+              label={t('Pre-moderation')}
             />
             <CheckBox
               fieldName={'comments'}
-              label={'Allow comments'}
+              label={t('Allow comments')}
             />
             <CheckBox
               fieldName={'signature'}
-              label={'Author`s signature under the post'}
+              label={t('Author`s signature under the post')}
             />
             <div className="flex flex-row justify-between">
               <NumberInput
                 fieldName="ageLimit"
-                label="Age Limit"
+                label={t("Age Limit")}
                 minMaxStep={[0, 21, 3]}
               />
             </div>
             <div className="flex flex-row justify-between">
               <NumberInput
                 fieldName="postSize"
-                label="Post Size"
+                label={t("Post Size")}
                 minMaxStep={[50, 2000, 50]}
               />
             </div>
             <div className="flex flex-row justify-between">
               <NumberInput
                 fieldName="timeLimit"
-                label="Time limit"
+                label={t("Time limit")}
                 minMaxStep={[30, 1440, 30]}
               />
             </div>
@@ -56,17 +57,17 @@ const Rules = () => {
           <div className="flex flex-col gap-3">
             <Textarea
               fieldName="description"
-              label="Decription"
+              label={t("Description")}
               placeholder="Описание проекта"
               rows={7}
-              optional="Up to 200 words"
+              optional={t('Up to % words', 200)}
             />
             <Textarea
               fieldName="rules"
-              label="Extra rules"
+              label={t("Extra rules")}
               placeholder="Частные правила проекта"
               rows={7}
-              optional="Up to 200 words"
+              optional={t('Up to % words', 200)}
             />
           </div>
         </div>

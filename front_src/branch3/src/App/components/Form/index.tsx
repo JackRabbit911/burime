@@ -15,6 +15,9 @@ import StepControls from "../StepControls";
 import Cover from "../Cover";
 import Modal from "reused/Modal";
 import Publish from "../Publish";
+import { t } from "i18n/utils";
+import { useEffect } from "react";
+import { $translate, getTranslateFx } from "i18n/store";
 
 type Props = {
   bootstrap: Bootstrap;
@@ -23,16 +26,21 @@ type Props = {
 const Form = ({ bootstrap }: Props) => {
   const step = useUnit($step)
   const branchGenres = bootstrap?.branch.genres as number[];
-
+  const translate = useUnit($translate)
+  
   const methods = useForm({
     resolver: zodResolver(formSchema),
     mode: "all",
     defaultValues: getDefaults(bootstrap)
   });
 
+  useEffect(() => {
+    getTranslateFx(translate)
+  }, [step])
+
   return (
     <FormProvider {...methods}>
-      <Wrapper title="Laboratorium">
+      <Wrapper title={t("Laboratorium")}>
         <Title />
         <Steps />
         {step === 1 ? <Genres genres={bootstrap?.genres || []} checked={branchGenres} /> : null}

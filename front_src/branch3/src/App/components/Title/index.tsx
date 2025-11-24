@@ -1,8 +1,9 @@
 import { ErrorMessage } from "@hookform/error-message";
+import { t } from "i18n/utils";
 import { useFormContext } from "react-hook-form";
 
 const label = "Title"
-const optional = "Up to 8 words"
+const optional = "Up to % words"
 const fieldName = "branchTitle"
 const placeholder = "Название произведения"
 
@@ -24,9 +25,9 @@ const Title = () => {
   return (
     <fieldset className="fieldset">
       <legend className="fieldset-legend flex justify-between w-full">
-        {label}
+        {t(label)}
         {alert}
-        <span className="label-text">{optional}</span>
+        <span className="label-text">{t(optional, 8)}</span>
       </legend>
       <input
         {...register(fieldName)}
