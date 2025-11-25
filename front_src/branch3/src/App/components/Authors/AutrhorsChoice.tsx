@@ -2,17 +2,18 @@ import { useFormContext } from "react-hook-form"
 import { addNewMember, isInvited } from "./utils"
 import AuthorSearch from "./AuthorSearch"
 import Pagination from "./Pagination"
-import type { Author, Authors, Member } from "schema/authors"
+import type { Author, Member } from "schema/authors"
 import type { AuthorsFilters } from "schema/input"
+import { useUnit } from "effector-react"
+import { $authors } from "store/authors"
 
 type Props = {
-  authors: Authors | null;
   filters: AuthorsFilters;
 }
 
-const AuthorsChoice = ({ authors, filters }: Props) => {
+const AuthorsChoice = ({ filters }: Props) => {
+  const authors = useUnit($authors)
   const { getValues, setValue } = useFormContext()
-
   const members = getValues('members')
 
   const inviteHandle = (members: Member[], author: Author) => () => {
