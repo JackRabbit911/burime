@@ -1,4 +1,5 @@
 import type { FieldValues } from "react-hook-form";
+import type { OwnAuthors } from "schema/authors";
 
 const readyCover = (values: FieldValues): boolean => (
     values.cover
@@ -45,4 +46,8 @@ export const getAlerts = (values: FieldValues): string[] => {
 
 export const isReady = (values: FieldValues): boolean => (
     values.branchTitle && values.genres.length > 0
+)
+
+export const getMasterAlias = (ownAuthors: OwnAuthors, masterId: number) => (
+    ownAuthors.reduce((acc, value) => (value.id === Number(masterId) ? value.alias : acc), '')
 )
