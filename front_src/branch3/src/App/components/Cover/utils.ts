@@ -1,4 +1,3 @@
-import { type OwnAuthors } from "schema/authors";
 import type { Genres } from "schema/input";
 
 export const fileToUrl = (file: File | null) => file ? URL.createObjectURL(file) : ''
@@ -19,8 +18,3 @@ export const getGenreString = (
             .includes(genre.id))
         .map((genre) => genre.title)
         .join(', ') || 'Unknown genre'
-
-export const getMasterAlias = (ownAuthors: OwnAuthors, masterId: number) => {
-    const master = ownAuthors.filter((author) => author.id === masterId)
-    return master[0].alias
-}
