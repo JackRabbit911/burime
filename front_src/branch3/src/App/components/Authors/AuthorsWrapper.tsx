@@ -17,7 +17,9 @@ const AuthorsWrapper = ({ bootstrap }: Props) => {
           label="Team leader"
           options={bootstrap.ownAuthors}
         />
-        <Members />
+        <Members
+          ownAuthors={bootstrap.ownAuthors}
+        />
       </fieldset>
       <div className="md:col-span-2">
         <AuthorsChoice
