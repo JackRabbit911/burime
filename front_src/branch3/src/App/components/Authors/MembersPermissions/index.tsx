@@ -1,8 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import type { Member } from "schema/authors";
 import { memberIdResetted, memberIdSetted } from "store/authors";
-import { getCurrentMember } from "./utils";
-import { isPermission, permissions } from "./permissions";
+import { getCurrentMember } from "../utils";
+import { isPermission, permissions } from "../permissions";
 import PermissionCheckBox from "./PermissionCheckBox";
 
 type Props = {
