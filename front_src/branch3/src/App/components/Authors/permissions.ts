@@ -2,9 +2,9 @@ export const permissions = {
     'WRITE': 1 << 0,
     'EDIT_POST': 1 << 1,
     'DESIGN': 1 << 2,
-    'MANAGE': 1 << 3,
-    'DIRECTOR': 1 << 4,
-    'MODERATE': 1 << 5,
+    'DIRECTOR': 1 << 3,
+    'MODERATE': 1 << 4,
+    'MANAGE': 1 << 5,
     'EDIT_BRANCH': 1 << 6,
     'EDIT_STATUS': 1 << 7,
 }
