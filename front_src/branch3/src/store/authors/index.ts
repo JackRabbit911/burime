@@ -8,6 +8,9 @@ import { globalReset } from "store/step"
 export const authorsPageChanged = createEvent<number>()
 export const authorsLimitChanged = createEvent<number>()
 
+export const memberIdSetted = createEvent<number>()
+export const memberIdResetted = createEvent()
+
 export const getAuthorsFx = createEffect(
     (payload: AuthorsPayload) => ajax.get<ApiResponse<Authors>>(
         '/branch/create/getauthors', {
@@ -20,6 +23,10 @@ export const $authors = createStore<Authors | null>(null)
     .reset(globalReset)
 
 export const $total = combine($authors, (authors) => authors?.count || 0)
+
+export const $memberId = createStore<number>(0)
+    .on(memberIdSetted, (_, id) => id)
+    .reset(memberIdResetted)
 
 sample({
     clock: getAuthorsFx.doneData,
