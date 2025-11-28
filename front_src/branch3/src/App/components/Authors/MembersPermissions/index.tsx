@@ -1,70 +1,51 @@
 import { useFormContext } from "react-hook-form";
 import type { Member } from "schema/authors";
-import { memberIdResetted, memberIdSetted } from "store/authors";
+import { memberIdResetted } from "store/authors";
 import { getCurrentMember } from "../utils";
-import { isPermission, permissions } from "../permissions";
-import PermissionCheckBox from "./PermissionCheckBox";
+import PermissionsList from "./PermissionsList";
+import { moderatorPerm } from "../permissions";
+// import { t } from "i18n/utils";
+import Participants from "./Participants";
 
 type Props = {
-  id: number;
+  authorId: number;
 }
 
-const MembersPermissions = ({ id }: Props) => {
+const MembersPermissions = ({ authorId }: Props) => {
   const { setValue, getValues } = useFormContext()
 
-  const authors = getValues('members')
-  const currentAuthor = getCurrentMember(authors, id)
-  const checked = (value: number): boolean => isPermission(currentAuthor?.role || 0, value)
+  const members = getValues('members')
+  const currentAuthor = getCurrentMember(members, authorId)
 
-  const handleCheck = (val: number, id: number, isAdd: boolean) => {
-    const newAuthors = authors.map((value: Member) => {
-      if (value.id === id) {
-        value.role = isAdd ? value.role | val : value.role &= ~ val
+  const handleSetPermission = (permission: number) => () => {
+    const newMembers = members.map((value: Member) => {
+      if (value.id === authorId) {
+        value.role = permission
       }
 
       return value
     })
 
-    setValue('members', newAuthors)
+    setValue('members', newMembers)
   }
 
   return (
     <>
       <div className="md:col-span-3">
         <h2 className="text-lg">
-          {currentAuthor?.alias || id}
+          {currentAuthor?.alias || authorId}
         </h2>
       </div>
       <fieldset className="fieldset">
-        <h3>Participants</h3>
-        {authors.map(
-          (author: Member) => (
-            <button
-              key={author.id}
-              className="btn btn-soft btn-sm"
-              disabled={author.id === id}
-              onClick={() => {
-                memberIdSetted(author.id)
-              }}
-            >
-              {author.alias}
-            </button>
-          )
-        )}
+        <Participants
+          members={members}
+          authorId={authorId}
+        />
       </fieldset>
       <fieldset className="fieldset">
-        <h3>Permissions</h3>
-        {Object.entries(permissions).reverse().map(([label, value]) => (
-          <PermissionCheckBox
-            handler={handleCheck}
-            memberId={id}
-            label={label}
-            key={`${label}.${currentAuthor?.id}`}
-            value={value}
-            checked={checked(value)}
-          />
-        ))}
-        <div>{currentAuthor?.role}</div>
+        <PermissionsList
+          member={currentAuthor}
+        />
         <button className="btn"
           onClick={() => memberIdResetted()}
         >
@@ -73,7 +54,9 @@ const MembersPermissions = ({ id }: Props) => {
       </fieldset>
       <fieldset className="fieldset">
         <h3>Status</h3>
-        <button className="btn btn-soft btn-sm"
+        <button
+          className="btn btn-soft btn-sm"
+          onClick={handleSetPermission(moderatorPerm)}
         >
           Make moderator
         </button>
