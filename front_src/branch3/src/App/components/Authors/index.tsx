@@ -15,7 +15,7 @@ const Authors = ({ bootstrap }: Props) => {
     <div className="grid md:grid-cols-3 gap-4">
       {memberId === 0
         ? <AuthorsWrapper bootstrap={bootstrap} />
-        : <MembersPermissions id={memberId} />
+        : <MembersPermissions authorId={memberId} />
       }
     </div>
   )
