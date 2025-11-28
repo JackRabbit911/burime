@@ -10,3 +10,4 @@ export const permissions = {
 }
 
 export const isPermission = (role: number, permission: number) => (role & permission) !== 0 ? true : false
+export const moderatorPerm = permissions.MANAGE | permissions.MODERATE | permissions.WRITE
