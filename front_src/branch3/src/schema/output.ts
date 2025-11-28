@@ -36,7 +36,6 @@ export const formSchema = z.object({
   description: intro(200),
   rules: intro(200),
   masterId: z.coerce.number().positive(),
-  moderator: z.array(z.coerce.number().positive()),
   members: z.array(member),
   bg_color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid hex color format."),
   text_size: z.coerce.number().int().min(5).max(50),

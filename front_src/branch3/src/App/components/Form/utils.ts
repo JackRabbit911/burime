@@ -2,7 +2,10 @@ import { perPages } from "constants";
 import type { AuthorsPayload, Member, OwnAuthors } from "schema/authors";
 import type { Bootstrap } from "schema/input";
 
-export const getDefaults = (bootstrap: Bootstrap) => ({
+export const getDefaults = (bootstrap: Bootstrap) => {
+    const masterId = getMasterId(bootstrap.branch.members, bootstrap.ownAuthors)
+    
+    return {
     branchTitle: bootstrap.branch.title || '',
     genres: bootstrap.branch.genres,
     branchRole: bootstrap.branch.role,
@@ -14,9 +17,8 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     timeLimit: bootstrap.branch.info.time_limit,
     description: bootstrap.branch.info.description,
     rules: bootstrap.branch.info.rules,
-    members: getMembers(bootstrap.branch.members),
-    masterId: getMasterId(bootstrap.branch.members, bootstrap.ownAuthors),
-    moderator: getModerators(bootstrap.branch.members),
+    masterId: masterId,
+    members: getMembers(bootstrap.branch.members, masterId),
     bg_color: bootstrap.branch.info.bg_color,
     text_size: bootstrap.branch.info.text_size,
     text_color: bootstrap.branch.info.text_color,
@@ -25,7 +27,7 @@ export const getDefaults = (bootstrap: Bootstrap) => ({
     authorsPayload: setAuthorsPayload(),
     firstPost: bootstrap.posts.first.body || '',
     lastPost: bootstrap.posts.last.body || '',
-})
+}}
 
 export function setAuthorsPayload(limit = perPages[0]): AuthorsPayload {
     return {
@@ -37,23 +39,29 @@ export function setAuthorsPayload(limit = perPages[0]): AuthorsPayload {
 }
 
 function getMasterId(authors: Member[], ownAuthors: OwnAuthors) {
-    const master = authors.find(
-        ({ role }) => role >= 150
-    )
+    const master = authors.length > 0
+        ? authors.reduce((acc, val) => {
+            if (acc.role < val.role) {
+                acc = val
+            }
 
+            return acc
+        })
+        : null
     return !master ? ownAuthors[0].id : master.id
 }
 
-function getMembers(members: Member[]) {
-    return members.filter((member) => member.role < 150)
-}
+function getMembers(members: Member[], masterId: number) {
+    if (members.length === 0) {
+        members.push({
+            id: masterId,
+            role: 255,
+            status: 100,
+            alias: ''
+        })
+    }
 
-function getModerators(members: Member[]) {
-    return members.map((member) => {
-        if (member.role === 100) {
-            return member.id
-        }
-    }).filter((elem) => elem !== undefined)
+    return members
 }
 
 function base64ToFile(data: string | null, filename: string) {
