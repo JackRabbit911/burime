@@ -1,6 +1,7 @@
 import { perPages } from "constants";
 import type { AuthorsPayload, Member, OwnAuthors } from "schema/authors";
 import type { Bootstrap } from "schema/input";
+import { memberStatus } from "../Authors/permissions";
 
 export const getDefaults = (bootstrap: Bootstrap) => {
     const masterId = getMasterId(bootstrap.branch.members, bootstrap.ownAuthors)
@@ -56,7 +57,7 @@ function getMembers(members: Member[], masterId: number) {
         members.push({
             id: masterId,
             role: 255,
-            status: 100,
+            status: memberStatus.member,
             alias: ''
         })
     }
