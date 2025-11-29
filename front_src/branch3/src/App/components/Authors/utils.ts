@@ -1,4 +1,5 @@
 import type { Author, Member, OwnAuthors } from "schema/authors"
+import { memberStatus, permissions } from "./permissions"
 
 export const isInvited = (
     array: Member[],
@@ -9,11 +10,16 @@ export const isInvited = (
     )
 )
 
-export const addNewMember = (members: Member[], author: Author) => {
+export const addNewMember = (
+    members: Member[],
+    author: Author,
+    role: number = permissions.WRITE,
+    status: number = memberStatus.invited
+) => {
    const newMember = {
         id: author.id,
-        role: 1,
-        status: 70,
+        role: role,
+        status: status,
         alias: author.alias,
     }
 
