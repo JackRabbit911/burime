@@ -20,7 +20,7 @@ export const memberStatus = {
 }
 
 export const isPermission = (role: number, permission: number) => (role & permission) !== 0 ? true : false
-export const moderatorPerm = permissions.MANAGE | permissions.MODERATE | permissions.WRITE
+export const moderatorPerm = permissions.MANAGE | permissions.MODERATE
 export const getStatus = (status: number) => (
     Object.entries(memberStatus).reduce((acc, [key, value]) => {
         if (value === status) {
