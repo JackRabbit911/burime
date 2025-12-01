@@ -1,33 +1,21 @@
 import { useFormContext } from "react-hook-form";
-import type { Member } from "schema/authors";
-import { memberIdResetted } from "store/authors";
 import { getCurrentMember } from "../utils";
 import PermissionsList from "./PermissionsList";
-import { moderatorPerm } from "../permissions";
-// import { t } from "i18n/utils";
 import Participants from "./Participants";
+import Status from "./Status";
+import { memberIdResetted } from "store/authors";
+import { t } from "i18n/utils";
+import { useUnit } from "effector-react";
 
 type Props = {
   authorId: number;
 }
 
 const MembersPermissions = ({ authorId }: Props) => {
-  const { setValue, getValues } = useFormContext()
-
+  const onClose = useUnit(memberIdResetted)
+  const { getValues } = useFormContext()
   const members = getValues('members')
   const currentAuthor = getCurrentMember(members, authorId)
-
-  const handleSetPermission = (permission: number) => () => {
-    const newMembers = members.map((value: Member) => {
-      if (value.id === authorId) {
-        value.role = permission
-      }
-
-      return value
-    })
-
-    setValue('members', newMembers)
-  }
 
   return (
     <>
@@ -42,25 +30,23 @@ const MembersPermissions = ({ authorId }: Props) => {
           authorId={authorId}
         />
       </fieldset>
-      <fieldset className="fieldset">
-        <PermissionsList
-          member={currentAuthor}
-        />
-        <button className="btn"
-          onClick={() => memberIdResetted()}
+      <div className="md:col-span-2 grid grid-cols-2 gap-4">
+        <fieldset className="fieldset">
+          <PermissionsList
+            member={currentAuthor}
+          />
+        </fieldset>
+        <fieldset className="fieldset">
+          <Status
+            member={currentAuthor}
+          />
+        </fieldset>
+        <button className="md:col-span-2 btn btn-sm"
+          onClick={onClose}
         >
-          Close
+          {t('Close')}
         </button>
-      </fieldset>
-      <fieldset className="fieldset">
-        <h3>Status</h3>
-        <button
-          className="btn btn-soft btn-sm"
-          onClick={handleSetPermission(moderatorPerm)}
-        >
-          Make moderator
-        </button>
-      </fieldset>
+      </div>
     </>
   )
 }
