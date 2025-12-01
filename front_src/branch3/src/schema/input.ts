@@ -46,6 +46,8 @@ const posts = z.object({
 const genresSch = z.array(z.array(genre))
 
 const authorsFilters = z.array(z.string())
+const authorsPermissions = z.object({}).catchall(z.number())
+const authorsStatuses = z.object({}).catchall(z.number())
 
 const branch = z.strictObject({
     id: z.number().positive().nullable(),
@@ -66,8 +68,12 @@ export const bootstrapSch = z.object({
     files: filesBase64,
     ownAuthors: ownAuthors,
     authorsFilters,
+    authorsPermissions,
+    authorsStatuses,
 })
 
 export type Bootstrap = z.infer<typeof bootstrapSch>
 export type Genres = z.infer<typeof genresSch>
 export type AuthorsFilters = z.infer<typeof authorsFilters>
+export type Statuses = z.infer<typeof authorsStatuses>
+export type Permissions = z.infer<typeof authorsPermissions>
