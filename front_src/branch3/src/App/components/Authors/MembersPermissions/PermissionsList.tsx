@@ -41,7 +41,6 @@ const PermissionsList = ({ member }: Props) => {
           checked={checked(value)}
         />
       ))}
-      <div>{member?.role}</div>
     </>
   )
 }
