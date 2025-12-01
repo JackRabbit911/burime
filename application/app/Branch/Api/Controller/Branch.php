@@ -10,6 +10,8 @@ use App\Branch\Api\Middleware\AuthGuard;
 use App\Branch\Api\Middleware\AuthorsSearchFilterValidation;
 use Auth\Middleware\OAuthMiddleware;
 use Az\Route\Route;
+use Common\Enum\BranchAuthorPermissions;
+use Common\Enum\BranchAuthorStatus;
 
 #[OAuthMiddleware]
 #[AuthGuard]
@@ -37,6 +39,8 @@ class Branch extends ApiContractController
         $data['files'] = $this->repo->getBase64CoverFiles($id);
         $data['ownAuthors'] = $this->repo->getOwnAuthors($this->user->id);
         $data['authorsFilters'] = $this->repo->getAuthorsFilters();
+        $data['authorsPermissions'] = BranchAuthorPermissions::getArray();
+        $data['authorsStatuses'] = BranchAuthorStatus::getArray();
 
         return $data;
     }
