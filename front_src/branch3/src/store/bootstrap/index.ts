@@ -1,4 +1,4 @@
-import { createEffect, createEvent, createStore, sample } from "effector";
+import { combine, createEffect, createEvent, createStore, sample } from "effector";
 import type { AxiosError, AxiosResponse } from "axios";
 import { z } from "zod";
 
@@ -38,6 +38,9 @@ export const $bootstrap = createStore<Bootstrap | null>(null)
 
 export const $bootstrapStatus = createStore(200)
     .reset(globalReset)
+
+export const $permissions = combine($bootstrap, (store) => store?.authorsPermissions || {})
+export const $statusObj = combine($bootstrap, (store) => store?.authorsStatuses || {})
 
 sample({
     clock: appStarted,
