@@ -1,5 +1,5 @@
 import type { Author, Member, OwnAuthors } from "schema/authors"
-import { memberStatus, permissions } from "./permissions"
+import { isPermission, memberStatus, permissions } from "./permissions"
 
 export const isInvited = (
     array: Member[],
@@ -66,3 +66,17 @@ export const changeMaster = (members: Member[], ownAuthors: OwnAuthors, masterId
         return member
     })
 }
+
+export const isModerator = (member: Member | null): boolean =>
+    isPermission(member?.role || 0, permissions.MANAGE) &&
+    isPermission(member?.role || 0, permissions.MODERATE)
+
+
+export const isAccept = (member: Member | null): boolean =>
+    (member?.status || 0) === memberStatus.candidate ||
+    (member?.status || 0) === memberStatus.denied
+
+export const isBan = (member: Member | null): boolean =>
+    (member?.status || 0) === memberStatus.member &&
+    !isPermission(member?.role || 0, permissions.MANAGE) 
+
