@@ -18,6 +18,7 @@ import Publish from "../Publish";
 import { t } from "i18n/utils";
 import { useEffect } from "react";
 import { $translate, getTranslateFx } from "i18n/store";
+import { $memberId } from "store/authors";
 
 type Props = {
   bootstrap: Bootstrap;
@@ -25,8 +26,9 @@ type Props = {
 
 const Form = ({ bootstrap }: Props) => {
   const step = useUnit($step)
-  const branchGenres = bootstrap?.branch.genres as number[];
+  const memberId = useUnit($memberId)
   const translate = useUnit($translate)
+  const branchGenres = bootstrap?.branch.genres as number[];
   
   const methods = useForm({
     resolver: zodResolver(formSchema),
@@ -36,7 +38,7 @@ const Form = ({ bootstrap }: Props) => {
 
   useEffect(() => {
     getTranslateFx(translate)
-  }, [step])
+  }, [step, memberId])
 
   return (
     <FormProvider {...methods}>
