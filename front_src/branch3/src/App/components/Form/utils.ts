@@ -1,7 +1,6 @@
 import { perPages } from "constants";
 import type { AuthorsPayload, Member, OwnAuthors } from "schema/authors";
 import type { Bootstrap } from "schema/input";
-import { memberStatus } from "../Authors/permissions";
 
 export const getDefaults = (bootstrap: Bootstrap) => {
     const masterId = getMasterId(bootstrap.branch.members, bootstrap.ownAuthors)
@@ -19,7 +18,7 @@ export const getDefaults = (bootstrap: Bootstrap) => {
     description: bootstrap.branch.info.description,
     rules: bootstrap.branch.info.rules,
     masterId: masterId,
-    members: getMembers(bootstrap.branch.members, masterId),
+    members: getMembers(bootstrap.branch.members, masterId, bootstrap.authorsStatuses.member),
     bg_color: bootstrap.branch.info.bg_color,
     text_size: bootstrap.branch.info.text_size,
     text_color: bootstrap.branch.info.text_color,
@@ -52,12 +51,12 @@ function getMasterId(authors: Member[], ownAuthors: OwnAuthors) {
     return !master ? ownAuthors[0].id : master.id
 }
 
-function getMembers(members: Member[], masterId: number) {
+function getMembers(members: Member[], masterId: number, status: number) {
     if (members.length === 0) {
         members.push({
             id: masterId,
             role: 255,
-            status: memberStatus.member,
+            status: status,
             alias: ''
         })
     }
