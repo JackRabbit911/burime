@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 
 const lang = document.querySelector('html')?.getAttribute('lang');
 const { protocol, hostname } = window.location
-const host = `${protocol}//${hostname}`
+export const host = `${protocol}//${hostname}`
 
 const ajax = axios.create({
     baseURL: `${host}/api`,
