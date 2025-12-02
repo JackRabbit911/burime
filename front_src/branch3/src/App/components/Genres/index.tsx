@@ -1,6 +1,6 @@
 import { type TotalGenres } from "mock/genres";
 import { useFormContext } from "react-hook-form";
-import SameWeightGenres from "./SameWeightGenres";
+import SameWeightGenres from "./components/SameWeightGenres";
 import { t } from "i18n/utils";
 
 type Props = {

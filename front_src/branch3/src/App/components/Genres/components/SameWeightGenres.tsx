@@ -1,5 +1,5 @@
 import type { TotalGenres } from "mock/genres";
-import GenreCheckBox from "App/components/Genres/GenreCheckBox";
+import GenreCheckBox from "App/components/Genres/components/GenreCheckBox";
 
 type Props = {
   genres: TotalGenres;
