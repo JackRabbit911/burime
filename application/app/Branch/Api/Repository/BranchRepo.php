@@ -51,8 +51,6 @@ class BranchRepo
             $except
         );
 
-        // $authors[] = $own_authors;
-
         return $authors;
     }
 
@@ -116,7 +114,7 @@ class BranchRepo
             return null;
         }
 
-        $pattern = $this->prefix . $branch_id . '/' . $filename . '.{jpg,png}';
+        $pattern = $this->prefix . $branch_id . '/' . $filename . '.{jp*g,png}';
         $file = glob($pattern, GLOB_BRACE)[0] ?? null;
 
         if (!$file) {
@@ -136,7 +134,7 @@ class BranchRepo
             return null;
         }
 
-        $pattern = $this->prefix . $branch_id . '/' . $filename . '.{jpg,png}';
+        $pattern = $this->prefix . $branch_id . '/' . $filename . '.{jp*g,png}';
         $file = glob($pattern, GLOB_BRACE)[0] ?? null;
 
         if (!$file) {
