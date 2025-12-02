@@ -1,7 +1,7 @@
 import { useUnit } from "effector-react"
 import { useFormContext } from "react-hook-form";
 import { $bootstrap } from "store/bootstrap";
-import { fileToUrl, getGenreString } from "./utils";
+import { fileToUrl, getGenreString } from "../utils";
 import { getMasterAlias } from "App/utils";
 
 const BgLayers = () => {
