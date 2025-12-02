@@ -1,10 +1,10 @@
-import { type TotalGenres } from "mock/genres";
 import { useFormContext } from "react-hook-form";
 import SameWeightGenres from "./components/SameWeightGenres";
 import { t } from "i18n/utils";
+import type { Genres } from "schema/input";
 
 type Props = {
-  genres: TotalGenres[];
+  genres: Genres;
   checked: number[];
   fieldName?: string;
 }
