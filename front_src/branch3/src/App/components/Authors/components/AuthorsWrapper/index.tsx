@@ -1,7 +1,7 @@
-import Select from "reused/Select"
 import type { Bootstrap } from "schema/input"
 import Members from "./components/Members";
 import AuthorsChoice from "./components/AuthorsChoice";
+import Select from "./components/Select";
 
 type Props = {
   bootstrap: Bootstrap;
