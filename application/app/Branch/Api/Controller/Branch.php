@@ -67,6 +67,16 @@ class Branch extends ApiContractController
         return $this->i18n->getMap($data->filter);
     }
 
+    #[Route(methods: 'post')]
+    public function save()
+    {
+        $draft = $this->request->getQueryParams()['draft'] ?? 'false';
+        $post = $this->request->getParsedBody();
+        $files = $this->request->getUploadedFiles();
+        return $draft;
+        // return array_keys($draft);
+    }
+
     public function authors()
     {
         $query_params = $this->request->getQueryParams();
