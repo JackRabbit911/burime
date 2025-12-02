@@ -1,11 +1,13 @@
 import { perPages } from "constants";
 import type { AuthorsPayload, Member, OwnAuthors } from "schema/authors";
+import { base64ToFile } from "schema/files";
 import type { Bootstrap } from "schema/input";
 
 export const getDefaults = (bootstrap: Bootstrap) => {
     const masterId = getMasterId(bootstrap.branch.members, bootstrap.ownAuthors)
     
     return {
+    branchId: bootstrap.branch.id,
     branchTitle: bootstrap.branch.title || '',
     genres: bootstrap.branch.genres,
     branchRole: bootstrap.branch.role,
@@ -62,26 +64,4 @@ function getMembers(members: Member[], masterId: number, status: number) {
     }
 
     return members
-}
-
-function base64ToFile(data: string | null, filename: string) {
-    if (!data) {
-        return null
-    }
-
-    const arr = data.split(',')
-    const f = arr[0].match(/:(.*?);/)
-    const mime = f ? f[0] : ''
-    const ext = mime.split('/')[1].replace(/;/, '')
-    const bstr = atob(arr[arr.length - 1])
-    const len = bstr.length
-    const bytes = new Uint8Array(len);
-
-    for (let i = 0; i < len; i++) {
-        bytes[i] = bstr.charCodeAt(i);
-    }
-
-    const blob = new Blob([bytes], { type: mime });
-
-    return new File([blob], filename + '.' + ext, { type: mime, lastModified: Date.now() });
 }

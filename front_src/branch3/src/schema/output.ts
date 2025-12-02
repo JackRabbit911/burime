@@ -1,7 +1,8 @@
 import * as z from "zod"
 import { authorsPayload, member } from "./authors";
+import { imageFile } from "./files";
 
-const branchTitle = z.string()
+export const branchTitle = z.string()
   .trim()
   .min(1, { message: 'Required' })
   .regex(/^[^<>;]*$/, 'Invalid input!')
@@ -12,18 +13,8 @@ const intro = (max: number) => z.string()
   .regex(/^[^<>;]*$/, 'Invalid input!')
   .refine((value) => value.trim().split(' ').length <= max, `Up to ${max} words!`)
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 2; // 2MB
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif"]
-
-const imageFile = z.instanceof(File).refine(
-    (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
-    "Only images (JPEG, PNG, GIF) are allowed"
-  ).refine(
-    (file) => file.size <= MAX_UPLOAD_SIZE,
-    "File size must be less than 2MB"
-  ).nullable()
-
 export const formSchema = z.object({
+  branchId: z.number().int().positive().nullable(),
   branchTitle,
   genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
   branchRole: z.coerce.number().int().min(0).max(2),
@@ -46,3 +37,5 @@ export const formSchema = z.object({
   firstPost: intro(200),
   lastPost: intro(200),
 });
+
+export type FormData = z.infer<typeof formSchema>
