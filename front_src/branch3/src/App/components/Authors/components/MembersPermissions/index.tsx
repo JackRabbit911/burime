@@ -1,8 +1,8 @@
 import { useFormContext } from "react-hook-form";
-import { getCurrentMember } from "../utils";
-import PermissionsList from "./PermissionsList";
-import Participants from "./Participants";
-import Status from "./Status";
+import { getCurrentMember } from "../../utils";
+import PermissionsList from "./components/PermissionsList";
+import Participants from "./components/Participants";
+import Status from "./components/Status";
 import { memberIdResetted } from "store/authors";
 import { t } from "i18n/utils";
 import { useUnit } from "effector-react";

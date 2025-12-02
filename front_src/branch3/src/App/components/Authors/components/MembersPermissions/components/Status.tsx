@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form";
 import type { Member } from "schema/authors";
-import { getStatusString } from "../permissions";
+import { getStatusString } from "../../../permissions";
 import { t } from "i18n/utils";
 import { host } from "services/ajax";
 import { useUnit } from "effector-react";
 import { $statusObj, $permissions } from "store/bootstrap";
-import { buttonEnabled } from "./utils";
+import { buttonEnabled } from "../utils";
 import { memberIdResetted } from "store/authors";
 
 type Props = {

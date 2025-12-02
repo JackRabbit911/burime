@@ -1,8 +1,8 @@
 import type { Bootstrap } from "schema/input"
-import AuthorsWrapper from "./AuthorsWrapper"
+import AuthorsWrapper from "./components/AuthorsWrapper"
 import { useUnit } from "effector-react";
 import { $memberId } from "store/authors";
-import MembersPermissions from "./MembersPermissions";
+import MembersPermissions from "./components/MembersPermissions";
 
 type Props = {
   bootstrap: Bootstrap;

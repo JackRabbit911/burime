@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form"
-import { addNewMember, isInvited } from "./utils"
-import AuthorSearch from "./AuthorSearch"
-import Pagination from "./Pagination"
 import type { Author, Member } from "schema/authors"
 import type { AuthorsFilters } from "schema/input"
 import { useUnit } from "effector-react"
 import { $authors } from "store/authors"
+import { addNewMember, isInvited } from "../../../utils"
+import AuthorSearch from "./AuthorSearch"
+import Pagination from "./Pagination"
 
 type Props = {
   filters: AuthorsFilters;

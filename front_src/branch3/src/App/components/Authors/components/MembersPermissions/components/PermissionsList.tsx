@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { isPermission } from "../permissions";
+import { isPermission } from "../../../permissions";
 import PermissionCheckBox from "./PermissionCheckBox";
 import type { Member } from "schema/authors";
 import { t } from "i18n/utils";

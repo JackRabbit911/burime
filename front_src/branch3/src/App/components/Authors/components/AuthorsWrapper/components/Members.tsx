@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import type { Member, OwnAuthors } from "schema/authors"
 import InvitedAuthors from "./InvitedAuthors";
 import { memberIdSetted } from "store/authors";
-import { changeMaster, getSimpleMembers } from "./utils";
+import { changeMaster, getSimpleMembers } from "../../../utils";
 import { getMasterAlias } from "App/utils";
 import { useEffect } from "react";
 import { t } from "i18n/utils";
