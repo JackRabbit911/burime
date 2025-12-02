@@ -1,5 +1,5 @@
-import FirstLastPost from "./FirstLastPost";
-import Indicator from "./Indicator";
+import FirstLastPost from "./components/FirstLastPost";
+import Indicator from "./components/Indicator";
 
 const Publish = () => {
   return (
