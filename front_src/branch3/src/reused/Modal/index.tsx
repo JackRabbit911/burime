@@ -1,9 +1,9 @@
 import { useUnit } from "effector-react";
-import { $closeBtn, $component, modalClosed } from "./store";
+import { $closeBtn, $modalComponent, modalClosed } from "./store";
 
 const Modal = () => {
   const closeBtn = useUnit($closeBtn)
-  const component = useUnit($component)
+  const component = useUnit($modalComponent)
   const isOpen = Boolean(component);
 
   return (
