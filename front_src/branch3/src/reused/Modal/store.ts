@@ -10,3 +10,4 @@ export const $modalComponent = createStore<React.ReactNode | string | null>(null
 
 export const $closeBtn = createStore(true)
     .on(closeBtn, (_, closeBtn) => closeBtn)
+    .reset(modalClosed)
