@@ -19,7 +19,7 @@ const FinalControls = () => {
   const values = watch()
   const valid = formSchema.safeParse(values)
 
-  if (!valid.success) {
+  if (valid?.error) {
       console.log(valid.error, values)
   }
 
@@ -28,13 +28,13 @@ const FinalControls = () => {
   }
   
   const onPublish = () => {
-    if (valid.success) {
-      publishEvent(valid.data)
+    if (valid?.success && valid?.data) {
+      publishEvent(valid.data)     
     }
   }
 
   const onDraft = () => {
-    if (valid.success) {
+    if (valid?.success && valid?.data) {
       draftEvent(valid.data)
     }
   }
