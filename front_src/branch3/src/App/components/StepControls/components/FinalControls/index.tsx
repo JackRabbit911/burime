@@ -5,11 +5,10 @@ import { modalOpened } from "reused/Modal/store";
 import { $step } from "store/step"
 import CancelDialog from "../CancelDialog";
 import { formSchema } from "schema/output";
-import { draftClicked, published } from "store/publish";
+import FinalDialog from "App/components/Publish/components/FinalDialog";
 
 const FinalControls = () => {
   const step = useUnit($step)
-  const [publishEvent, draftEvent] = useUnit([published, draftClicked])
   const { watch } = useFormContext();
 
   if (step < 5) {
@@ -29,13 +28,13 @@ const FinalControls = () => {
   
   const onPublish = () => {
     if (valid?.success && valid?.data) {
-      publishEvent(valid.data)     
+      modalOpened(<FinalDialog data={valid.data} />)
     }
   }
 
   const onDraft = () => {
     if (valid?.success && valid?.data) {
-      draftEvent(valid.data)
+      modalOpened(<FinalDialog data={valid.data} draft={true}/>)
     }
   }
 
