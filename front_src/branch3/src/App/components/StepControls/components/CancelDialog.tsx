@@ -1,7 +1,9 @@
-import { modalClosed } from "reused/Modal/store"
+import { closeBtn, modalClosed } from "reused/Modal/store"
 import { globalReset } from "store/step"
 
 const CancelDialog = () => {
+  closeBtn(false)
+
   const onYes = () => {
     globalReset()
     window.location.href = '/'
