@@ -4,6 +4,7 @@ import { modalOpened } from "reused/Modal/store";
 import type { FormData } from "schema/output";
 import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
+import { globalReset } from "./step";
 
 const uri = '/branch/create/save'
 
@@ -31,6 +32,7 @@ export const draftFx = createEffect
     )
 
 export const $finalResponse = createStore<FinalApiResponse>(null)
+    .reset(draftClicked, published, globalReset)
 
 sample({
     clock: published,
@@ -49,7 +51,7 @@ sample({
 })
 
 sample({
-    clock: publishFx.doneData,
+    clock: [publishFx.doneData, draftFx.doneData],
     fn: (response) => response.data,
     target: $finalResponse,
 })
