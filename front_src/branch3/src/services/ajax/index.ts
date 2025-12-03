@@ -6,7 +6,7 @@ export const host = `${protocol}//${hostname}`
 
 const ajax = axios.create({
     baseURL: `${host}/api`,
-    timeout: 1000,
+    timeout: 10000,
     headers: {
         'Accept-Language': lang,
         'Content-Type': 'application/json',
