@@ -1,30 +1,36 @@
 import type { AxiosError, AxiosResponse } from "axios";
-import { createEffect, createEvent, sample } from "effector";
+import { createEffect, createEvent, createStore, sample } from "effector";
 import { modalOpened } from "reused/Modal/store";
 import type { FormData } from "schema/output";
 import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
-import * as z from "zod"
 
 const uri = '/branch/create/save'
 
-const publishSch = z.array(z.string())
-type Publish = z.infer<typeof publishSch>
+type FinalResponse = {
+    [x: string]: string | number;
+}
+
+type FinalApiResponse = ApiResponse<FinalResponse> | null;
 
 export const published = createEvent<FormData>()
 export const draftClicked = createEvent<FormData>()
 
-export const publishFx = createEffect<FormData, AxiosResponse<ApiResponse<string>>, AxiosError>(
-    ( data: FormData ) => (
-        ajax.postForm(uri, data)
+export const publishFx = createEffect
+    <FormData, AxiosResponse<ApiResponse<FinalResponse>>, AxiosError>(
+        (data: FormData) => (
+            ajax.postForm(uri, data)
+        )
     )
-)
 
-export const draftFx = createEffect(
-    ( data: FormData ) => (
-        ajax.postForm<ApiResponse<Publish>>(uri, data, {params: {draft: true}})
+export const draftFx = createEffect
+    <FormData, AxiosResponse<ApiResponse<FinalResponse>>, AxiosError>(
+        (data: FormData) => (
+            ajax.postForm(uri, data, { params: { draft: true } })
+        )
     )
-)
+
+export const $finalResponse = createStore<FinalApiResponse>(null)
 
 sample({
     clock: published,
@@ -40,4 +46,10 @@ sample({
     clock: publishFx.failData,
     fn: (error) => error.message,
     target: modalOpened,
+})
+
+sample({
+    clock: publishFx.doneData,
+    fn: (response) => response.data,
+    target: $finalResponse,
 })
