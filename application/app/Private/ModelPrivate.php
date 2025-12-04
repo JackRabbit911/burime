@@ -25,7 +25,6 @@ class ModelPrivate extends Model
         $this->branchClass = $container->get(BranchInterface::class);
         $this->authorClass = $container->get(AuthorInterface::class);
         $this->status = BranchAuthorStatus::invited->value;
-
     }
 
     public function getMyBooks($user_id)
