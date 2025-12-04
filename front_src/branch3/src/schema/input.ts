@@ -44,6 +44,7 @@ const posts = z.object({
 })
 
 const genresSch = z.array(z.array(genre))
+const genreSch = z.array(genre)
 
 const authorsFilters = z.array(z.string())
 const authorsPermissions = z.object({}).catchall(z.number())
@@ -73,7 +74,7 @@ export const bootstrapSch = z.object({
 })
 
 export type Bootstrap = z.infer<typeof bootstrapSch>
-export type Genres = z.infer<typeof genresSch>
+export type Genre = z.infer<typeof genreSch>
 export type AuthorsFilters = z.infer<typeof authorsFilters>
 export type Statuses = z.infer<typeof authorsStatuses>
 export type Permissions = z.infer<typeof authorsPermissions>
