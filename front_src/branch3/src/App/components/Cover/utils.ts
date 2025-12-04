@@ -1,9 +1,9 @@
-import type { Genres } from "schema/input";
+import type { Genre } from "schema/input";
 
 export const fileToUrl = (file: File | null) => file ? URL.createObjectURL(file) : ''
 
 export const getGenreString = (
-    totalGenres: Genres,
+    totalGenres: Genre[],
     branchGenres: number[],
 ) => 
     [...totalGenres[1], ...totalGenres[2]]
