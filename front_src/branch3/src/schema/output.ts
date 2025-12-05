@@ -38,4 +38,8 @@ export const formSchema = z.object({
   lastPost: intro(200),
 });
 
-export type FormData = z.infer<typeof formSchema>
+export const finalSchema = formSchema.omit({
+  authorsPayload: true,
+})
+
+export type FormData = z.infer<typeof finalSchema>
