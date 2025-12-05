@@ -10,7 +10,7 @@ type Props = {
   draft?: boolean;
 }
 
-const Dialog = ({ data, draft = false }: Props) => {
+const FinalDialog = ({ data, draft = false }: Props) => {
   const [publishEvent, draftEvent] = useUnit([published, draftClicked])
   const finalResponse = useUnit($finalResponse)
 
@@ -37,4 +37,4 @@ const Dialog = ({ data, draft = false }: Props) => {
     )
 }
 
-export default Dialog
+export default FinalDialog
