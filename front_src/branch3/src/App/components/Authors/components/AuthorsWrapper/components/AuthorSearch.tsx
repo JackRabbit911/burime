@@ -46,8 +46,8 @@ const AuthorSearch = ({ filters }: Props) => {
   const onReset = () => {
     const limit = getValues('authorsPayload')?.limit
     setValue('authorsPayload', setAuthorsPayload(limit))
-    const authorsPayload = getValues('authorsPayload')
-    getAuthorsFx(authorsPayload)
+    // const authorsPayload = getValues('authorsPayload')
+    // getAuthorsFx(authorsPayload)
     clearErrors('authorsPayload')
   }
 
