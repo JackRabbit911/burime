@@ -198,10 +198,10 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
 
         if ($is_master) {
             $default_role = AuthorRole::Master->value;
-            $default_status = BranchAuthorStatus::Participant->value;
+            $default_status = BranchAuthorStatus::member->value;
         } else {
             $default_role = $branch_info->role ?? AuthorRole::Author->value;
-            $default_status = $branch_info->status ?? BranchAuthorStatus::Invited->value;
+            $default_status = $branch_info->status ?? BranchAuthorStatus::invited->value;
         }
 
         $author->role = $default_role;
