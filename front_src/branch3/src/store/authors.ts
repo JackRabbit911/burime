@@ -4,6 +4,7 @@ import ajax from "services/ajax"
 import type { ApiResponse } from "services/ajax/types"
 import { $bootstrapStatus } from "store/bootstrap"
 import { globalReset } from "store/step"
+import type { AxiosError, AxiosResponse } from "axios"
 
 export const authorsPageChanged = createEvent<number>()
 export const authorsLimitChanged = createEvent<number>()
@@ -11,15 +12,15 @@ export const authorsLimitChanged = createEvent<number>()
 export const memberIdSetted = createEvent<number>()
 export const memberIdResetted = createEvent()
 
-export const getAuthorsFx = createEffect(
-    (payload: AuthorsPayload) => ajax.get<ApiResponse<Authors>>(
+export const getAuthorsFx = createEffect
+<AuthorsPayload, AxiosResponse<ApiResponse<Authors>>, AxiosError>(
+    (payload: AuthorsPayload) => ajax.get(
         '/branch/create/getauthors', {
             params: payload,
         })
 )
 
 export const $authors = createStore<Authors | null>(null)
-    .on(getAuthorsFx.doneData, (_, response) => response.data.result)
     .reset(globalReset)
 
 export const $total = combine($authors, (authors) => authors?.count || 0)
@@ -30,16 +31,37 @@ export const $memberId = createStore<number>(0)
 
 sample({
     clock: getAuthorsFx.doneData,
-    source: $authors,
-    filter: (data) => {
-        const valid = authorsSch.safeParse(data)
+    filter: (response) => !response?.data?.success,
+    fn: (response) => {
+        console.log(response?.data?.error)
+        return 400
+    },
+    target: $bootstrapStatus,
+})
 
-        if (Boolean(valid.error)) {
+sample({
+    clock: getAuthorsFx.doneData,
+    filter: (response) => {
+        if (!response?.data?.success) {
+            return false
+        }
+
+        const valid = authorsSch.safeParse(response?.data?.result)
+
+        if (valid?.error) {
             console.log(valid.error)
         }
     
-        return Boolean(valid.error)
+        return !valid.success
     },
     fn: () => 555,
     target: $bootstrapStatus,
 })
+
+sample({
+    clock: getAuthorsFx.doneData,
+    filter: (response) => response?.data?.success,
+    fn: (response) => response?.data?.result,
+    target: $authors,
+})
+

@@ -5,14 +5,13 @@ import type { FormData } from "schema/output";
 import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
 import { globalReset } from "./step";
+import { $bootstrapStatus } from "./bootstrap";
 
 const uri = '/branch/create/save'
 
 type FinalResponse = {
     [x: string]: string | number;
 }
-
-type FinalApiResponse = ApiResponse<FinalResponse> | null;
 
 export const published = createEvent<FormData>()
 export const draftClicked = createEvent<FormData>()
@@ -31,7 +30,7 @@ export const draftFx = createEffect
         )
     )
 
-export const $finalResponse = createStore<FinalApiResponse>(null)
+export const $finalResponse = createStore<FinalResponse | null>(null)
     .reset(draftClicked, published, globalReset)
 
 sample({
@@ -52,6 +51,17 @@ sample({
 
 sample({
     clock: [publishFx.doneData, draftFx.doneData],
-    fn: (response) => response.data,
+    filter: (response) => !response?.data?.success,
+    fn: (response) => {
+        console.log(response?.data?.error)
+        return 400
+    },
+    target: $bootstrapStatus,
+})
+
+sample({
+    clock: [publishFx.doneData, draftFx.doneData],
+    filter: (response) => Boolean(response?.data?.success),
+    fn: (response) => response.data.result,
     target: $finalResponse,
 })
