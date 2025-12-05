@@ -1,4 +1,4 @@
-export type ValidationErrors = {
+type ValidationErrors = {
   key: string;
   msg: string;
 }[]
