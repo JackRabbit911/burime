@@ -12,14 +12,14 @@ type Props = {
 }
 
 const Members = ({ ownAuthors }: Props) => {
-  const { getValues } = useFormContext()
-  const masterId = Number(getValues('masterId'))
-  const members = getValues('members')
+  const { setValue, watch } = useFormContext()
+  const masterId = Number(watch('masterId'))
+  const members = watch('members')
   const authors = getSimpleMembers(members, ownAuthors)
   const masterAlias = getMasterAlias(ownAuthors, masterId)
 
   useEffect(() => {
-    changeMaster(members, ownAuthors, masterId)
+    setValue('members', changeMaster(members, ownAuthors, masterId))
   }, [masterId])
 
   return (

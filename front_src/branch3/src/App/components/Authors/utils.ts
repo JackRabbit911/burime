@@ -56,7 +56,7 @@ export const changeMaster = (members: Member[], ownAuthors: OwnAuthors, masterId
         }
     })
 
-    members.map((member) => {
+    return members.map((member) => {
         if (ownAuthorsIds.includes(member.id)) {
             member.id = Number(masterId)
             member.alias = masterAlias
