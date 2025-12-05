@@ -7,13 +7,11 @@ export const member = z.object({
     alias: z.string(),
 })
 
-export const authorsSearch = z.string()
+const authorsFilterSearch = z.string()
     .trim()
     .regex(/^[^<>]*$/, 'Invalid input!')
     .nullable()
     .optional()
-
-const authorsFiltersSch = z.enum(['friends', 'favorites', 'addressbook', '']).nullable().optional()
 
 const author = z.object({
     id: z.number().positive(),
@@ -26,8 +24,8 @@ export const authorsSch = z.object({
 })
 
 export const authorsPayload = z.object({
-    filter: z.optional(authorsFiltersSch),
-    search: z.optional(authorsSearch),
+    filter: z.optional(authorsFilterSearch),
+    search: z.optional(authorsFilterSearch),
     page: z.optional(z.number().positive()),
     limit: z.optional(z.number().positive()),
 }).optional()
