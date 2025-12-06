@@ -14,11 +14,11 @@ type Props = {
 const AuthorsChoice = ({ filters }: Props) => {
   const authors = useUnit($authors)
   const { getValues, setValue } = useFormContext()
-  const members = getValues('members')
+  const members = getValues('branch.members')
 
   const inviteHandle = (members: Member[], author: Author) => () => {
     const branchMembers = addNewMember(members, author)
-    setValue('members', branchMembers, { shouldValidate: true, shouldDirty: true })
+    setValue('branch.members', branchMembers, { shouldValidate: true, shouldDirty: true })
   }
 
   return (
