@@ -1,5 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { useFormContext } from "react-hook-form";
+import { getObjectProp } from "utils";
 
 type Props = {
   fieldName: string;
@@ -13,7 +14,9 @@ type Props = {
 const Textarea = ({ fieldName, label, placeholder, rows, optional = '', disabled = false }: Props) => {
   const { register, formState: { errors } } = useFormContext();
 
-  const alert = !errors?.[fieldName] ? null : <ErrorMessage
+  const err = getObjectProp(errors, fieldName)
+
+  const alert = !err ? null : <ErrorMessage
       as="div"
       name={fieldName}
       errors={errors}
@@ -21,9 +24,7 @@ const Textarea = ({ fieldName, label, placeholder, rows, optional = '', disabled
     />
 
     const textareaClassName =
-      !errors?.[fieldName] ?
-        "textarea w-full" :
-        "textarea w-full textarea-error";
+      !err ? "textarea w-full" : "textarea w-full textarea-error";
 
   return (
     <div>
