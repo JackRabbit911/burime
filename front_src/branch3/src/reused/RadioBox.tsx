@@ -3,10 +3,10 @@ import { useFormContext } from "react-hook-form";
 type Props = {
   label: string;
   value: number;
-  fieldName?: string;
+  fieldName: string;
 }
 
-const RadioBox = ({ label, value, fieldName = 'branchRole' }: Props) => {
+const RadioBox = ({ label, value, fieldName }: Props) => {
   const { register, getValues } = useFormContext()
 
   const checked = getValues(fieldName) === value
