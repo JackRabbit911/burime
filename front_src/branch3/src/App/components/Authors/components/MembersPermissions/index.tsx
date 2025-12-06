@@ -14,7 +14,7 @@ type Props = {
 const MembersPermissions = ({ authorId }: Props) => {
   const onClose = useUnit(memberIdResetted)
   const { getValues } = useFormContext()
-  const members = getValues('members')
+  const members = getValues('branch.members')
   const currentAuthor = getCurrentMember(members, authorId)
 
   return (
