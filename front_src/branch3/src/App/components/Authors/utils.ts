@@ -15,7 +15,7 @@ export const addNewMember = (
     role: number = 1,
     status: number = 110
 ) => {
-   const newMember = {
+    const newMember = {
         id: author.id,
         role: role,
         status: status,
@@ -25,7 +25,7 @@ export const addNewMember = (
     return [...members, newMember]
 }
 
-export const  getCurrentMember = (members: Member[], id: number): Member | null => {
+export const getCurrentMember = (members: Member[], id: number): Member | null => {
     if (members.length === 0) {
         return null
     }
@@ -56,7 +56,7 @@ export const changeMaster = (members: Member[], ownAuthors: OwnAuthors, masterId
         }
     })
 
-    return members.map((member) => {
+    const result = members.map((member) => {
         if (ownAuthorsIds.includes(member.id)) {
             member.id = Number(masterId)
             member.alias = masterAlias
@@ -64,4 +64,15 @@ export const changeMaster = (members: Member[], ownAuthors: OwnAuthors, masterId
 
         return member
     })
+
+    if (members.length === 0) {
+        result.push({
+            id: masterId,
+            role: 255,
+            status: 200,
+            alias: masterAlias,
+        })
+    }
+
+    return result;
 }
