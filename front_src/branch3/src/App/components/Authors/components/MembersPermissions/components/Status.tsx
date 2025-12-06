@@ -19,7 +19,7 @@ const Status = ({ member }: Props) => {
 
   const enable =  new buttonEnabled(permissions, statusObj, member)
 
-  const members = getValues('members')
+  const members = getValues('branch.members')
   const status = getStatusString(statusObj, member?.status || 0)
 
   const addPermission = (permission: number) => () => {
@@ -31,7 +31,7 @@ const Status = ({ member }: Props) => {
       return value
     })
 
-    setValue('members', newMembers)
+    setValue('branch.members', newMembers)
   }
 
   const setStatus = (status: number) => () => {
@@ -43,12 +43,12 @@ const Status = ({ member }: Props) => {
       return value
     })
 
-    setValue('members', newMembers)
+    setValue('branch.members', newMembers)
   }
 
   const deleteMember = (author: Member | null) => () => {
     if (author) {
-      setValue('members', members.filter((item: Member) => item.id !== author.id))
+      setValue('branch.members', members.filter((item: Member) => item.id !== author.id))
       memberIdResetted()
     }
   }
