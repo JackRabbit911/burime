@@ -14,12 +14,13 @@ type Props = {
 const Members = ({ ownAuthors }: Props) => {
   const { setValue, watch } = useFormContext()
   const masterId = Number(watch('masterId'))
-  const members = watch('members')
+  const members = watch('branch.members')
   const authors = getSimpleMembers(members, ownAuthors)
   const masterAlias = getMasterAlias(ownAuthors, masterId)
 
   useEffect(() => {
-    setValue('members', changeMaster(members, ownAuthors, masterId))
+    const newMembers = changeMaster(members, ownAuthors, masterId)
+    setValue('branch.members', newMembers)
   }, [masterId])
 
   return (
