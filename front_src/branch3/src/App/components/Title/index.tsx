@@ -1,26 +1,28 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { t } from "i18n/utils";
 import { useFormContext } from "react-hook-form";
+import { getObjectProp } from "utils";
 
 const label = "Title"
 const optional = "Up to % words"
-const fieldName = "branchTitle"
+const fieldName = "branch.title"
 const placeholder = "Название произведения"
 
 const Title = () => {
   const { register, formState: { errors } } = useFormContext();
+  const err = getObjectProp(errors, fieldName)
 
   const inputClassName =
-    !errors?.[fieldName] ?
-      "input w-full" :
-      "input w-full input-error";
+    err ?
+      "input w-full input-error" :
+      "input w-full" ;
 
-  const alert = !errors?.[fieldName] ? null : <ErrorMessage
+  const alert = err ? <ErrorMessage
     as="div"
     name={fieldName}
     errors={errors}
     className="fieldset-label text-error"
-  />
+  /> : null
 
   return (
     <fieldset className="fieldset">

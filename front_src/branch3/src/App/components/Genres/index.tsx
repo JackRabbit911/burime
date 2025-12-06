@@ -2,6 +2,7 @@ import { useFormContext } from "react-hook-form";
 import SameWeightGenres from "./components/SameWeightGenres";
 import { t } from "i18n/utils";
 import type { Genre } from "schema/input";
+import { getObjectProp } from "utils";
 
 type Props = {
   genres: Genre[];
@@ -9,9 +10,10 @@ type Props = {
   fieldName?: string;
 }
 
-const Genres = ({ genres, checked, fieldName = 'genres' }: Props) => {
+const Genres = ({ genres, checked, fieldName = 'branch.genres' }: Props) => {
   const { getValues, formState: { errors } } = useFormContext();
-
+  const err = getObjectProp(errors, fieldName)
+  
   checked = getValues(fieldName) || checked
 
   return (
@@ -29,7 +31,7 @@ const Genres = ({ genres, checked, fieldName = 'genres' }: Props) => {
         </div>
       ))}
       <div className="fieldset-label text-error">
-        {errors[fieldName]?.message as string}
+        {err?.message as string}
       </div>
     </fieldset>
   )
