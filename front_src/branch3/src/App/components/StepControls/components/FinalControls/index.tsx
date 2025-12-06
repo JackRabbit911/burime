@@ -49,14 +49,14 @@ const FinalControls = () => {
         </button>
         <button
           className="btn"
-          disabled={!valid.success || values.branchId}
+          disabled={!valid.success || values.branch.id}
           onClick={onDraft}
         >
           Draft
         </button>
         <button
           className="btn btn-primary dark:btn-info"
-          disabled={!valid.success || !isReady(values)}
+          disabled={!valid.success || !isReady(values.branch)}
           onClick={onPublish}
         >
           Publish
