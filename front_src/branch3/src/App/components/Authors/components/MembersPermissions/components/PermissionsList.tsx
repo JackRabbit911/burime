@@ -14,7 +14,7 @@ const PermissionsList = ({ member }: Props) => {
   const permissions = useUnit($permissions)
   const { setValue, getValues } = useFormContext()
 
-  const members = getValues('members')
+  const members = getValues('branch.members')
   const checked = (value: number): boolean => isPermission(member?.role || 0, value)
 
   const handleCheck = (val: number, id: number, isAdd: boolean) => {
@@ -26,7 +26,7 @@ const PermissionsList = ({ member }: Props) => {
       return value
     })
 
-    setValue('members', newAuthors)
+    setValue('branch.members', newAuthors)
   }
 
   return (
