@@ -10,16 +10,16 @@ const CoverControls = () => {
       </legend>
       <div className="flex flex-row justify-around">
         <ColorPicker
-          fieldName="bg_color"
+          fieldName="branch.info.bg_color"
           label="Background"
         />
         <ColorPicker
-          fieldName="text_color"
+          fieldName="branch.info.text_color"
           label="Text"
         />
       </div>
       <Range
-        fieldName="text_size"
+        fieldName="branch.info.text_size"
         label="Font size"
         min={5}
         max={50}
