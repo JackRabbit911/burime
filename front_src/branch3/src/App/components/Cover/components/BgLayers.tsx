@@ -12,15 +12,15 @@ const BgLayers = () => {
   const masterId = getValues('masterId')
 
   const authorName = getMasterAlias(ownAuthors, masterId)
-  const title = getValues('branchTitle')
-  const textSize = watch('text_size')
-  const textColor = watch('text_color')
-  const bgColor = watch('bg_color')
+  const title = watch('branch.title')
+  const textSize = watch('branch.info.text_size')
+  const textColor = watch('branch.info.text_color')
+  const bgColor = watch('branch.info.bg_color')
   const bgImg = errors.bgImg ? null : watch('bgImg')
   const cover = errors.cover ? null : watch('cover')
   const bgUrl = fileToUrl(bgImg)
   const coverUrl = fileToUrl(cover)
-  const branchGenres = getValues('genres')
+  const branchGenres = getValues('branch.genres')
   const totalGenres = bootstrap?.genres || []
   const genreStr = getGenreString(totalGenres, branchGenres)
 
