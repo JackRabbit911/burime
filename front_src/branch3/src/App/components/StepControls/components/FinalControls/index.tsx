@@ -56,7 +56,7 @@ const FinalControls = () => {
         </button>
         <button
           className="btn btn-primary dark:btn-info"
-          disabled={!valid.success || !isReady(values.branch)}
+          disabled={!valid.success || !isReady(values)}
           onClick={onPublish}
         >
           Publish
