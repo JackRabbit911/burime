@@ -16,7 +16,7 @@ const GenreCheckBox = ({ label = '', value = 0, checked= []}: Props) => {
         className="checkbox checkbox-sm"
         value={value}
         defaultChecked={checked.includes(value)}
-        {...register('branch.genres')}
+        {...register('branch_genres')}
       />
       {label}
     </label>

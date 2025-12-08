@@ -10,7 +10,7 @@ type Props = {
   fieldName?: string;
 }
 
-const Genres = ({ genres, checked, fieldName = 'branch.genres' }: Props) => {
+const Genres = ({ genres, checked, fieldName = 'branch_genres' }: Props) => {
   const { getValues, formState: { errors } } = useFormContext();
   const err = getObjectProp(errors, fieldName)
   
