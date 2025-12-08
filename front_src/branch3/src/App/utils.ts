@@ -9,13 +9,14 @@ const readyCover = (values: FieldValues): boolean => (
 )
 
 export const readyProgress = (values: FieldValues) => {
-    const t = values.title ? 40 : 0
-    const g = values.genres.length > 0 ? 30 : 0
-    const d = values.info.description ? 15 : 0
+    const t = values.title ? 35 : 0
+    const g = values.genres.length > 0 ? 20 : 0
+    const m = values.members.length > 0 ? 20 : 0
+    const d = values.info.description ? 10 : 0
     const r = values.info.rules ? 10 : 0
     const c = readyCover(values) ? 5 : 0 
 
-    return t + g + d + r + c
+    return t + g + m + d + r + c
 }
 
 export const getAlerts = (values: FieldValues): string[] => {
@@ -27,6 +28,10 @@ export const getAlerts = (values: FieldValues): string[] => {
 
     if (values.genres.length === 0) {
         result.push('You need to choose at least one genre')
+    }
+
+    if (values.members.length === 0) {
+        result.push('You need to choose at least team leader')
     }
 
     if (!values.info.description) {
@@ -45,7 +50,7 @@ export const getAlerts = (values: FieldValues): string[] => {
 }
 
 export const isReady = (values: FieldValues): boolean => (
-    values.title && values.genres.length > 0
+    values.title && values.genres.length > 0 && values.members.length > 0
 )
 
 export const getMasterAlias = (ownAuthors: OwnAuthors, masterId: number) => (
