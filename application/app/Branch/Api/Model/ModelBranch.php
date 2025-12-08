@@ -20,8 +20,6 @@ class ModelBranch extends MysqlModel
         }
 
         $branch['info'] = json_decode($branch['info']);
-        $branch['authors'] = $this->getBranchAuthors($id);
-        $branch['genres'] = $this->getBranchGenres($id);
 
         return $branch;
     }

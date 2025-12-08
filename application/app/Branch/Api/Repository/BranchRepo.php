@@ -27,6 +27,11 @@ class BranchRepo
         return is_null($params) ? null : new BranchDTO($params);
     }
 
+    public function getBranchGenres(?int $branch_id)
+    {
+        return $branch_id ? $this->modelBranch->getBranchGenres($branch_id) : [];
+    }
+
     public function getBranchAuthors(?int $branch_id)
     {
         return $branch_id ? $this->modelBranch->getBranchAuthors($branch_id) : [];
