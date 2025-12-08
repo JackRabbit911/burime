@@ -28,7 +28,7 @@ const Form = ({ bootstrap }: Props) => {
   const step = useUnit($step)
   const memberId = useUnit($memberId)
   const translate = useUnit($translate)
-  const branchGenres = bootstrap?.branch.genres as number[];
+  const branchGenres = bootstrap?.branch_genres as number[];
   
   const methods = useForm({
     resolver: zodResolver(formSchema),
@@ -45,7 +45,7 @@ const Form = ({ bootstrap }: Props) => {
       <Wrapper title={t("Laboratorium")}>
         <Title />
         <Steps />
-        {step === 1 ? <Genres genres={bootstrap?.genres || []} checked={branchGenres} /> : null}
+        {step === 1 ? <Genres genres={bootstrap?.total_genres || []} checked={branchGenres} /> : null}
         {step === 2 ? <Rules /> : null}
         {step === 3 ? <Authors bootstrap={bootstrap} /> : null}
         {step === 4 ? <Cover /> : null}

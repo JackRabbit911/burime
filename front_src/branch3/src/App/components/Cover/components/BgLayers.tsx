@@ -20,8 +20,8 @@ const BgLayers = () => {
   const cover = errors.cover ? null : watch('cover')
   const bgUrl = fileToUrl(bgImg)
   const coverUrl = fileToUrl(cover)
-  const branchGenres = getValues('branch.genres')
-  const totalGenres = bootstrap?.genres || []
+  const branchGenres = getValues('branch_genres')
+  const totalGenres = bootstrap?.total_genres || []
   const genreStr = getGenreString(totalGenres, branchGenres)
 
   return (
