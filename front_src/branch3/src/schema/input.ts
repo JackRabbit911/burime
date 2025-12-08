@@ -26,13 +26,13 @@ const branch = z.strictObject({
     role: z.number().nonnegative(),
     age_limit: z.number().nonnegative(),
     info: info,
-    genres: z.array(z.number().positive()),
-    members: z.array(member),
 })
 
 export const bootstrapSch = z.object({
-    genres: z.array(genreSch),
+    total_genres: z.array(genreSch),
+    branch_genres: z.array(z.number().positive()),
     branch: branch,
+    members: z.array(member),
     posts: posts,
     files: filesBase64,
     ownAuthors: ownAuthors,

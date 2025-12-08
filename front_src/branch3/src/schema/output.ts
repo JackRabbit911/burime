@@ -48,12 +48,12 @@ const branch = z.object({
   role: z.coerce.number().int().nonnegative(),
   age_limit: z.coerce.number().int().nonnegative().max(21),
   info: info,
-  genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
-  members: z.array(member),
 })
 
 export const formSchema = z.object({
   branch: branch,
+  branch_genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
+  members: z.array(member),
   posts: posts,
   masterId: z.coerce.number().positive(),
   bgImg: imageFile,

@@ -4,16 +4,19 @@ import { base64ToFile } from "schema/files";
 import type { Bootstrap } from "schema/input";
 
 export const getDefaults = (bootstrap: Bootstrap) => {
-    const masterId = getMasterId(bootstrap.branch.members, bootstrap.ownAuthors)
-    
+    const masterId = getMasterId(bootstrap.members, bootstrap.ownAuthors)
+
     return {
-    branch: bootstrap.branch,
-    posts: bootstrap.posts,
-    masterId: masterId,
-    cover: base64ToFile(bootstrap.files.cover, 'cover'),
-    bgImg: base64ToFile(bootstrap.files.bg_img, 'background'),
-    authorsPayload: setAuthorsPayload(),
-}}
+        branch: bootstrap.branch,
+        branch_genres: bootstrap.branch_genres,
+        members: bootstrap.members,
+        posts: bootstrap.posts,
+        masterId: masterId,
+        cover: base64ToFile(bootstrap.files.cover, 'cover'),
+        bgImg: base64ToFile(bootstrap.files.bg_img, 'background'),
+        authorsPayload: setAuthorsPayload(),
+    }
+}
 
 export function setAuthorsPayload(limit = perPages[0]): AuthorsPayload {
     return {
