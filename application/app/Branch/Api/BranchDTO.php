@@ -26,8 +26,6 @@ class BranchDTO
         $this->title = $params['title'] ?? '';
         $this->role = $params['role'] ?? 0;
         $this->age_limit = $params['age_limit'] ?? 0;
-        $this->genres = $params['genres'] ?? [];
-        $this->members = $params['authors'] ?? [];
         
         $rules = new stdClass();
 
