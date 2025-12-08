@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form"
 
 const Indicator = () => {
   const { watch } = useFormContext()
-  const values = watch('branch')
+  const values = watch()
   const alerts = getAlerts(values)
   const progress = readyProgress(values)
   const style: React.CSSProperties & { '--value': string } = {
