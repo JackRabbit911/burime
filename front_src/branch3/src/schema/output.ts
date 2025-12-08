@@ -18,6 +18,7 @@ const intro = (max: number) => z.string()
 const post = z.object({
     id: z.number().nullable(),
     body: intro(200),
+    author_id: z.number().nullable(),
 })
 
 export const posts = z.object({
