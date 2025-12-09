@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { authorsPayload, member } from "./authors";
+import { authorsPayload, member, slimMember } from "./authors";
 import { imageFile } from "./files";
 
 export const branchTitle = z.string()
@@ -18,7 +18,7 @@ const intro = (max: number) => z.string()
 const post = z.object({
     id: z.number().nullable(),
     body: intro(200),
-    author_id: z.number().nullable(),
+    author_id: z.coerce.number().nullable(),
 })
 
 export const posts = z.object({
@@ -65,6 +65,8 @@ export const formSchema = z.object({
 export const finalSchema = formSchema.omit({
   masterId: true,
   authorsPayload: true,
+}).extend({
+  members: z.array(slimMember)
 })
 
 export type FormData = z.infer<typeof finalSchema>

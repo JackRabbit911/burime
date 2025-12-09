@@ -7,6 +7,12 @@ export const member = z.object({
     alias: z.string(),
 })
 
+export const slimMember = member.transform((input) => ({
+    author_id: input.id,
+    role: input.role,
+    status: input.status,
+}))
+
 const authorsFilterSearch = z.string()
     .trim()
     .regex(/^[^<>]*$/, 'Invalid input!')
