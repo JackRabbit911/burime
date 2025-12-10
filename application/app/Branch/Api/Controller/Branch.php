@@ -10,12 +10,13 @@ use App\Branch\Api\Middleware\AuthGuard;
 use App\Branch\Api\Middleware\AuthorsSearchFilterValidation;
 use App\Branch\Api\Middleware\BranchValidation;
 use App\Branch\Api\Repository\BranchSaveRepo;
+use App\Branch\Api\Repository\DraftSaveRepo;
 use Auth\Middleware\OAuthMiddleware;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
 use Az\Route\Route;
+use Common\Enum\MemberRole;
 use Sys\Middleware\PreparePostData;
-use HttpSoft\Response\JsonResponse;
 
 #[OAuthMiddleware]
 #[AuthGuard]
@@ -23,17 +24,6 @@ use HttpSoft\Response\JsonResponse;
 class Branch extends ApiContractController
 {
     public function __construct(private BranchRepo $repo) {}
-
-
-    // public function bootstrap(?int $id = null)
-    // {
-    //     $data['branch'] = $this->request->getAttribute('branch') ?? $this->repo->findBranch($id);
-    //     $data['genres'] = $this->repo->getGenres();
-    //     $data['posts'] = $this->repo->getFirstLastPosts($id);
-    //     $data['files'] = $this->repo->getCoverFiles($id);
-
-    //     return $data;
-    // }
 
     public function getbootstrap(?int $id = null)
     {
@@ -44,7 +34,7 @@ class Branch extends ApiContractController
         $data['posts'] = $this->repo->getFirstLastPosts($id);
         $data['files'] = $this->repo->getBase64CoverFiles($id);
         $data['ownAuthors'] = $this->repo->getOwnAuthors($this->user->id);
-        $data['authorsFilters'] = $this->repo->getAuthorsFilters();
+        $data['authorsFilters'] = MemberRole::getFilters();
         $data['authorsPermissions'] = BranchAuthorPermissions::getArray();
         $data['authorsStatuses'] = BranchAuthorStatus::getArray();
 
@@ -76,9 +66,13 @@ class Branch extends ApiContractController
     #[Route(methods: 'post')]
     #[PreparePostData]
     #[BranchValidation]
-    public function save(BranchSaveRepo $repo)
+    public function save()
     {
-        $draft = $this->request->getQueryParams()['draft'] ?? 'false';
+        $draft = $this->request->getQueryParams()['draft'] ?? null;
+
+        $repo = $draft ? DraftSaveRepo::class : BranchSaveRepo::class;
+        $repo = container()->get($repo);
+
         $post = $this->request->getParsedBody();
         $files = $this->request->getUploadedFiles();
 
@@ -86,21 +80,4 @@ class Branch extends ApiContractController
 
         return ['id' => $branch_id];
     }
-
-    // public function authors()
-    // {
-    //     $query_params = $this->request->getQueryParams();
-
-    //     [
-    //         $authors_count,
-    //         $authors,
-    //         $own_authors,
-    //     ] = $this->repo->getAuthors($this->user->id, $query_params);
-
-    //     return [
-    //         'authors' => $authors,
-    //         'authorsCount' => $authors_count,
-    //         'ownAuthors' => $own_authors,
-    //     ];
-    // }
 }
