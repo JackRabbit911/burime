@@ -2,7 +2,7 @@ import * as z from "zod"
 import { authorsPayload, member, slimMember } from "./authors";
 import { imageFile } from "./files";
 
-export const branchTitle = z.string()
+const branchTitle = z.string()
   .trim()
   .min(1, { message: 'Required' })
   .regex(/^[^<>;]*$/, 'Invalid input!')
@@ -41,7 +41,7 @@ export const info = z.object({
   description: regString,
 })
 
-const branch = z.object({
+export const branch = z.object({
   id: z.number().int().positive().nullable(),
   parent_id: z.number().int().positive().nullable(),
   owner: z.number().int().positive().nullable(),
@@ -49,12 +49,12 @@ const branch = z.object({
   role: z.coerce.number().int().nonnegative(),
   age_limit: z.coerce.number().int().nonnegative().max(21),
   info: info,
-})
+}).required({title: true})
 
 export const formSchema = z.object({
   branch: branch,
   branch_genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
-  members: z.array(member),
+  members: z.array(member).min(1, { message: "Please select at least team leader." }),
   posts: posts,
   masterId: z.coerce.number().positive(),
   bgImg: imageFile,
@@ -62,11 +62,14 @@ export const formSchema = z.object({
   authorsPayload,
 });
 
-export const finalSchema = formSchema.omit({
+export const draftSchema = formSchema.omit({
   masterId: true,
   authorsPayload: true,
-}).extend({
+})
+
+export const finalSchema = draftSchema.extend({
   members: z.array(slimMember)
 })
 
 export type FormData = z.infer<typeof finalSchema>
+export type DraftData = z.infer<typeof draftSchema>
