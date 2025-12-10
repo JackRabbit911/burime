@@ -7,9 +7,9 @@ namespace App\Branch\Api\Repository;
 use App\Branch\Api\Model\ModelBranchSave;
 use Common\Enum\BranchStatus;
 
-class BranchSaveRepo
+class BranchSaveRepo extends SaveRepo
 {
-    private string $prefix = './img/branch/';
+    protected string $prefix = './img/branch/';
 
     public function __construct(private ModelBranchSave $model){}
 
@@ -46,54 +46,5 @@ class BranchSaveRepo
         $branch['status'] = BranchStatus::Ready->value;
 
         return (int) $this->model->saveBranch($branch);
-    }
-
-    private function saveCover(array $files, int $branch_id)
-    {
-        if (isset($files['bgImg'])) {
-            $this->saveUploadFile('background', $files['bgImg'], $branch_id);
-        } else {
-            $this->deleteFile('background', $branch_id);
-        }
-
-        if (isset($files['cover'])) {
-            $this->saveUploadFile('cover', $files['cover'], $branch_id);
-        } else {
-            $this->deleteFile('cover', $branch_id);
-        }
-            
-    }
-
-    private function saveUploadFile($filename, $file, $dir)
-    {
-        if ($file->getError() !== UPLOAD_ERR_OK) {
-            return false;
-        }
-
-        $dir = $this->prefix . $dir;
-
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-
-        if (!is_writable($dir)) {
-            chmod($dir, 0777);
-        }
-
-        $filename = $dir . '/' . $filename . $this->getExt($file);
-        $file->moveTo($filename);
-        chmod($filename, 0777);
-
-        return true;
-    }
-
-    private function deleteFile($pattern, $dir)
-    {
-        $pattern = $this->prefix . $dir . '/' . $pattern . '.*';
-        array_map('unlink', glob($pattern));
-    }
-
-    private function getExt($file) {
-        return '.' . str_replace('image/', '', $file->getClientMediaType());
     }
 }
