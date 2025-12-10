@@ -9,7 +9,6 @@ use App\Branch\Api\FirstLastDTO;
 use App\Branch\Api\Model\ModelAuthors;
 use App\Branch\Api\Model\ModelBranch;
 use App\Burime\Model\ModelPost;
-use Common\Enum\MemberRole;
 
 class BranchRepo
 {
@@ -77,11 +76,6 @@ class BranchRepo
         }, $genres);
     }
 
-    public function getAuthorsFilters()
-    {
-        return MemberRole::getFilters();
-    }
-
     public function getGenres()
     {
         return $this->modelBranch->getGenres();
@@ -97,38 +91,10 @@ class BranchRepo
         return new FirstLastDTO($params);
     }
 
-    public function getCoverFiles(?int $branch_id)
-    {
-        $data['cover'] = $this->fileEncode($branch_id, 'cover');
-        $data['bg_img'] = $this->fileEncode($branch_id, 'background');
-
-        return $data;
-    }
-
     public function getBase64Coverfiles(?int $branch_id)
     {
         $data['cover'] = $this->fileTypeEncode($branch_id, 'cover');
         $data['bg_img'] = $this->fileTypeEncode($branch_id, 'background');
-
-        return $data;
-    }
-
-    private function fileEncode(?int $branch_id, string $filename)
-    {
-        if (!$branch_id) {
-            return null;
-        }
-
-        $pattern = $this->prefix . $branch_id . '/' . $filename . '.{jp*g,png}';
-        $file = glob($pattern, GLOB_BRACE)[0] ?? null;
-
-        if (!$file) {
-            return null;
-        }
-
-        $data['filename'] = pathinfo($file, PATHINFO_BASENAME);
-        $data['mime'] = mime_content_type($file);
-        $data['base64'] = base64_encode(file_get_contents($file));
 
         return $data;
     }
