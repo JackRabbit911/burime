@@ -4,37 +4,45 @@ import { useFormContext } from "react-hook-form";
 import { modalOpened } from "reused/Modal/store";
 import { $step } from "store/step"
 import CancelDialog from "../CancelDialog";
-import { finalSchema } from "schema/output";
+import { draftSchema, finalSchema } from "schema/output";
 import FinalDialog from "App/components/Publish/components/FinalDialog";
+import { isObjectEmpty } from "utils";
 
 const FinalControls = () => {
   const step = useUnit($step)
-  const { watch } = useFormContext();
+  const { watch, formState: { errors } } = useFormContext();
 
   if (step < 5) {
     return null
   }
 
   const values = watch()
-  const valid = finalSchema.safeParse(values)
-
-  if (valid?.error) {
-      console.log(valid.error, values)
-  }
 
   const onCancel = () => {
     modalOpened(<CancelDialog />)
   }
-  
+
   const onPublish = () => {
+    const valid = finalSchema.safeParse(values)
+
+    if (valid?.error) {
+      console.log(valid.error, values)
+    }
+
     if (valid?.success && valid?.data) {
       modalOpened(<FinalDialog data={valid.data} />)
     }
   }
 
   const onDraft = () => {
+    const valid = draftSchema.safeParse(values)
+
+    if (valid?.error) {
+      console.log(valid.error, values)
+    }
+
     if (valid?.success && valid?.data) {
-      modalOpened(<FinalDialog data={valid.data} draft={true}/>)
+      modalOpened(<FinalDialog data={valid.data} draft={true} />)
     }
   }
 
@@ -43,20 +51,21 @@ const FinalControls = () => {
       <div className="flex flex-row justify-between gap-2">
         <button
           className="btn btn-error"
-        onClick={onCancel}
+          onClick={onCancel}
         >
           Cancel
         </button>
         <button
           className="btn"
-          disabled={!valid.success || values.branch.id}
+          disabled={!isObjectEmpty(errors) || values.branch.id || !Boolean(values.branch.title)}
           onClick={onDraft}
+
         >
           Draft
         </button>
         <button
           className="btn btn-primary dark:btn-info"
-          disabled={!valid.success || !isReady(values)}
+          disabled={!isObjectEmpty(errors) || !isReady(values)}
           onClick={onPublish}
         >
           Publish
