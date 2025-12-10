@@ -1,12 +1,12 @@
 import { useUnit } from "effector-react"
 import { t } from "i18n/utils"
 import { useEffect } from "react"
-import type { FormData } from "schema/output"
+import type { DraftData, FormData } from "schema/output"
 import { $finalResponse, draftClicked, published } from "store/publish"
 import DialogSuccess from "./components/DialogSuccess"
 
 type Props = {
-  data: FormData;
+  data: FormData | DraftData;
   draft?: boolean;
 }
 
@@ -14,10 +14,8 @@ const FinalDialog = ({ data, draft = false }: Props) => {
   const [publishEvent, draftEvent] = useUnit([published, draftClicked])
   const finalResponse = useUnit($finalResponse)
 
-  console.log(finalResponse)
-
   useEffect(() => {
-    draft ? draftEvent(data) : publishEvent(data)
+    draft ? draftEvent(data as DraftData) : publishEvent(data as FormData)
   }, [])
 
     return !finalResponse ? (

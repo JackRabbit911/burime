@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosResponse } from "axios";
 import { createEffect, createEvent, createStore, sample } from "effector";
 import { modalOpened } from "reused/Modal/store";
-import type { FormData } from "schema/output";
+import type { DraftData, FormData } from "schema/output";
 import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
 import { globalReset } from "./step";
@@ -14,7 +14,7 @@ type FinalResponse = {
 }
 
 export const published = createEvent<FormData>()
-export const draftClicked = createEvent<FormData>()
+export const draftClicked = createEvent<DraftData>()
 
 export const publishFx = createEffect
     <FormData, AxiosResponse<ApiResponse<FinalResponse>>, AxiosError>(
@@ -24,8 +24,8 @@ export const publishFx = createEffect
     )
 
 export const draftFx = createEffect
-    <FormData, AxiosResponse<ApiResponse<FinalResponse>>, AxiosError>(
-        (data: FormData) => (
+    <DraftData, AxiosResponse<ApiResponse<FinalResponse>>, AxiosError>(
+        (data: DraftData) => (
             ajax.postForm(uri, data, { params: { draft: true } })
         )
     )
