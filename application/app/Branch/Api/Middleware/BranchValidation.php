@@ -9,7 +9,7 @@ class BranchValidation extends ApiContractValidation
     protected function setRules($request)
     {
         $this->validation
-            ->rule('draft', 'boolean')
+            ->rule('draft', 'integer')
             ->rule('branch.id', 'integer')
             ->rule('branch.parent_id', 'integer')
             ->rule('branch.owner', 'integer')
