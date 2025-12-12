@@ -17,7 +17,7 @@ return [
     'post.confirm'  => ['/api/post/{action}/{post_id}', DeletePostApi::class],
     'api.auth'      => ['/api/auth/{action}', O2Auth::class],
     'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
-    'branch.create' => ['/api/branch/create/{action}/{id?}', Branch::class],
+    'branch.create' => ['/api/branch/create/{action}/{id?}/{draft?}', Branch::class],
     'branch.help'   => ['/api/branch/help/{step}', BranchHelp::class],
     'branch.save'   => ['/api/branch/save', BranchSave::class],
 ];
