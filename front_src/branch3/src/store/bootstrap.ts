@@ -10,26 +10,29 @@ import { globalReset } from "store/step";
 type AxiosApiResponse = AxiosResponse<ApiResponse<Bootstrap>>;
 
 const bootstrapUri = '/branch/create/getbootstrap';
-const firstSegsRegular = /\/create\/branch\/?/g;
-const idSch = z.preprocess(
-    (val) => (val === "" ? null : val), // Convert empty string to null
-    z.coerce.number().nullable() // Then coerce to number, allowing null
-);
+
+const idSch = z.coerce.number().positive().optional()
+const isDraftSch = z.literal("draft").optional()
 
 export const appStarted = createEvent()
 
 const getBranchIdFx = createEffect(() => {
     const pathname = window.location.pathname;
-    const id = pathname.replace(firstSegsRegular, '');
-    const success = idSch.safeParse(id).success;
+    const uriSegments = pathname.split('/').filter((v) => Boolean(v))
 
-    return { id, success }
+    const id = uriSegments[2]
+    const draft = uriSegments[3]
+
+    const success = idSch.safeParse(id).success && isDraftSch.safeParse(draft).success
+    const path = [id, draft].filter(Boolean).join('/')
+
+    return { path, success }
 })
 
 const getBootstrapFx = createEffect<string, AxiosApiResponse, AxiosError>(
-    (id: string) =>
+    (path: string) =>
         ajax.get<ApiResponse<Bootstrap>>(
-            [bootstrapUri, id].filter(Boolean).join('/'),
+            [bootstrapUri, path].filter(Boolean).join('/'),
         ),
 );
 
@@ -57,7 +60,7 @@ sample({
 sample({
     clock: getBranchIdFx.doneData,
     filter: ({ success }) => success,
-    fn: ({ id }) => id,
+    fn: ({ path }) => path,
     target: getBootstrapFx,
 })
 
