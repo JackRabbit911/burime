@@ -53,7 +53,7 @@ export const branch = z.object({
 
 export const formSchema = z.object({
   branch: branch,
-  branch_genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
+  branch_genres: z.array(z.coerce.number()),
   members: z.array(member).min(1, { message: "Please select at least team leader." }),
   posts: posts,
   masterId: z.coerce.number().positive(),
@@ -65,11 +65,14 @@ export const formSchema = z.object({
 export const draftSchema = formSchema.omit({
   masterId: true,
   authorsPayload: true,
+}).extend({
+  draft: z.number().positive().nullable().optional()
 })
 
 export const finalSchema = draftSchema.extend({
-  members: z.array(slimMember)
-})
+  members: z.array(slimMember),
+  branch_genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
+}).omit({draft: true})
 
 export type FormData = z.infer<typeof finalSchema>
 export type DraftData = z.infer<typeof draftSchema>
