@@ -26,7 +26,7 @@ export const publishFx = createEffect
 export const draftFx = createEffect
     <DraftData, AxiosResponse<ApiResponse<FinalResponse>>, AxiosError>(
         (data: DraftData) => (
-            ajax.postForm(uri, data, { params: { draft: true } })
+            ajax.postForm('/branch/create/savedraft', data)
         )
     )
 
