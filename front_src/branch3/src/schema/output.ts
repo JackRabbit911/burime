@@ -16,7 +16,7 @@ const intro = (max: number) => z.string()
   .refine((value) => value.trim().split(' ').length <= max, `Up to ${max} words!`)
 
 const post = z.object({
-    id: z.number().nullable(),
+    id: z.number().nullable().optional(),
     body: intro(200),
     author_id: z.coerce.number().nullable(),
 })
