@@ -5,15 +5,23 @@ declare(strict_types=1);
 namespace App\Branch\Api\Model;
 
 use Sys\Model\MysqlModel;
+use PDO;
 
-class ModelDraftSave extends MysqlModel
+class ModelDraft extends MysqlModel
 {
+    public function get(int $id)
+    {
+        return $this->qb->table('drafts')
+            ->setFetchMode(PDO::FETCH_NAMED)
+            ->find($id);
+    }
+
     public function save(array $data)
     {
         $id = $this->qb->table('drafts')
             ->onDuplicateKeyUpdate($data)
             ->insert($data);
-
-        return (int) $id ?? (int) $data['id'] ?? 0;
+       
+        return $id ?? (int) $data['id'];
     }
 }
