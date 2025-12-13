@@ -6,10 +6,9 @@ import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
 import { bootstrapSch, type Bootstrap } from "schema/input";
 import { globalReset } from "store/step";
+import { getBootsrapUri } from "constants";
 
 type AxiosApiResponse = AxiosResponse<ApiResponse<Bootstrap>>;
-
-const bootstrapUri = '/branch/create/getbootstrap';
 
 const idSch = z.coerce.number().positive().optional()
 const isDraftSch = z.literal("draft").optional()
@@ -32,7 +31,7 @@ const getBranchIdFx = createEffect(() => {
 const getBootstrapFx = createEffect<string, AxiosApiResponse, AxiosError>(
     (path: string) =>
         ajax.get<ApiResponse<Bootstrap>>(
-            [bootstrapUri, path].filter(Boolean).join('/'),
+            [getBootsrapUri, path].filter(Boolean).join('/'),
         ),
 );
 

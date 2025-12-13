@@ -6,8 +6,7 @@ import ajax from "services/ajax";
 import type { ApiResponse } from "services/ajax/types";
 import { globalReset } from "./step";
 import { $bootstrapStatus } from "./bootstrap";
-
-const uri = '/branch/save'
+import { saveBranchUri, saveDraftUri } from "constants";
 
 type FinalResponse = {
     [x: string]: string | number;
@@ -19,14 +18,14 @@ export const draftClicked = createEvent<DraftData>()
 export const publishFx = createEffect
     <FormData, AxiosResponse<ApiResponse<FinalResponse>>, AxiosError>(
         (data: FormData) => (
-            ajax.postForm(uri, data)
+            ajax.postForm(saveBranchUri, data)
         )
     )
 
 export const draftFx = createEffect
     <DraftData, AxiosResponse<ApiResponse<FinalResponse>>, AxiosError>(
         (data: DraftData) => (
-            ajax.postForm('/branch/save/draft', data)
+            ajax.postForm(saveDraftUri, data)
         )
     )
 

@@ -5,6 +5,7 @@ import type { ApiResponse } from "services/ajax/types"
 import { $bootstrapStatus } from "store/bootstrap"
 import { globalReset } from "store/step"
 import type { AxiosError, AxiosResponse } from "axios"
+import { getAuthorsUri } from "constants"
 
 export const authorsPageChanged = createEvent<number>()
 export const authorsLimitChanged = createEvent<number>()
@@ -15,7 +16,7 @@ export const memberIdResetted = createEvent()
 export const getAuthorsFx = createEffect
 <AuthorsPayload, AxiosResponse<ApiResponse<Authors>>, AxiosError>(
     (payload: AuthorsPayload) => ajax.get(
-        '/branch/create/getauthors', {
+        getAuthorsUri, {
             params: payload,
         })
 )
