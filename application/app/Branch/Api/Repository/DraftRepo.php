@@ -6,17 +6,26 @@ namespace App\Branch\Api\Repository;
 
 use App\Branch\Api\BranchDTO;
 use App\Branch\Api\FirstLastDTO;
+use App\Branch\Api\Model\ModelAuthors;
+use App\Branch\Api\Model\ModelBranch;
 use App\Branch\Api\Model\ModelDraft;
 
 class DraftRepo extends ParentRepo
 {
     protected string $prefix = STORAGE . 'uploads/draft/';
 
-    public function __construct(private ModelDraft $model) {}
-
-    public function getBootstrap(int $id)
+    public function __construct(
+        protected ModelBranch $modelBranch,
+        protected ModelAuthors $modelAuthors,
+        private ModelDraft $model
+    )
     {
-        $params = $this->model->get($id);
+        parent::__construct($modelBranch, $modelAuthors);
+    }
+
+    public function get(int|string $id)
+    {
+        $params = $this->model->get((int) $id);
 
         if (!$params) {
             return null;
@@ -26,7 +35,7 @@ class DraftRepo extends ParentRepo
         $data['branch_genres'] = json_decode($params['genres'], true);
         $data['members'] = json_decode($params['members']);
         $data['posts'] = new FirstLastDTO((array) json_decode($params['posts']));
-        $data['draft'] = $id;
+        $data['draft'] = (int) $id;
 
         return $data;
     }

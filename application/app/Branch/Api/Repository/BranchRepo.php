@@ -6,24 +6,32 @@ namespace App\Branch\Api\Repository;
 
 use App\Branch\Api\BranchDTO;
 use App\Branch\Api\FirstLastDTO;
-use App\Branch\Api\Model\ModelAuthors;
-use App\Branch\Api\Model\ModelBranch;
 use App\Burime\Model\ModelPost;
 
 class BranchRepo extends ParentRepo
 {
     protected string $prefix = './img/branch/';
 
-    public function __construct(
-        private ModelBranch $modelBranch,
-        private ModelAuthors $modelAuthors
-    ) {}
+    public function get(int|string|null $id)
+    {
+        $data['branch'] = $this->findBranch((int) $id);
+
+        if (!$data['branch']) {
+            return null;
+        }
+
+        $data['branch_genres'] = $this->getBranchGenres((int) $id);
+        $data['members'] = $this->getBranchAuthors((int) $id);
+        $data['posts'] = $this->getFirstLastPosts((int) $id);
+
+        return $data;
+    }
 
     public function findBranch(?int $branch_id)
     {
         $params = $branch_id ? $this->modelBranch->find($branch_id) : [];
 
-        return is_null($params) ? null : new BranchDTO($params);
+        return !is_null($params) ? new BranchDTO($params) : null;
     }
 
     public function getBranchGenres(?int $branch_id)
@@ -34,46 +42,6 @@ class BranchRepo extends ParentRepo
     public function getBranchAuthors(?int $branch_id)
     {
         return $branch_id ? $this->modelBranch->getBranchAuthors($branch_id) : [];
-    }
-
-    public function getAuthors(int $user_id, array $query_params = [])
-    {
-        $own_authors = $this->modelAuthors->getByUser($user_id);
-        $except = array_map(fn($author) => $author->id, $own_authors);
-
-        $filter = $query_params['filter'] ?? null;
-        $search = $query_params['search'] ?? null;
-        $page = $query_params['page'] ?? 1;
-        $limit = $query_params['limit'] ?? 25;
-        $offset = ((int) $page - 1) * (int) $limit;
-
-        $authors = $this->modelAuthors->getByFilter(
-            (int) $limit,
-            $offset,
-            $filter,
-            $search,
-            $except
-        );
-
-        return $authors;
-    }
-
-    public function getOwnAuthors($user_id)
-    {
-        return $this->modelAuthors->getByUser($user_id);
-    }
-
-    public function getTotalGenres()
-    {
-        $genres = $this->modelBranch->getTotalGenres();
-
-        return array_map(function ($v) {
-            $array = json_decode($v);
-            usort($array, function ($a, $b) {
-                return $a->id < $b->id ? -1 : 1;
-            });
-            return $array;
-        }, $genres);
     }
 
     public function getGenres()

@@ -4,10 +4,58 @@ declare(strict_types=1);
 
 namespace App\Branch\Api\Repository;
 
+use App\Branch\Api\Model\ModelAuthors;
+use App\Branch\Api\Model\ModelBranch;
+
 abstract class ParentRepo
 {
     protected string $prefix;
+
+    public function __construct(
+        protected ModelBranch $modelBranch,
+        protected ModelAuthors $modelAuthors
+    ) {}
+
+    public function getAuthors(int $user_id, array $query_params = [])
+    {
+        $own_authors = $this->modelAuthors->getByUser($user_id);
+        $except = array_map(fn($author) => $author->id, $own_authors);
+
+        $filter = $query_params['filter'] ?? null;
+        $search = $query_params['search'] ?? null;
+        $page = $query_params['page'] ?? 1;
+        $limit = $query_params['limit'] ?? 25;
+        $offset = ((int) $page - 1) * (int) $limit;
+
+        $authors = $this->modelAuthors->getByFilter(
+            (int) $limit,
+            $offset,
+            $filter,
+            $search,
+            $except
+        );
+
+        return $authors;
+    }
     
+    public function getOwnAuthors($user_id)
+    {
+        return $this->modelAuthors->getByUser($user_id);
+    }
+
+    public function getTotalGenres()
+    {
+        $genres = $this->modelBranch->getTotalGenres();
+
+        return array_map(function ($v) {
+            $array = json_decode($v);
+            usort($array, function ($a, $b) {
+                return $a->id < $b->id ? -1 : 1;
+            });
+            return $array;
+        }, $genres);
+    }
+
     public function getBase64Coverfiles(?int $branch_id)
     {
         $data['cover'] = $this->fileTypeEncode($branch_id, 'cover');
