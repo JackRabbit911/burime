@@ -5,7 +5,7 @@ use App\Author\Controller\Author;
 use App\Author\Controller\Controls;
 use App\Author\Controller\Form;
 use App\Author\Controller\NoAuthor;
-use App\Branch\Controller\Create;
+use App\Branch\Controller\Branch;
 // use App\Branch\Controller\CreateSave;
 // use App\Branch\Controller\Edit;
 // use App\Branch\Controller\EditSave;
@@ -45,7 +45,7 @@ return [
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
 
-    'my.branch'     => ['/my/branch/{id?}', Create::class],
+    'my.branch'     => ['/my/branch/{id?}', Branch::class],
 
     // 'edit'          => ['/edit/{action}/{id}', Edit::class],
     // 'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],
