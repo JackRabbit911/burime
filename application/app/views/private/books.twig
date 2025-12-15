@@ -3,7 +3,7 @@
     <h4 class="mt-2 text-lg font-medium leading-9 tracking-tight">
         My books and branches
     </h4>
-    <a href="{{ path('create', {'action': 'genres'}) }}" class="mt-3.5 link link-primary">{{ __('Create a new burime') }}</a>
+    <a href="{{ path('my.branch') }}" class="mt-3.5 link link-primary">{{ __('Create a new burime') }}</a>
 </div>
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 h-auto">
     {% for book in my_books %}

@@ -27,7 +27,7 @@
 </a>
 {% if perms is defined %}
     {% if perms.edit %}
-    <a href="{{ path('edit', {'action': 'genres', 'id': branch.id}) }}" class="btn w-full mt-2">
+    <a href="{{ path('my.branch', {'id': branch.id}) }}" class="btn w-full mt-2">
         {{ __('Edit') }}
     </a>
     {% endif %}
