@@ -72,7 +72,7 @@ export const draftSchema = formSchema.omit({
 export const finalSchema = draftSchema.extend({
   members: z.array(slimMember),
   branch_genres: z.array(z.coerce.number()).min(1, { message: "Please select at least one option." }),
-}).omit({draft: true})
+})
 
 export type FormData = z.infer<typeof finalSchema>
 export type DraftData = z.infer<typeof draftSchema>
