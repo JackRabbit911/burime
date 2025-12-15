@@ -24,4 +24,11 @@ class ModelDraft extends MysqlModel
        
         return $id ?? (int) $data['id'];
     }
+
+    public function delete(int $id)
+    {
+        return $this->qb->table('drafts')
+            ->where('id', '=', $id)
+            ->delete();
+    }
 }
