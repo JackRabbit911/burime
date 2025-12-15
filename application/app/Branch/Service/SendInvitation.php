@@ -22,7 +22,7 @@ class SendInvitation
         $data['from'] = $branch->master()->id;
 
         if (!$to) {
-            $recipients = $branch->authors->where('status', '==', BranchAuthorStatus::Invited->value);
+            $recipients = $branch->authors->where('status', '==', BranchAuthorStatus::invited->value);
             $to = $recipients->props()->all();
         }
         
