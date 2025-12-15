@@ -25,4 +25,37 @@ enum BranchAuthorPermissions: int
             array_column(self::cases(), 'value')
         );
     }
+
+    public static function getRoleString(int $role)
+    {
+        if ($role & (self::EDIT_STATUS->value | self::EDIT_BRANCH->value)) {
+            return 'master';
+        }
+
+        if ($role & self::MODERATE->value) {
+            return 'moderator';
+        }
+
+        if ($role & self::MANAGE->value) {
+            return 'manager';
+        }
+
+        if ($role & self::DIRECTOR->value) {
+            return 'director';
+        }
+
+        if ($role & self::DESIGN->value) {
+            return 'designer';
+        }
+
+        if ($role & self::EDIT_POST->value) {
+            return 'editor';
+        }
+
+        if ($role & self::WRITE->value) {
+            return 'writer';
+        }
+
+        return 'huy';
+    }
 }
