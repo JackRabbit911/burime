@@ -34,4 +34,10 @@ class DraftSaveRepo extends SaveRepo
 
         return $id;
     }
+
+    public function delete(int $id)
+    {
+        
+        $this->model->delete($id);
+    }
 }
