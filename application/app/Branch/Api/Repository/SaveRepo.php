@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Branch\Api\Repository;
 
+use Exception;
+
 abstract class SaveRepo
 {
     protected string $prefix;
@@ -49,8 +51,16 @@ abstract class SaveRepo
 
     protected function deleteFile($pattern, $dir)
     {
-        $pattern = $this->prefix . $dir . '/' . $pattern . '.*';
+        $dir = $this->prefix . $dir;
+        $pattern = $dir . '/' . $pattern . '.*';
         array_map('unlink', glob($pattern));
+
+        try {
+            rmdir($dir);
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     protected function getExt($file) {
