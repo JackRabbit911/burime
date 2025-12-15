@@ -1,18 +1,20 @@
+import { useFormContext } from "react-hook-form";
+
 type Props = {
+  fieldName: string;
   label: string;
-  value: number;
   minMaxStep: number[];
-  onChange: (value: number) => void;
 }
 
-const NumberInput = ({ label, value, minMaxStep, onChange }: Props) => {
-  const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value, 10)
+const NumberInput = ({ fieldName, label, minMaxStep }: Props) => {
+  const { register, formState: { errors } } = useFormContext();
 
-    if (!Number.isNaN(value)) {
-      onChange(value)
-    }
-  }
+  const inputClassName =
+    !errors?.[fieldName] ?
+      "input input-sm w-24" :
+      "input input-sm w-24 input-error";
+
+  // console.log(getValues(fieldName))
 
   return (
     <>
@@ -22,13 +24,12 @@ const NumberInput = ({ label, value, minMaxStep, onChange }: Props) => {
         </legend>
       </label>
       <input
-        className="input input-sm w-24"
+        className={inputClassName}
         type="number"
         min={minMaxStep[0]}
         max={minMaxStep[1]}
         step={minMaxStep[2]}
-        value={value}
-        onChange={onChangeHandle}
+        {...register(fieldName)}
       />
     </>
   )

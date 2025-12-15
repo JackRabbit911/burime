@@ -1,31 +1,44 @@
+import { ErrorMessage } from "@hookform/error-message";
+import { useFormContext } from "react-hook-form";
+import { getObjectProp } from "utils";
+
 type Props = {
+  fieldName: string;
   label: string;
-  value?: string;
   placeholder: string;
   rows: number;
   optional?: string;
   disabled?: boolean;
-  onChange: (value: string) => void;
 }
 
-const Textarea = ({ label, value, placeholder, rows, optional = '', disabled = false, onChange }: Props) => {
-  const onChangeHandle = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onChange(event.target.value)
-  }
+const Textarea = ({ fieldName, label, placeholder, rows, optional = '', disabled = false }: Props) => {
+  const { register, formState: { errors } } = useFormContext();
+
+  const err = getObjectProp(errors, fieldName)
+
+  const alert = !err ? null : <ErrorMessage
+      as="div"
+      name={fieldName}
+      errors={errors}
+      className="fieldset-label text-error"
+    />
+
+    const textareaClassName =
+      !err ? "textarea w-full" : "textarea w-full textarea-error";
 
   return (
     <div>
       <label className="fieldset-label flex justify-between">
         <legend className="fieldset-legend">{label}</legend>
+        {alert}
         <span className="label-text">{optional}</span>
       </label>
       <textarea
-        className="textarea w-full"
+        className={textareaClassName}
         placeholder={placeholder}
-        value={value}
         rows={rows}
         disabled={disabled}
-        onChange={onChangeHandle}
+        {...register(fieldName)}
       />
     </ div>
   )

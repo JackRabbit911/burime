@@ -1,21 +1,20 @@
-import { bgFileCancelled, bgFileChanged, coverFileCancelled, coverFileChanged } from "../store/cover";
+import { Controller, useFormContext } from "react-hook-form";
 
 type Props = {
+  fieldName: string;
   label: string;
   optional: string;
-  event: string;
-  value?: string;
 }
 
-const FileInput = ({ label, optional, event = 'background', value }: Props) => {
+const FileInput = ({ fieldName, label, optional }: Props) => {
+  const { control, watch, setValue, clearErrors, formState: { errors } } = useFormContext()
 
-  const fileChangeEvent = event === 'background' ? bgFileChanged : coverFileChanged
-  const fileCancelEvent = event === 'background' ? bgFileCancelled : coverFileCancelled
+  const file = watch(fieldName)
+  const fileName = file?.name || 'Файл не выбран'
 
-  const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement> | undefined) => {
-    if (event?.target.files && event.target.files[0]) {
-      fileChangeEvent(event.target.files[0])
-    }
+  const reset = (fieldName: string) => {
+    setValue(fieldName, null)
+    clearErrors(fieldName)
   }
 
   return (
@@ -27,21 +26,39 @@ const FileInput = ({ label, optional, event = 'background', value }: Props) => {
           </legend>
           <div className="label-text pt-2.5">{optional}</div>
         </div>
-        <input type="file"
-          style={{display: "none"}}
-          onChange={onChangeHandle}
+        <Controller
+          name={fieldName}
+          control={control}
+          render={({ field: { onChange, onBlur, name, ref } }) => (
+            <input
+              type="file"
+              style={{display: "none"}}
+              id={fieldName}
+              name={name}
+              onBlur={onBlur}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                onChange(file);
+              }}
+              ref={ref}
+            />
+          )}
         />
         <div className="join w-full border border-zinc-600 rounded-sm">
+        {/* <div className="join w-full border border-red-500 rounded-sm"> */}
           <div className="w-1/2 sm:w-1/3 bg-base-300 text-center flex flex-col justify-center">Выберите файл</div>
-          <div className="w-1/2 sm:w-2/3 text-center  flex flex-col justify-center">{value || 'Файл не выбран'}</div>
+          <div className="w-1/2 sm:w-2/3 text-center  flex flex-col justify-center">{fileName}</div>
           <button
-            className="btn basis-1/4 join-item border-base-100"
-            onClick={() => fileCancelEvent()}
+            className="btn basis-1/4 join-item"
+            onClick={() => reset(fieldName)}
           >
             Cansel
           </button >
         </div>
       </label>
+      <div className="fieldset-label text-error mt-1">
+        {errors[fieldName]?.message as string}
+      </div>
     </ div>
   )
 }

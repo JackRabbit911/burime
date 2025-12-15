@@ -1,11 +1,16 @@
+import { useFormContext } from "react-hook-form";
+
 type Props = {
   label: string;
   value: number;
-  checked: boolean;
-  onChange: (value: number) => void;
+  fieldName: string;
 }
 
-const RadioBox = ({label, value, checked, onChange}: Props) => {
+const RadioBox = ({ label, value, fieldName }: Props) => {
+  const { register, getValues } = useFormContext()
+
+  const checked = getValues(fieldName) === value
+
   return (
     <label className="fieldset-label cursor-pointer flex justify-between mb-4">
       <legend className="fieldset-legend me-2 pb-1 pt-0">
@@ -14,8 +19,9 @@ const RadioBox = ({label, value, checked, onChange}: Props) => {
       <input
         type="radio"
         className="radio"
-        checked={checked}
-        onChange={() => onChange(value)}
+        {...register(fieldName)}
+        defaultValue={value}
+        defaultChecked={checked}
       />
     </label>
   )

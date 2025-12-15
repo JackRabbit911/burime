@@ -1,20 +1,15 @@
+import { useFormContext } from "react-hook-form";
+
 type Props = {
+  fieldName: string;
   label: string;
   min: number;
   max: number;
   step: number;
-  value: number;
-  onChange: (value: number) => void;
 }
 
-function Range({ min, max, step, label, value, onChange }: Props) {
-    const onChangeHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value, 10)
-
-    if (!Number.isNaN(value)) {
-      onChange(value)
-    }
-  }
+function Range({ fieldName, label, min, max, step }: Props) {
+  const { register } = useFormContext()
 
   return (
     <div className="mt-2">
@@ -28,9 +23,8 @@ function Range({ min, max, step, label, value, onChange }: Props) {
         max={max}
         step={step}
         type="range"
-        className="range range-sm range-primary w-full"
-        value={value}
-        onChange={onChangeHandle}
+        className="range range-primary range-sm w-full"
+        {...register(fieldName)}
       />
     </div>
   );

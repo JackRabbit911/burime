@@ -1,19 +1,22 @@
+import { useFormContext } from "react-hook-form";
+
 type Props = {
+  fieldName: string;
   label: string;
-  value: number;
-  checked: boolean;
-  onChange: (value: number) => void;
 }
 
-const CheckBox = ({label, value, checked, onChange}: Props) => {
+const CheckBox = ({fieldName, label }: Props) => {
+  const { register, getValues } = useFormContext()
+  const checked = Boolean(getValues(fieldName))
+
   return (
     <label className="fieldset-label flex justify-between">
       <legend className="fieldset-legend me-0.5 pb-1 pt-0">{label}</legend>
       <input
         type="checkbox"
-        checked={checked}
         className="checkbox"
-        onChange={() => onChange(value)}
+        defaultChecked={checked}
+        {...register(fieldName)}
       />
     </label>
   )

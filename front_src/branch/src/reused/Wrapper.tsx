@@ -3,14 +3,15 @@ type Props = {
   children?: React.ReactNode;
 }
 
-const Wrapper: React.FC<Props> = ({ title, children }) => {
+const Wrapper = ({ title, children }: Props) => {
   return (
     <div className="flex flex-row justify-center">
       <div className="w-full md:w-2xl lg:w-4xl bg-base-100 p-4">
-        {title ?
+        {!title ? null : (
           <h1 className="text-2xl mt-2 mb-3">
             {title}
-          </h1> : null}
+          </h1>
+        )}
         {children}
       </div>
     </div>
