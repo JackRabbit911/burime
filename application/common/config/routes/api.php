@@ -1,10 +1,7 @@
 <?php declare(strict_types=1);
 
-// use Api\Controller\ApiTest;
-
 use Adm\Controller\Users;
 use App\Branch\Api\Controller\Branch;
-// use App\Branch\Api\Controller\BranchHelp;
 use App\Branch\Api\Controller\BranchSave;
 use App\Burime\Controller\DeletePostApi;
 use App\Rating\RatingApi;
@@ -19,5 +16,6 @@ return [
     'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
     'branch.help'   => ['/api/branch/help/{step}', [Branch::class, 'gethelp']],
     'branch.save'   => ['/api/branch/save/{action?}', BranchSave::class],
+    'branch.delete' => ['/api/branch/delete/{id}/{draft?}', [BranchSave::class, 'delete']],
     'branch.create' => ['/api/branch/create/{action}/{id?}/{draft?}', Branch::class],
 ];
