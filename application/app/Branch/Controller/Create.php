@@ -6,7 +6,7 @@ use App\Branch\Middleware\AuthorGuard;
 use Sys\Controller\WebController;
 
 #[AuthorGuard]
-class Create extends WebController
+class Branch extends WebController
 {
     public function __invoke($id = null)
     {
