@@ -7,6 +7,7 @@ import CancelDialog from "../CancelDialog";
 import { draftSchema, finalSchema } from "schema/output";
 import FinalDialog from "App/components/Publish/components/FinalDialog";
 import { isObjectEmpty } from "utils";
+import DeleteDialog from "./components/DeleteDialog";
 
 const FinalControls = () => {
   const step = useUnit($step)
@@ -17,6 +18,10 @@ const FinalControls = () => {
   }
 
   const values = watch()
+
+  const onDelete = () => {
+    modalOpened(<DeleteDialog id={values.draft} />)
+  }
 
   const onCancel = () => {
     modalOpened(<CancelDialog />)
@@ -49,6 +54,15 @@ const FinalControls = () => {
   return (
     <>
       <div className="flex flex-row justify-between gap-2">
+        {values.draft ? (
+          <button
+            className="btn btn-error"
+            onClick={onDelete}
+          >
+            Delete
+          </button>
+        ) : null}
+
         <button
           className="btn btn-error"
           onClick={onCancel}
