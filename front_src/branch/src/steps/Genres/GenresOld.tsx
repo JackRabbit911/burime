@@ -1,6 +1,6 @@
 import { useUnit } from "effector-react"
 import { $selectedGenres, genreToggled, $sameWeightGenres, $requiredFields } from "store"
-import CheckBox from "../reused/CheckBox"
+import CheckBox from "../../reused/CheckBox"
 
 const Genres = () => {
   const sameWeightGenres = useUnit($sameWeightGenres)

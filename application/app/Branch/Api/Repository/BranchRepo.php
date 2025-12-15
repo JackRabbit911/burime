@@ -6,53 +6,42 @@ namespace App\Branch\Api\Repository;
 
 use App\Branch\Api\BranchDTO;
 use App\Branch\Api\FirstLastDTO;
-use App\Branch\Api\Model\ModelAuthors;
-use App\Branch\Api\Model\ModelBranch;
 use App\Burime\Model\ModelPost;
 
-class BranchRepo
+class BranchRepo extends ParentRepo
 {
-    private string $prefix = './img/branch/';
+    protected string $prefix = './img/branch/';
 
-    public function __construct(
-        private ModelBranch $modelBranch,
-        private ModelAuthors $modelAuthors
-    ){}
+    public function get(int|string|null $id)
+    {
+        $data['branch'] = $this->findBranch((int) $id);
+
+        if (!$data['branch']) {
+            return null;
+        }
+
+        $data['branch_genres'] = $this->getBranchGenres((int) $id);
+        $data['members'] = $this->getBranchAuthors((int) $id);
+        $data['posts'] = $this->getFirstLastPosts((int) $id);
+
+        return $data;
+    }
 
     public function findBranch(?int $branch_id)
     {
         $params = $branch_id ? $this->modelBranch->find($branch_id) : [];
 
-        return is_null($params) ? null : new BranchDTO($params);
+        return !is_null($params) ? new BranchDTO($params) : null;
+    }
+
+    public function getBranchGenres(?int $branch_id)
+    {
+        return $branch_id ? $this->modelBranch->getBranchGenres($branch_id) : [];
     }
 
     public function getBranchAuthors(?int $branch_id)
     {
         return $branch_id ? $this->modelBranch->getBranchAuthors($branch_id) : [];
-    }
-
-    public function getAuthors(int $user_id, array $query_params = [])
-    {
-        $own_authors = $this->modelAuthors->getByUser($user_id);
-        $except = array_map(fn($author) => $author->id, $own_authors);
-
-        $filter = $query_params['filter'] ?? null;
-        $search = $query_params['search'] ?? null;
-        $page = $query_params['page'] ?? 1;
-        $limit = $query_params['limit'] ?? 25;
-        $offset = ((int) $page - 1) * (int) $limit;
-
-        $authors = $this->modelAuthors->getByFilter(
-            (int) $limit,
-            $offset,
-            $filter,
-            $search,
-            $except
-        );
-
-        $authors[] = $own_authors;
-
-        return $authors;
     }
 
     public function getGenres()
@@ -68,33 +57,5 @@ class BranchRepo
         ] : [];
 
         return new FirstLastDTO($params);
-    }
-
-    public function getCoverFiles(?int $branch_id)
-    {
-        $data['cover'] = $this->fileEncode($branch_id, 'cover');
-        $data['bg_img'] = $this->fileEncode($branch_id, 'background');
-
-        return $data;
-    }
-
-    private function fileEncode(?int $branch_id, string $filename)
-    {
-        if (!$branch_id) {
-            return null;
-        }
-        
-        $pattern = $this->prefix . $branch_id . '/' . $filename . '.{jpg,png}';
-        $file = glob($pattern, GLOB_BRACE)[0] ?? null;
-
-        if (!$file) {
-            return null;
-        }
-
-        $data['filename'] = pathinfo($file, PATHINFO_BASENAME);
-        $data['mime'] = mime_content_type($file);
-        $data['base64'] = base64_encode(file_get_contents($file));
-
-        return $data;
     }
 }

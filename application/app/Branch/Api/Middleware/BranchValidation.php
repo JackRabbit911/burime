@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace App\Branch\Api\Middleware;
 
-use Az\Validation\Middleware\ApiValidationMiddleware;
-use HttpSoft\Response\JsonResponse;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseInterface;
-
-class BranchValidation extends ApiValidationMiddleware
+class BranchValidation extends ApiContractValidation
 {
     protected function setRules($request)
     {
         $this->validation
+            ->rule('draft', 'integer')
             ->rule('branch.id', 'integer')
             ->rule('branch.parent_id', 'integer')
             ->rule('branch.owner', 'integer')
@@ -33,36 +28,17 @@ class BranchValidation extends ApiValidationMiddleware
             ->rule('branch.info.text_size', 'required|integer|inRange(5, 50)')
             ->rule('branch.info.bg_img', 'text_utf8')
             ->rule('branch.info.cover', 'text_utf8')
-            ->rule('branch.authors.id', 'integer')
-            ->rule('branch.authors.role', 'integer|inRange(0, 255)')
-            ->rule('branch.authors.status', 'integer|inRange(0, 255)')
-            ->rule('branch.authors.alias', 'text_utf8')
+            ->rule('branch.members.id', 'integer')
+            ->rule('branch.members.role', 'integer|inRange(0, 255)')
+            ->rule('branch.members.status', 'integer|inRange(0, 255)')
+            ->rule('branch.members.alias', 'text_utf8')
             ->rule('branch.genres', 'integer')
             ->rule('posts.first.id', 'integer')
             ->rule('posts.first.body', 'text_utf8')
             ->rule('posts.last.id', 'integer')
             ->rule('posts.last.body', 'text_utf8')
             ->rule('cover', 'ext(png, jpg, jpeg)|type(image)|size(2M)')
-            ->rule('bg_img', 'ext(png, jpg, jpeg)|type(image)|size(2M)')
+            ->rule('bgImg', 'ext(png, jpg, jpeg)|type(image)|size(2M)')
         ;
-    }
-
-    protected function getResponse(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler,
-        bool $check,
-    ): ResponseInterface
-    {
-        if ($check) {
-            return $handler->handle($request);
-        }
-
-        $validation_response = $this->validation->getResponse(true);
-        $response = [
-            'success' => false,
-            'error' => $validation_response,
-        ];
-
-        return new JsonResponse($response);
     }
 }

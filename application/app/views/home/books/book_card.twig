@@ -16,7 +16,7 @@
     ></div>
 
     {% if book.info.bg_img is defined and book.info.bg_img %}
-    {% set style_bg_img = 'style="background-image: url(/img/branch/' ~ book.id ~ '/background.jpg);"' %}
+    {% set style_bg_img = 'style="background-image: url(/img/branch/' ~ book.id ~ '/' ~ book.info.bg_img ~ ');"' %}
     <div class="absolute top-0 left-0 w-full h-full z-10 bg-cover bg-center"
         {{ style_bg_img|raw }}
     ></div>
@@ -38,7 +38,7 @@
 
     {% if book.info.cover is defined and book.info.cover %}
     <div class="absolute top-0 left-0 w-full h-full z-30">
-        <img src="{{ '/img/branch/' ~ book.id ~ '/cover.jpg' }}" alt="{{ book.title }}" />
+        <img src="{{ '/img/branch/' ~ book.id ~ '/' ~ book.info.cover }}" alt="{{ book.title }}" />
     </div>
     {% endif %}
 </div>

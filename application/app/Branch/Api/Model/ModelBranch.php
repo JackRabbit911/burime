@@ -20,8 +20,6 @@ class ModelBranch extends MysqlModel
         }
 
         $branch['info'] = json_decode($branch['info']);
-        $branch['authors'] = $this->getBranchAuthors($id);
-        $branch['genres'] = $this->getBranchGenres($id);
 
         return $branch;
     }
@@ -48,13 +46,24 @@ class ModelBranch extends MysqlModel
     {
         return $this->qb->table('genres')
             ->select('id', 'title', 'weight')
+            ->orderBy('weight')
+            ->get();
+    }
+
+    public function getTotalGenres()
+    {
+        return $this->qb->table('genres')
+            ->select($this->qb->raw("JSON_ARRAYAGG(JSON_OBJECT('id', id, 'title', title))"))
+            ->groupBy('weight')
+            ->orderBy('weight')
+            ->setFetchMode(PDO::FETCH_COLUMN)
             ->get();
     }
 
     public function findPostByWeight(int $branch_id, int $weight)
     {
         return $this->qb->table('branches_posts')
-            ->select('posts.id', 'posts.body')
+            ->select('posts.id', 'posts.body', 'posts.author_id')
             ->join('posts', 'posts.id', '=', 'post_id')
             ->where('branch_id', '=', $branch_id)
             ->find($weight, 'weight');

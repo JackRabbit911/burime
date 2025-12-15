@@ -16,6 +16,7 @@ class FirstLastDTO
         $default = new stdClass;
         $default->id = null;
         $default->body = '';
+        $default->author_id = null;
 
         $this->first = $params['first'] ?? $default;
         $this->last = $params['last'] ?? $default;
