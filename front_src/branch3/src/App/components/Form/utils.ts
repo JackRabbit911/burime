@@ -46,3 +46,9 @@ function getMasterId(members: Member[], ownAuthors: OwnAuthors) {
 function getMembers(members: Member[], ownAuthors: OwnAuthors, masterId: number) {
     return members.length === 0 ? changeMaster(members, ownAuthors, masterId) : members
 }
+
+export const getTitle = (branchId: number | null) => {
+    const suffix = branchId ? 'editing' : 'creation'
+    
+    return 'Branch ' + suffix
+}

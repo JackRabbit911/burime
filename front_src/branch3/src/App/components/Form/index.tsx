@@ -2,7 +2,7 @@ import { useUnit } from "effector-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { formSchema } from "schema/output";
-import { getDefaults } from "./utils";
+import { getDefaults, getTitle } from "./utils";
 import { $step } from "store/step";
 import type { Bootstrap } from "schema/input";
 import Wrapper from "reused/Wrapper";
@@ -42,7 +42,7 @@ const Form = ({ bootstrap }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <Wrapper title={t("Laboratorium")}>
+      <Wrapper title={t(getTitle(bootstrap.branch.id))}>
         <Title />
         <Steps />
         {step === 1 ? <Genres genres={bootstrap?.total_genres || []} checked={branchGenres} /> : null}
