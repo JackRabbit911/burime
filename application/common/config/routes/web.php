@@ -6,9 +6,9 @@ use App\Author\Controller\Controls;
 use App\Author\Controller\Form;
 use App\Author\Controller\NoAuthor;
 use App\Branch\Controller\Create;
-use App\Branch\Controller\CreateSave;
-use App\Branch\Controller\Edit;
-use App\Branch\Controller\EditSave;
+// use App\Branch\Controller\CreateSave;
+// use App\Branch\Controller\Edit;
+// use App\Branch\Controller\EditSave;
 use App\Burime\Controller\Burime;
 use App\Burime\Controller\Participation;
 use App\Burime\Controller\PostBranchSave;
@@ -44,10 +44,13 @@ return [
 
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
-    'edit'          => ['/edit/{action}/{id}', Edit::class],
-    'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],
-    'create'        => ['/create/{action}/{id?}/{draft?}', Create::class],
-    'create.save'   => ['/create/{action}', CreateSave::class],
+
+    'my.branch'     => ['/my/branch/{id?}', Create::class],
+
+    // 'edit'          => ['/edit/{action}/{id}', Edit::class],
+    // 'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],
+    // 'create'        => ['/create/{action}/{id?}/{draft?}', Create::class],
+    // 'create.save'   => ['/create/{action}', CreateSave::class],
 
     'message'       => ['/message/{action}/{id?}/{author_id?}', Message::class],
     'chat'          => ['/chat/{action?}/{room_id}/{author_id}', Chat::class],
