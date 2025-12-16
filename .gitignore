@@ -8,5 +8,6 @@ composer.phar
 /htdocs/test/*
 /sys/*
 /backup/*
+/front_src/*
 master.zip
 *.sql
