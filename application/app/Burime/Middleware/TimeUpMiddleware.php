@@ -23,8 +23,12 @@ class TimeUpMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $branch_id = $request->getAttribute(Route::class)->getParameters()['branch_id'];
+        $branch_id = $request->getAttribute(Route::class)->getParameters()['branch_id'] ?? 0;
         $branch = $this->repo->find($branch_id);
+
+        if (!$branch) {
+            return abort(404);
+        }
 
         if (is_string($branch->info)) {
             $branch->info = trim(str_replace(['\\'], '', $branch->info), '"');

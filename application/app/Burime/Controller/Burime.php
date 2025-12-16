@@ -18,6 +18,7 @@ use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchStatus;
 use Sys\Controller\WebController;
 use Az\Route\Route;
+use Common\Enum\BranchAuthorPermissions;
 
 #[TimeUpMiddleware]
 class Burime extends WebController
@@ -73,7 +74,7 @@ class Burime extends WebController
     public function authors()
     {
         $this->data['authors'] = $this->data['branch']->authors->map(function ($v) {
-            $v->role = AuthorRole::getRoleString($v->role);
+            $v->role = BranchAuthorPermissions::getRoleString($v->role);;
             $v->status = BranchAuthorStatus::getStatusString($v->status);
             return $v;
         });
