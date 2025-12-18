@@ -7,17 +7,13 @@ namespace App\Branch\Api\Controller;
 use App\Branch\Api\Middleware\OwnerBranchGuard;
 use App\Branch\Api\Middleware\DraftBranchGetter;
 use App\Branch\Api\Middleware\AuthorsSearchFilterValidation;
-use App\Branch\Api\Middleware\AuthGuard;
 use App\Branch\Api\Repository\BranchRepo;
 use App\Branch\Api\Repository\HelpRepo;
-use Auth\Middleware\OAuthMiddleware;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
-use Az\Route\Route;
 use Common\Enum\MemberRole;
+use Az\Route\Route;
 
-#[OAuthMiddleware]
-#[AuthGuard]
 class Branch extends ApiContractController
 {
     #[Route(tokens: ['id' => '\d*', 'draft' => 'draft|'])]
