@@ -26,6 +26,7 @@ use App\Author\Controller\Api as AuthorApi;
 use App\Burime\Controller\Api as BurimeApi;
 use App\Chat\Controller\Chat;
 use App\Home\Controller\AboutHowToCreate;
+use Common\Controller\Front;
 
 return [
     'home'          => ['/', Home::class],
@@ -45,6 +46,7 @@ return [
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
 
+    'my'            => ['/my', Front::class],
     'my.branch'     => ['/my/branch/{id?}', Branch::class],
 
     // 'edit'          => ['/edit/{action}/{id}', Edit::class],
