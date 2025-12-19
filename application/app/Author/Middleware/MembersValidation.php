@@ -12,6 +12,6 @@ final class MembersValidation extends ValidationMiddleware
     protected function setRules(ServerRequestInterface $request)
     {
         $this->validation->rule('members', 'required|integer')
-            ->rule('action', 'required|inArray(sendmsg, chat, subscribe, unsubscribe)');
+            ->rule('action', 'required|inList(sendmsg, chat, subscribe, unsubscribe)');
     }
 }
