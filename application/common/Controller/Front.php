@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Common\Controller;
 
 use Sys\Controller\WebController;
+use Auth\Middleware\AuthGuardRedirect;
 
+#[AuthGuardRedirect]
 class Front extends WebController
 {
     public function __invoke($id = null)
