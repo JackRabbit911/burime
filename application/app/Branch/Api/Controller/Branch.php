@@ -9,6 +9,8 @@ use App\Branch\Api\Middleware\DraftBranchGetter;
 use App\Branch\Api\Middleware\AuthorsSearchFilterValidation;
 use App\Branch\Api\Repository\BranchRepo;
 use App\Branch\Api\Repository\HelpRepo;
+use App\Api\Common\Controller\ApiContractController;
+
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\MemberRole;
