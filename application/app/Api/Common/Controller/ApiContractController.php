@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Branch\Api\Controller;
+namespace App\Api\Common\Controller;
 
 use HttpSoft\Response\JsonResponse;
 use Az\Route\Route;
