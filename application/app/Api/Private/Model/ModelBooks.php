@@ -25,7 +25,7 @@ class ModelBooks extends MysqlModel
 
         $params[] = BranchAuthorStatus::invited->value;
 
-        $sql = "SELECT branches.id, branches.title, branches.cover,
+        $sql = "SELECT branches.id, branches.title, branches.cover, ba.role AS myRole,
         GROUP_CONCAT(DISTINCT `master`.`alias` SEPARATOR ', ') AS alias,
         GROUP_CONCAT(DISTINCT `genres`.`title` ORDER BY genres.weight SEPARATOR ', ') AS genreStr
         FROM branches_authors AS ba
@@ -35,8 +35,8 @@ class ModelBooks extends MysqlModel
         JOIN branches_genres AS bg ON bg.branch_id = branches.id
         JOIN genres ON genres.id = bg.genre_id AND genres.weight > 0
         WHERE ba.author_id IN ($str) AND ba.status > ?
-        GROUP BY branches.id, ba.role
-        ORDER BY ba.role DESC, branches.created DESC";
+        GROUP BY branches.id, myRole
+        ORDER BY myRole DESC, branches.created DESC";
 
         return $this->qb->query($sql, $params)
             ->get();
