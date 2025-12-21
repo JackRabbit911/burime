@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Adm\Controller\Users;
+use App\Api\Private\Controller\MyController;
 use App\Branch\Api\Controller\Branch;
 use App\Branch\Api\Controller\BranchSave;
 use App\Burime\Controller\DeletePostApi;
@@ -18,4 +19,6 @@ return [
     'branch.save'   => ['/api/branch/save/{action?}', BranchSave::class],
     'branch.delete' => ['/api/branch/delete/{id}/{draft?}', [BranchSave::class, 'delete']],
     'branch.create' => ['/api/branch/create/{action}/{id?}/{draft?}', Branch::class],
+
+    'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 ];
