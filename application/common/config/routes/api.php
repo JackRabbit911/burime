@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Adm\Controller\Users;
+use App\Api\Branch\Controller\MyBranch;
 use App\Api\Private\Controller\MyController;
 use App\Branch\Api\Controller\Branch;
 use App\Branch\Api\Controller\BranchSave;
@@ -18,7 +19,8 @@ return [
     'branch.help'   => ['/api/branch/help/{step}', [Branch::class, 'gethelp']],
     'branch.save'   => ['/api/branch/save/{action?}', BranchSave::class],
     'branch.delete' => ['/api/branch/delete/{id}/{draft?}', [BranchSave::class, 'delete']],
-    'branch.create' => ['/api/branch/create/{action}/{id?}/{draft?}', Branch::class],
+    // 'branch.create' => ['/api/branch/create/{action}/{id?}/{draft?}', Branch::class],
 
+    'api.my.branch' => ['/api/my/branch/{action}/{id?}/{draft?}', MyBranch::class],
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 ];
