@@ -16,15 +16,15 @@ class BranchSaveRepo extends SaveRepo
     public function save(array $post, array $files, int $user_id)
     {
         if (isset($files['bgImg'])) {
-            $post['branch']['info']['bg_img'] = 'background' . $this->getExt($files['bgImg']);
+            $post['branch']['cover']['bg_img'] = 'background' . $this->getExt($files['bgImg']);
         } else {
-            $post['branch']['info']['bg_img'] = '';
+            $post['branch']['cover']['bg_img'] = '';
         }
 
         if (isset($files['cover'])) {
-            $post['branch']['info']['cover'] = 'cover' . $this->getExt($files['cover']);
+            $post['branch']['cover']['cover'] = 'cover' . $this->getExt($files['cover']);
         } else {
-            $post['branch']['info']['cover'] = '';
+            $post['branch']['cover']['cover'] = '';
         }
 
         $branch_id = $this->saveBranch($post['branch'], $user_id);
@@ -42,6 +42,7 @@ class BranchSaveRepo extends SaveRepo
             $branch['owner'] = $user_id;
         }
 
+        $branch['cover'] = json_encode($branch['cover'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $branch['info'] = json_encode($branch['info'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $branch['status'] = BranchStatus::Ready->value;
 

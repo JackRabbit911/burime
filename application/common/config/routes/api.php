@@ -27,9 +27,9 @@ return [
     // 'branch.create' => ['/api/branch/create/{action}/{id?}/{draft?}', Branch::class],
 
     'api.help'      => ['/api/my/help/{path}', Help::class, ['path' => '.*']],
-
     'api.translate' => ['/api/my/gettranslate', Translate::class],
-    'api.branchsave'=> ['/api/my/branch/save/{action?}', BranchSave::class],
+
+    'api.branchsave'=> ['/api/my/branch/action/{action}/{id?}', BranchSave::class],
     'api.my.branch' => ['/api/my/branch/{action}/{id?}/{draft?}', MyBranch::class],
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 ];

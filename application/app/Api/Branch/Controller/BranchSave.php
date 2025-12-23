@@ -22,7 +22,7 @@ class BranchSave extends ApiContractController
     public function __construct(private DraftSaveRepo $draftSaveRepo) {}
 
     #[BranchValidation]
-    public function __invoke(BranchSaveRepo $repo)
+    public function savebranch(BranchSaveRepo $repo)
     {
         $post = $this->request->getParsedBody();
         $draft_id = $post['draft'] ?? 0;
@@ -32,13 +32,13 @@ class BranchSave extends ApiContractController
     }
 
     #[BranchValidation]
-    public function draft()
+    public function savedraft()
     {
         return $this->saveHandler($this->draftSaveRepo);
     }
 
     #[Route(methods: 'delete')]
-    public function delete(int $id)
+    public function deldraft(int $id)
     {
         $this->draftSaveRepo->delete($id);
 
