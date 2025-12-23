@@ -22,7 +22,7 @@ class ModelDraft extends MysqlModel
             ->onDuplicateKeyUpdate($data)
             ->insert($data);
        
-        return $id ?? (int) $data['id'];
+        return $id ? (int) $id : (int) $data['id'];
     }
 
     public function delete(int $id)
