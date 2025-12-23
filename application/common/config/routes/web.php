@@ -46,8 +46,8 @@ return [
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
     'branch'        => ['/branch/{branch_id}/{action?}/{post_id?}', Burime::class],
 
-    'my'            => ['/my/{tail?}', Front::class, ['tail' => '.*']],
-    'my.branch'     => ['/my/branch/{id?}', Branch::class],
+    // 'my.branch'     => ['/my/branch/{id?}', Front::class],
+    'my'            => ['/my/{any?}', Front::class, ['any' => '.*']],
 
     // 'edit'          => ['/edit/{action}/{id}', Edit::class],
     // 'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],
