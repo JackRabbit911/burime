@@ -26,7 +26,7 @@ return [
     // 'branch.delete' => ['/api/branch/delete/{id}/{draft?}', [BranchSave::class, 'delete']],
     // 'branch.create' => ['/api/branch/create/{action}/{id?}/{draft?}', Branch::class],
 
-    'api.help'      => ['api/my/help/{action}/{key}', Help::class],
+    'api.help'      => ['/api/my/help/{path}', Help::class, ['path' => '.*']],
 
     'api.translate' => ['/api/my/gettranslate', Translate::class],
     'api.branchsave'=> ['/api/my/branch/save/{action?}', BranchSave::class],

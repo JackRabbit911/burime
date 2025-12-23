@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Api\Common\Controller;
 
-use App\Api\Common\Repository\HelpRepo;
 use App\Api\Common\Controller\ApiContractController;
+use Parsedown;
 
 class Help extends ApiContractController
 {
-    public function branch(HelpRepo $repo, int $key)
-    {
-        $help = $repo($key);
+    private string $filePrefix = APPPATH . 'common/data/article/';
 
-        return $help ? $help : $this->_error('Not found', 404);
+    public function __invoke(Parsedown $parser, string $path)
+    {
+        $file = $this->filePrefix . $path . '.md';
+        $content = is_file($file) ? file_get_contents($file) : null;
+
+        return $content ? $parser->text($content) : 'no content';
     }
 }
