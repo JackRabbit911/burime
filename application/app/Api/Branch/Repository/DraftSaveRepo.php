@@ -22,6 +22,10 @@ class DraftSaveRepo extends SaveRepo
             $post['branch']['owner'] = $user_id;
         }
 
+        if (!isset($post['branch_genres'])) {
+            $post['branch_genres'] = [];
+        }
+
         $data['owner'] = $post['branch']['owner'];
         $data['title'] = $post['branch']['title'];
         $data['branch'] = json_encode($post['branch'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
