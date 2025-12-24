@@ -6,12 +6,14 @@ namespace App\Api\Branch\Controller;
 
 use App\Api\Branch\Repository\BranchSaveRepo;
 use App\Api\Branch\Repository\DraftSaveRepo;
+use App\Api\Branch\Middleware\SaveGuard;
+use App\Api\Branch\Middleware\DraftDeleteGuard;
 use App\Api\Branch\Middleware\BranchValidation;
 use App\Api\Common\Middleware\AuthGuard;
 use App\Api\Common\Controller\ApiContractController;
 use Auth\Middleware\OAuthMiddleware;
-use Az\Route\Route;
 use Sys\Middleware\PreparePostData;
+use Az\Route\Route;
 
 #[OAuthMiddleware]
 #[AuthGuard]
@@ -21,6 +23,7 @@ class BranchSave extends ApiContractController
 {
     public function __construct(private DraftSaveRepo $draftSaveRepo) {}
 
+    #[SaveGuard]
     #[BranchValidation]
     public function savebranch(BranchSaveRepo $repo)
     {
@@ -31,14 +34,16 @@ class BranchSave extends ApiContractController
         return $this->saveHandler($repo, $post);
     }
 
+    #[SaveGuard]
     #[BranchValidation]
     public function savedraft()
     {
         return $this->saveHandler($this->draftSaveRepo);
     }
 
-    #[Route(methods: 'delete')]
-    public function deldraft(int $id)
+    #[Route(methods: ['delete', 'get'])]
+    #[DraftDeleteGuard()]
+    public function rmdraft(int $id)
     {
         $this->draftSaveRepo->delete($id);
 
