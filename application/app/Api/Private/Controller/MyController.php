@@ -6,10 +6,16 @@ namespace App\Api\Private\Controller;
 
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Private\Model\ModelBooks;
+use App\Api\Private\Model\ModelDrafts;
 
 class MyController extends ApiContractController
 {
     public function books(ModelBooks $model)
+    {
+        return $model->get($this->user->id);
+    }
+
+    public function drafts(ModelDrafts $model)
     {
         return $model->get($this->user->id);
     }
