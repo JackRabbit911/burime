@@ -1,9 +1,9 @@
 {% macro book(book) %}
-{% set bg_color = book.info.bg_color ?? '#eeeeee' %}
-{% set text_color = book.info.text_color ?? '#333333' %}
+{% set bg_color = book.cover.bg_color ?? '#eeeeee' %}
+{% set text_color = book.cover.text_color ?? '#333333' %}
 {% set style_bg_color = 'style="background-color: ' ~  bg_color ~ ';"' %}
 {% set style_color = 'style="color: ' ~  text_color ~ ';"' %}
-{% set title_size = book.info.text_size ?? 12 %}
+{% set title_size = book.cover.text_size ?? 12 %}
 {% set style_title_size = 'style="font-size: ' ~  title_size ~ 'cqw;"' %}
 
 <div
@@ -15,8 +15,8 @@
         {{ style_bg_color|raw }}
     ></div>
 
-    {% if book.info.bg_img is defined and book.info.bg_img %}
-    {% set style_bg_img = 'style="background-image: url(/img/branch/' ~ book.id ~ '/' ~ book.info.bg_img ~ ');"' %}
+    {% if book.cover.bg_img is defined and book.cover.bg_img %}
+    {% set style_bg_img = 'style="background-image: url(/img/branch/' ~ book.id ~ '/' ~ book.cover.bg_img ~ ');"' %}
     <div class="absolute top-0 left-0 w-full h-full z-10 bg-cover bg-center"
         {{ style_bg_img|raw }}
     ></div>

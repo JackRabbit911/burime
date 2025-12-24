@@ -81,7 +81,7 @@ Register and indicate your date of birth';
         }
 
         if ($this->branch->role === BranchRole::Commercial->value 
-            && (!$this->myAuthor || $this->myAuthor->status < BranchAuthorStatus::Participant->value)) {
+            && (!$this->myAuthor || $this->myAuthor->status < BranchAuthorStatus::member->value)) {
             return false;
         }
 
@@ -122,7 +122,7 @@ Register and indicate your date of birth';
         if (!$this->user 
         || !$this->myAuthor 
         || $this->myAuthor->role >= AuthorRole::Master->value
-        || $this->myAuthor->status <= BranchAuthorStatus::Refused->value) {
+        || $this->myAuthor->status <= BranchAuthorStatus::refused->value) {
             return false;
         }
 
