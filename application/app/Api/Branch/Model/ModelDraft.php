@@ -31,4 +31,12 @@ class ModelDraft extends MysqlModel
             ->where('id', '=', $id)
             ->delete();
     }
+
+    public function getOwner(int $id)
+    {
+        return $this->qb->table('drafts')
+            ->select('owner')
+            ->setFetchMode(PDO::FETCH_COLUMN)
+            ->find($id);
+    }
 }
