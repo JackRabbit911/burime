@@ -14,12 +14,14 @@ class ModelBooks extends MysqlModel
     public function get(int $user_id)
     {
         $master_role = BranchAuthorPermissions::EDIT_STATUS->value;
+
+        $params = $this->getOwnAuthors($user_id);
         
-        $params = $this->qb->table('authors')
-            ->select('id')
-            ->where('owner', '=', $user_id)
-            ->setFetchMode(PDO::FETCH_COLUMN)
-            ->get();
+        // $params = $this->qb->table('authors')
+        //     ->select('id')
+        //     ->where('owner', '=', $user_id)
+        //     ->setFetchMode(PDO::FETCH_COLUMN)
+        //     ->get();
 
         $str = implode(',', array_fill(0, count($params), '?'));
 
@@ -34,11 +36,41 @@ class ModelBooks extends MysqlModel
         JOIN authors AS master ON master.id = bm.author_id
         JOIN branches_genres AS bg ON bg.branch_id = branches.id
         JOIN genres ON genres.id = bg.genre_id AND genres.weight > 0
-        WHERE ba.author_id IN ($str) AND ba.status > ?
+        WHERE ba.author_id IN ($str) AND ba.status >= ?
         GROUP BY branches.id, myRole
         ORDER BY myRole DESC, branches.created DESC";
 
         return $this->qb->query($sql, $params)
+            ->get();
+    }
+
+    public function getCount(int $user_id)
+    {
+        $status = BranchAuthorStatus::invited->value;
+        $authorsIds = $this->getOwnAuthors($user_id);
+
+        return $this->qb->table('branches_authors')
+            ->select('branch_id')
+            ->whereIn('author_id', $authorsIds)
+            ->where('branches_authors.role', '>', 0)
+            ->where('branches_authors.status', '>=', $status)
+            ->count();
+    }
+
+    public function getOwnCount(int $user_id)
+    {
+        return $this->qb->table('branches')
+            ->select('id')
+            ->where('owner', '=', $user_id)
+            ->count();
+    }
+
+    private function getOwnAuthors(int $user_id)
+    {
+        return $this->qb->table('authors')
+            ->select('id')
+            ->where('owner', '=', $user_id)
+            ->setFetchMode(PDO::FETCH_COLUMN)
             ->get();
     }
 }
