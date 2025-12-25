@@ -2,9 +2,10 @@
 
 namespace Common\Model;
 
-use Sys\Model\Model;
+use Sys\Model\MysqlModel;
+use PDO;
 
-class ModelUserStat extends Model
+class ModelUserStat extends MysqlModel
 {
     public function getMsgCount($ids)
     {
@@ -22,5 +23,18 @@ class ModelUserStat extends Model
             ->count();
 
         return $count;
+    }
+
+    public function getUserComplete($user_id)
+    {
+        $sql = "SELECT 45 +
+        (IF(dob IS NOT NULL AND TRIM(dob) <> '',15,0)) + 
+        (IF(sex IS NOT NULL AND TRIM(sex) <> '',15,0)) +
+        (IF(info IS NOT NULL AND TRIM(info) <> '',10,0)) AS complete
+        FROM users WHERE id = ?";
+
+        return $this->qb->query($sql, [$user_id])
+            ->setFetchMode(PDO::FETCH_COLUMN)
+            ->first();            
     }
 }

@@ -58,7 +58,7 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
         }
     }
 
-    protected function _success(string|array $response): ResponseInterface
+    protected function _success(string|array|object $response): ResponseInterface
     {
         $response = [
             'success' => true,
@@ -84,5 +84,5 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
         $logger->error($e->getMessage() . ' ' . $e->getFile(), [$e->getLine()]);
     }
 
-    protected function _before() {}
+    protected function _before(): void {}
 }

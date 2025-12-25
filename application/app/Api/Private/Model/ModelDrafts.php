@@ -15,4 +15,12 @@ class ModelDrafts extends MysqlModel
             ->where('owner', '=', $user_id)
             ->get();
     }
+
+    public function getCount(int $user_id)
+    {
+        return $this->qb->table('drafts')
+            ->select('id')
+            ->where('owner', '=', $user_id)
+            ->count();
+    }
 }
