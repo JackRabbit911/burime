@@ -7,21 +7,12 @@ namespace App\Api\Private\Model;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
 use Sys\Model\MysqlModel;
-use PDO;
 
 class ModelBooks extends MysqlModel
 {
-    public function get(int $user_id)
+    public function get(int $user_id, array $params)
     {
         $master_role = BranchAuthorPermissions::EDIT_STATUS->value;
-
-        $params = $this->getOwnAuthors($user_id);
-        
-        // $params = $this->qb->table('authors')
-        //     ->select('id')
-        //     ->where('owner', '=', $user_id)
-        //     ->setFetchMode(PDO::FETCH_COLUMN)
-        //     ->get();
 
         $str = implode(',', array_fill(0, count($params), '?'));
 
@@ -44,14 +35,13 @@ class ModelBooks extends MysqlModel
             ->get();
     }
 
-    public function getCount(int $user_id)
+    public function getCount(array $usersAuthorsIds)
     {
         $status = BranchAuthorStatus::invited->value;
-        $authorsIds = $this->getOwnAuthors($user_id);
 
         return $this->qb->table('branches_authors')
             ->select('branch_id')
-            ->whereIn('author_id', $authorsIds)
+            ->whereIn('author_id', $usersAuthorsIds)
             ->where('branches_authors.role', '>', 0)
             ->where('branches_authors.status', '>=', $status)
             ->count();
@@ -63,14 +53,5 @@ class ModelBooks extends MysqlModel
             ->select('id')
             ->where('owner', '=', $user_id)
             ->count();
-    }
-
-    private function getOwnAuthors(int $user_id)
-    {
-        return $this->qb->table('authors')
-            ->select('id')
-            ->where('owner', '=', $user_id)
-            ->setFetchMode(PDO::FETCH_COLUMN)
-            ->get();
     }
 }
