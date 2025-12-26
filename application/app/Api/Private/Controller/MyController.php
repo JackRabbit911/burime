@@ -8,6 +8,7 @@ use App\Api\Common\Controller\ApiContractController;
 use App\Api\Private\Model\ModelAuthors;
 use App\Api\Private\Model\ModelBooks;
 use App\Api\Private\Model\ModelDrafts;
+use App\Api\Private\Repository\MyAuthorsRepo;
 use App\Api\Private\Repository\StatRepo;
 
 class MyController extends ApiContractController
@@ -29,6 +30,11 @@ class MyController extends ApiContractController
     public function books(ModelBooks $model)
     {
         return $model->get($this->user->id, $this->ownAuthorsIds);
+    }
+
+    public function authors(MyAuthorsRepo $repo)
+    {
+        return $repo->get($this->user->id, $this->ownAuthorsIds);
     }
 
     public function drafts(ModelDrafts $model)
