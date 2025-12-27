@@ -36,9 +36,9 @@
         </div>
     </div>
 
-    {% if book.info.cover is defined and book.info.cover %}
+    {% if book.cover.cover is defined and book.cover.cover %}
     <div class="absolute top-0 left-0 w-full h-full z-30">
-        <img src="{{ '/img/branch/' ~ book.id ~ '/' ~ book.info.cover }}" alt="{{ book.title }}" />
+        <img src="{{ '/img/branch/' ~ book.id ~ '/' ~ book.cover.cover }}" alt="{{ book.title }}" />
     </div>
     {% endif %}
 </div>
