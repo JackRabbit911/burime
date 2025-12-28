@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Adm\Controller\Users;
+use App\Api\Author\Controller\AuthorSave;
 use App\Api\Branch\Controller\BranchSave;
 use App\Api\Branch\Controller\MyBranch;
 use App\Api\Common\Controller\Help;
@@ -31,5 +32,6 @@ return [
 
     'api.branchsave'=> ['/api/my/branch/action/{action}/{id?}', BranchSave::class],
     'api.my.branch' => ['/api/my/branch/{action}/{id?}/{draft?}', MyBranch::class],
+    'api.authorave' => ['/api/my/author/{action}/{id?}', AuthorSave::class],
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 ];
