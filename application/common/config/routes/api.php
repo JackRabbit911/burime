@@ -32,6 +32,6 @@ return [
 
     'api.branchsave'=> ['/api/my/branch/action/{action}/{id?}', BranchSave::class],
     'api.my.branch' => ['/api/my/branch/{action}/{id?}/{draft?}', MyBranch::class],
-    'api.authorave' => ['/api/my/author/{action}/{id?}', AuthorSave::class],
+    'api.authorsave'=> ['/api/my/author/{action}/{id?}', AuthorSave::class],
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 ];
