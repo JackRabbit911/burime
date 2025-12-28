@@ -20,9 +20,7 @@ class MyAuthorsRepo
         array_walk($authors, function (&$author) use ($user_id) {
             $author->owner = $author->owner === $user_id ? true : false;
             $author->avatar = Author::getAvatarById($author->id, $author->alias);
-            $info = json_decode($author->info);
-            $author->slogan = $info->slogan;
-            $author->info = $info->info;
+            $author->info = json_decode($author->info);
         });
 
         return $authors;
