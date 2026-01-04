@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Branch\Repository;
 
+use App\Api\Common\Helper\Facade\UploadFile;
 use Exception;
 
 abstract class SaveRepo
@@ -34,18 +35,7 @@ abstract class SaveRepo
 
         $dir = $this->prefix . $dir;
 
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-            chmod($dir, 0777);
-        }
-
-        if (!is_writable($dir)) {
-            chmod($dir, 0777);
-        }
-
-        $filename = $dir . '/' . $filename . $this->getExt($file);
-        $file->moveTo($filename);
-        chmod($filename, 0777);
+        UploadFile::save($file, $dir, $filename);
 
         return true;
     }
