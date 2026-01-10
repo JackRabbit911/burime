@@ -29,7 +29,7 @@ class MyController extends ApiContractController
 
     public function books(ModelBooks $model)
     {
-        return $model->get($this->user->id, $this->ownAuthorsIds);
+        return $model->get($this->ownAuthorsIds);
     }
 
     public function authors(MyAuthorsRepo $repo)
