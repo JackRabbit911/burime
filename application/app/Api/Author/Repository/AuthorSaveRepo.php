@@ -17,10 +17,16 @@ class AuthorSaveRepo
 
     public function savePost(array $post, int $user_id)
     {
-        $post['info'] = json_encode($post['info'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        $post['owner'] = $user_id;
+        $author = $post['author'];
+        $members = $post['members'] ?? [];
 
-        return $this->model->save($post);
+        $author['info'] = json_encode($author['info'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $author['owner'] = $user_id;
+
+        $author_id = $this->model->saveAuthor($author);
+        $this->model->saveMembers($author_id, $members);
+
+        return $author_id;
     }
 
     public function saveFile(?UploadedFile $file, int $user_id)
