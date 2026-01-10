@@ -10,7 +10,7 @@ class _2025_02_17_10_41_25_create_table_authors
         `openclosed` tinyint(3) unsigned NOT NULL,
         `alias` varchar(128) NOT NULL,
         `info` json DEFAULT NULL,
-        `created` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        `created` timestamp DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`),
         KEY `alias` (`alias`),
         KEY `owner` (`owner`),
