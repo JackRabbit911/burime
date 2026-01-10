@@ -10,7 +10,7 @@ use Sys\Model\MysqlModel;
 
 class ModelBooks extends MysqlModel
 {
-    public function get(int $user_id, array $params)
+    public function get(array $params)
     {
         $master_role = BranchAuthorPermissions::EDIT_STATUS->value;
 
@@ -37,6 +37,10 @@ class ModelBooks extends MysqlModel
 
     public function getCount(array $usersAuthorsIds)
     {
+        if (empty($usersAuthorsIds)) {
+            return 0;
+        }
+
         $status = BranchAuthorStatus::invited->value;
 
         return $this->qb->table('branches_authors')
