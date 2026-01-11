@@ -19,7 +19,7 @@ class AuthorSave extends ApiContractController
         $file = $this->request->getUploadedFiles()['file'] ?? null;
 
         $id = $this->repo->savePost($post, $this->user->id);
-        $this->repo->saveFile($file, $this->user->id);
+        $this->repo->saveFile($file, $id);
 
         return ['id' => $id];
     }
