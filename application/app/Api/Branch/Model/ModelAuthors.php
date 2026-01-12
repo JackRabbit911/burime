@@ -11,6 +11,7 @@ use Sys\Model\MysqlModel;
 class ModelAuthors extends MysqlModel
 {
     public function getByFilter(
+        int $user_id,
         int $limit,
         int $offset,
         ?string $filter = null,
@@ -24,9 +25,14 @@ class ModelAuthors extends MysqlModel
             ->selectDistinct('id')
             ->select('alias');
 
-        if ($role) {
+        if ($role > 1) {
             $table->join('users_authors', 'users_authors.author_id', '=', 'authors.id')
-                ->where('role', '=', $role);
+                ->where('role', '=', $role)
+                ->where('user_id', '=', $user_id);
+        } elseif ($role === 1) {
+            $table->where('authors.openclosed', '<', 2);
+        } else {
+            $table->where('authors.openclosed', '=', 2);
         }
 
         if ($search) {

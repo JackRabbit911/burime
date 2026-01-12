@@ -7,6 +7,7 @@ enum MemberRole: int
     case Friend = 150;
     case Favorive = 100;
     case Addressbook = 50;
+    case Groups = 1;
 
     public static function getByFilter($filter)
     {
@@ -14,6 +15,7 @@ enum MemberRole: int
             'friends' => self::Friend->value,
             'favorites' => self::Favorive->value,
             'addressbook' => self::Addressbook->value,
+            'groups' => self::Groups->value,
             default => null,
         };
     }
@@ -24,6 +26,7 @@ enum MemberRole: int
             'friends',
             'favorites',
             'addressbook',
+            'groups',
         ];
     }
 }

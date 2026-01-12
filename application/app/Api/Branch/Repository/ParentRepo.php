@@ -28,6 +28,7 @@ abstract class ParentRepo
         $offset = ((int) $page - 1) * (int) $limit;
 
         $authors = $this->modelAuthors->getByFilter(
+            $user_id,
             (int) $limit,
             $offset,
             $filter,
