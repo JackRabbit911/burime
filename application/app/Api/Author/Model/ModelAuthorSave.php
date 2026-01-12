@@ -6,7 +6,7 @@ namespace App\Api\Author\Model;
 
 use Sys\Model\MysqlModel;
 
-class ModelSaveDelete extends MysqlModel
+class ModelAuthorSave extends MysqlModel
 {
     public function saveAuthor(array $data): int
     {
