@@ -18,16 +18,13 @@ class AuthorSaveRepo
     public function savePost(array $post, int $user_id)
     {
         $author = $post['author'];
-        $members = $post['members'] ?? null;
+        $members = $post['members'] ?? [];
 
         $author['info'] = json_encode($author['info'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $author['owner'] = $user_id;
 
         $author_id = $this->model->saveAuthor($author);
-
-        if ($members) {
-            $this->model->saveMembers($author_id, $members);
-        }
+        $this->model->saveMembers($author_id, $members);
 
         return $author_id;
     }
