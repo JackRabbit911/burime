@@ -19,7 +19,7 @@ class ModelAuthorSave extends MysqlModel
 
     public function saveMembers(int $author_id, array $members)
     {
-        array_walk($members, function(&$v, $k, $author_id) {
+        array_walk($members, function (&$v, $k, $author_id) {
             $v['parent_id'] = $author_id;
         }, $author_id);
 
@@ -28,6 +28,8 @@ class ModelAuthorSave extends MysqlModel
         $table->where('parent_id', '=', $author_id)
             ->delete();
 
-        $table->insert($members);
+        if (!empty($members)) {
+            $table->insert($members);
+        }
     }
 }
