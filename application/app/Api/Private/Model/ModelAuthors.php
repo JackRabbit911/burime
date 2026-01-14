@@ -21,6 +21,10 @@ class ModelAuthors extends MysqlModel
 
     public function getGroupsCount(array $ownAuthors)
     {
+        if (empty($ownAuthors)) {
+            return 0;
+        }
+
         $groups = $this->qb->table('authors_authors')
             ->select('parent_id')
             ->whereIn('child_id', $ownAuthors)
