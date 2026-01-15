@@ -9,6 +9,7 @@ use App\Api\Common\Controller\Authors;
 use App\Api\Common\Controller\Help;
 use App\Api\Common\Controller\ReferenceBooks;
 use App\Api\Common\Controller\Translate;
+use App\Api\Message\Controller\Message;
 use App\Api\Private\Controller\MyController;
 use App\Branch\Api\Controller\Branch;
 // use App\Branch\Api\Controller\BranchSave;
@@ -40,6 +41,8 @@ return [
 
     'api.my.group'  => ['/api/my/group/{action}/{id?}', Group::class],
     'api.authorsave'=> ['/api/my/author/{action}/{id?}', AuthorSave::class],
+
+    'api.message'   => ['/api/my/message/{action}/{id?}', Message::class],
 
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 ];
