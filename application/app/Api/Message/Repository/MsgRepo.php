@@ -23,4 +23,9 @@ class MsgRepo
 
         return $data;
     }
+
+    public function getMessage(int $id)
+    {
+        return $this->modelMessage->find($id);
+    }
 }

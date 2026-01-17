@@ -9,8 +9,15 @@ use App\Api\Message\Repository\MsgRepo;
 
 class Message extends ApiContractController
 {
-    public function list(MsgRepo $repo)
+    public function __construct(private MsgRepo $repo){}
+
+    public function list()
     {
-        return $repo->getList($this->user->id);
+        return $this->repo->getList($this->user->id);
+    }
+
+    public function show(int $id)
+    {
+        return $this->repo->getMessage($id);
     }
 }

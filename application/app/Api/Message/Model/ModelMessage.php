@@ -54,4 +54,17 @@ class ModelMessage extends MysqlModel
             ->whereIn('from', $ids)
             ->get();
     }
+
+    public function find($id)
+    {
+        return $this->qb->table('messages')
+            ->select('messages.*')
+            ->select($this->qb->raw('authors.alias AS `from_alias`'))
+            ->select('messages_authors.status')
+            ->select($this->qb->raw('au.alias AS `to_alias`'))
+            ->join('messages_authors', 'message_id', '=', 'messages.id')
+            ->join('authors', 'authors.id', '=', 'from')
+            ->join($this->qb->raw('authors AS au ON au.id = messages_authors.author_id'))
+            ->find($id, 'messages.id');
+    }
 }
