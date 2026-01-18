@@ -14,6 +14,10 @@ require_once SYSPATH . 'vendor/autoload.php';
 require_once FRAMEWORK . 'autoload.php';
 require_once FRAMEWORK . 'library.php';
 
+if (is_file(FRAMEWORK . 'polyfill.php')) {
+    require_once FRAMEWORK . 'polyfill.php';
+}
+
 date_default_timezone_set(env('APP_TZ'));
 
 define('PRODUCTION', 10);
