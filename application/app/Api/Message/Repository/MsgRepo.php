@@ -26,6 +26,12 @@ class MsgRepo
 
     public function getMessage(int $id)
     {
-        return $this->modelMessage->find($id);
+        $message = $this->modelMessage->find($id);
+
+        if (json_validate($message->data)) {
+            $message->data = json_decode($message->data);
+        }
+
+        return $message;
     }
 }
