@@ -42,7 +42,7 @@ return [
     'api.my.group'  => ['/api/my/group/{action}/{id?}', Group::class],
     'api.authorsave'=> ['/api/my/author/{action}/{id?}', AuthorSave::class],
 
-    'api.message'   => ['/api/my/message/{action}/{id?}', Message::class],
+    'api.message'   => ['/api/my/message/{action}/{id?}/{recipient?}', Message::class],
 
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 ];
