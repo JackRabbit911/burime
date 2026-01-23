@@ -26,4 +26,12 @@ class ModelAuthors extends MysqlModel
             ->setFetchMode(PDO::FETCH_COLUMN)
             ->get();
     }
+
+    public function getOwnAuthors(int $user_id)
+    {
+        return $this->qb->table('authors')
+            ->select('id', 'alias')
+            ->where('owner', '=', $user_id)
+            ->get();
+    }
 }
