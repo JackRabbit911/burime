@@ -12,4 +12,9 @@ class Authors extends ApiContractController
     {
         return $model->getByGroup($id);
     }
+
+    public function ownauthors(ModelAuthors $model)
+    {
+        return $model->getOwnAuthors($this->user->id);
+    }
 }
