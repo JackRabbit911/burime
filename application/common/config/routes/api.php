@@ -34,7 +34,8 @@ return [
     'api.help'      => ['/api/my/help/{path}', Help::class, ['path' => '.*']],
     'api.translate' => ['/api/my/gettranslate', Translate::class],
     'api.reference' => ['/api/my/reference/{action}', ReferenceBooks::class],
-    'api.authors'   => ['/api/my/authors/{action}/{id?}', Authors::class],
+
+    'api.authors'   => ['/api/my/common/authors/{action}/{id?}', Authors::class],
 
     'api.branchsave'=> ['/api/my/branch/action/{action}/{id?}', BranchSave::class],
     'api.my.branch' => ['/api/my/branch/{action}/{id?}/{draft?}', MyBranch::class],
