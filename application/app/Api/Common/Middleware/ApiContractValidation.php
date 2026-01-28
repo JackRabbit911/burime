@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Branch\Middleware;
+namespace App\Api\Common\Middleware;
 
 use Az\Validation\Middleware\ApiValidationMiddleware;
 use HttpSoft\Response\JsonResponse;

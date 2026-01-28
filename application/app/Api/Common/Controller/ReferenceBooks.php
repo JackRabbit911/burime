@@ -28,4 +28,11 @@ class ReferenceBooks extends ApiContractController
         
         return $data;
     }
+
+    public function message()
+    {
+        $data['authorsFilters'] = MemberRole::getFilters();
+
+        return $data;
+    }
 }
