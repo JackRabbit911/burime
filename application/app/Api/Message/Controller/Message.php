@@ -40,4 +40,12 @@ class Message extends ApiContractController
         
         return "Message $id was removed";
     }
+
+    #[Route(methods: 'post')]
+    public function save()
+    {
+        $post = $this->request->getParsedBody();
+
+        return $post;
+    }
 }
