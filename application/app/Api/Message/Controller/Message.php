@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Api\Message\Controller;
 
-use App\Api\Common\Controller\ApiContractController;
 use App\Api\Message\Repository\MsgRepo;
+use App\Api\Message\Repository\SaveRepo;
+use App\Api\Message\Middleware\MessageValidation;
+use App\Api\Common\Controller\ApiContractController;
+use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
 use HttpSoft\Response\EmptyResponse;
 
@@ -42,10 +45,12 @@ class Message extends ApiContractController
     }
 
     #[Route(methods: 'post')]
-    public function save()
+    #[PreparePostData]
+    #[MessageValidation]
+    public function save(SaveRepo $repo)
     {
         $post = $this->request->getParsedBody();
-
-        return $post;
+        $id = $repo->save($post);
+        return ['id' => $id];
     }
 }
