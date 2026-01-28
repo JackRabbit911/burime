@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Api\Branch\Middleware;
 
+use App\Api\Common\Middleware\ApiContractValidation;
+
 class BranchValidation extends ApiContractValidation
 {
     protected function setRules($request)
