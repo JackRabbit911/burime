@@ -2,27 +2,21 @@
 
 namespace App\Api\Private\Middleware;
 
+use App\Api\Common\Middleware\ApiContractValidation;
 use Auth\Model\ModelUser;
-use Az\Validation\Validation;
-use Az\Validation\Middleware\ValidationMiddleware;
-use Attribute;
 
-#[Attribute]
-class ProfileValidation extends ValidationMiddleware
+class ProfileValidation extends ApiContractValidation
 {
     private ModelUser $model;
 
-    public function __construct(Validation $validation, ModelUser $model)
+    public function __construct(ModelUser $model)
     {
-        parent::__construct($validation);
         $this->model = $model;
     }
 
     protected function setRules($request)
     {
         $user = $request->getAttribute('user');
-        $user = $this->model->find($user->id);
-
         $path = APPPATH . 'auth/messages';
         
         $this->validation->addMsgPath($path)
@@ -34,26 +28,4 @@ class ProfileValidation extends ValidationMiddleware
             ->rule('sex', 'integer')
             ->rule('file', 'size(1M)|img');
     }
-
-    protected function modifyData($data)
-    {
-        if (empty($data['phone'])) {
-            $data['phone'] = null;
-        }
-
-        if (isset($data['phone'])) {
-            $data['phone'] = preg_replace('/\D+/', '', $data['phone']);
-        };
-
-        if ($data['dob'] === '') {
-            $data['dob'] = null;
-        };
-
-        return $data;
-    }
-
-    // protected function debug(ServerRequestInterface $request)
-    // {
-    //     dd($this->validation->getResponse());
-    // }
 }
