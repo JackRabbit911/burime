@@ -11,7 +11,8 @@ use App\Api\Common\Controller\ReferenceBooks;
 use App\Api\Common\Controller\Translate;
 use App\Api\Message\Controller\Message;
 use App\Api\Private\Controller\MyController;
-use App\Branch\Api\Controller\Branch;
+use App\Api\Private\Controller\Profile;
+// use App\Branch\Api\Controller\Branch;
 // use App\Branch\Api\Controller\BranchSave;
 use App\Burime\Controller\DeletePostApi;
 use App\Rating\RatingApi;
@@ -44,6 +45,8 @@ return [
     'api.authorsave'=> ['/api/my/author/{action}/{id?}', AuthorSave::class],
 
     'api.message'   => ['/api/my/message/{action}/{id?}/{recipient?}', Message::class],
+
+    'api.profile'   => ['/api/my/profile/{action?}', Profile::class],
 
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 ];
