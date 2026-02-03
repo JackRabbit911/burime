@@ -11,6 +11,7 @@ use App\Api\Branch\Middleware\DraftDeleteGuard;
 use App\Api\Branch\Middleware\BranchValidation;
 use App\Api\Common\Middleware\AuthGuard;
 use App\Api\Common\Controller\ApiContractController;
+use App\Api\Common\Repository\InviteMessageRepo;
 use Auth\Middleware\OAuthMiddleware;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
@@ -25,20 +26,24 @@ class BranchSave extends ApiContractController
 
     #[SaveGuard]
     #[BranchValidation]
-    public function savebranch(BranchSaveRepo $repo)
+    public function savebranch(BranchSaveRepo $repo, InviteMessageRepo $invite)
     {
         $post = $this->request->getParsedBody();
         $draft_id = $post['draft'] ?? 0;
         $this->draftSaveRepo->delete($draft_id);
+        $id = $this->saveHandler($repo, $post);
 
-        return $this->saveHandler($repo, $post);
+        $invite->sendInviteToBranch($post, $id);
+
+        return ['id' => $id];
     }
 
     #[SaveGuard]
     #[BranchValidation]
     public function savedraft()
     {
-        return $this->saveHandler($this->draftSaveRepo);
+        $id = $this->saveHandler($this->draftSaveRepo);
+        return ['id' => $id];
     }
 
     #[Route(methods: ['delete', 'get'])]
@@ -46,7 +51,6 @@ class BranchSave extends ApiContractController
     public function rmdraft(int $id)
     {
         $this->draftSaveRepo->delete($id);
-
         return ['id' => $id];
     }
 
@@ -57,6 +61,6 @@ class BranchSave extends ApiContractController
 
         $branch_id = $repo->save($post, $files, $this->user->id);
 
-        return ['id' => $branch_id];
+        return $branch_id;
     }
 }
