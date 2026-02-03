@@ -17,15 +17,19 @@ abstract class ParentRepo
     ) {}
 
     public function getAuthors(int $user_id, array $query_params = [])
-    {
-        $own_authors = $this->modelAuthors->getByUser($user_id);
-        $except = array_map(fn($author) => $author->id, $own_authors);
-
+    {   
         $filter = $query_params['filter'] ?? null;
         $search = $query_params['search'] ?? null;
         $page = $query_params['page'] ?? 1;
         $limit = $query_params['limit'] ?? 25;
         $offset = ((int) $page - 1) * (int) $limit;
+        
+        if ($filter !== 'groups') {
+            $own_authors = $this->modelAuthors->getByUser($user_id);
+            $except = array_map(fn($author) => $author->id, $own_authors);
+        } else {
+            $except = [];
+        }
 
         $authors = $this->modelAuthors->getByFilter(
             $user_id,
