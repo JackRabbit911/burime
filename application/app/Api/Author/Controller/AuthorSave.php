@@ -6,19 +6,26 @@ namespace App\Api\Author\Controller;
 
 use App\Api\Author\Repository\AuthorDeleteRepo;
 use App\Api\Author\Repository\AuthorSaveRepo;
+use App\Api\Author\Middleware\AuthorValidation;
 use App\Api\Common\Controller\ApiContractController;
+use App\Api\Common\Repository\InviteMessageRepo;
+use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
 
 class AuthorSave extends ApiContractController
 {
     #[Route(methods: 'post')]
-    public function save(AuthorSaveRepo $repo)
+    #[PreparePostData]
+    #[AuthorValidation]
+    public function save(AuthorSaveRepo $repo, InviteMessageRepo $invite)
     {
         $post = $this->request->getParsedBody();
         $file = $this->request->getUploadedFiles()['file'] ?? null;
 
         $id = $repo->savePost($post, $this->user->id);
         $repo->saveFile($file, $id);
+
+        $invite->sendInviteToGroup($post, $id);
 
         return ['id' => $id];
     }
