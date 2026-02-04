@@ -37,13 +37,6 @@ class ModelBranchSave extends MysqlModel
         $table->insert($authors);
     }
 
-    public function sg($data)
-    {
-        $t = $this->qb->table('branches_genres');
-        $t->where('branch_id', '=', 25)->delete();
-        $t->insert($data);
-    }
-
     public function saveBranchGenres(array $genres, int $branch_id)
     {
         $data = array_map(fn($v) => [

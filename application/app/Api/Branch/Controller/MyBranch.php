@@ -6,7 +6,6 @@ namespace App\Api\Branch\Controller;
 
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Branch\Middleware\DraftBranchGetter;
-use App\Api\Branch\Repository\BranchRepo;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\MemberRole;
@@ -29,17 +28,5 @@ class MyBranch extends ApiContractController
         $data['authorsStatuses'] = BranchAuthorStatus::getArray();
 
         return $data;
-    }
-
-    public function authors(BranchRepo $repo)
-    {
-        $query_params = $this->request->getQueryParams();
-
-        [$authors_count, $authors_list] = $repo->getAuthors($this->user->id, $query_params);
-
-        return [
-            'list' => $authors_list,
-            'count' => $authors_count,
-        ];
     }
 }

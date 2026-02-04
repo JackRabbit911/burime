@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Api\Branch\Repository;
 
 use App\Branch\Api\Model\ModelBranchSave;
+use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchStatus;
 
 class BranchSaveRepo extends SaveRepo
@@ -26,6 +27,14 @@ class BranchSaveRepo extends SaveRepo
         } else {
             $post['branch']['cover']['cover'] = '';
         }
+
+        array_walk($post['members'], function(&$v) {
+            unset($v['alias']);
+            
+            if ($v['status'] === BranchAuthorStatus::invited->value) {
+                $v['status'] = BranchAuthorStatus::invited_informed->value;
+            }
+        });
 
         $branch_id = $this->saveBranch($post['branch'], $user_id);
         $this->model->saveBranchGenres($post['branch_genres'], $branch_id);

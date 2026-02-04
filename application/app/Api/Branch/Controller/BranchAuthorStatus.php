@@ -2,24 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Author\Controller;
+namespace App\Api\Branch\Controller;
 
-use App\Api\Author\Model\ModelGroup;
-use App\Api\Author\Middleware\StatusValidation;
+use App\Api\Branch\Model\ModelStatus;
+use App\Api\Branch\Middleware\StatusValidation;
 use App\Api\Common\Controller\ApiContractController;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
 
-class Group extends ApiContractController
+class BranchAuthorStatus extends ApiContractController
 {
-    public function __construct(private ModelGroup $model) {}
+    public function __construct(private ModelStatus $model) {}
 
-    public function members($id = null)
-    {
-        return $id ? $this->model->getMembers($id) : [];
-    }
-
-    public function getstatus($id)
+    public function get($id)
     {
         $author_id = $this->request->getQueryParams()['author'];
         $status = $this->model->getStatus((int) $id, (int) $author_id);
@@ -30,7 +25,7 @@ class Group extends ApiContractController
     #[Route(methods: 'post')]
     #[PreparePostData]
     #[StatusValidation]
-    public function setstatus()
+    public function set()
     {
         $post = $this->request->getParsedBody();
         $this->model->setStatus($post);
