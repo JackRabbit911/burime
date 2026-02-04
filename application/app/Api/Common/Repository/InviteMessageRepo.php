@@ -16,7 +16,7 @@ class InviteMessageRepo
     public function sendInviteToBranch(array $post, $branch_id)
     {
         $branch = $post['branch'];
-        $members = $post['members'];
+        $members = $post['members'] ?? [];
 
         $recipients = array_filter($members, fn($v) => $v['status'] === BranchAuthorStatus::invited->value);
         $sender = $this->getSender($members);
@@ -28,7 +28,7 @@ class InviteMessageRepo
             $data['body'] = 'Приглашаю в проект: "' . $branch['title'] . '" со следующим набором прав: ' . $roles_string;
             $data['tpl'] = 'inviteToBranch';
             $data['branch'] = $branch_id;
-            $data['appeal'] = 'Ув., ' . $item['alias'] . '!';
+            $data['appeal'] = 'Ув., ' . $item['alias'];
 
             $message['from'] = $sender['author_id'];
             $message['data'] = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -36,9 +36,41 @@ class InviteMessageRepo
 
             $message_id = $this->model->saveMessage($message);
 
-            $recipients = [
+            $recipient = [
                 'message_id' => $message_id,
                 'author_id' => $item['author_id'],
+                'status' => MsgStatus::New->value,
+            ];
+
+            $this->model->saveRcipients($recipient);
+        }
+    }
+
+    public function sendInviteToGroup(array $post, $group_id)
+    {
+        $group = $post['author'];
+        $members = $post['members'] ?? [];
+
+        $recipients = array_filter($members, fn($v) => $v['status'] === BranchAuthorStatus::invited->value);
+
+        foreach ($recipients as $item) {
+            $keys = BranchAuthorPermissions::getRolesArray($item['role']);
+            $roles_string = implode(', ', array_map(fn($v) => __($v), $keys));
+
+            $data['body'] = 'Приглашаю в группу: "' . $group['alias'] . '" со следующим набором прав: ' . $roles_string;
+            $data['tpl'] = 'inviteToGroup';
+            $data['group'] = $group_id;
+            $data['appeal'] = 'Ув., ' . $item['alias'];
+
+            $message['from'] = $group_id;
+            $message['data'] = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            $message['subject'] = 'Приглашение в группу "' . $group['alias'] . '"';
+
+            $message_id = $this->model->saveMessage($message);
+
+            $recipients = [
+                'message_id' => $message_id,
+                'author_id' => $item['child_id'],
                 'status' => MsgStatus::New->value,
             ];
 
