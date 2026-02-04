@@ -5,6 +5,7 @@ use App\Api\Author\Controller\AuthorSave;
 use App\Api\Author\Controller\Group;
 use App\Api\Branch\Controller\BranchSave;
 use App\Api\Branch\Controller\MyBranch;
+use App\Api\Branch\Controller\BranchAuthorStatus;
 use App\Api\Common\Controller\Authors;
 use App\Api\Common\Controller\Help;
 use App\Api\Common\Controller\ReferenceBooks;
@@ -39,6 +40,7 @@ return [
 
     'api.authors'   => ['/api/my/common/authors/{action}/{id?}', Authors::class],
 
+    'api.ba.status' => ['/api/my/branch/status/{action}/{id?}', BranchAuthorStatus::class],
     'api.branchsave'=> ['/api/my/branch/action/{action}/{id?}', BranchSave::class],
     'api.my.branch' => ['/api/my/branch/{action}/{id?}/{draft?}', MyBranch::class],
 
