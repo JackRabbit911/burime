@@ -14,12 +14,12 @@ class Group extends ApiContractController
 {
     public function __construct(private ModelGroup $model) {}
 
-    public function members($id = null)
+    public function members(?int $id = null)
     {
-        return $id ? $this->model->getMembers($id) : [];
+        return $id ? $this->model->getMembers((int) $id) : [];
     }
 
-    public function getstatus($id)
+    public function getstatus(int $id)
     {
         $author_id = $this->request->getQueryParams()['author'];
         $status = $this->model->getStatus((int) $id, (int) $author_id);
