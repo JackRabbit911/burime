@@ -16,7 +16,7 @@ class Group extends ApiContractController
 
     public function members($id = null)
     {
-        return $id ? $this->model->getMembers($id) : [];
+        return $id ? $this->model->getMembers((int) $id) : [];
     }
 
     public function getstatus($id)
