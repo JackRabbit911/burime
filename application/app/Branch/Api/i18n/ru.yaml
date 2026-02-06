@@ -19,6 +19,10 @@ denied: Отклонён
 refused: Отказался
 candidate: Кандидат
 
+Your profile data was saved: Данные Вашего профиля успешно сохранены
+Your password has been changed: Ваш пароль успешно изменён
+Data saved successfully: Данные успешно сохранены
+
 EDIT_STATUS: Изменять статус ветки
 EDIT_BRANCH: Редактировать правила ветки
 MANAGE: Управлять участниками
