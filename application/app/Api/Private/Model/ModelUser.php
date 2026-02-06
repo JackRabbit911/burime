@@ -15,10 +15,10 @@ class ModelUser extends MysqlModel
             ->find($id);
     }
     
-    public function update(string $hash, int $user_id)
+    public function update(array $data, int $user_id)
     {
         return $this->qb->table('users')
             ->where('id', '=', $user_id)
-            ->update(['password' => $hash]);
+            ->update($data);
     }
 }
