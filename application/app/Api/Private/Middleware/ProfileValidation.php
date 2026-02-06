@@ -16,13 +16,13 @@ class ProfileValidation extends ApiContractValidation
 
     protected function setRules($request)
     {
-        $user = $request->getAttribute('user');
+        $email = $this->data['email'];
         $path = APPPATH . 'auth/messages';
         
         $this->validation->addMsgPath($path)
             ->rule('name', 'required|username')
             ->rule('email', 'required|email')
-            ->rule('email', [$this->model, 'isUniqueOrOwnEmail'], $user->email)
+            ->rule('email', [$this->model, 'isUniqueOrOwnEmail'], $email)
             ->rule('dob', 'validDate')
             ->rule('phone', 'phone')
             ->rule('sex', 'integer')
