@@ -30,14 +30,14 @@ class Participation extends BaseController
 
     public function accept($branch_id, $author_id)
     {
-        $this->setAuthorStatus($branch_id, $author_id, BranchAuthorStatus::Participant);
+        $this->setAuthorStatus($branch_id, $author_id, BranchAuthorStatus::member);
         $uri = path('branch', ['branch_id' => $branch_id]);
         return new RedirectResponse($uri);
     }
 
     public function refuse($branch_id, $author_id)
     {
-        $this->setAuthorStatus($branch_id, $author_id, BranchAuthorStatus::Refused);
+        $this->setAuthorStatus($branch_id, $author_id, BranchAuthorStatus::refused);
         $uri = path('message', ['action' => 'list']);
         return new RedirectResponse($uri);
     }
@@ -59,7 +59,7 @@ class Participation extends BaseController
         $data['author_id'] = (int) $this->request->getParsedBody()['author'];
         $data['user_id'] = $this->user->id;
         $data['role'] = AuthorRole::Author->value;
-        $data['status'] = BranchAuthorStatus::Candidate->value;
+        $data['status'] = BranchAuthorStatus::candidate->value;
 
         $this->modelBranchAuthor->addAuthor($data);
 

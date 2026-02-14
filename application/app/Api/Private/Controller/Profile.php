@@ -9,7 +9,6 @@ use App\Api\Private\Middleware\ProfileValidation;
 use App\Api\Private\Repository\UserAvatarSaveRepo;
 use App\Api\Private\Middleware\PasswordConfirmValidation;
 use App\Api\Common\Controller\ApiContractController;
-use Auth\User;
 use Auth\Model\OAuth;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
@@ -34,7 +33,7 @@ class Profile extends ApiContractController
         $this->model->update($data, $this->user->id);
         $repo->saveFile($file, $this->user->id);
 
-        $auth->login(User::fromArray($data));
+        $auth->login($this->user->update($data));
 
         return ['id' => $this->user->id];
     }

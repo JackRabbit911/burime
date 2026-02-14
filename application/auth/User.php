@@ -13,16 +13,13 @@ final class User extends Entity implements UserInterface
 {
     use FromArray;
 
-    const FEMALE = 0;
-    const MALE = 1;
+    // const FEMALE = 0;
+    // const MALE = 1;
 
-    // const AVATAR_SRC = 'src';
-    // const AVATAR_HTML = 'html';
-    // const AVATAR_NAME = 'name';
-
-    // const NO_AVATAR = DOCROOT . 'avatar/no_avatar.jpg';
-    // const USER_AVATAR_PATH = DOCROOT . 'avatar/user/';
-    // const AVATAR_SIZE = 120;
+    // protected string $name;
+    // protected string $email;
+    protected ?string $dob = null;
+    protected ?int $sex = null;
 
     private string $jsonProp = 'info';
 
@@ -50,24 +47,4 @@ final class User extends Entity implements UserInterface
 
         return $this;
     }
-
-    // public function avatar($res = self::AVATAR_SRC)
-    // {
-    //     $pattern = self::USER_AVATAR_PATH . $this->id . '.{jpg,jpeg,png,gif}';        
-    //     $file = glob($pattern, GLOB_BRACE)[0] ?? '';
-
-    //     if ($res === self::AVATAR_NAME) {
-    //         return $file;
-    //     }
-
-    //     if (!is_file($file)) {
-    //         $file = self::NO_AVATAR;
-    //     }
-        
-    //     $file = str_replace('//', '/', $file);
-    //     $src = ltrim($file, '.');    
-
-    //     return ($res === self::AVATAR_SRC) ? $src 
-    //             : '<img src="' . $src . '" alt="' . $this->name . '" />';
-    // }
 }
