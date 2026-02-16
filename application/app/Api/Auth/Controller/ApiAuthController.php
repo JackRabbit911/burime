@@ -48,7 +48,7 @@ abstract class ApiAuthController implements RequestHandlerInterface
         }
     }
 
-    private function _success(string|array|object $response): ResponseInterface
+    private function _success(string|array|object|bool $response): ResponseInterface
     {
         $response = [
             'success' => true,
