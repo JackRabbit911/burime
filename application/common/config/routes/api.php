@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Adm\Controller\Users;
+use App\Api\Auth\Controller\Auth;
 use App\Api\Author\Controller\AuthorSave;
 use App\Api\Author\Controller\Group;
 use App\Api\Branch\Controller\BranchSave;
@@ -54,4 +55,6 @@ return [
     'api.additional'=> ['api/my/additional/{action}/{id}', Additional::class],
 
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
+
+    ['/api/auth/{action?}', Auth::class],
 ];
