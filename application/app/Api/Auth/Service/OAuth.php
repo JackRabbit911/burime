@@ -26,6 +26,14 @@ class OAuth
         setcookie($this->config['name'], $jwt, $options);
     }
 
+    public function logout()
+    {
+        $options = $this->config['cookie'];
+        $options['expires'] = time() - $this->config['lifetime'];
+
+        setcookie($this->config['name'], '', $options);
+    }
+
     private function encode(object $user, ?int $iat = null)
     {
         if (!$iat) {
