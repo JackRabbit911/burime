@@ -8,21 +8,32 @@ use Sys\Model\MysqlModel;
 
 class ModelAuth extends MysqlModel
 {
-    public function find(int $id){}
+    private static $user;
 
-    public function auth(string $email, string $password)
+    public function auth(string $email, string $password): object|false
     {
-        $user = $this->qb->table('users')
+        if (self::$user) {
+            return self::$user;
+        }
+
+        self::$user = $this->qb->table('users')
             ->select('id', 'name', 'dob', 'sex', 'password')
             ->find($email, 'email');
 
-        if (!$user) {
+        if (!self::$user) {
             return false;
         }
 
-        $hash = $user->password;
-        unset($user->password);
+        $hash = self::$user->password;
+        unset(self::$user->password);
 
-        return password_verify($password, $hash) ? $user : false;
+        return password_verify($password, $hash) ? self::$user : false;
+    }
+
+    public function isPairEmailPswd(string $password, string $email): bool
+    {
+        $user = $this->auth($email, $password);
+
+        return $user ? true : false;
     }
 }
