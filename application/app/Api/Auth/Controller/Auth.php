@@ -8,6 +8,7 @@ use App\Api\Auth\Middleware\AuthValidation;
 use Az\Route\Route;
 use App\Api\Auth\Middleware\AuthMiddleware;
 use App\Api\Auth\Service\OAuth;
+use App\Api\Auth\Service\TokenAuth;
 
 class Auth extends ApiAuthController
 {
@@ -19,9 +20,10 @@ class Auth extends ApiAuthController
         return $this->request->getAttribute('user') ? true : false;
     }
 
-    public function logout(OAuth $oauth)
+    public function logout(OAuth $oauth, TokenAuth $tokenAuth)
     {
         $oauth->logout();
+        $tokenAuth->forget();
         return true;
     }
 }
