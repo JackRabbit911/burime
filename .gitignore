@@ -9,5 +9,6 @@ system/
 /sys/*
 backup/
 front_src/
+front_auth/
 master.zip
 *.sql

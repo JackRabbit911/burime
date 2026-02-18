@@ -4,6 +4,7 @@
 @source "../../../www/application/auth/views";
 @source "js";
 @source "../../../www/front_src";
+@source "../../../www/front_auth";
 
 summary.menu-active {
     color: var(--menu-active-fg);

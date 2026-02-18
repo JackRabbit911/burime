@@ -26,41 +26,41 @@ class UserControls extends Component
                     $complete += 25;
             }
     
-            $this->data['usermenu'] = [
-                [
-                    'title' => 'Messages',
-                    'href' => path('message', ['action' => 'list']),
-                    'badge' => $msg,
-                ],
-                [
-                    'title' => 'My Authors',
-                    'href' => path('private', ['action' => 'authors']),
-                    'border' => true,
-                ],
-                [
-                    'title' => 'My Books',
-                    'href' => path('private', ['action' => 'books']),
-                ],
-                [
-                    'title' => 'Favorites',
-                    'href' => '',
-                ],
-                [
-                    'title' => 'Bookmarks',
-                    'href' => '',
-                ],
-                [
-                    'title' => 'Profile',
-                    'href' => path('profile'),
-                    'border' => true,
-                    'badge' => $complete . '%',
-                ],
-                [
-                    'title' => 'Logout',
-                    'href' => path('auth', ['action' => 'logout']),
-                    'border' => true,
-                ]
-            ];
+            // $this->data['usermenu'] = [
+            //     [
+            //         'title' => 'Messages',
+            //         'href' => path('message', ['action' => 'list']),
+            //         'badge' => $msg,
+            //     ],
+            //     [
+            //         'title' => 'My Authors',
+            //         'href' => path('private', ['action' => 'authors']),
+            //         'border' => true,
+            //     ],
+            //     [
+            //         'title' => 'My Books',
+            //         'href' => path('private', ['action' => 'books']),
+            //     ],
+            //     [
+            //         'title' => 'Favorites',
+            //         'href' => '',
+            //     ],
+            //     [
+            //         'title' => 'Bookmarks',
+            //         'href' => '',
+            //     ],
+            //     [
+            //         'title' => 'Profile',
+            //         'href' => path('profile'),
+            //         'border' => true,
+            //         'badge' => $complete . '%',
+            //     ],
+            //     [
+            //         'title' => 'Logout',
+            //         'href' => path('auth', ['action' => 'logout']),
+            //         'border' => true,
+            //     ]
+            // ];
         }
     }
 

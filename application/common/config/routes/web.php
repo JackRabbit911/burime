@@ -26,6 +26,7 @@ use App\Author\Controller\Api as AuthorApi;
 use App\Burime\Controller\Api as BurimeApi;
 use App\Chat\Controller\Chat;
 use App\Home\Controller\AboutHowToCreate;
+use Common\Controller\AuthFront;
 use Common\Controller\Avatar;
 use Common\Controller\Front;
 
@@ -51,6 +52,7 @@ return [
 
     // 'my.branch'     => ['/my/branch/{id?}', Front::class],
     'my'            => ['/my/{any?}', Front::class, ['any' => '.*']],
+    'auth'          => ['/auth/{any?}', AuthFront::class, ['any' => '.*']],
 
     // 'edit'          => ['/edit/{action}/{id}', Edit::class],
     // 'edit.save'     => ['/edit/post/{action}/{id}', EditSave::class],

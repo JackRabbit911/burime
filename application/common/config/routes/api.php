@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Adm\Controller\Users;
+use App\Api\Auth\Controller\Auth;
 use App\Api\Author\Controller\AuthorSave;
 use App\Api\Author\Controller\Group;
 use App\Api\Branch\Controller\BranchSave;
@@ -25,7 +26,7 @@ return [
     'console'       => ['/api/console/{model}/{method}', ConsoleController::class, ['model' => '[\w\/]+']],
     'rating'        => ['/api/rating/{action}/{post_id}', RatingApi::class],
     'post.confirm'  => ['/api/post/{action}/{post_id}', DeletePostApi::class],
-    'api.auth'      => ['/api/auth/{action}', O2Auth::class],
+    // 'api.auth'      => ['/api/auth/{action}', O2Auth::class],
     'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
 
     // 'branch.help'   => ['/api/branch/help/{step}', [Branch::class, 'gethelp']],
@@ -54,4 +55,6 @@ return [
     'api.additional'=> ['api/my/additional/{action}/{id}', Additional::class],
 
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
+
+    ['/api/auth/{action?}', Auth::class],
 ];
