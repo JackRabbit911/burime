@@ -17,7 +17,7 @@ class ModelRecovery extends MysqlModel
         }
 
         self::$user = $this->qb->table('users')
-            ->select('id', 'name')
+            ->select('id', 'name', 'email')
             ->find($email, 'email');
 
         return self::$user ?: false;
