@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="{{ lang }}">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>{{ title|default('Burime') }}</title>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .body {
+        background-color: #222222 !important;
+        color: #ffffff !important;
+      }
+
+      .text {
+        color: #eaeaea !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="body" style="font-family: Helvetica, Arial, sans-serif;">
+  <table border="0" cellpadding="0" cellspacing="0" class="text" style="margin:0; padding:0">
+    <tr>
+      <td>
+        <center style="max-width: 600px; width: 100%;">
+          {% block header %}
+          {% endblock %}
+        </center>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <center style="max-width: 600px; width: 100%;">
+          {% block content %}
+          {% endblock %}
+        </center>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

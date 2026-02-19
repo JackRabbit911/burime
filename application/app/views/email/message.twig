@@ -1,0 +1,14 @@
+{% extends 'email/layout.twig' %}
+{% block header %}
+<h1>{{ title }}</h1>
+{# <h2>{{ appeal }}</h2> #}
+{% endblock %}
+{% block content %}
+<h4>{{ appeal }}</h4>
+<p>{{ msg }}</p>
+<a href={{ link_href }}
+    style="color: #55def6;"
+>
+    {{ link_title }}
+</a>
+{% endblock %}
