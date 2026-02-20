@@ -15,13 +15,14 @@ class SendEmail
     public function recovery(UriInterface $uri, object $user, string $lang, string $code)
     {
         $origin = $uri->getScheme() . '://' . $uri->getHost();
+        $params_str = $user->id . '/' . $code;
 
         $data = [
             'lang' => $lang,
             'title' => __('Burime'),
             'appeal' => __('Dear,') . ' ' . $user->name,
             'msg' => __('msg_restore'),
-            'link_href' => $origin . ':5173/auth/recovery/password/' . $code,
+            'link_href' => $origin . ':5173/auth/recovery/password/' . $params_str,
             'link_title' => __('this link') 
         ];
 
