@@ -56,5 +56,5 @@ return [
 
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 
-    ['/api/auth/{action?}', Auth::class],
+    ['/api/auth/{action?}/{code?}', Auth::class],
 ];
