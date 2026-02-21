@@ -22,7 +22,7 @@ class SendEmail
             'title' => __('Burime'),
             'appeal' => __('Dear,') . ' ' . $user->name,
             'msg' => __('msg_restore'),
-            'link_href' => $origin . ':5173/auth/recovery/password/' . $params_str,
+            'link_href' => $origin . '/auth/recovery/password/' . $params_str,
             'link_title' => __('this link') 
         ];
 
