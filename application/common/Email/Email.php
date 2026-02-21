@@ -41,6 +41,8 @@ class Email extends MailerEmail
         [$username, $password] = $mailbox;
         $this->username = $username;
         $this->password = $password;
+
+        return $this;
     }
 
     public function tpl(string $tpl): self
