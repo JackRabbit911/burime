@@ -35,9 +35,10 @@ return [
     // 'branch.save'   => ['/api/branch/save/{action?}', BranchSave::class],
     // 'branch.delete' => ['/api/branch/delete/{id}/{draft?}', [BranchSave::class, 'delete']],
     // 'branch.create' => ['/api/branch/create/{action}/{id?}/{draft?}', Branch::class],
+    
+    'api.translate' => ['/api/gettranslate', Translate::class],
 
     'api.help'      => ['/api/my/help/{path}', Help::class, ['path' => '.*']],
-    'api.translate' => ['/api/my/gettranslate', Translate::class],
     'api.reference' => ['/api/my/reference/{action}', ReferenceBooks::class],
 
     'api.authors'   => ['/api/my/common/authors/{action}/{id?}', Authors::class],
