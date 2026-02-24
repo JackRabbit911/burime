@@ -20,4 +20,13 @@ class ModelUser extends MysqlModel
             ->where('id', '=', $user_id)
             ->update($data);
     }
+
+    public function isUniqueEmail(string $email): bool
+    {
+        $user_id = $this->qb->table('users')
+            ->select('id')
+            ->find($email, 'email');
+
+        return $user_id ? false : true;
+    }
 }
