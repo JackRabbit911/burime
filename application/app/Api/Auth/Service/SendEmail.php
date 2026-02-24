@@ -34,4 +34,26 @@ class SendEmail
             ->body($html)
             ->send();
     }
+
+    public function register(UriInterface $uri, object $user, string $lang, string $code)
+    {
+        $origin = $uri->getScheme() . '://' . $uri->getHost();
+
+        $data = [
+            'lang' => $lang,
+            'title' => __('Burime'),
+            'appeal' => __('Dear,') . ' ' . $user->name,
+            'msg' => __('msg_register'),
+            'link_href' => $origin . '/auth/register/confirm/' . $code,
+            'link_title' => __('this link') 
+        ];
+
+        $html = $this->tpl->render('email/message', $data);
+
+        (new Email)->to($user)
+            ->mailbox(env('MAIL_BOX_ALX'))
+            ->subject(__('Register'))
+            ->body($html)
+            ->send();
+    }
 }
