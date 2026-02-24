@@ -2,6 +2,7 @@
 
 use Adm\Controller\Users;
 use App\Api\Auth\Controller\Auth;
+use App\Api\Auth\Controller\Recovery;
 use App\Api\Auth\Controller\Register;
 use App\Api\Author\Controller\AuthorSave;
 use App\Api\Author\Controller\Group;
@@ -59,5 +60,6 @@ return [
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 
     ['/api/auth/{action?}/{code?}', Auth::class],
-    ['/api/register/{action}', Register::class],
+    ['/api/register/{action}/{code?}', Register::class],
+    ['/api/recovery/{action}', Recovery::class],
 ];
