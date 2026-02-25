@@ -37,7 +37,7 @@ class SaveRepo
         $data['author_id'] = $author_id;
         $data['user_id'] = $user_id;
         $data['role'] = AuthorRole::Author->value;
-        $data['status'] = BranchAuthorStatus::Participant->value;
+        $data['status'] = BranchAuthorStatus::member->value;
 
         $this->modelBranchAuthor->addAuthor($data);
 
