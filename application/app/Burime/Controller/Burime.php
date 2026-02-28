@@ -122,7 +122,6 @@ class Burime extends WebController
             return null;
         }
 
-        return $branch->authors->getInstance($user->id, 'user_id')
-            ?: $branch->authors->getInstance($user->id, 'owner');
+        return $branch->authors->getInstance($user->id, 'owner');
     }
 }
