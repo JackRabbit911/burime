@@ -10,7 +10,7 @@ class _2025_02_17_10_56_57_create_table_genres
         `weight` tinyint(3) unsigned NOT NULL,
         `description` text,
         PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4";
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
     }
 
     public function down()

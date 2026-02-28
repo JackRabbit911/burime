@@ -25,7 +25,7 @@ class _2025_02_17_10_55_10_create_table_branches
         KEY `created` (`created`),
         KEY `cover` (`cover`),
         CONSTRAINT `branches_ibfk_3` FOREIGN KEY (`owner`) REFERENCES `users` (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4";
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
     }
 
     public function down()
