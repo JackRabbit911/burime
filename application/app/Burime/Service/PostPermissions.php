@@ -9,6 +9,7 @@ use Common\Enum\AuthorRole;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
 use Auth\User;
+use Common\Enum\BranchAuthorPermissions;
 
 class PostPermissions
 {
@@ -21,7 +22,7 @@ class PostPermissions
         $this->branch = $branch;
         $this->user = $user;
 
-        $this->author = $branch->authors->getInstance($user->id ?? 0, 'user_id');
+        $this->author = $branch->authors->getInstance($user->id ?? 0, 'owner');
     }
 
     public function getAuthor($key = null)
@@ -50,13 +51,6 @@ class PostPermissions
                 return true;
         }
         
-        // if ($this->branch->status === BranchStatus::Writing->value
-        // && $this->user->id === $this->branch->info['current_writer']
-        // || $this->branch->status === BranchStatus::Moderation->value
-        // && $this->hasRole(AuthorRole::Moderator->value)) {           
-        //         return true;
-        // }
-
         return false;
     }
 
@@ -90,7 +84,8 @@ class PostPermissions
         }
 
         if ($post->status === PostStatus::Moderation->value) {
-            return ($this->isAuthor($post) || $this->hasRole(AuthorRole::Moderator->value));
+            return ($this->isAuthor($post)
+                || BranchAuthorPermissions::MODERATE->is($this->author->role));
         }
 
         return true;
@@ -98,19 +93,12 @@ class PostPermissions
 
     public function edit($post)
     {
-        // dd($this->isLast($post), $post->status === PostStatus::Draft->value, $this->isAuthor($post), $post->id);
-
         if ($this->isLast($post)
         && $post->status !== PostStatus::Moderation->value
         && $this->isAuthor($post)
         && $this->branch->info['current_writer'] === $this->user->id) {
             return true;
         }
-
-        // if ($this->isLast($post) && $this->isAuthor($post) 
-        //     && $post->status !== PostStatus::Fixed->value) {
-        //     return true;
-        // }
 
         return false;
     }
@@ -172,16 +160,6 @@ class PostPermissions
 
         return false;
     }
-
-    // public function save($post)
-    // {
-    //     if ($this->branch->status === BranchStatus::Blocked->value
-    //     && $post->status === PostStatus::Draft) {
-    //         return true;
-    //     }
-
-    //     return false;
-    // }
 
     public function rating($post)
     {
