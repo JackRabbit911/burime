@@ -29,7 +29,7 @@ class ModelPost implements Saveble
         if (!empty($post['id'])) {
             $this->update($post);
         } else {
-            $branch_id = $post['branch_id'];
+            $branch_id = (int) $post['branch_id'];
             unset($post['branch_id']);
 
             $weight = (isset($post['last']) && $post['last'] === true) ? self::MAX_WEIGHT - 1 : 
@@ -40,48 +40,27 @@ class ModelPost implements Saveble
 
             unset($post['last']);
 
-            $post['id'] = $this->insert($post, $branch_id, ++$weight);
+            $post['id'] = $this->insert($post, $branch_id, (int) ++$weight);
         }
 
         return $post['id'];
     }
 
-    /**
-     * PostControls
-     */
-    // public function delete($post_id)
-    // {
-    //     $count = $this->qb->table('branches_posts')
-    //         ->where('post_id', '=', $post_id)
-    //         ->count();
-
-    //     if ($count > 1) {
-    //         return false;
-    //     }
-        
-    //     $this->qb->table($this->table)
-    //         ->where('id', '=', $post_id)
-    //         ->delete();
-
-    //     return true;
-    // }
-
-
     //PostControls
-    public function setPostStatus($post_id, int $status)
+    public function setPostStatus(int $branch_id, int $post_id, int $status)
     {
-        $this->qb->table($this->table)
-            ->where('id', '=', $post_id)
+        $this->qb->table('branches_posts')
+            ->where('branch_id', '=', $branch_id)
+            ->where('post_id', '=', $post_id)
             ->update(['status' => $status]);
     }
 
     //BranchRepo
     public function setPostStatusPublish($branch_id)
     {
-        $this->qb->table($this->table)
-            ->join('branches_posts', 'branches_posts.post_id', '=', 'posts.id')
-            ->where('branches_posts.branch_id', '=', $branch_id)
-            ->where('posts.status', '=', PostStatus::Moderation->value)
+        $this->qb->table('branches_posts')
+            ->where('branch_id', '=', $branch_id)
+            ->where('status', '=', PostStatus::Moderation->value)
             ->update(['status' => PostStatus::Publish->value]);
     }
 
@@ -94,7 +73,9 @@ class ModelPost implements Saveble
         $post = $this->find($post_id);
 
         if ($post && $branch_id) {
-            $post->weight = $this->getWeight($post_id, $branch_id);
+            $ws = $this->getWeightStatus($post_id, $branch_id);
+            $post->weight = $ws->weight;
+            $post->status = $ws->status;
         }
 
         return $post;
@@ -113,27 +94,11 @@ class ModelPost implements Saveble
             ->first();
     }
 
-    // public function get($branch_id, $limit, $offset)
-    // {
-    //     return $this->qb->table('branches_posts')
-    //         ->select('posts.*', 'branches_posts.weight')
-    //         ->select($this->qb->raw('AVG(rating) AS rating'))
-    //         ->select('authors.alias')
-    //         ->join('posts', 'posts.id', '=', 'post_id')
-    //         ->leftJoin('posts_ratings', 'posts_ratings.post_id', '=', 'posts.id')
-    //         ->join('authors', 'authors.id', '=', 'posts.author_id')
-    //         ->where('branch_id', '=', $branch_id)
-    //         ->asObject(Post::class)
-    //         ->groupBy('posts.id')
-    //         ->limit($limit)->offset($offset)
-    //         ->orderBy('weight')->get();
-    // }
-
     //PostRepo
     public function getList($branch_id, $user_id, $limit, $offset)
     {
         $table = $this->qb->table('branches_posts')
-            ->select('posts.*', 'branches_posts.weight')
+            ->select('posts.*', 'branches_posts.weight', 'branches_posts.status')
             ->select($this->qb->raw('AVG(posts_ratings.rating) AS rating'))
             ->select('authors.alias')
             ->join('posts', 'posts.id', '=', 'post_id')
@@ -167,18 +132,6 @@ class ModelPost implements Saveble
             ->get();
     }
 
-    // public function getFirstLastPosts($branch_id)
-    // {
-    //     return $this->qb->table('branches_posts')
-    //         ->select('posts.id', 'posts.body')
-    //         ->join('posts', 'posts.id', '=', 'post_id')
-    //         ->where('branch_id', '=', $branch_id)
-    //         ->where(function ($qb) {
-    //             $qb->where('weight', '=', self::MAX_WEIGHT);
-    //             $qb->orWhere($qb->raw("weight = (SELECT MIN(weight) FROM branches_posts)"));
-    //         })->orderBy('weight')->get();
-    // }
-
     //AuthorPostGuard
     public function getMaxWeight($branch_id)
     {
@@ -186,7 +139,7 @@ class ModelPost implements Saveble
             ->join('posts', 'posts.id', '=', 'branches_posts.post_id')
             ->where('branch_id', '=', $branch_id)
             ->where('weight', '<', self::MAX_WEIGHT)
-            ->where('posts.status', '>', PostStatus::Deleted->value)
+            ->where('status', '>', PostStatus::Deleted->value)
             ->max('weight');
 
         return (int) $max_weight;
@@ -196,11 +149,11 @@ class ModelPost implements Saveble
     public function getMaxWeightAndCount($branch_id)
     {
         return $this->qb->table('branches_posts')
-            ->join('posts', 'posts.id', '=', 'branches_posts.post_id')
+            // ->join('posts', 'posts.id', '=', 'branches_posts.post_id')
             ->select($this->qb->raw('MAX(weight) AS max_weight'))
             ->select($this->qb->raw('COUNT(post_id) AS count'))
             ->where('weight', '<', self::MAX_WEIGHT)
-            ->where('posts.status', '>', PostStatus::Deleted->value)
+            ->where('status', '>', PostStatus::Deleted->value)
             ->find($branch_id, 'branch_id');
     }
 
@@ -210,7 +163,7 @@ class ModelPost implements Saveble
         return $this->qb->table('branches_posts')
             ->select('posts.*', 'post_id', 'weight')
             ->join('posts', 'posts.id', '=', 'post_id')
-            ->where('posts.status', '>=', PostStatus::Publish->value)
+            ->where('status', '>=', PostStatus::Publish->value)
             ->where('branch_id', '=', $branch_id)
             ->asObject(Post::class)
             ->orderBy('weight', 'DESC')
@@ -228,16 +181,15 @@ class ModelPost implements Saveble
             ->get();
     }
 
-    private function getWeight($post_id, $branch_id)
+    private function getWeightStatus($post_id, $branch_id)
     {
         return $this->qb->table('branches_posts')
-            ->select('weight')
+            ->select('weight', 'status')
             ->where('branch_id', '=', $branch_id)
-            ->setFetchMode(\PDO::FETCH_COLUMN)
             ->find($post_id, 'post_id');
     }
 
-    private function insert($post, $branch_id, $weight)
+    private function insert(array $post, int $branch_id, int $weight)
     {
         $data = array_intersect_key((array) $post, array_flip($this->columns($this->table)));
 
@@ -248,6 +200,7 @@ class ModelPost implements Saveble
             'branch_id' => $branch_id,
             'post_id' => $post_id,
             'weight' => $weight,
+            'status' => $post['status'],
         ];
 
         $this->qb->table('branches_posts')->insert($chain);
