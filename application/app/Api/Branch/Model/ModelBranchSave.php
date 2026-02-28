@@ -62,8 +62,6 @@ class ModelBranchSave extends MysqlModel
 
     private function setPost(array $post, int $branch_id, int $weight)
     {
-        $post['status'] = PostStatus::Approved->value;
-
         $post_id = $this->qb->table('posts')
             ->onDuplicateKeyUpdate($post)
             ->insert($post);
@@ -72,6 +70,7 @@ class ModelBranchSave extends MysqlModel
             'branch_id' => $branch_id,
             'post_id' => $post['id'] ?? $post_id,
             'weight' => $weight,
+            'status' => PostStatus::Approved->value,
         ]);
     }
 }
