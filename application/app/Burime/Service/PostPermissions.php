@@ -85,7 +85,7 @@ class PostPermissions
 
         if ($post->status === PostStatus::Moderation->value) {
             return ($this->isAuthor($post)
-                || BranchAuthorPermissions::MODERATE->is($this->author->role));
+                || BranchAuthorPermissions::MODERATE->is($this->author?->role ?? 0));
         }
 
         return true;
