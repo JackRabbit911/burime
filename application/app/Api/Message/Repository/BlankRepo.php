@@ -9,19 +9,22 @@ use App\Api\Message\Model\ModelMessage;
 
 class BlankRepo
 {
-    public function __construct(private ModelAuthors $model) {}
+    public function __construct(
+        private ModelAuthors $modelAuthors,
+        private ModelMessage $modelMessage
+    ) {}
 
-    public function reply(ModelMessage $model, int $id, int $from)
+    public function reply(array $params)
     {
-        $message = $model->findMessage($id);
-        $data = $this->defaultMsg($message['from'], $from);
-        $data['message']['subject'] = 'Re: ' . $message['subject'];
+        $message = $this->modelMessage->findMessage((int) $params['id']);
+        $data = $this->defaultMsg($message->from, (int) $params['from']);
+        $data['message']['subject'] = 'Re: ' . $message->subject;
         return $data;
     }
 
-    public function rewritePost(int $to, int $from)
+    public function rewritePost(array $params)
     {
-        $data = $this->defaultMsg($to, $from);
+        $data = $this->defaultMsg((int) $params['to'], (int) $params['from']);
         $data['message']['subject'] = 'Отредактируйте Ваш пост';
         $data['message']['data']['tpl'] = 'branch';
         return $data;
@@ -31,7 +34,7 @@ class BlankRepo
     {
         $data['recipients'] = [[
             'id' => $to,
-            'alias' => $this->model->findAuthor($to),
+            'alias' => $this->modelAuthors->findAuthor($to),
         ]];
 
         $data['message'] = [
