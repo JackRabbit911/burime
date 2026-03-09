@@ -34,7 +34,7 @@ class Message extends ApiContractController
         $params = $this->request->getQueryParams();
         $func = $params['content'];
 
-        return $repo->$func((int) $params['to'], (int) $params['from']);
+        return $repo->$func($params);
     }
 
     #[Route(methods: 'delete')]
