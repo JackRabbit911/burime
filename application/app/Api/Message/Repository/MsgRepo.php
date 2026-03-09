@@ -31,6 +31,11 @@ class MsgRepo
         
         if (!$this->modelMessage->isOut($id, $ids)) {
             $message = $this->modelMessage->findIncoming($id, $ids);
+
+            if (!$message) {
+                return null;
+            }
+            
             $message->incoming = true;
             $this->modelMessage->setStatus($id, $ids, MsgStatus::Read->value);
         } else {
