@@ -60,7 +60,7 @@ final class FindBranch extends Model implements IFindBranch
     {
         return $this->qb->table('authors')
             ->select('authors.*')
-            ->select('branches_authors.user_id', 'branches_authors.role', 'branches_authors.status')
+            ->select('branches_authors.role', 'branches_authors.status')
             ->join('branches_authors', 'branches_authors.author_id', '=', 'authors.id')
             ->where('branch_id', '=', $branch_id)
             ->orderBy('branches_authors.role', 'DESC')

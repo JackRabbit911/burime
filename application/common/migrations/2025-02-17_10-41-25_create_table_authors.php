@@ -15,7 +15,7 @@ class _2025_02_17_10_41_25_create_table_authors
         KEY `alias` (`alias`),
         KEY `owner` (`owner`),
         KEY `openclosed` (`openclosed`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4";
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
     }
 
     public function down()

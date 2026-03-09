@@ -12,7 +12,7 @@ class _2025_02_17_11_00_26_create_table_messages
         `data` json DEFAULT NULL,
         `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4";
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
     }
 
     public function down()

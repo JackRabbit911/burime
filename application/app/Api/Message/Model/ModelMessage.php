@@ -55,7 +55,7 @@ class ModelMessage extends MysqlModel
             ->get();
     }
 
-    public function findIncoming(int $id, array $recipients): object
+    public function findIncoming(int $id, array $recipients): object|null
     {
         return $this->qb->table('messages')
             ->select('messages.*')
@@ -121,5 +121,12 @@ class ModelMessage extends MysqlModel
         $this->qb->table('messages')
             ->where('id', '=', $id)
             ->delete();
+    }
+
+    public function findMessage(int $id)
+    {
+        return $this->qb->table('messages')
+            ->select('id', 'from', 'subject')
+            ->find($id);
     }
 }

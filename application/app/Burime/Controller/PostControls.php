@@ -68,8 +68,7 @@ class PostControls extends BaseController
 
             $this->branch->save();
 
-            // $is_delete = $this->modelPost->delete($post_id);
-            $this->modelPost->setPostStatus($post_id, PostStatus::Deleted->value);
+            $this->modelPost->setPostStatus($branch_id, $post_id, PostStatus::Deleted->value);
             $is_delete = true;
 
             if ($is_delete && $this->isModerator && !$this->isAuthor) {
@@ -86,7 +85,7 @@ class PostControls extends BaseController
 
     public function approve(int $branch_id, int $post_id)
     {
-        $this->modelPost->setPostStatus($post_id, PostStatus::Approved->value);
+        $this->modelPost->setPostStatus($branch_id, $post_id, PostStatus::Approved->value);
         $this->branchRepo->setStatus($branch_id, BranchStatus::Ready->value);
 
         return new RedirectResponse($this->uri);
@@ -98,7 +97,7 @@ class PostControls extends BaseController
         $this->branch->info['time_bequin'] = time();
         $this->branch->save();
 
-        $this->modelPost->setPostStatus($post_id, PostStatus::Draft->value);
+        $this->modelPost->setPostStatus($branch_id, $post_id, PostStatus::Draft->value);
 
         $this->session->flash('to', [$this->post->author_id]);
         $this->session->flash('subject', 'Please, edit your post');

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Branch\Repository;
 
-use App\Branch\Api\Model\ModelBranchSave;
+use App\Api\Branch\Model\ModelBranchSave;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchStatus;
 
@@ -16,17 +16,11 @@ class BranchSaveRepo extends SaveRepo
 
     public function save(array $post, array $files, int $user_id)
     {
-        if (isset($files['bgImg'])) {
-            $post['branch']['cover']['bg_img'] = 'background' . $this->getExt($files['bgImg']);
-        } else {
-            $post['branch']['cover']['bg_img'] = '';
-        }
+        $post['branch']['cover']['bg_img'] = (isset($files['bgImg']))
+            ? 'background' . $this->getExt($files['bgImg']) : '';
 
-        if (isset($files['cover'])) {
-            $post['branch']['cover']['cover'] = 'cover' . $this->getExt($files['cover']);
-        } else {
-            $post['branch']['cover']['cover'] = '';
-        }
+        $post['branch']['cover']['cover'] = (isset($files['cover']))
+            ? 'cover' . $this->getExt($files['cover']) : '';
 
         array_walk($post['members'], function(&$v) {
             unset($v['alias']);

@@ -11,9 +11,6 @@ class ModelBranchSave extends MysqlModel
 {
     const MAX_WEIGHT = 65535;
 
-    private $tablePosts;
-    private $branchesPosts;
-
     public function saveBranch(array $branch)
     {
         $id = $this->qb->table('branches')
@@ -54,30 +51,26 @@ class ModelBranchSave extends MysqlModel
 
     public function saveBranchPosts(array $posts, int $branch_id)
     {
-        $this->tablePosts = $this->qb->table('posts');
-        $this->branchesPosts = $this->qb->table('branches_posts');
-
-        if (!empty($posts['first'])) {
+        if (!empty($posts['first']) && !empty($posts['first']['body'])) {
             $this->setPost($posts['first'], $branch_id, 1);
         }
 
-        if (!empty($posts['last'])) {
+        if (!empty($posts['last']) && !empty($posts['last']['body'])) {
             $this->setPost($posts['last'], $branch_id, self::MAX_WEIGHT);
         }
     }
 
     private function setPost(array $post, int $branch_id, int $weight)
     {
-        $post['status'] = PostStatus::Approved->value;
-
-        $post_id = $this->tablePosts
+        $post_id = $this->qb->table('posts')
             ->onDuplicateKeyUpdate($post)
             ->insert($post);
 
-        $this->branchesPosts->insertIgnore([
+        $this->qb->table('branches_posts')->insertIgnore([
             'branch_id' => $branch_id,
             'post_id' => $post['id'] ?? $post_id,
             'weight' => $weight,
+            'status' => PostStatus::Approved->value,
         ]);
     }
 }

@@ -58,8 +58,9 @@ class Burime extends WebController
         $this->data['posts'] = $repo->getPosts((int) $branch_id, $this->user?->id);
         $this->data['last'] = $repo->getLastPost($this->data['posts']);
 
-        if ($this->data['branch']->status === BranchStatus::Waiting->value
-        && $this->data['myAuthor']->role >= AuthorRole::Moderator->value) {
+        if ($this->data['branch']->status === BranchStatus::Waiting->value &&
+        $this->data['myAuthor'] &&
+        $this->data['myAuthor']->role >= AuthorRole::Moderator->value) {
             $this->data['branch']->status = BranchStatus::Moderation->value;
         }
 
@@ -121,7 +122,6 @@ class Burime extends WebController
             return null;
         }
 
-        return $branch->authors->getInstance($user->id, 'user_id')
-            ?: $branch->authors->getInstance($user->id, 'owner');
+        return $branch->authors->getInstance($user->id, 'owner');
     }
 }

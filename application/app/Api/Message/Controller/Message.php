@@ -8,6 +8,7 @@ use App\Api\Message\Repository\MsgRepo;
 use App\Api\Message\Repository\SaveRepo;
 use App\Api\Message\Middleware\MessageValidation;
 use App\Api\Common\Controller\ApiContractController;
+use App\Api\Message\Repository\BlankRepo;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
 use HttpSoft\Response\EmptyResponse;
@@ -26,6 +27,14 @@ class Message extends ApiContractController
         $message = $this->repo->getMessage($id, $this->user->id);
 
         return $message ?: new EmptyResponse(404);
+    }
+
+    public function blank(BlankRepo $repo)
+    {
+        $params = $this->request->getQueryParams();
+        $func = $params['content'];
+
+        return $repo->$func((int) $params['to'], (int) $params['from']);
     }
 
     #[Route(methods: 'delete')]
