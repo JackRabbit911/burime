@@ -15,8 +15,11 @@ use Common\Contract\IModelGroup;
 use Common\Contract\IModelMessage;
 use Common\Contract\IModelUserGroup;
 use Psr\Container\ContainerInterface;
+use Sys\CSRF\Driver\Db;
+use Sys\CSRF\Driver\DriverInterface;
 
 return [
+    DriverInterface::class => DI\get(Db::class),
     AuthorInterface::class => fn() => Author::class,
     BranchInterface::class => fn() => Branch::class,
     IModelUserGroup::class => fn() => new ModelUserGroup,
