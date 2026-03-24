@@ -13,11 +13,13 @@ use App\Api\Common\Middleware\AuthGuard;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Common\Repository\InviteMessageRepo;
 use Auth\Middleware\OAuthMiddleware;
+use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
 
 #[OAuthMiddleware]
 #[AuthGuard]
+#[ApiCsrfMiddleware]
 #[Route(methods: 'post')]
 #[PreparePostData]
 class BranchSave extends ApiContractController
