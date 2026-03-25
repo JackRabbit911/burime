@@ -9,13 +9,13 @@ use App\Api\Branch\Middleware\DraftBranchGetter;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\MemberRole;
+use Sys\CSRF\Facade\Csrf;
 use Az\Route\Route;
 
 #[Route(tokens: ['id' => '\d*', 'draft' => 'draft|'])]
 #[DraftBranchGetter]
 class MyBranch extends ApiContractController
 {
-
     public function bootstrap(?int $id = null)
     {
         $repo = $this->request->getAttribute('repo');
@@ -26,6 +26,7 @@ class MyBranch extends ApiContractController
         $data['authorsFilters'] = MemberRole::getFilters();
         $data['authorsPermissions'] = BranchAuthorPermissions::getArray();
         $data['authorsStatuses'] = BranchAuthorStatus::getArray();
+        $data['_csrf'] = Csrf::generate($this->user->id, 'branch', 7200);
 
         return $data;
     }

@@ -9,11 +9,13 @@ use App\Api\Author\Repository\AuthorSaveRepo;
 use App\Api\Author\Middleware\AuthorValidation;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Common\Repository\InviteMessageRepo;
+use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
 
 class AuthorSave extends ApiContractController
 {
+    #[ApiCsrfMiddleware]
     #[Route(methods: 'post')]
     #[PreparePostData]
     #[AuthorValidation]
