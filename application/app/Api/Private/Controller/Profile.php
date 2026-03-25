@@ -9,8 +9,10 @@ use App\Api\Private\Middleware\ProfileValidation;
 use App\Api\Private\Repository\UserAvatarSaveRepo;
 use App\Api\Private\Middleware\PasswordConfirmValidation;
 use App\Api\Common\Controller\ApiContractController;
-use Auth\Model\OAuth;
+use App\Api\Auth\Service\OAuth;
+use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 use Sys\Middleware\PreparePostData;
+use Sys\CSRF\Facade\Csrf;
 use Az\Route\Route;
 
 class Profile extends ApiContractController
@@ -19,15 +21,20 @@ class Profile extends ApiContractController
 
     public function __invoke()
     {
-        return $this->model->find($this->user->id);
+        $userdata = $this->model->find($this->user->id);
+        $userdata->_csrf = Csrf::generate($this->user->id, 'profile', 7200);
+
+        return $userdata;
     }
 
+    #[ApiCsrfMiddleware]
     #[Route(methods: 'post')]
     #[PreparePostData]
     #[ProfileValidation]
     public function save(UserAvatarSaveRepo $repo, OAuth $auth)
     {
         $data = $this->request->getParsedBody();
+        unset($data['_csrf']);
         $file = $this->request->getUploadedFiles()['file'] ?? null;
 
         $this->model->update($data, $this->user->id);
