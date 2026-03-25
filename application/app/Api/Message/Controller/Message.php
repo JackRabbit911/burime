@@ -9,7 +9,9 @@ use App\Api\Message\Repository\SaveRepo;
 use App\Api\Message\Middleware\MessageValidation;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Message\Repository\BlankRepo;
+use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 use Sys\Middleware\PreparePostData;
+use Sys\CSRF\Facade\Csrf;
 use Az\Route\Route;
 use HttpSoft\Response\EmptyResponse;
 
@@ -32,9 +34,12 @@ class Message extends ApiContractController
     public function blank(BlankRepo $repo)
     {
         $params = $this->request->getQueryParams();
-        $func = $params['content'];
+        $func = $params['content'] ?? 'newMsg';
 
-        return $repo->$func($params);
+        $blank = $repo->$func($params);
+        $blank['_csrf'] = Csrf::generate($this->user->id, 'message', 7200);
+
+        return $blank;
     }
 
     #[Route(methods: 'delete')]
@@ -53,6 +58,7 @@ class Message extends ApiContractController
         return "Message $id was removed";
     }
 
+    #[ApiCsrfMiddleware]
     #[Route(methods: 'post')]
     #[PreparePostData]
     #[MessageValidation]
