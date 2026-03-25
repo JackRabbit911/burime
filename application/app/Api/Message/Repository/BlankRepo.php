@@ -14,6 +14,19 @@ class BlankRepo
         private ModelMessage $modelMessage
     ) {}
 
+    public function newMsg()
+    {
+        return [
+            'message' => [
+                'from' => null,
+                'subject' => '',
+                'data' => ['body' => ''],
+            ],
+            'recipients' => [],
+            'important' => false,
+        ];
+    }
+
     public function reply(array $params)
     {
         $message = $this->modelMessage->findMessage((int) $params['id']);
