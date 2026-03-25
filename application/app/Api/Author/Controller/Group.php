@@ -9,6 +9,7 @@ use App\Api\Author\Middleware\StatusValidation;
 use App\Api\Common\Controller\ApiContractController;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
+use Sys\CSRF\Facade\Csrf;
 
 class Group extends ApiContractController
 {
@@ -16,7 +17,10 @@ class Group extends ApiContractController
 
     public function members(?int $id = null)
     {
-        return $id ? $this->model->getMembers((int) $id) : [];
+        return [
+            'members' => $id ? $this->model->getMembers((int) $id) : [],
+            '_csrf' => Csrf::generate($this->user->id, 'author', 7200)
+        ];
     }
 
     public function getstatus(int $id)
