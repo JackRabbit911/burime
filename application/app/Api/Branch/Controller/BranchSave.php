@@ -19,8 +19,8 @@ use Az\Route\Route;
 
 #[OAuthMiddleware]
 #[AuthGuard]
-#[ApiCsrfMiddleware]
 #[Route(methods: 'post')]
+#[ApiCsrfMiddleware(source: ApiCsrfMiddleware::FORM)]
 #[PreparePostData]
 class BranchSave extends ApiContractController
 {

@@ -58,8 +58,8 @@ class Message extends ApiContractController
         return "Message $id was removed";
     }
 
-    #[ApiCsrfMiddleware]
     #[Route(methods: 'post')]
+    #[ApiCsrfMiddleware(source: ApiCsrfMiddleware::FORM)]
     #[PreparePostData]
     #[MessageValidation]
     public function save(SaveRepo $repo)
