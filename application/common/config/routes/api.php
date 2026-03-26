@@ -61,5 +61,5 @@ return [
 
     ['/api/auth/{action?}/{code?}', Auth::class],
     ['/api/register/{action}/{code?}', Register::class],
-    ['/api/recovery/{action}/{code?}', Recovery::class],
+    ['/api/recovery/{action}/{id?}/{code?}', Recovery::class],
 ];
