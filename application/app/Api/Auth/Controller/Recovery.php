@@ -11,6 +11,8 @@ use App\Api\Auth\Model\ModelRecovery;
 use App\Api\Auth\Middleware\EmailValidation;
 use App\Api\Auth\Middleware\PasswordConfirmValidation;
 use Az\Route\Route;
+use Sys\CSRF\Facade\Csrf;
+use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 
 #[Route(methods: 'post')]
 class Recovery extends ApiAuthController
@@ -32,12 +34,12 @@ class Recovery extends ApiAuthController
         return $user;
     }
 
+    #[ApiCsrfMiddleware]
     #[PasswordConfirmValidation]
     public function savepswd(ModelUser $model)
     {
         $data = $this->request->getBody()->getContents();
         $data= json_decode($data);
-
         $hash = password_hash($data->password, PASSWORD_DEFAULT);
         $model->update(['password' => $hash], $data->id);
 
@@ -45,8 +47,8 @@ class Recovery extends ApiAuthController
     }
 
     #[Route(methods: 'get')]
-    public function confirm(ModelConfirm $model, string $code)
+    public function confirm(ModelConfirm $model, int $id, string $code)
     {
-        return $model->get($code) ? true : false;
+        return $model->get($code) ? Csrf::generate($id, 'password', 7200) : false;
     }
 }
