@@ -27,25 +27,29 @@ class Profile extends ApiContractController
         return $userdata;
     }
 
-    #[ApiCsrfMiddleware]
+    public function csrf()
+    {
+        return Csrf::generate($this->user->id, 'password', 7200);
+    }
+
     #[Route(methods: 'post')]
+    #[ApiCsrfMiddleware(source: ApiCsrfMiddleware::FORM)]
     #[PreparePostData]
     #[ProfileValidation]
     public function save(UserAvatarSaveRepo $repo, OAuth $auth)
     {
         $data = $this->request->getParsedBody();
-        unset($data['_csrf']);
         $file = $this->request->getUploadedFiles()['file'] ?? null;
 
         $this->model->update($data, $this->user->id);
         $repo->saveFile($file, $this->user->id);
-
         $auth->login($this->user->update($data));
 
         return ['id' => $this->user->id];
     }
 
     #[Route(methods: 'post')]
+    #[ApiCsrfMiddleware(source: ApiCsrfMiddleware::FORM)]
     #[PasswordConfirmValidation]
     public function savepswd()
     {
