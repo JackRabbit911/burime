@@ -20,17 +20,17 @@ class Register extends ApiAuthController
     public function save(SendEmail $mailer)
     {
         $data = $this->request->getBody()->getContents();
-        $data= json_decode($data);
+        $data = json_decode($data);
 
         $user = new stdClass;
         $user->name = $data->name;
         $user->email = $data->email;
         $user->password = password_hash($data->password, PASSWORD_DEFAULT);
 
-        $code = $this->model->set($user);        
+        $code = $this->model->set($user);
         $mailer->register($this->request->getUri(), $user, $this->i18n->lang(), $code);
 
-        return $data;
+        return true;
     }
 
     public function confirm(ModelUser $model, string $code)
