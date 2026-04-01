@@ -6,3 +6,6 @@ info_register: A message with a link to complete the registration has been sent 
 whoops_register: Confirmation code does not match or the link is out of date. Please repeat the
 msg_restore: To login recovery on this website click
 to change password: Change password
+look_spam: If you don't find the email in your Inbox, try looking in your Spam folder
+mail_recovery_info: An email with a link to reset and recover your password has been sent to the email address you provided
+code_expired: The verification code is invalid or expired. Please repeat
