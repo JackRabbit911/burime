@@ -29,7 +29,7 @@ Guest: Гость
 password change procedure: процедуру смены пароля
 Change password: Смена пароля
 Congratulations!: Поздравляем!
-Dear, username!: Ув., username!
+Dear, %!: Ув., %!
 Dear,: Ув.,
 Welcome to Sign In!: Войти
 Login recovery: Восстановление входа
@@ -57,3 +57,18 @@ to change password: Сменить пароль
 Send: Отправить
 Remember me on this device: Запомнить на этом устройстве
 min % symbols: Не меньше % символов
+
+Change Password form: Форма смены пароля
+Loading: Загрузка
+Your password has been successfully changed: Ваш пароль успешно изменён
+Everything will be fine!: Всё будет хорошо!
+Important!: Важно!
+No account?: Нет аккаунта?
+Whoops...: Опаньки...
+password recovery procedure: процедуру восстановления пароля
+the registration procedure: процедуру регистрации
+the password recovery process: процедуру восстановления пароля
+
+look_spam: Если не найдёте письмо во Входящих, поищите в папке Спам
+mail_recovery_info: На указанный Вами адрес электропочты направлено письмо со ссылкой на сброс и восстановление пароля
+code_expired: Код подтверждения недействителен или устарел. Пожалуйста, повторите
