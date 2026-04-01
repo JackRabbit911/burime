@@ -31,7 +31,7 @@ class Recovery extends ApiAuthController
         $code = $modelConfirm->set();
         $mailer->recovery($this->request->getUri(), $user, $this->i18n->lang(), $code);
 
-        return $user;
+        return $user->name;
     }
 
     #[ApiCsrfMiddleware]
