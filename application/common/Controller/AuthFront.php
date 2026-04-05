@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Common\Controller;
 
+use Common\Middleware\GuestGuard;
 use Sys\Controller\WebController;
-// use Auth\Middleware\AuthGuardRedirect;
 
+#[GuestGuard]
 class AuthFront extends WebController
 {
     public function __invoke($id = null)
