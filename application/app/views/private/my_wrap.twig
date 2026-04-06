@@ -1,9 +1,0 @@
-{% embed 'common/embed/top-xl.twig' %}
-{% import 'home/books/book_card.twig' as b %}
-{% block top %}
-{{ include('private/user_top.twig') }}
-{% endblock top %}
-{% block center %}
-{{ include('private/' ~ view ~ '.twig')}}
-{% endblock %}
-{% endembed %}

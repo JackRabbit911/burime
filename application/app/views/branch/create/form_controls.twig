@@ -1,9 +1,0 @@
-<div class="flex flex-row justify-between mt-4">
-    <button form="{{ form.form.id }}" name="sbmt" type="submit" class="btn btn-primary dark:btn-info" value="{{ sbmt.prev }}"
-    {% if not sbmt.prev %}disabled{% endif %}>
-        {{ __('prev') }}
-    </button>
-    <button form="{{ form.form.id }}" name="sbmt" type="submit" class="btn btn-primary dark:btn-info" value="{{ sbmt.next }}">
-        {{ __('Next') }}
-    </button>
-</div>

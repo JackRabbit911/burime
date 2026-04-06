@@ -1,8 +1,0 @@
-<div class="join mt-6">
-    <a href="{{ path('message', {'action': 'list'}) }}" class="btn">
-        {{ __('Go to messages list') }}
-    </a>
-    <a href="{{ path('message', {'action': 'remove', 'id': msg.id, 'author_id': msg.from})}}" class="btn">
-        {{ __('Delete') }}
-    </a>
-</div>

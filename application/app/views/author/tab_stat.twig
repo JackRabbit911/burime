@@ -13,7 +13,7 @@
             <table class="table">
                 <tbody>
                     {% if author.c_members > 0 %}
-                        {{ stat.tr(statistic.members) }}
+                    {{ stat.tr(statistic.members) }}
                     {% endif %}
                     {{ stat.tr(statistic.rating) }}
                     {{ stat.tr(statistic.books) }}
@@ -28,13 +28,15 @@
                             </a>
                         </td>
                         {% if favorite == true %}
-                            <td class="flex flex-row justify-end">
-                                <div class="size-7">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-fit text-error">
-                                        <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-                                    </svg>
-                                </div>
-                            </td>
+                        <td class="flex flex-row justify-end">
+                            <div class="size-7">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="size-fit text-error">
+                                    <path
+                                        d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                                </svg>
+                            </div>
+                        </td>
                         {% endif %}
                     </tr>
                     {{ stat.tr(statistic.in_groups) }}
@@ -42,30 +44,31 @@
             </table>
         </div>
     </div>
-    {% if author.info.info is defined 
-        and author.info.info is not empty 
-        or author.info.rules is defined 
-        and author.info.rules is not empty %}
+    {% if author.info.info is defined
+    and author.info.info is not empty
+    or author.info.rules is defined
+    and author.info.rules is not empty %}
     <a href="{{ path('author', {'action': 'info', 'id': author.id}) }}" role="tab" class="tab">
         {{ __('Info') }}
     </a>
     {% endif %}
-    {% if author.c_members > 0 and (author.openclosed < 2 or (app.user and author.owner == app.user.id)) %}
-    <a href="{{ path('author', {'action': 'members', 'id': author.id}) }}" role="tab" class="tab">
+    {% if author.c_members > 0 and (author.openclosed < 2 or (app.user and author.owner==app.user.id)) %} <a
+        href="{{ path('author', {'action': 'members', 'id': author.id}) }}" role="tab" class="tab">
         {{ __('Members') }}
-    </a>
-    {% endif %}
-    {% if app.user and author.owner == app.user.id %}
-    <a href="{{ path('author', {'action': 'form', 'id': author.id}) }}" role="tab" class="tab">
-        {{ __('Edit') }}
-    </a>
-    {% endif %}
+        </a>
+        {% endif %}
+        {% if app.user and author.owner == app.user.id %}
+        {# <a href="{{ path('author', {'action': 'form', 'id': author.id}) }}" role="tab" class="tab"> #}
+            <a href="{{ '/my/author/' ~ author.id }}" role="tab" class="tab">
+                {{ __('Edit') }}
+            </a>
+            {% endif %}
 </div>
 <form id="acts" action="{{ path('author.controls') }}" method="post">
     <input name="members[]" type="hidden" value="{{ author.id }}" />
 </form>
 {% endblock center %}
 {% block bottom %}
-    {{ include('author/tab_controls.twig') }}
+{{ include('author/tab_controls.twig') }}
 {% endblock bottom %}
 {% endembed %}
