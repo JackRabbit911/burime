@@ -2,9 +2,11 @@
 
 use App\Author\Controller\Author;
 use App\Author\Controller\Controls;
+use App\Author\Controller\Api as AuthorApi;
 use App\Burime\Controller\Burime;
 use App\Burime\Controller\PostBranchSave;
 use App\Burime\Controller\PostControls;
+use App\Burime\Controller\Participation;
 use App\Home\Controller\About;
 use App\Home\Controller\AuthorsList;
 use App\Home\Controller\Home;
@@ -19,10 +21,8 @@ use Common\Controller\Front;
 use App\Api\UserGuest;
 use App\Author\Controller\Form;
 use App\Author\Controller\NoAuthor;
-use App\Burime\Controller\Participation;
 use App\Message\Controller\Message;
 use App\Private\PrivateController;
-use App\Author\Controller\Api as AuthorApi;
 use App\Burime\Controller\Api as BurimeApi;
 use App\Chat\Controller\Chat;
 use Common\Controller\Avatar;
@@ -45,6 +45,9 @@ return [
     'rating'        => ['/rating/{action}/{post_id}', Rating::class],
     'post'          => ['/post/{branch_id}/{action}/{post_id}', PostControls::class],
     
+    'participation' => ['/participation/{branch_id}/{action}/{author_id?}', Participation::class],
+    'int.author'    => ['/internal/author/{action}/{id?}', AuthorApi::class],
+
     // 'avatar'        => ['/avatar/{action}/{id}/{lifetime?}', Avatar::class],
     // 'author.form'   => ['/author/form/{id?}', Form::class],
     // 'author.save'   => ['/author/save/{id?}', [Form::class, 'save']],
@@ -52,8 +55,6 @@ return [
     // 'message'       => ['/message/{action}/{id?}/{author_id?}', Message::class],
     // 'chat'          => ['/chat/{action?}/{room_id}/{author_id}', Chat::class],
     // 'private'       => ['/private/{action}', PrivateController::class],
-    // 'participation' => ['/participation/{branch_id}/{action}/{author_id?}', Participation::class],
     // 'int.burime'    => ['/internal/burime/{action}/{id?}', BurimeApi::class],
-    // 'int.author'    => ['/internal/author/{action}/{id?}', AuthorApi::class],
     // 'lab.react'     => ['/whoami', UserGuest::class],
 ];
