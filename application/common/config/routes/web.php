@@ -17,6 +17,7 @@ use App\Home\Controller\AboutHowToCreate;
 use App\Rating\Rating;
 use Common\Controller\AuthFront;
 use Common\Controller\Front;
+use Common\Controller\Avatar;
 
 use App\Api\UserGuest;
 use App\Author\Controller\Form;
@@ -25,11 +26,11 @@ use App\Message\Controller\Message;
 use App\Private\PrivateController;
 use App\Burime\Controller\Api as BurimeApi;
 use App\Chat\Controller\Chat;
-use Common\Controller\Avatar;
 
 return [
     'my'            => ['/my/{any?}', Front::class, ['any' => '.*']],
     'auth'          => ['/auth/{any?}', AuthFront::class, ['any' => '.*']],
+    'avatar'        => ['/avatar/{action}/{id}/{lifetime?}', Avatar::class],
 
     'home'          => ['/', Home::class],
     'about.create'  => ['/about/how_to_create/{action}', AboutHowToCreate::class],
@@ -48,7 +49,7 @@ return [
     'participation' => ['/participation/{branch_id}/{action}/{author_id?}', Participation::class],
     'int.author'    => ['/internal/author/{action}/{id?}', AuthorApi::class],
 
-    // 'avatar'        => ['/avatar/{action}/{id}/{lifetime?}', Avatar::class],
+
     // 'author.form'   => ['/author/form/{id?}', Form::class],
     // 'author.save'   => ['/author/save/{id?}', [Form::class, 'save']],
     // 'author.guard'  => ['/author/need_create', NoAuthor::class],
