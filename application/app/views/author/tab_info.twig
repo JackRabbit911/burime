@@ -1,46 +1,49 @@
 {% embed 'common/embed/center_lg.twig' %}
 {% block top %}
-    {{ include('author/top.twig') }}
+{{ include('author/top.twig') }}
 {% endblock top %}
 {% block center %}
 <div role="tablist" class="tabs tabs-lift w-full">
     <a href="{{ path('author', {'id': author.id}) }}" role="tab" class="tab">
         {{ __('Statistic') }}
     </a>
-    {% if author.info.info is defined 
-        and author.info.info is not empty 
-        or author.info.rules is defined 
-        and author.info.rules is not empty %}
-        <a href="{{ path('author', {'action': 'info', 'id': author.id}) }}" role="tab" class="tab tab-active">
-            {{ __('Info') }}
-        </a>
-        <div class="tab-content bg-base-100 border-base-300 p-6 text-start">
-            <h4 class="text-xl font-medium leading-9 tracking-tight">
-                {{ __('Info about author or group') }}
-            </h4>
-            <p>{{ author.info.info|nl2br }}</p>
-            {% if author.info.rules is defined %}
-            <h4 class="text-xl font-medium leading-9 tracking-tight">
-                Rules of the group
-            </h4>
-            <p>{{ author.info.rules ?? '...' }}</p>
-            {% endif %}
-        </div>
-    {% endif %}
-    {% if author.c_members > 0 and (author.openclosed < 2 or (app.user and author.owner == app.user.id)) %}
-    <a href="{{ path('author', {'action': 'members', 'id': author.id}) }}" role="tab" class="tab">
-        {{ __('Members') }}
+    {% if author.info.info is defined
+    and author.info.info is not empty
+    or author.info.rules is defined
+    and author.info.rules is not empty %}
+    <a href="{{ path('author', {'action': 'info', 'id': author.id}) }}" role="tab" class="tab tab-active">
+        {{ __('Info') }}
     </a>
+    <div class="tab-content bg-base-100 border-base-300 p-6 text-start">
+        <h4 class="text-xl font-medium leading-9 tracking-tight">
+            {{ __('Info about author or group') }}
+        </h4>
+        <p>{{ author.info.info|nl2br }}</p>
+        {% if author.info.rules is defined %}
+        <h4 class="text-xl font-medium leading-9 tracking-tight">
+            Rules of the group
+        </h4>
+        <p>{{ author.info.rules ?? '...' }}</p>
+        {% endif %}
+    </div>
     {% endif %}
-    {% if app.user and author.owner == app.user.id %}
-    <a href="{{ path('author', {'action': 'form', 'id': author.id}) }}" role="tab" class="tab">{{ __('Edit') }}</a>
-    {% endif %}
+    {% if author.c_members > 0 and (author.openclosed < 2 or (app.user and author.owner==app.user.id)) %} <a
+        href="{{ path('author', {'action': 'members', 'id': author.id}) }}" role="tab" class="tab">
+        {{ __('Members') }}
+        </a>
+        {% endif %}
+        {% if app.user and author.owner == app.user.id %}
+        {# <a href="{{ path('author', {'action': 'form', 'id': author.id}) }}" role="tab" class="tab"> #}
+            <a href="{{ '/my/author/' ~ author.id }}" role="tab" class="tab">
+            {{ __('Edit') }}
+        </a>
+        {% endif %}
 </div>
 <form id="acts" action="{{ path('author.controls') }}" method="post">
     <input name="members[]" type="hidden" value="{{ author.id }}" />
 </form>
 {% endblock center %}
 {% block bottom %}
-    {{ include('author/tab_controls.twig') }}
+{{ include('author/tab_controls.twig') }}
 {% endblock bottom %}
 {% endembed %}
