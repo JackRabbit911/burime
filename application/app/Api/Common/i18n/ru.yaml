@@ -3,7 +3,6 @@ Branch creation: Создание ветки
 Genres: Жанры
 Participants: Участники
 Cover: Обложка
-Publish: Публикация
 Pre-moderation: Предмодерация
 Allow comments: Разрешить комментарии
 Author`s signature under the post: Подпись автора под постом
@@ -15,6 +14,29 @@ Up to % words: Не более % слов
 Team leader: Лидер группы
 Search & filter: Поиск и фильтр
 Filter: Фильтр
+
+Publication: Публикация
+Publish: Опубликовать
+Prev: Назад
+Next: Вперед
+Cancel: Отменить
+Draft: В черновики
+First post: Первый пост
+Last post: Последний пост
+Your project is ready to publish!: Ваш проект готов к публикации!
+Title is required: Название обязательно
+You need to choose at least one genre: Необходимо выбрать хотя бы один жанр
+You need to choose team leader: Вам нужно выбрать лидера команды
+Formulate the private rules of this branch: Сформулируйте частные правила этой ветки
+Design Your book cover: Создайте обложку для своей книги
+Add a description to Your work: Добавьте описание к Вашему произведению
+Create new branch: Создать новую ветку
+Choose colors: Выберите цвета
+Background: Фона
+Text: Текста
+Font size: Размер шрифта
+Cover image: Изображение обложки
+Background image: Фоновое изображение
 
 Personal account: Личный кабинет
 My Authors: Мои Авторы
@@ -30,6 +52,7 @@ friends: друзья
 addressbook: адресная книга
 groups: группы
 Edit author: редактировать автора
+Edit branch: редактировать ветку
 
 Alias: Псевдоним
 Slogan: Девиз
@@ -53,3 +76,10 @@ DIRECTOR: Режиссировать создание произвндения
 DESIGN: Изменять обложку книги
 EDIT_POST: Редактировать посты в ветке
 WRITE: Писать посты в ветке
+
+There's nothing here yet: Здесь пока ничего нет
+
+Delete: Удалить
+Back to message list: К списку сообщений
+Reply to sender: Ответить отправителю
+incoming: входящее
