@@ -17,10 +17,12 @@ class Controls extends WebController
 
         switch ($data['action']) {
             case 'sendmsg':
-                $uri = path('message', ['action' => 'form']);
+                $query_string = http_build_query(['to' => $data['members']]);
+                $query_string = empty($query_string) ? $query_string : '?' . $query_string;
+                $uri = '/my/message/form' . $query_string;
                 break;
             case 'chat':
-                $uri = path('message', ['action' => 'form']);
+                $uri = '/my/message/form'; //path('message', ['action' => 'form']);
                 break;
             case 'subscribe':
                 $uri = path('author', ['id' => $data['members'][0]]);
@@ -31,8 +33,6 @@ class Controls extends WebController
                 $model->removeFromUserGroup($this->user->id, $data['members'][0], 100);
                 break;
         }
-
-        $this->session->set('to', $data['members']);
 
         return $this->redirect($uri);
     }
