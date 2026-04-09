@@ -13,7 +13,7 @@ site rules: правилами сайта
 privacy policy: политикой безопасности
 Sign Up: Зарегистрироваться
 Name: Имя
-Username: Имя пользователя
+User Name: Имя пользователя
 Password: Пароль
 New password: Новый пароль
 Confirm: Подтверждение
@@ -47,10 +47,10 @@ Save: Сохранить
 Phone: Телефон
 Date of birth: Дата рождения
 Sex: Пол
-male: мужской
-female: женский
+Male: мужской
+Female: женский
 Pick a file for avatar: Выберите файл для аватара
-Up to 1Mb: До 1Mb
+Up to %Mb: До %Mb
 User profile: Данные пользователя
 to change password: Сменить пароль
 
