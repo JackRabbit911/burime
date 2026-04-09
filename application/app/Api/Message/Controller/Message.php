@@ -37,7 +37,7 @@ class Message extends ApiContractController
         $func = $params['content'] ?? 'newMsg';
 
         $blank = $repo->$func($params);
-        $blank['_csrf'] = Csrf::generate($this->user->id, 'message', 7200);
+        $blank->_csrf = Csrf::generate($this->user->id, 'message', 7200);
 
         return $blank;
     }
