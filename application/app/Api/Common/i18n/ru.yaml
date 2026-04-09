@@ -85,7 +85,7 @@ Reply to sender: Ответить отправителю
 incoming: входящее
 
 Help: Справка
-Choice recipients: Выбрать получателей
+Choice recipients: Получатели
 Message sender: Отправитель
 Appeal: Обращение
 Signature: Подпись
@@ -93,3 +93,4 @@ Generate an appeal automatically: Сгенерировать обращение
 Generate signature automatically: Сгенерировать подпись
 
 Delete from everyone: Удалить у всех
+Write message: Написать
