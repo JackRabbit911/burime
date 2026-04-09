@@ -6,61 +6,62 @@ namespace App\Api\Message\Repository;
 
 use App\Api\Message\Model\ModelAuthors;
 use App\Api\Message\Model\ModelMessage;
+use stdClass;
 
 class BlankRepo
 {
+    private stdClass $msg;
+
     public function __construct(
         private ModelAuthors $modelAuthors,
         private ModelMessage $modelMessage
-    ) {}
-
-    public function newMsg()
+    )
     {
-        return [
-            'message' => [
-                'from' => null,
-                'subject' => '',
-                'data' => ['body' => ''],
-            ],
-            'recipients' => [],
-            'important' => false,
-        ];
+        $this->msg = new stdClass;
+        $this->msg->message = new stdClass;
+        $this->msg->message->data = new stdClass;
+        $this->msg->message->from = null;
+        $this->msg->message->subject = '';
+        $this->msg->message->data->body = '';
+        $this->msg->important = false;
+    }
+
+    public function newMsg(array $params)
+    {
+        $this->msg->recipients = $this->getRecipients($params['to'] ?? null);
+        return $this->msg;
     }
 
     public function reply(array $params)
     {
         $message = $this->modelMessage->findMessage((int) $params['id']);
-        $data = $this->defaultMsg($message->from, (int) $params['from']);
-        $data['message']['subject'] = 'Re: ' . $message->subject;
-        return $data;
+        $this->msg->message->from = (int) $params['from'] ?? null;
+        $this->msg->message->subject = 'Re: ' . $message->subject;
+        $this->msg->recipients = $this->getRecipients($message->from);
+
+        return $this->msg;
     }
 
     public function rewritePost(array $params)
     {
-        $data = $this->defaultMsg((int) $params['to'], (int) $params['from']);
-        $data['message']['subject'] = 'Отредактируйте Ваш пост';
-        $data['message']['data']['tpl'] = 'branch';
-        return $data;
+        $this->msg->message->from = (int) $params['from'] ?? null;
+        $this->msg->message->subject = __('Edit your post');
+        $this->msg->message->data->tpl = 'branch';
+        $this->msg->recipients = $this->getRecipients((int) $params['to']);
+
+        return $this->msg;
     }
 
-    private function defaultMsg(int $to, int $from)
+    private function getRecipients(int|string|array|null $to)
     {
-        $data['recipients'] = [[
-            'id' => $to,
-            'alias' => $this->modelAuthors->findAuthor($to),
-        ]];
+        if (!$to) {
+            return [];
+        }
 
-        $data['message'] = [
-            'from' => $from,
-            'subject' => 'Отредактируйте Ваш пост',
-            'data' => [
-                'body' => '',
-                'tpl' => '',
-            ],
-        ];
+        if (is_array($to)) {
+            return $this->modelAuthors->getAuthorsByIds($to);
+        }
 
-        $data['important'] = false;
-
-        return $data;
+        return [$this->modelAuthors->findAuthor($to)];
     }
 }
