@@ -23,28 +23,16 @@
             {{ __('How to play') }}
         </h2>
         <div class="text-center">
-            <a
-                href="{{ path('about', {action: 'burime'}) }}"
-                class="btn btn-primary w-full md:w-2/3 mb-3"
-            >
+            <a href="{{ path('about', {action: 'burime'}) }}" class="btn btn-primary w-full md:w-2/3 mb-3">
                 {{ __('What is burime') }}
             </a>
-            <a
-                href="{{ path('about', {action: 'glossary'}) }}"
-                class="btn btn-primary w-full md:w-2/3 mb-3"
-            >
+            <a href="{{ path('about', {action: 'glossary'}) }}" class="btn btn-primary w-full md:w-2/3 mb-3">
                 {{ __('Glossary') }}
             </a>
-            <a
-                href="{{ path('about', {action: 'rules'}) }}"
-                class="btn btn-primary w-full md:w-2/3 mb-3"
-            >
+            <a href="{{ path('about', {action: 'rules'}) }}" class="btn btn-primary w-full md:w-2/3 mb-3">
                 {{ __('Rules of the game') }}
             </a>
-            <a
-                href="{{ path('start', {action: 'start'}) }}"
-                class="btn btn-success btn-xl w-full md:w-2/3"
-            >
+            <a href="{{ path('start', {action: 'start'}) }}" class="btn btn-success btn-xl w-full md:w-2/3">
                 {{ __('Start the game') }}
             </a>
         </div>
@@ -53,11 +41,16 @@
         <h2 class="text-lg mb-2">
             {{ __('The best works') }}
         </h2>
+        {% if books is empty %}
+        <p>
+            {{ __("There's nothing here yet, but there will definitely be one soon!") }}
+        </p>
+        {% endif %}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             {% for book in books %}
-                <a href="{{ path('branch', {'branch_id': book.id}) }}">
-                    {{ b.book(book) }}
-                </a>
+            <a href="{{ path('branch', {'branch_id': book.id}) }}">
+                {{ b.book(book) }}
+            </a>
             {% endfor %}
         </div>
     </div>
@@ -65,9 +58,14 @@
         <h2 class="text-lg mb-2">
             {{ __('The best authors') }}
         </h2>
+        {% if books is empty %}
+        <p>
+            {{ __("There's nothing here yet, but there will definitely be one soon!") }}
+        </p>
+        {% endif %}
         <div class="grid md:grid-cols-2 gap-4">
             {% for author in authors %}
-                {{ a.authorcard(author) }}
+            {{ a.authorcard(author) }}
             {% endfor %}
         </div>
     </div>
@@ -76,7 +74,7 @@
             {{ __('Random excerpt from the book') }}
         </h2>
         <p>
-            {{ post.body ?? 'No content' }}
+            {{ post.body ?? __("There's nothing here yet, but there will definitely be one soon!") }}
         </p>
         <p class="text-end text-xs text-current font-medium mt-1">
             {{ post.alias ?? '' }}
