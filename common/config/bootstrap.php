@@ -4,7 +4,6 @@ use Sys\Response\ResponseHeader;
 
 define('SYSPATH', DOCROOT . '../../system/');
 define('FRAMEWORK', SYSPATH . 'vendor/alpha-zeta/framework/src/');
-define('APPPATH', DOCROOT . '../application/');
 define('CONFIG', APPPATH . 'common/config/');
 define('ENVPATH', DOCROOT . '../');
 define('ROOTPATH', DOCROOT . '../../');
