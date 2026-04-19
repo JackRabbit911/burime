@@ -12,6 +12,7 @@ class Front extends WebController
 {
     public function __invoke($id = null)
     {
+        $this->app->js('/config/my.js');
         $this->app->js('/assets/js/main.js');
         return view('common/front');
     }
