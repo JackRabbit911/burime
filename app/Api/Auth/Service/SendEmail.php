@@ -29,7 +29,7 @@ class SendEmail
         $html = $this->tpl->render('email/message', $data);
 
         (new Email)->to($user)
-            ->mailbox(env('MAIL_BOX_ALX'))
+            ->mailbox(env('MAIL_BOX_ROBOT'))
             ->subject(__('Restore password'))
             ->body($html)
             ->send();
@@ -51,7 +51,7 @@ class SendEmail
         $html = $this->tpl->render('email/message', $data);
 
         (new Email)->to($user)
-            ->mailbox(env('MAIL_BOX_ALX'))
+            ->mailbox(env('MAIL_BOX_ROBOT'))
             ->subject(__('Register'))
             ->body($html)
             ->send();
