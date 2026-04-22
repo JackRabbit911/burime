@@ -20,11 +20,9 @@ abstract class ApiContractValidation extends ApiValidationMiddleware
     {
         return $check
             ? $handler->handle($request)
-            : (ENV > STAGE
-                ? new JsonResponse([
+            : new JsonResponse([
                     'success' => false,
                     'error' => $this->validation->getResponse(true),
-                ])
-                : new JsonResponse('Bad request', 400));
+                ]);
     }
 }
