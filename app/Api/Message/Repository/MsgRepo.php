@@ -17,10 +17,13 @@ class MsgRepo
 
     public function getList($user_id)
     {
+        $data['inbox'] = [];
+        $data['outbox'] = [];
+        $data['deleted'] = [];
         $ids = $this->modelAuthors->getOwnAuthorsIds($user_id);
 
         if (empty($ids)) {
-            return [];
+            return $data;
         }
         
         $data['inbox'] = $this->modelMessage->getInbox($ids);
