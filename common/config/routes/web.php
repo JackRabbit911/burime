@@ -30,7 +30,7 @@ use App\Chat\Controller\Chat;
 return [
     'my'            => ['/my/{any?}', Front::class, ['any' => '.*']],
     'auth'          => ['/auth/{any?}', AuthFront::class, ['any' => '.*']],
-    'avatar'        => ['/avatar/{action}/{id}/{lifetime?}', Avatar::class],
+    'avatar'        => ['/ava/{action}/{id}/{lifetime?}', Avatar::class],
 
     'home'          => ['/', Home::class],
     'about.create'  => ['/about/how_to_create/{action}', AboutHowToCreate::class],

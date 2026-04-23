@@ -9,8 +9,8 @@ use Sys\Response\FileResponse;
 
 class Avatar extends BaseController
 {
-    private const NO_AVATAR = '/avatar/no_avatar.jpg';
-    private const AVATAR_URL = '/avatar/';
+    private const NO_AVATAR = 'avatar/no_avatar.jpg';
+    private const AVATAR_URL = 'avatar/';
     
     public function author(int $id, int $lifetime = 0)
     {
