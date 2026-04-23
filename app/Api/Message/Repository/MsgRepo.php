@@ -18,6 +18,11 @@ class MsgRepo
     public function getList($user_id)
     {
         $ids = $this->modelAuthors->getOwnAuthorsIds($user_id);
+
+        if (empty($ids)) {
+            return [];
+        }
+        
         $data['inbox'] = $this->modelMessage->getInbox($ids);
         $data['outbox'] = $this->modelMessage->getOutbox($ids);
         $data['deleted'] = $this->modelMessage->getDeleted($ids);
