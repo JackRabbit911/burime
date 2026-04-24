@@ -2,6 +2,7 @@
 <html lang="{{ i18n.lang()|default('en') }}" class="h-full">
     <head>
         {{ include('common/head.twig') }}
+        <script src="/assets/js/themeSet.js"></script>
     </head>
     {% apply spaceless %}
     <body class="h-full">
@@ -17,7 +18,7 @@
                 </aside>
             </footer>
         </div>
-        {# <script src="/assets/js/start.js"></script> #}
+        <script src="/assets/js/themeToggle.js"></script>
         {{ app.js|raw }}
     </body>
     {% endapply %}
