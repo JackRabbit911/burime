@@ -12,7 +12,7 @@ class Works extends WebController
     private $rowCount;
     private $paginationView = 'web/common/pagination';
     private $switcherView = 'web/common/switcher';
-    private string $title = 'Literary game Burime';
+    private string $title = 'Works';
     private ModelWorks $model;
 
     public function __construct(ModelWorks $model)
