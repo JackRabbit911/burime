@@ -1,25 +1,27 @@
 <!doctype html>
 <html lang="{{ i18n.lang()|default('en') }}" class="h-full">
-    <head>
-        {{ include('common/head.twig') }}
-        <script src="/assets/js/themeSet.js"></script>
-    </head>
-    {% apply spaceless %}
-    <body class="h-full">
-        <div class="mx-auto flex flex-col min-h-screen">
-            {{ app.cmp('navbar')|raw }}
-            <main class="lg:container mb-auto lg:mx-auto px-4">
-                {% block content %}
-                {% endblock %}
-            </main>
-            <footer class="footer footer-center p-4 bg-base-300 text-base-content">
-                <aside>
-                    <p>Copyright © 2026 - All right reserved by world.zay@gmail.com</p>
-                </aside>
-            </footer>
-        </div>
-        <script src="/assets/js/themeToggle.js"></script>
-        {{ app.js|raw }}
-    </body>
-    {% endapply %}
+
+<head>
+  {{ include('common/head.twig') }}
+  <script src="/assets/js/themeSet.js"></script>
+</head>
+{% apply spaceless %}
+
+<body class="h-full">
+  <div class="mx-auto flex flex-col min-h-screen">
+    <div class="lg:container lg:mx-auto">
+      <a href="{{ app.env('APP_MAIN_URL') }}" class="btn btn-ghost text-xl mt-0.5">buri.me</a>
+    </div>
+    {{ app.cmp('navbar')|raw }}
+    <main class="lg:container mb-auto lg:mx-auto px-4">
+      {% block content %}
+      {% endblock %}
+    </main>
+    {{ include('common/footer.twig') }}
+  </div>
+  <script src="/assets/js/themeToggle.js"></script>
+  {{ app.js|raw }}
+</body>
+{% endapply %}
+
 </html>
