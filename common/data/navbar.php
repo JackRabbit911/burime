@@ -2,6 +2,10 @@
 
 return [
     [
+        'title' => 'Home',
+        'href' => path('home'),
+    ],
+    [
         'title' => 'About',
         'href' => 'about',
         'sub' => [
