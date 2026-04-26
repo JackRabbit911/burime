@@ -37,9 +37,11 @@ class Burime extends WebController
         $route = $this->request->getAttribute(Route::class);
         $branch_id = $route->getParameters()['branch_id'];
 
-        $this->data['branch'] = ($this->request->getAttribute('branch')) 
+        $branch = ($this->request->getAttribute('branch')) 
             ?: $this->repo->find($branch_id);
 
+        $this->data['branch'] = $branch;
+        $this->data['title'] = $branch->title;
         $this->data['sidebar'] = $this->sidebar;
         $author = $this->getBrunchAuthorsByUser($this->data['branch'], $this->user);
         $branchPerms = new BranchPermissions($this->data['branch'], $this->user, $author);
