@@ -14,6 +14,6 @@ class Front extends WebController
     {
         $this->app->js('/config/my.js');
         $this->app->js('/assets/js/main.js');
-        return view('common/front');
+        return view('common/front', ['title' => 'Personal account']);
     }
 }

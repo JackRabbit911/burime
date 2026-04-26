@@ -24,12 +24,14 @@ class Author extends WebController
     protected function _before()
     {
         $id = $this->request->getAttribute(Route::class)->getParameters()['id'];
-        $this->data['author'] = $this->request->getAttribute('author') ?? $this->modelAuthor->find($id);
+        $author = $this->request->getAttribute('author') ?? $this->modelAuthor->find($id);
 
-        if (!$this->data['author']->id) {
+        if (!$author->id) {
             abort();
         }
 
+        $this->data['author'] = $author;
+        $this->data['title'] = $author->alias;
         $this->data['favorite'] = ($this->user) 
             ? $this->modelUserGroup->inUserGroup($this->user->id, $id, 100) : false;
     }
