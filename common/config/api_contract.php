@@ -18,6 +18,7 @@ return [
         'Content-Type',
         'X-Bearer',
         'X-Refresh',
+        'X-XSRF-TOKEN',
     ],
     'methods' => [
         'get',
