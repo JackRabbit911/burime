@@ -17,9 +17,10 @@ class Group extends ApiContractController
 
     public function members(?int $id = null)
     {
+        Csrf::send($this->user->id, 7200);
+        
         return [
             'members' => $id ? $this->model->getMembers((int) $id) : [],
-            '_csrf' => Csrf::generate($this->user->id, 'author', 7200)
         ];
     }
 

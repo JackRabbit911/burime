@@ -16,7 +16,7 @@ use Az\Route\Route;
 class AuthorSave extends ApiContractController
 {
     #[Route(methods: 'post')]
-    #[ApiCsrfMiddleware(source: ApiCsrfMiddleware::FORM)]
+    #[ApiCsrfMiddleware]
     #[PreparePostData]
     #[AuthorValidation]
     public function save(AuthorSaveRepo $repo, InviteMessageRepo $invite)
