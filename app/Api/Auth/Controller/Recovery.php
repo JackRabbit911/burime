@@ -17,10 +17,11 @@ use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 #[Route(methods: 'post')]
 class Recovery extends ApiAuthController
 {
+    public function __construct(private ModelConfirm $confirm) {}
+
     #[EmailValidation]
     public function email(
         ModelRecovery $modelRecovery,
-        ModelConfirm $modelConfirm,
         SendEmail $mailer
     ) {
         $data = $this->request->getBody()->getContents();
@@ -28,27 +29,23 @@ class Recovery extends ApiAuthController
 
         $user = $modelRecovery->findByEmail($data->email);
 
-        $code = $modelConfirm->set();
+        $code = $this->confirm->set($user);
         $mailer->recovery($this->request->getUri(), $user, $this->i18n->lang(), $code);
 
         return $user->name;
     }
 
-    #[ApiCsrfMiddleware]
     #[PasswordConfirmValidation]
     public function savepswd(ModelUser $model)
     {
         $data = $this->request->getBody()->getContents();
-        $data= json_decode($data);
-        $hash = password_hash($data->password, PASSWORD_DEFAULT);
-        $model->update(['password' => $hash], $data->id);
+        $data = json_decode($data);
 
-        return true;
-    }
+        if (($result = $this->confirm->check($data->code, $data->id))) {
+            $hash = password_hash($data->password, PASSWORD_DEFAULT);
+            $model->update(['password' => $hash], $data->id);
+        }
 
-    #[Route(methods: 'get')]
-    public function confirm(ModelConfirm $model, int $id, string $code)
-    {
-        return $model->get($code) ? Csrf::generate($id, 'password', 7200) : false;
+        return $result;
     }
 }

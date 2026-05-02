@@ -18,6 +18,8 @@ class MyBranch extends ApiContractController
 {
     public function bootstrap(?int $id = null)
     {
+        Csrf::send($this->user->id, 7200);
+
         $repo = $this->request->getAttribute('repo');
         $data = $this->request->getAttribute('branch');
         $data['files'] = $repo->getBase64CoverFiles($id);
@@ -26,7 +28,6 @@ class MyBranch extends ApiContractController
         $data['authorsFilters'] = MemberRole::getFilters();
         $data['authorsPermissions'] = BranchAuthorPermissions::getArray();
         $data['authorsStatuses'] = BranchAuthorStatus::getArray();
-        $data['_csrf'] = Csrf::generate($this->user->id, 'branch', 7200);
 
         return $data;
     }

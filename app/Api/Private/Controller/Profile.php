@@ -11,31 +11,33 @@ use App\Api\Private\Middleware\PasswordConfirmValidation;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Auth\Service\OAuth;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
+use Sys\CSRF\Middleware\ApiDeleteCsrf;
 use Sys\Middleware\PreparePostData;
 use Sys\CSRF\Facade\Csrf;
 use Az\Route\Route;
 
 class Profile extends ApiContractController
 {
-    public function __construct(private ModelUser $model){}
+    public function __construct(private ModelUser $model) {}
 
     public function __invoke()
     {
         $userdata = $this->model->find($this->user->id);
-        $userdata->_csrf = Csrf::generate($this->user->id, 'profile', 7200);
+        Csrf::send($this->user->id, 7200);
 
         return $userdata;
     }
 
     public function csrf()
     {
-        return Csrf::generate($this->user->id, 'password', 7200);
+        return Csrf::generate($this->user->id, 7200);
     }
 
     #[Route(methods: 'post')]
-    #[ApiCsrfMiddleware(source: ApiCsrfMiddleware::FORM)]
+    #[ApiCsrfMiddleware]
     #[PreparePostData]
     #[ProfileValidation]
+    #[ApiDeleteCsrf]
     public function save(UserAvatarSaveRepo $repo, OAuth $auth)
     {
         $data = $this->request->getParsedBody();
@@ -49,8 +51,9 @@ class Profile extends ApiContractController
     }
 
     #[Route(methods: 'post')]
-    #[ApiCsrfMiddleware(source: ApiCsrfMiddleware::FORM)]
+    #[ApiCsrfMiddleware]
     #[PasswordConfirmValidation]
+    #[ApiDeleteCsrf]
     public function savepswd()
     {
         $data = $this->request->getParsedBody();

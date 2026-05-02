@@ -21,7 +21,6 @@ class UploadFile
 
         $filename = $dir . '/' . $filename . $this->getExt($file);
         $file->moveTo($filename);
-        chmod($filename, 0777);
     }
 
     private function getExt($file) {

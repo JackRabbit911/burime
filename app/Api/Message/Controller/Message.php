@@ -10,6 +10,7 @@ use App\Api\Message\Middleware\MessageValidation;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Message\Repository\BlankRepo;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
+use Sys\CSRF\Middleware\ApiDeleteCsrf;
 use Sys\Middleware\PreparePostData;
 use Sys\CSRF\Facade\Csrf;
 use Az\Route\Route;
@@ -17,7 +18,7 @@ use HttpSoft\Response\EmptyResponse;
 
 class Message extends ApiContractController
 {
-    public function __construct(private MsgRepo $repo){}
+    public function __construct(private MsgRepo $repo) {}
 
     public function list()
     {
@@ -33,11 +34,11 @@ class Message extends ApiContractController
 
     public function blank(BlankRepo $repo)
     {
+        Csrf::send($this->user->id, 7200);
+
         $params = $this->request->getQueryParams();
         $func = $params['content'] ?? 'newMsg';
-
         $blank = $repo->$func($params);
-        $blank->_csrf = Csrf::generate($this->user->id, 'message', 7200);
 
         return $blank;
     }
@@ -54,14 +55,15 @@ class Message extends ApiContractController
     public function remove(int $id)
     {
         $this->repo->deleteSendedMessage($id);
-        
+
         return "Message $id was removed";
     }
 
     #[Route(methods: 'post')]
-    #[ApiCsrfMiddleware(source: ApiCsrfMiddleware::FORM)]
+    #[ApiCsrfMiddleware]
     #[PreparePostData]
     #[MessageValidation]
+    #[ApiDeleteCsrf]
     public function save(SaveRepo $repo)
     {
         $post = $this->request->getParsedBody();
