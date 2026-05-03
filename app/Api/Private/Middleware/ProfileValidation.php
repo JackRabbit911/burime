@@ -26,6 +26,6 @@ class ProfileValidation extends ApiContractValidation
             ->rule('dob', 'validDate')
             ->rule('phone', 'phone')
             ->rule('sex', 'integer')
-            ->rule('file', 'size(1M)|img');
+            ->rule('file', 'size(2M)|img');
     }
 }
