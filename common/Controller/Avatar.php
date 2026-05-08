@@ -9,7 +9,7 @@ use Sys\Response\FileResponse;
 
 class Avatar extends BaseController
 {
-    private const NO_AVATAR = 'avatar/no_avatar.jpg';
+    private const NO_AVATAR = 'avatar/no_avatar.webp';
     private const AVATAR_URL = 'avatar/';
     
     public function author(int $id, int $lifetime = 0)
@@ -29,7 +29,7 @@ class Avatar extends BaseController
     private function getAvatarById(int $id, string $folder)
     {
         $avatar_path = DOCROOT . self::AVATAR_URL . $folder . '/';
-        $pattern = $avatar_path . $id . '.{jpg,jpeg,png,gif}';
+        $pattern = $avatar_path . $id . '.{jpg,jpeg,png,gif,webp}';
         $file = glob($pattern, GLOB_BRACE)[0] ?? '';
 
         return is_file($file) ? $file : DOCROOT . self::NO_AVATAR;
