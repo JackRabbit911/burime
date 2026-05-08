@@ -8,6 +8,7 @@ use App\Api\Author\Repository\AuthorDeleteRepo;
 use App\Api\Author\Repository\AuthorSaveRepo;
 use App\Api\Author\Middleware\AuthorValidation;
 use App\Api\Common\Controller\ApiContractController;
+use App\Api\Common\Repository\Avatar;
 use App\Api\Common\Repository\InviteMessageRepo;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 use Sys\Middleware\PreparePostData;
@@ -19,14 +20,13 @@ class AuthorSave extends ApiContractController
     #[ApiCsrfMiddleware]
     #[PreparePostData]
     #[AuthorValidation]
-    public function save(AuthorSaveRepo $repo, InviteMessageRepo $invite)
+    public function save(AuthorSaveRepo $repo, Avatar $avatar, InviteMessageRepo $invite)
     {
         $post = $this->request->getParsedBody();
         $file = $this->request->getUploadedFiles()['file'] ?? null;
 
         $id = $repo->savePost($post, $this->user->id);
-        $repo->saveFile($file, $id);
-
+        $avatar->save($file, $id);
         $invite->sendInviteToGroup($post, $id);
 
         return ['id' => $id];

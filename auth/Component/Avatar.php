@@ -13,7 +13,7 @@ class Avatar extends Component
     private static array $default = [
         'avatar_size' => 120,
         'avatar_path' => DOCROOT . 'avatar/user/',
-        'no_avatar' => DOCROOT . 'avatar/no_avatar.jpg',
+        'no_avatar' => DOCROOT . 'avatar/no_avatar.webp',
     ];
 
     private array $data;
@@ -35,7 +35,7 @@ class Avatar extends Component
         }
 
         $path = $config['avatar_path'] . $user_id;
-        $pattern = $path . '.{jpg,jpeg,png,gif}';
+        $pattern = $path . '.{jpg,jpeg,png,gif,webp}';
 
         $file = glob($pattern, GLOB_BRACE)[0] ?? null;
         $file = $file ?: $config['no_avatar'];

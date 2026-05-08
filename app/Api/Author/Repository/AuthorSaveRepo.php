@@ -37,14 +37,4 @@ class AuthorSaveRepo
 
         return $author_id;
     }
-
-    public function saveFile(?UploadedFile $file, int $author_id)
-    {
-        if (!$file) {
-            return;
-        }
-        
-        Dir::clearByMask($this->dir, "$author_id.*");
-        UploadFile::save($file, $this->dir, $author_id);
-    }
 }
