@@ -1,6 +1,6 @@
 {% macro avatar(author) %}
 <div class="avatar aspect-square">
-    <img src="{{ author.avatar }}" />
+    <img src="{{ author.avatar }}" alt="{{ author.alias }}" />
 </div>
 {% endmacro %}
 
@@ -48,7 +48,7 @@
 
 {% macro authorcard(author) %}
 <a href="{{ path('author', {'id': author.id}) }}">
-    <div class="aspect-[2.5/1] flex flex-col shadow-md hover:shadow-xl rounded">
+    <div class="aspect-2.5/1 flex flex-col shadow-md hover:shadow-xl rounded">
         <div class="flex flex-row justify-between h-4/5">
             {{ _self.avatar(author) }}
             <div class="grow overflow-hidden px-2 pt-1">
