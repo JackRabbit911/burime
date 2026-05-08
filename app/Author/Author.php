@@ -12,7 +12,7 @@ class Author extends Entity implements AuthorInterface
     const AVATAR_SRC = 'src';
     const AVATAR_HTML = 'html';
     const AVATAR_NAME = 'name';
-    const NO_AVATAR = '/avatar/no_avatar.jpg';
+    const NO_AVATAR = '/avatar/no_avatar.webp';
     const AVATAR_URL = 'avatar/author/';
     const AVATAR_PATH = DOCROOT . self::AVATAR_URL;
     const AVATAR_SIZE = 120;
@@ -51,7 +51,7 @@ class Author extends Entity implements AuthorInterface
 
     public static function getAvatarById($id, $alt = '', $res = self::AVATAR_SRC)
     {
-        $pattern = self::AVATAR_PATH . $id . '.{jpg,jpeg,png,gif}';
+        $pattern = self::AVATAR_PATH . $id . '.{jpg,jpeg,png,gif,webp}';
         $file = glob($pattern, GLOB_BRACE)[0] ?? '';
 
         if ($res === self::AVATAR_NAME) {
@@ -63,10 +63,6 @@ class Author extends Entity implements AuthorInterface
         } else {
             $src = '/' . self::AVATAR_URL . pathinfo($file)['basename'];
         }
-
-        
-        // $file = str_replace('//', '/', $file);
-        // $src = ltrim($file, '.');    
 
         return ($res === self::AVATAR_SRC) ? $src 
                 : '<img src="' . $src . '" alt="' . $alt . '" />';
