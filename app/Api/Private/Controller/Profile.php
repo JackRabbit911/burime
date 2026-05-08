@@ -10,6 +10,7 @@ use App\Api\Private\Repository\UserAvatarSaveRepo;
 use App\Api\Private\Middleware\PasswordConfirmValidation;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Auth\Service\OAuth;
+use App\Api\Common\Repository\Avatar;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 use Sys\CSRF\Middleware\ApiDeleteCsrf;
 use Sys\Middleware\PreparePostData;
@@ -38,13 +39,13 @@ class Profile extends ApiContractController
     #[PreparePostData]
     #[ProfileValidation]
     #[ApiDeleteCsrf]
-    public function save(UserAvatarSaveRepo $repo, OAuth $auth)
+    public function save(Avatar $avatar, OAuth $auth)
     {
         $data = $this->request->getParsedBody();
         $file = $this->request->getUploadedFiles()['file'] ?? null;
 
         $this->model->update($data, $this->user->id);
-        $repo->saveFile($file, $this->user->id);
+        $avatar->save($file, $this->user->id, Avatar::USER);
         $auth->login($this->user->update($data));
 
         return ['id' => $this->user->id];
