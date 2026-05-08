@@ -6,7 +6,6 @@ namespace App\Api\Private\Controller;
 
 use App\Api\Private\Model\ModelUser;
 use App\Api\Private\Middleware\ProfileValidation;
-use App\Api\Private\Repository\UserAvatarSaveRepo;
 use App\Api\Private\Middleware\PasswordConfirmValidation;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Auth\Service\OAuth;
