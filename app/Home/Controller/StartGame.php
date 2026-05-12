@@ -7,9 +7,31 @@ use Parsedown;
 
 class StartGame extends WebController 
 {
-    private string $title = 'How to play the game';
+    private string $viewName;
+    private string $title = 'Start the game';
 
     public function __construct(private Parsedown $parser) {}
+
+    public function __invoke()
+    {
+        $data['title'] = $this->title;
+
+        if (!$this->user) {
+            return view('home/startgame/no_user', $data);
+        } elseif ($this->user->ownAuthors->empty()) {
+            return view('home/startgame/no_authors', $data);
+        }
+
+        // dd($this->user->ownAuthors->all());
+        return view('home/startgame/start', $data);
+    }
+
+    private function getView(array $data)
+    {
+        if (!$this->user) {
+            return view('home/startgame/no_user', $data);
+        }
+    }
 
     public function start()
     {
