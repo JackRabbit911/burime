@@ -1,4 +1,4 @@
-{% extends 'common/layout.twig' %}
+{% extends 'common/container.twig' %}
 {% import 'home/books/book_card.twig' as b %}
 {% import 'home/authors/author_card.twig' as a %}
 {% block content %}
@@ -7,7 +7,7 @@
     <div class="stats shadow">
         <div class="stat">
             <div class="stat-title">{{ __('Works') }}</div>
-            <div class="stat-value text-primary">{{ count_branches }}</div>
+            <div class="stat-value text-primary dark:text-info">{{ count_branches }}</div>
             <div class="stat-desc">21% more than last month</div>
         </div>
         <div class="stat">
@@ -23,13 +23,13 @@
             {{ __('How to play') }}
         </h2>
         <div class="text-center">
-            <a href="{{ path('about', {action: 'burime'}) }}" class="btn btn-primary w-full md:w-2/3 mb-3">
+            <a href="{{ path('about', {action: 'burime'}) }}" class="btn btn-primary dark:btn-info w-full md:w-2/3 mb-3">
                 {{ __('What is burime') }}
             </a>
-            <a href="{{ path('about', {action: 'glossary'}) }}" class="btn btn-primary w-full md:w-2/3 mb-3">
+            <a href="{{ path('about', {action: 'glossary'}) }}" class="btn btn-primary dark:btn-info w-full md:w-2/3 mb-3">
                 {{ __('Glossary') }}
             </a>
-            <a href="{{ path('about', {action: 'rules'}) }}" class="btn btn-primary w-full md:w-2/3 mb-3">
+            <a href="{{ path('about', {action: 'rules'}) }}" class="btn btn-primary dark:btn-info w-full md:w-2/3 mb-3">
                 {{ __('Rules of the game') }}
             </a>
             <a href="{{ path('start', {action: 'start'}) }}" class="btn btn-success btn-xl w-full md:w-2/3">

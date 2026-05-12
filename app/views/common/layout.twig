@@ -13,10 +13,8 @@
       <a href="{{ app.env('APP_MAIN_URL') }}" class="btn btn-ghost text-xl mt-0.5">buri.me</a>
     </div>
     {{ app.cmp('navbar')|raw }}
-    <main class="lg:container mb-auto lg:mx-auto px-4">
-      {% block content %}
-      {% endblock %}
-    </main>
+    {% block main %}
+    {% endblock %}
     {{ include('common/footer.twig') }}
   </div>
   <script src="/assets/js/themeToggle.js"></script>

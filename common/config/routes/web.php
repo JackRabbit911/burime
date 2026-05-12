@@ -24,7 +24,7 @@ use App\Author\Controller\Form;
 use App\Author\Controller\NoAuthor;
 use App\Message\Controller\Message;
 use App\Private\PrivateController;
-use App\Burime\Controller\Api as BurimeApi;
+// use App\Burime\Controller\Api as BurimeApi;
 use App\Chat\Controller\Chat;
 
 return [
@@ -38,7 +38,8 @@ return [
     'works'         => ['/works/{action?}', Works::class],
     'authors'       => ['/authors', AuthorsList::class],
     'search'        => ['/search', Search::class],
-    'start'         => ['/how-to-play/{action}', StartGame::class],
+    'start'         => ['/start', StartGame::class],
+    // 'start'         => ['/how-to-play/{action}', StartGame::class],
     'author.controls'=>['/author/controls/{id?}', Controls::class],
     'author'        => ['/author/{action?}/{id}', Author::class],
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
