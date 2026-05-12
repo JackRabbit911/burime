@@ -1,10 +1,17 @@
-<p class="text-medium">
-    {{ __('In order to write, you need to create an author') }}
-    <br>
-    <a
-        href="{{ path('start', {action: 'how_create_author'}) }}"
-        class="link text-primary"
-    >
-    {{ __('Why and how to create an author') }}
+{% extends 'common/container_md.twig' %}
+{% block content %}
+<h1 class="text-2xl md:text-3xl font-medium my-3">{{ __(title) }}</h1>
+<div class="text-center text-medium">
+  {{ __('In order to write, you need to create an author') }}
+  <div class="text-center my-2">
+    <a href="/my/author" class="btn btn-primary dark:btn-info w-full md:w-2/3">
+      {{ __('Create new author or group') }}
     </a>
+  </div>
+  <div class="text-sm text-base-content">
+    Для чего это нужно:
+  </div>
+</div>
+<p class="text-medium">
 </p>
+{% endblock %}
