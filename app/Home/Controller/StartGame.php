@@ -2,6 +2,7 @@
 
 namespace App\Home\Controller;
 
+use App\Home\Repository\StartRepo;
 use Sys\Controller\WebController;
 use Parsedown;
 
@@ -12,7 +13,7 @@ class StartGame extends WebController
 
     public function __construct(private Parsedown $parser) {}
 
-    public function __invoke()
+    public function __invoke(StartRepo $repo)
     {
         $data['title'] = $this->title;
 
@@ -22,52 +23,13 @@ class StartGame extends WebController
             return view('home/startgame/no_authors', $data);
         }
 
-        // dd($this->user->ownAuthors->all());
+        $data['count'] = $repo->getCountWorks();
+
         return view('home/startgame/start', $data);
-    }
-
-    private function getView(array $data)
-    {
-        if (!$this->user) {
-            return view('home/startgame/no_user', $data);
-        }
-    }
-
-    public function start()
-    {
-        $data['title'] = $this->title;
-        $data['sidebar'] = 'home/startgame/sidebar.twig';
-        $data['menu'] = require APPPATH . 'common/data/article/sidebar/startgame.php';
-        $data['article'] = $this->prologue();
-
-        // dd($data['menu']);
-
-        $file = APPPATH . 'common/data/article/startgame.md';
-        $content = file_get_contents($file);
-        
-        $data['article'] .= $this->parser->text($content);
-
-        return view('home/about', $data);
-    }
-
-    public function how_create_author()
-    {
-        return 'qq';
     }
 
     protected function _before()
     {
         $this->i18n->addPath(APPPATH . 'app/Home/i18n');
-    }
-
-    private function prologue()
-    {
-        if (!$this->user) {
-            return view('home/startgame/no_user');
-        } elseif ($this->user->ownAuthors->empty()) {
-            return view('home/startgame/no_authors');
-        } else {
-            return '';
-        }
     }
 }
