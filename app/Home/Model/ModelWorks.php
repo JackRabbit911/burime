@@ -43,11 +43,11 @@ class ModelWorks extends Model
         return $table->asObject($this->branchClass)->get();
     }
 
-    public function getCount()
+    public function getCount(BranchRole $role = BranchRole::Commercial)
     {
         return $this->qb->table('branches')
             ->where('status', '>', BranchStatus::Publish->value)
-            ->where('role', '<', BranchRole::Commercial->value)
+            ->where('role', '<', $role->value)
             ->count();
     }
 }
