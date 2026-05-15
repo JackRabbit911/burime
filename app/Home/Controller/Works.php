@@ -10,8 +10,8 @@ use Sys\Paginator;
 class Works extends WebController
 {
     private $rowCount;
-    private $paginationView = 'web/common/pagination';
-    private $switcherView = 'web/common/switcher';
+    private $paginationView = 'common/component/pagination';
+    private $switcherView = 'common/component/switcher';
     private string $title = 'Works';
     private ModelWorks $model;
 
@@ -42,13 +42,13 @@ class Works extends WebController
     private function table()
     {
         $data = $this->makeData(40);
-        return view('web/works/table', $data);
+        return view('home/books/table', $data);
     }
 
     private function list()
     {
         $data = $this->makeData(40);
-        return view('web/works/list', $data);
+        return view('home/books/list', $data);
     }
 
     private function makeData($limit)
