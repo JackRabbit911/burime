@@ -10,13 +10,13 @@ use Sys\Template\TemplateInterface;
 
 class Avatar extends Component
 {
+    protected ?string $view = '@auth/common/avatar';
+
     private static array $default = [
         'avatar_size' => 120,
         'avatar_path' => DOCROOT . 'avatar/user/',
         'no_avatar' => DOCROOT . 'avatar/no_avatar.webp',
     ];
-
-    private array $data;
 
     public function __construct(TemplateInterface $tpl, User $user, ?int $size = null)
     {
@@ -41,10 +41,5 @@ class Avatar extends Component
         $file = $file ?: $config['no_avatar'];
 
         return str_replace(DOCROOT, '/', $file);
-    }
-
-    public function render()
-    {
-        return view('@auth/common/avatar', $this->data);
     }
 }
