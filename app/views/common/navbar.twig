@@ -19,7 +19,7 @@
     </div>
 
     <div class="flex flex-row">
-      {{ app.cmp('UserControls')|raw }}
+      {{ include('common/user_controls.twig') }}
       {{ include('common/theme_toggler.twig') }}
       {{ include('common/langs.twig') }}
     </div>

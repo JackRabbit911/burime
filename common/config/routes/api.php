@@ -21,6 +21,7 @@ use App\Api\Private\Controller\MyController;
 use App\Api\Private\Controller\Profile;
 use App\Burime\Controller\DeletePostApi;
 use App\Rating\RatingApi;
+use Common\Controller\Informer;
 use Sys\Console\Controller as ConsoleController;
 
 // use App\Branch\Api\Controller\Branch;
@@ -28,6 +29,7 @@ use Sys\Console\Controller as ConsoleController;
 // use Auth\Api\Controller\O2Auth;
 
 return [
+    'informer'      => ['api/informer', Informer::class],
     'console'       => ['/api/console/{model}/{method}', ConsoleController::class, ['model' => '[\w\/]+']],
     
     'rating'        => ['/api/rating/{action}/{post_id}', RatingApi::class],

@@ -7,27 +7,13 @@ use Sys\Template\TemplateInterface;
 
 class Navbar extends Component
 {
-    private TemplateInterface $tpl;
-    private $menu;
-    private $brand = 'Burime';
+    protected ?string $view = 'common/navbar';
 
-    public function __construct(TemplateInterface $tpl)
+    public function __construct()
     {
-        $this->tpl = $tpl;
-        $this->menu = require APPPATH . 'common/data/navbar.php';
-        // $prefix = 'data/navbar/';
-        // $config = $prefix . $config;
-        // $this->config = $config;
-        // $this->brand = $brand;
-    }
-
-    public function render()
-    {
-        $data = [
-            'menu' => $this->menu,
-            'brand' => $this->brand,
+        $this->data = [
+            'menu' => require APPPATH . 'common/data/navbar.php',
+            'brand' => 'Burime',
         ];
-
-        return $this->tpl->render('common/navbar', $data);
     }
 }

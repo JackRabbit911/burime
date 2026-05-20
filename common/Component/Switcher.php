@@ -12,18 +12,14 @@ class Switcher extends Component
     private string $showKey = 'show';
     private string $filterKey = 'filter';
     private string $pageKey = 'page';
-    private string $view;
 
     public function __construct(ServerRequestInterface $request, string $view)
     {
         $this->queryParams = $request->getQueryParams();
         $this->path = rtrim($request->getUri()->getPath(), '/');
         $this->view = $view;
-    }
 
-    public function render()
-    {
-        return view($this->view, ['s' => $this]);
+        $this->data = ['s' => $this];
     }
 
     public function cards()
