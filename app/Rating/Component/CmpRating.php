@@ -18,7 +18,7 @@ class CmpRating extends Component
         PostInterface|DtoInterface $post
     ) {
         $this->data = [
-            'branch' => $this->branch,
+            'branch' => $branch,
             'post' => $post,
             'link_like' => ($post->user_rating === 5)
                 ? path('rating', ['action' => 'remove', 'post_id' => $post->id])
