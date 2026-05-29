@@ -53,7 +53,7 @@ class RatingApi extends RatingAbstract
         return [
             [
                 'id' => 'post-rating-' . $post_id,
-                'html' => (new CmpRating($branch))->render($post),
+                'html' => new CmpRating($branch, $post),
             ],
             [
                 'id' => 'avg-' . $post_id,
