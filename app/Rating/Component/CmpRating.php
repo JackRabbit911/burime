@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Rating\Component;
 
@@ -9,16 +11,13 @@ use Sys\Contract\DtoInterface;
 
 class CmpRating extends Component
 {
-    private BranchInterface|DtoInterface $branch;
+    protected ?string $view = 'rating/rating';
 
-    public function __construct(BranchInterface|DtoInterface $branch)
-    {
-        $this->branch = $branch;
-    }
-
-    public function render(PostInterface|DtoInterface $post)
-    {
-        $data = [
+    public function __construct(
+        BranchInterface|DtoInterface $branch,
+        PostInterface|DtoInterface $post
+    ) {
+        $this->data = [
             'branch' => $this->branch,
             'post' => $post,
             'link_like' => ($post->user_rating === 5)
@@ -28,7 +27,5 @@ class CmpRating extends Component
                 ? path('rating', ['action' => 'remove', 'post_id' => $post->id])
                 : path('rating', ['action' => 'dislike', 'post_id' => $post->id]),
         ];
-
-        return view('rating/rating', $data);
     }
 }
