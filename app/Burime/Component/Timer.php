@@ -8,7 +8,7 @@ use Sys\Template\Component;
 
 class Timer extends Component
 {
-    private array $data;
+    protected ?string $view = 'burime/timer';
 
     public function __construct(BranchInterface $branch, PostPermissions $postPermissions)
     {
@@ -29,10 +29,5 @@ class Timer extends Component
         $this->data['hour'] = (int) floor($tr / 60 / 60);
         $this->data['min'] = intdiv($tr - ($this->data['hour'] * 60 * 60), 60);
         $this->data['sec'] = $tr % 60;
-    }
-
-    public function render()
-    {
-        return view('burime/timer', $this->data);
     }
 }
