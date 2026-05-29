@@ -129,7 +129,7 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
             ->select('authors.*', 'aa.role')
             ->join('authors', 'authors.id', '=', 'aa.child_id')
             ->where('aa.parent_id', '=', $author_id)
-            ->where('aa.role', '>', 40)
+            ->where('aa.status', '>', 80)
             ->orderBy('aa.role', 'DESC')
             ->asObject(Author::class)
             ->get();
