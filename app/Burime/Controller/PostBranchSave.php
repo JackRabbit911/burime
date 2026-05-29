@@ -5,6 +5,7 @@ namespace App\Burime\Controller;
 use App\Burime\Service\PostPermissions;
 use App\Burime\Middleware\TimeUpMiddleware;
 use App\Burime\Repository\SaveRepo;
+use App\Burime\Middleware\PostValidation;
 use Common\Enum\AuthorRole;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
@@ -19,6 +20,7 @@ class PostBranchSave extends WebController
 {
     #[Route(tokens: ['branch_id' => '\d+', 'post_id' => '\d*'])]
     #[Route(methods: 'post')]
+    #[PostValidation]
     public function __invoke(SaveRepo $repo, $branch_id, $post_id = null)
     {
         $branch = $this->request->getAttribute('branch');
@@ -40,9 +42,6 @@ class PostBranchSave extends WebController
                     }
 
                     $repo->addAuthor($branch->id, (int) $data['author'], $this->user->id);
-
-                    // $branch->info['time_up'] = false;
-                    // $branch->info['time_beguin'] = null;
 
                     break;
                 case 'draft':

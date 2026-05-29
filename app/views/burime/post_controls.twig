@@ -3,7 +3,7 @@
     {% if app.user %}
         {% if allow_rating %}
         <div id="post-rating-{{ post.id }}" class="join">
-            {{ app.cmp('CmpRating', {'branch': branch}).render(post)|raw }}
+            {{ app.cmp('CmpRating', {'branch': branch, 'post': post}) }}
         </div>
         {% endif %}
 
@@ -62,6 +62,6 @@
         </span>
     </div>
     {% if (branch.info.signature is defined and branch.info.signature == '1') or post.status == 80 %}
-        <span class="text-xs text-current/100 font-medium ms-1 mt-1">{{ post.alias }}</span>
+        <span class="text-xs text-current font-medium ms-1 mt-1">{{ post.alias }}</span>
     {% endif %}
 </div>

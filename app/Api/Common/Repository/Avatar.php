@@ -25,9 +25,9 @@ class Avatar
         $this->options();
     }
 
-    public function save(UploadedFile $uploadedFile, int|string $id, string $path = self::AUTHOR, ?int $size = null)
+    public function save(?UploadedFile $uploadedFile, int|string $id, string $path = self::AUTHOR, ?int $size = null)
     {
-        if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
+        if (!$uploadedFile || $uploadedFile->getError() !== UPLOAD_ERR_OK) {
             return;
         }
 
