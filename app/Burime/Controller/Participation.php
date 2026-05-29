@@ -3,13 +3,13 @@
 namespace App\Burime\Controller;
 
 use App\Burime\Model\BranchAuthor;
-use Common\Enum\AuthorRole;
-use Common\Enum\BranchAuthorStatus;
 use Common\Contract\IModelGroup;
-use HttpSoft\Response\RedirectResponse;
+use Common\Enum\BranchAuthorStatus;
+use Common\Enum\BranchAuthorPermissions;
 use Sys\Contract\UserInterface;
 use Sys\Controller\BaseController;
 use Az\Route\Route;
+use HttpSoft\Response\RedirectResponse;
 
 class Participation extends BaseController
 {
@@ -58,7 +58,7 @@ class Participation extends BaseController
         $data['branch_id'] = $branch_id;
         $data['author_id'] = (int) $this->request->getParsedBody()['author'];
         $data['user_id'] = $this->user->id;
-        $data['role'] = AuthorRole::Author->value;
+        $data['role'] = BranchAuthorPermissions::WRITE->value;
         $data['status'] = BranchAuthorStatus::candidate->value;
 
         $this->modelBranchAuthor->addAuthor($data);
