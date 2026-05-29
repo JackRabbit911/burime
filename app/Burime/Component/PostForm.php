@@ -16,6 +16,8 @@ class PostForm extends Form
         $this->set('postPermissions', $data['postPermissions']);
         $this->set('timer', $data['timer']);
 
+        $this->title($data['title']);
+
         $this->form('burime/form')
             ->id('postform')
             ->action(path('branch.post', 
