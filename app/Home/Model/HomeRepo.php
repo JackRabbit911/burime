@@ -15,11 +15,6 @@ class HomeRepo
         private ModelBestPost $modelBestPost
     ) {}
 
-    public function getBranchesCount()
-    {
-        return $this->modelWorks->getCount();
-    }
-
     public function getBranches($limit)
     {
         return $this->modelWorks->get($limit);
