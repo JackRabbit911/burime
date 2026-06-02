@@ -1,0 +1,17 @@
+{% import 'common/component/pagination/btn_macro.twig' as pagi %}
+<div class="flex justify-between mt-2">
+  <div>
+    <div class="join sm:hidden">
+      {{ pagi.paginator(pagination5) }}
+    </div>
+    <div class="join hidden sm:block">
+      {{ pagi.paginator(pagination7) }}
+    </div>
+  </div>
+  <div class="join">
+    <span class="text-xs me-2 pt-2">
+      {{ __('On page') }}
+    </span>
+    {{ pagi.per_page(per_pages) }}
+  </div>
+</div>

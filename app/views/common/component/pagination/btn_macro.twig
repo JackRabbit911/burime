@@ -1,0 +1,27 @@
+{% macro paginator(data) %}
+  {% if data|length > 1 %}
+    {% for p in data %}
+      {% if p.isActive %}
+        {% set disabled = 'disabled' %}
+      {% else %}
+        {% set disabled = '' %}
+      {% endif %}
+      <a href="{{ p.link }}" class="join-item btn btn-sm" {{ disabled }}>
+        {{ p.label }}
+      </a>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{% macro per_page(data) %}
+  {% for p in data %}
+    {% if p.isActive %}
+      {% set disabled = 'disabled' %}
+    {% else %}
+      {% set disabled = '' %}
+    {% endif %}
+    <a href="{{ p.link }}" class="join-item btn btn-sm" {{ disabled }}>
+      {{ p.label }}
+    </a>
+  {% endfor %}
+{% endmacro %}

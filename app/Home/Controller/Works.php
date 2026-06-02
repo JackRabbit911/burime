@@ -1,68 +1,59 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Home\Controller;
 
+use App\Api\Branch\Repository\DraftRepo;
+use App\Home\Component\BooksForm;
 use App\Home\Model\ModelWorks;
+use Common\Component\Pagination;
 use Common\Component\Switcher;
 use Sys\Controller\WebController;
-use Sys\Paginator;
+use Sys\Pagination\Pagination57;
 
 class Works extends WebController
 {
-    private $rowCount;
-    private $paginationView = 'common/component/pagination';
+    private $paginationView = 'common/component/paginator';
     private $switcherView = 'common/component/switcher';
     private string $title = 'Works';
-    private ModelWorks $model;
 
-    public function __construct(ModelWorks $model)
-    {
-        $this->model = $model;
-        $this->rowCount = $model->getCount();
-    }
+    public function __construct(private ModelWorks $model, private DraftRepo $repo) {}
 
     public function __invoke()
     {
-        $queryParams = $this->request->getQueryParams();
+        $query_params = $this->request->getQueryParams();
+        $suffix = $query_params['show'] ?? 'cards';
+        $view = "home/books/$suffix";
+        $data = $this->makeData();
 
-        if (isset($queryParams['show'])) {
-            $func = $queryParams['show'];
-            return $this->$func();
-        }
-
-        return $this->cards();
+        return view($view, $data);
     }
 
-    private function cards()
+    private function makeData(?int $limit = null)
     {
-        $data = $this->makeData(40);
-        return view('home/books/cards', $data);
-    }
+        $query_params = $this->request->getQueryParams();
+        $page = $query_params['page'] ?? 1;
 
-    private function table()
-    {
-        $data = $this->makeData(40);
-        return view('home/books/table', $data);
-    }
+        $limit = $query_params['limit'] ?? $limit ?? 24;
+        $offset = Pagination::offset((int) $page, (int) $limit);
+        $genres = $query_params['genre'] ?? [];
+        $search = $query_params['search'] ?? '';
 
-    private function list()
-    {
-        $data = $this->makeData(40);
-        return view('home/books/list', $data);
-    }
+        [$books, $selected] = $this->model->get((int) $limit, $offset, $genres, $search);
 
-    private function makeData($limit)
-    {
-        $paginator = new Paginator($this->request, $this->rowCount, $limit, $this->paginationView);
+        $form = new BooksForm($this->request, $this->repo);
+        $pagination = new Pagination($this->request, $selected, (int) $limit);
         $switcher = new Switcher($this->request, $this->switcherView);
-
-        $offset = $paginator->offset($limit);
 
         return [
             'title' => $this->title,
-            'books' => $this->model->get($limit, $offset),
-            'paginator' => $paginator,
+            'books' => $books,
             'switcher' => $switcher,
+            'pagination' => $pagination,
+            'form' => $form,
+            'selected' => $selected,
+            'total' => $this->model->getCount(),
         ];
     }
 }
