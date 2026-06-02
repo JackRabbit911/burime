@@ -1,10 +1,14 @@
-<div class="flex flex-row flex-wrap justify-between items-center h-auto">
-  <h1 class="text-2xl md:text-3xl">{{ title }}</h1>
-  <div class="hidden md:block">
-    {{ paginator|raw }}
+<div class="flex flex-row flex-wrap justify-between gap-4 items-center h-auto">
+  <h1 class="text-2xl md:text-3xl">{{ __(title) }}</h1>
+  <div class="hidden sm:block grow mt-1.5">
+    {{ form }}
   </div>
   {{ switcher|raw }}
 </div>
-<div class="flex flex-row flex-wrap justify-center items-center h-auto md:hidden">
-  {{ paginator|raw }}
+<div class="sm:hidden mt-1.5">
+  {{ form }}
+</div>
+{{ pagination }}
+<div class="text-center text-sm mt-1">
+  {{ __('select of total selected', {select: selected, total: total}) }}
 </div>
