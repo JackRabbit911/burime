@@ -1,0 +1,30 @@
+<details class="dropdown">
+  <summary class="btn {% if checked is not empty %}btn-success{% endif %} btn-sm border border-zinc-600">
+    {{ __('Filter') }}
+  </summary>
+  <div class="menu dropdown-content bg-base-100 rounded-box z-90 min-w-sm md:min-w-lg lg:min-w-2xl p-2 shadow">
+    <fieldset class="fieldset">
+      {% for key, group in genres %}
+      {% if key >0 %}
+      <div class="divider w-full my-0"></div>
+      {% endif %}
+      <div class="flex flex-wrap gap-4">
+        {% for genre in group %}
+        <label class="fieldset-label flex justify-between">
+          <input
+            name="genre[]"
+            type="checkbox"
+            class="checkbox checkbox-sm"
+            value={{ genre.id }}
+            {% if genre.id in checked %}
+            checked
+            {% endif %}
+          />
+          {{ genre.title }}
+        </label>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </fieldset>
+  </div>
+</details>
