@@ -41,20 +41,16 @@ class ModelWorks extends Model
             ->groupBy('branches.id', 'authors.alias')
             ->orderBy('branches.updated', 'DESC');
 
-        if (!empty($genres) || !empty($search)) {
-            $filter_genres = $this->filterGenres($genres);
 
-            if ($filter_genres === []) {
-                return [[], 0];
-            }
+        if (!empty($genres)) {
+            $table->whereIn('branches_genres.genre_id', $genres);
+        }
 
-            $filter = $this->filterSearch($search, $filter_genres);
-
-            if (!empty($filter)) {
-                $table->whereIn('branches.id', $filter);
-            } else {
-                return [[], 0];
-            }
+        if (!empty($search)) {
+            $table->where(function ($qb) use ($search) {
+                $qb->where($this->qb->raw('MATCH(branches.title) AGAINST(?)', [$search]));
+                $qb->orWhere($this->qb->raw('MATCH(authors.alias) AGAINST(?)', [$search]));
+            });
         }
 
         $total = $table->count();
@@ -72,44 +68,5 @@ class ModelWorks extends Model
             ->where('status', '>', BranchStatus::Publish->value)
             ->where('role', '<', $role->value)
             ->count();
-    }
-
-    private function filterGenres(array $genres): array|false
-    {
-        if (!empty($genres)) {
-            return $this->qb->table('branches_genres')
-                ->selectDistinct('branch_id')
-                ->join('branches', 'branches.id', '=', 'branch_id')
-                ->where('branches.status', '>', BranchStatus::Publish->value)
-                ->where('branches.role', '<', BranchRole::Commercial->value)
-                ->whereIn('genre_id', $genres)
-                ->setFetchMode(PDO::FETCH_COLUMN)
-                ->get();
-        }
-
-        return false;
-    }
-
-    private function filterSearch(string $search, array|false $filter_genres): array
-    {
-        $table = $this->qb->table('branches')
-            ->select('branches.id')
-            ->join('branches_authors', 'branches_authors.branch_id', '=', 'branches.id')
-            ->join('authors', 'authors.id', '=', 'branches_authors.author_id')
-            ->where('branches_authors.status', '>=', BranchAuthorStatus::member->value);
-
-        if ($filter_genres) {
-            $table->whereIn('branches.id', $filter_genres);
-        }
-
-        if (!empty($search)) {
-            $table->where(function($qb) use ($search) {
-                $qb->where($this->qb->raw('MATCH(title) AGAINST(?)', [$search]));
-                $qb->orWhere($this->qb->raw('MATCH(alias) AGAINST(?)', [$search]));
-            });
-        }
-
-        return $table->setFetchMode(PDO::FETCH_COLUMN)
-            ->get();
     }
 }
