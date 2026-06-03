@@ -1,35 +1,53 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Home\Model;
 
 use Common\Contract\AuthorInterface;
-use Sys\Model\Model;
+use Common\Enum\MemberRole;
+use Sys\Model\MysqlModel;
 
-class ModelAuthors extends Model
+class ModelAuthors extends MysqlModel
 {
-    public function get($limit = null, $offset = 0, $groupsOnly = false)
-    {
+    public function get(
+        ?int $limit = null,
+        int $offset = 0,
+        string $filter = '',
+        string $search = '',
+        ?int $user_id = null,
+    ) {
         $table = $this->qb->table('authors')
             ->select('authors.*')
-            // ->select($this->qb->raw('AVG(authors_ratings.rating) AS rating'))
             ->select($this->qb->raw('COUNT(child_id) AS c_members'))
             ->leftJoin('authors_authors', 'parent_id', '=', 'id')
-            // ->leftJoin('authors_ratings', 'author_id', '=', 'id')
-            ->groupBy('authors.id')
-            // ->orderBy('rating', 'DESC')
-            ;
+            ->groupBy('authors.id');
 
-        if ($groupsOnly) {
-            $table->where('openclosed', '<', 2);
+        $role = MemberRole::getByFilter($filter) ?? 0;
+
+        if ($filter === 'authors') {
+            $table->where('authors.openclosed', '=', 2);
+        } elseif ($filter === 'groups') {
+            $table->where('authors.openclosed', '<', 2);
+        } elseif ($role) {
+            $table->join('users_authors', 'users_authors.author_id', '=', 'authors.id')
+                ->where('users_authors.role', '=', $role)
+                ->where('user_id', '=', $user_id);
         }
+
+        if ($search) {
+            $table->where($this->qb->raw('MATCH(alias) AGAINST(?)', [$search]));
+        }
+
+        $count = $table->count();
 
         if ($limit) {
             $table->limit($limit)->offset($offset);
         }
-        
+
         $authorClassName = container()->get(AuthorInterface::class);
 
-        return $table->asObject($authorClassName)->get();
+        return [$table->asObject($authorClassName)->get(), $count];
     }
 
     public function getCount()
