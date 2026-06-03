@@ -20,11 +20,6 @@ class HomeRepo
         return $this->modelWorks->get($limit);
     }
 
-    public function getAuthorsCount()
-    {
-        return $this->modelAuthor->getCount();
-    }
-
     public function getAuthors($limit)
     {
         return $this->modelAuthor->get($limit);
