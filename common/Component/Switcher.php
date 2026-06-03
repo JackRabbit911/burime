@@ -7,17 +7,21 @@ use Sys\Template\Component;
 
 class Switcher extends Component
 {
+    protected ?string $view = 'common/component/switcher';
     private array $queryParams;
     private string $path;
     private string $showKey = 'show';
     private string $filterKey = 'filter';
     private string $pageKey = 'page';
 
-    public function __construct(ServerRequestInterface $request, string $view)
+    public function __construct(ServerRequestInterface $request, ?string $view = null)
     {
         $this->queryParams = $request->getQueryParams();
         $this->path = rtrim($request->getUri()->getPath(), '/');
-        $this->view = $view;
+        
+        if ($view) {
+            $this->view = $view;
+        }
 
         $this->data = ['s' => $this];
     }

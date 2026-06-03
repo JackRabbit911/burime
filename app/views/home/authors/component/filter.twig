@@ -1,0 +1,10 @@
+<select name="filter" class="select select-sm rounded-r-none border-r-0 join-item">
+  <option value="" disabled{% if filter == '' %} selected{% endif %}>
+    {{ __('Filter') }}
+  </option>
+  {% for item in options %}
+  <option value="{{ item }}"{% if filter == item %} selected{% endif %}>
+    {{ __(item) }}
+  </option>
+  {% endfor %}
+</select>
