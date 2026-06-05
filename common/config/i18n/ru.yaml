@@ -28,7 +28,7 @@ Accept: Согласиться
 Refuse: Отказаться
 invite.body: Приглашаю к участию проекте в качестве соавтора
 
-Welcome, :name!: Добро пожаловать, :name!
+# Welcome, :name!: Добро пожаловать, :name!
 Welcome, : Добро пожаловать, 
 Guest: Гость
 About page: 'Страница о нас'
@@ -97,6 +97,6 @@ There's nothing here yet, but there will definitely be one soon!: Здесь п�
 The file size exceeds the allowed limit: Размер файла превышает допустимый
 The file must be an image: Файл должен быть изображением
 
-select of total selected : Выбрано select из total
+'%d of %d selected': Выбрано %d из %d
 On page: На странице
 Search by title and author: Поиск по названию и автору
