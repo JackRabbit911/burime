@@ -1,26 +1,32 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Burime\Component;
 
-use Sys\Form\Form;
+use Sys\Template\Form;
 
 class Ask2Join extends Form
 {
+    protected ?string $view = 'burime/choice_author';
+
     public function __construct($branch_id, $user)
     {
-        foreach ($user->ownAuthors as $author) {
-            $options[] = [
-                'label' => $author->alias,
-                'value' => $author->id,
-            ];
-        }
+        $options = $user->ownAuthors->map(fn($author) => [
+            'label' => $author->alias,
+            'value' => $author->id
+        ]);
 
-        $this->form('burime/choice_author')
-            ->id('postform')
-            ->action(path('participation', ['branch_id' => $branch_id, 'action' => 'ask2join']));
-        
-        $this->select('author')
-            ->label('Choice Your author')
-            ->options($options);
+        $this->data = [
+            'form' => [
+                'id' => 'ask2join',
+                'action' => path('participation', ['branch_id' => $branch_id, 'action' => 'ask2join']),
+            ],
+            'author' => [
+                'name' => 'author',
+                'label' => 'Choice Your author',
+                'options' => $options,
+            ],
+        ];
     }
 }
