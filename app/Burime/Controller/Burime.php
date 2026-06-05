@@ -115,7 +115,7 @@ class Burime extends WebController
         $this->data['timer'] = new Timer($this->data['branch'], $this->data['postPermissions']);
         $form = new PostForm($this->data, $post_last, $post_current);
 
-        return $form->render($this->data);
+        return $form;
     }
 
     private function getBrunchAuthorsByUser($branch, $user)

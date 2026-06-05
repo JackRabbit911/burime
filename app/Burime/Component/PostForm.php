@@ -1,42 +1,45 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Burime\Component;
 
-use Sys\Form\Form;
+use Sys\Template\Form;
 
 class PostForm extends Form
 {
+    protected ?string $view = 'burime/form';
+
     public function __construct($data, $post_last, $post_current)
     {
         $branch = $data['branch'];
-        $myAuthors = $data['myAuthors'];
-
-        $this->set('branch', $branch);
-        $this->set('last', $post_last);
-        $this->set('postPermissions', $data['postPermissions']);
-        $this->set('timer', $data['timer']);
-
-        $this->title($data['title']);
-
-        $this->form('burime/form')
-            ->id('postform')
-            ->action(path('branch.post', 
-                [
-                    'branch_id' => $branch->id, 
-                    'post_id' => $post_current->id ?? null
-                ]));
+        [$macros, $author] = $this->author($data['myAuthors']);
         
-        $textarea = $this->textarea('new_post')
-            ->label(__('New post'))
-            ->alt_label('Up to ' . $branch->info['post_size'] . ' words')
-            ->placeholder(__('Enter Your imperishable work'))
-            ->rows(6);
+        $this->data = [
+            'branch' => $branch,
+            'last' => $post_last,
+            'postPermissions' => $data['postPermissions'],
+            'timer' => $data['timer'],
+            'macros' => $macros,
+            'title' => $data['title'],
+            'form' => [
+                'id' => 'postform',
+                'action' => path('branch.post', ['branch_id' => $branch->id, 'post_id' => $post_current->id ?? null]),
+            ],
+            'new_post' => [
+                'name' => 'new_post',
+                'label' => $post_current ? __('Current post') : __('New post'),
+                'alt_label' => __('Up to count words',['count' => $branch->info['post_size']]),
+                'placeholder' => __('Enter Your imperishable work'),
+                'rows' => 6,
+                'value' => $post_current ? $post_current->body : '',
+            ],
+            'author' => $author,
+        ];
+    }
 
-        if ($post_current) {
-            $textarea->label(__('Current post'))
-                ->value($post_current->body);
-        }
-
+    private function author(mixed $myAuthors): array
+    {
         if (is_iterable($myAuthors)) {
             foreach ($myAuthors as $myAuthor) {
                 $options[] = [
@@ -44,18 +47,19 @@ class PostForm extends Form
                     'value' => $myAuthor->id,
                 ];
             }
-            
-            $this->select('author')
-                ->label(null)
-                ->options($options);
 
-            $this->set('macros', 'select');
+            $macros = 'select';
+            $author = ['name' => 'author', 'options' => $options];
         } else {
-            $this->hidden('author')
-                ->label($myAuthors->alias)
-                ->value($myAuthors->id);
-            
-            $this->set('macros', 'input');
+            $macros = 'input';
+            $author = [
+                'name' => 'author',
+                'type' => 'hidden',
+                'label' => $myAuthors->alias,
+                'value' => $myAuthors->id,
+            ];
         }
+
+        return [$macros, $author];
     }
 }
