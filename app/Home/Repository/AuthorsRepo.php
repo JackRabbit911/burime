@@ -20,8 +20,13 @@ class AuthorsRepo
     public function get(ServerRequestInterface $request, ?int $user_id)
     {
         $query_params = $request->getQueryParams();
+        $validation_response = $request->getAttribute('validation');
 
-        $view = $this->getView($query_params, 'authors');
+        if ($validation_response) {
+            $query_params = [];
+        }
+
+        [$view, $view_content] = $this->getView($query_params, 'authors');
 
         $filter = $query_params['filter'] ?? '';
         [$limit, $offset, $search] = $this->getParams($query_params);
@@ -30,7 +35,8 @@ class AuthorsRepo
         $data = $this->getData($request, $selected, $limit);
         $data['title'] = 'Authors';
         $data['authors'] = $authors;
-        $data['form'] = new AuthorsForm($query_params, $user_id);
+        $data['content'] = view($view_content, $data);
+        $data['form'] = (new AuthorsForm($query_params, $user_id))->render([], $validation_response);
 
         return [$view, $data];
     }
