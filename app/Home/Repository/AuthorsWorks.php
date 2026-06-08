@@ -10,10 +10,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait AuthorsWorks
 {
-    private function getView(array $query_params, string $part): string
+    private function getView(array $query_params, string $part): array
     {
         $suffix = $query_params['show'] ?? 'cards';
-        return "home/$part/$suffix";
+        return ["home/$part/$suffix", "home/$part/content/$suffix"];
     }
 
     private function getParams(array $query_params): array
@@ -29,8 +29,10 @@ trait AuthorsWorks
     private function getData(ServerRequestInterface $request, int $selected, int $limit): array
     {
         return [
-            'selected' => $selected,
-            'total' => $this->model->getCount(),
+            'counter' => view('home/common/counter', [
+                'selected' => $selected,
+                'total' => $this->model->getCount()
+            ]),
             'switcher' => new Switcher($request),
             'pagination' => $pagination = new Pagination($request, $selected, (int) $limit),
         ];
