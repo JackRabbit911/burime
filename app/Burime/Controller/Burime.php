@@ -13,12 +13,11 @@ use App\Burime\Repository\BranchRepo;
 use App\Burime\Repository\PostsRepo;
 use App\Burime\Service\BranchPermissions;
 use App\Burime\Service\PostPermissions;
-use Common\Enum\AuthorRole;
+use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchStatus;
 use Sys\Controller\WebController;
 use Az\Route\Route;
-use Common\Enum\BranchAuthorPermissions;
 
 #[TimeUpMiddleware]
 class Burime extends WebController
@@ -62,7 +61,7 @@ class Burime extends WebController
 
         if ($this->data['branch']->status === BranchStatus::Waiting->value &&
         $this->data['myAuthor'] &&
-        $this->data['myAuthor']->role >= AuthorRole::Moderator->value) {
+        $this->data['myAuthor']->role >= BranchAuthorPermissions::MODERATE->value) {
             $this->data['branch']->status = BranchStatus::Moderation->value;
         }
 
