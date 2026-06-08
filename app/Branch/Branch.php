@@ -2,7 +2,6 @@
 
 namespace App\Branch;
 
-use Common\Enum\AuthorRole;
 use App\Branch\Model\ModelBranch;
 use Common\Contract\BranchInterface;
 use Sys\Entity\Entity;
@@ -42,8 +41,8 @@ class Branch extends Entity implements BranchInterface
         return $this;
     }
 
-    public function master()
-    {
-        return $this->authors->getInstance(AuthorRole::Master->value, 'role');
-    }
+    // public function master()
+    // {
+    //     return $this->authors->getInstance(AuthorRole::Master->value, 'role');
+    // }
 }
