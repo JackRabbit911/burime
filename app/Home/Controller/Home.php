@@ -3,25 +3,51 @@
 namespace App\Home\Controller;
 
 use App\Home\Model\HomeRepo;
+use App\Home\Repository\BooksRepo;
+use App\Home\Repository\AuthorsRepo;
+use App\Home\Middleware\BooksFilterValidation;
+use App\Home\Middleware\AuthorsFilterValidation;
 use Sys\Controller\WebController;
+use HttpSoft\Response\JsonResponse;
 
-class Home extends WebController 
+class Home extends WebController
 {
-    private string $title = 'Literary game Burime';
-
-    public function __construct(private HomeRepo $repo) {}
-
-    public function __invoke()
+    public function __invoke(HomeRepo $repo)
     {
-        [$books, $count_branches] = $this->repo->getBranches(4);
-        [$authors, $count_authors] = $this->repo->getAuthors(4);
-        $data['title'] = $this->title;
+        [$books, $count_branches] = $repo->getBranches(4);
+        [$authors, $count_authors] = $repo->getAuthors(4);
+        $data['title'] = 'Literary game Burime';
         $data['count_branches'] = $count_branches;
         $data['count_authors'] = $count_authors;
         $data['authors'] = $authors;
         $data['books'] = $books;
-        $data['post'] = $this->repo->getBestPost();
+        $data['post'] = $repo->getBestPost();
 
         return view('home/home', $data);
+    }
+
+    #[BooksFilterValidation]
+    public function works(BooksRepo $repo): string | JsonResponse
+    {
+        [$view, $data] = $repo->get($this->request);
+        return is_ajax($this->request) ? $this->ajax($data) : view($view, $data);
+    }
+
+    #[AuthorsFilterValidation]
+    public function authors(AuthorsRepo $repo): string | JsonResponse
+    {
+        [$view, $data] = $repo->get($this->request, $this->user?->id);
+        return is_ajax($this->request) ? $this->ajax($data) : view($view, $data);
+    }
+
+    private function ajax(array $data): JsonResponse
+    {
+        return new JsonResponse([
+            'success' => true,
+            'result' => [
+                'counter' => $data['counter'],
+                'content' => $data['content'],
+            ],
+        ]);
     }
 }

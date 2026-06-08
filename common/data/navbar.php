@@ -30,14 +30,10 @@ return [
     ],
     [
         'title' => 'Works',
-        'href' => path('works'),
+        'href' => path('home', ['action' => 'works']),
     ],
     [
         'title' => 'Authors',
-        'href' => path('authors'),
-    ],
-    [
-        'title' => 'Search',
-        'href' => path('search'),
+        'href' => path('home', ['action' => 'authors']),
     ],
 ];

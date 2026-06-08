@@ -1,31 +1,16 @@
 {% extends 'common/container.twig' %}
 {% block content %}
-{{ include('common/title_switcher.twig') }}
+{{ include('home/common/header.twig') }}
 <div class="overflow-x-auto">
   <table class="table table-hover table-zebra">
     <thead>
       <tr>
-        {# <th></th> #}
         <th>{{ __('Author') }}</th>
         <th>{{ __('Title') }}</th>
         <th>{{ __('Genre') }}</th>
       </tr>
     </thead>
-    <tbody>
-      {% for book in books %}
-      {% set link = path('branch', {'branch_id': book.id}) %}
-      <tr
-        onclick="window.location='{{ link }}'"
-        class="cursor-pointer hover:bg-base-300 transition-colors"
-      >
-        {# <th>{{ loop.index }}</th> #}
-        <td>{{ book.alias }}</td>
-        <td>{{ book.title }}</td>
-        <td>{{ book.genreStr }}</td>
-      </tr>
-      </a>
-      {% endfor %}
-    </tbody>
+    {{ content }}
   </table>
 </div>
 {% endblock content %}

@@ -17,9 +17,15 @@ class BooksRepo
 
     public function get(ServerRequestInterface $request)
     {
+        
         $query_params = $request->getQueryParams();
+        $validation_response = $request->getAttribute('validation');
 
-        $view = $this->getView($query_params, 'books');
+        if ($validation_response) {
+            $query_params = [];
+        }
+
+        [$view, $view_content] = $this->getView($query_params, 'books');
 
         $filter = $query_params['filter'] ?? [];
         [$limit, $offset, $search] = $this->getParams($query_params);
@@ -28,7 +34,8 @@ class BooksRepo
         $data = $this->getData($request, $selected, $limit);
         $data['title'] = 'Works';
         $data['books'] = $books;
-        $data['form'] = new BooksForm($query_params, $this->repo);
+        $data['content'] = view($view_content, $data);
+        $data['form'] = (new BooksForm($query_params, $this->repo));
 
         return [$view, $data];
     }

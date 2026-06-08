@@ -1,14 +1,15 @@
-<input
-  type="hidden"
-  name="show"
-  value="{{ show }}"
-/>
-<input
-  type="search"
-  name="search"
-  placeholder="{{ __(placeholder) }}"
-  class="input input-bordered rounded-none input-sm join-item w-full join-item"
-  value="{{ search }}"
+{% if search.status is defined and search.status == 'error' %}
+{% set class_error = ' placeholder:text-error' %}
+{% set placeholder = search.msg %}
+{% set value = '' %}
+{% else %}
+{% set class_error = '' %}
+{% set placeholder = __(search.placeholder) %}
+{% set value = search.value %}
+{% endif %}
+<input type="hidden" name="show" value="{{ show }}" />
+<input type="search" name="search" placeholder="{{ placeholder }}"
+  class="input input-bordered rounded-none input-sm w-full join-item{{ class_error }}" value="{{ value }}"
 />
 <button type="submit" class="btn border border-zinc-600 btn-sm rounded-r-sm border-l-0 join-item">
   <svg xmlns="http://w3.org" viewBox="0 0 16 16" fill="currentColor" class="h-5 w-5 opacity-70">

@@ -1,17 +1,5 @@
 {% extends 'common/container.twig' %}
 {% block content %}
-{{ include('common/title_switcher.twig') }}
-<ol class="mt-4">
-  {% for book in books %}
-  {% set link = path('branch', {'branch_id': book.id}) %}
-  <li
-    onclick="window.location='{{ link }}'"
-    class="cursor-pointer hover:bg-base-300 transition-colors grid grid-cols-3 my-1"
-  >
-    <span class="text-sm">{{ book.alias }}</span>
-    <span class="font-medium">{{ book.title }}</span>
-    <span class="text-xs pt-1">{{ book.genreStr }}</span>
-  </li>
-  {% endfor %}
-</ol>
+{{ include('home/common/header.twig') }}
+{{ content }}
 {% endblock content %}
