@@ -6,7 +6,7 @@ use App\Burime\Service\PostPermissions;
 use App\Burime\Middleware\TimeUpMiddleware;
 use App\Burime\Repository\SaveRepo;
 use App\Burime\Middleware\PostValidation;
-use Common\Enum\AuthorRole;
+use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
 use Common\Middleware\AuthGuard;
@@ -32,7 +32,7 @@ class PostBranchSave extends WebController
             switch ($data['sbmt']) {
                 case 'publish':
                     if ($branch->info['moderation'] === 1
-                        && !$post_permissions->hasRole(AuthorRole::Moderator->value)) {
+                        && !$post_permissions->hasRole(BranchAuthorPermissions::MODERATE->value)) {
                         $branch->status = BranchStatus::Waiting->value;
                         $post_status = PostStatus::Moderation->value;
                         $branch->info['time_beguin'] = time();
