@@ -7,7 +7,7 @@ use App\Burime\Model\ModelPost;
 use App\Burime\Repository\BranchRepo;
 use App\Burime\Service\PostPermissions;
 use Common\Contract\BranchInterface;
-use Common\Enum\AuthorRole;
+use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
 
@@ -48,7 +48,7 @@ class PostControls extends BaseController
         $path = path('int.author', ['action' => 'getalias', 'id' => $this->post->author_id]);
         $this->authorAlias = $this->client->get($path);
 
-        $this->isModerator = $this->permissions->hasRole(AuthorRole::Moderator->value);
+        $this->isModerator = $this->permissions->hasRole(BranchAuthorPermissions::MODERATE->value);
         $this->isAuthor = $this->permissions->isAuthor($this->post);
         $i18n = $this->request->getAttribute('i18n');
         $i18n->addPath(APPPATH . 'app/Burime/i18n');

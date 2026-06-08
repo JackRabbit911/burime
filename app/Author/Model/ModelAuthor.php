@@ -5,7 +5,6 @@ namespace App\Author\Model;
 use App\Author\Author;
 use Common\Contract\IModelAuthor;
 use Common\Enum\MemberRole;
-use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorStatus;
 use Sys\Model\Interface\Saveble;
 use Sys\Model\Trait\Schema;
@@ -47,18 +46,18 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
             ->insert($data);
     }
 
-    public function setMember(int $parent_id, int $child_id, int $role)
-    {
-        $data = [
-            'parent_id' => $parent_id,
-            'child_id' => (int) $child_id,
-            'role' => $role,
-        ];
+    // public function setMember(int $parent_id, int $child_id, int $role)
+    // {
+    //     $data = [
+    //         'parent_id' => $parent_id,
+    //         'child_id' => (int) $child_id,
+    //         'role' => $role,
+    //     ];
 
-        return $this->qb->table('authors_authors')
-            ->onDuplicateKeyUpdate($data)
-            ->insert($data);
-    }
+    //     return $this->qb->table('authors_authors')
+    //         ->onDuplicateKeyUpdate($data)
+    //         ->insert($data);
+    // }
 
     /**
      * Controller\Author::_before
@@ -114,10 +113,10 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
     /**
      * Controller\AuthorsList::__construct
      */
-    public function getCount()
-    {
-        return $this->qb->table($this->table)->count();
-    }
+    // public function getCount()
+    // {
+    //     return $this->qb->table($this->table)->count();
+    // }
 
     /**
      * Controller\Author::members
@@ -150,74 +149,74 @@ class ModelAuthor extends Model implements Saveble, IModelAuthor
     /**
      * BranchAuthorsRepo
      */
-    public function getAuthorsIdsByOwners($owners)
-    {
-        if (empty($owners)) {
-            return [];
-        }
+    // public function getAuthorsIdsByOwners($owners)
+    // {
+    //     if (empty($owners)) {
+    //         return [];
+    //     }
         
-        return $this->qb->table('authors')
-            ->selectDistinct('id')
-            ->whereIn('owner', $owners)
-            ->setFetchMode(\PDO::FETCH_COLUMN)
-            ->get();
-    }
+    //     return $this->qb->table('authors')
+    //         ->selectDistinct('id')
+    //         ->whereIn('owner', $owners)
+    //         ->setFetchMode(\PDO::FETCH_COLUMN)
+    //         ->get();
+    // }
 
     /**
      * BranchAuthorsRepo
      */
-    public function getByFilter($filter = null, $except = [])
-    {
-        $role = MemberRole::getByFilter($filter);
+    // public function getByFilter($filter = null, $except = [])
+    // {
+    //     $role = MemberRole::getByFilter($filter);
 
-        $table = $this->qb->table('authors')
-            ->selectDistinct('id')
-            ->select('alias');
+    //     $table = $this->qb->table('authors')
+    //         ->selectDistinct('id')
+    //         ->select('alias');
 
-        if ($role) {
-            $table->join('users_authors', 'users_authors.author_id', '=', 'authors.id')
-                ->where('role', '=', $role);
-        }
+    //     if ($role) {
+    //         $table->join('users_authors', 'users_authors.author_id', '=', 'authors.id')
+    //             ->where('role', '=', $role);
+    //     }
 
-        if (!empty($except)) {
-            $table->whereNotIn('id', $except);
-        }
+    //     if (!empty($except)) {
+    //         $table->whereNotIn('id', $except);
+    //     }
 
-        return $table->get();
-    }
+    //     return $table->get();
+    // }
 
-    public function findByBranch($author_id, $branch_id, $is_master = false)
-    {
-        $author = $this->qb->table('authors')
-            ->asObject(Author::class)
-            ->find($author_id);
+    // public function findByBranch($author_id, $branch_id, $is_master = false)
+    // {
+    //     $author = $this->qb->table('authors')
+    //         ->asObject(Author::class)
+    //         ->find($author_id);
 
-        $branch_info = $this->qb->table('branches_authors')
-            ->where('branch_id', '=', $branch_id)
-            ->find($author_id, 'author_id');
+    //     $branch_info = $this->qb->table('branches_authors')
+    //         ->where('branch_id', '=', $branch_id)
+    //         ->find($author_id, 'author_id');
 
-        if ($is_master) {
-            $default_role = AuthorRole::Master->value;
-            $default_status = BranchAuthorStatus::member->value;
-        } else {
-            $default_role = $branch_info->role ?? AuthorRole::Author->value;
-            $default_status = $branch_info->status ?? BranchAuthorStatus::invited->value;
-        }
+    //     if ($is_master) {
+    //         $default_role = AuthorRole::Master->value;
+    //         $default_status = BranchAuthorStatus::member->value;
+    //     } else {
+    //         $default_role = $branch_info->role ?? AuthorRole::Author->value;
+    //         $default_status = $branch_info->status ?? BranchAuthorStatus::invited->value;
+    //     }
 
-        $author->role = $default_role;
-        $author->status = $default_status;
+    //     $author->role = $default_role;
+    //     $author->status = $default_status;
 
-        return $author;
-    }
+    //     return $author;
+    // }
 
     /**
      * BranchAuthorsRepo
      */
-    public function getByIds(array $ids)
-    {
-        return ($ids) ? $this->qb->table($this->table)
-            ->select('id', 'alias')
-            ->whereIn('id', $ids)
-            ->get() : [];
-    }
+    // public function getByIds(array $ids)
+    // {
+    //     return ($ids) ? $this->qb->table($this->table)
+    //         ->select('id', 'alias')
+    //         ->whereIn('id', $ids)
+    //         ->get() : [];
+    // }
 }

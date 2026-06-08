@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Home\Model;
 
 use Common\Contract\BranchInterface;
-use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchRole;
@@ -30,14 +29,13 @@ class ModelWorks extends Model
             ->select('branches.*')
             ->select($this->qb->raw('GROUP_CONCAT(DISTINCT `authors`.`alias` ORDER BY branches_authors.role DESC SEPARATOR ", ") AS alias'))
             ->select($this->qb->raw('GROUP_CONCAT(DISTINCT `genres`.`title` ORDER BY genres.weight SEPARATOR ", ") AS genreStr'))
-            ->leftJoin('branches_authors', 'branches_authors.branch_id', '=', 'branches.id')
-            ->leftJoin('authors', 'authors.id', '=', 'branches_authors.author_id')
-            ->leftjoin('branches_genres', 'branches_genres.branch_id', '=', 'branches.id')
-            ->leftjoin('genres', 'genres.id', '=', 'branches_genres.genre_id')
+            ->join('branches_authors', 'branches_authors.branch_id', '=', 'branches.id')
+            ->join('authors', 'authors.id', '=', 'branches_authors.author_id')
+            ->join('branches_genres', 'branches_genres.branch_id', '=', 'branches.id')
+            ->join('genres', 'genres.id', '=', 'branches_genres.genre_id')
             ->where('branches.status', '>', BranchStatus::Publish->value)
             ->where('branches.role', '<', BranchRole::Commercial->value)
             ->where('branches_authors.role', '=', 255)
-            ->where('genres.weight', '>', 0)
             ->groupBy('branches.id', 'authors.alias')
             ->orderBy('branches.updated', 'DESC');
 

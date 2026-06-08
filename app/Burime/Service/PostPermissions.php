@@ -5,11 +5,11 @@ namespace App\Burime\Service;
 use App\Author\Author;
 use App\Burime\Post;
 use Common\Contract\BranchInterface;
-use Common\Enum\AuthorRole;
+// use Common\Enum\AuthorRole;
+use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
 use Auth\User;
-use Common\Enum\BranchAuthorPermissions;
 
 class PostPermissions
 {
@@ -113,7 +113,7 @@ class PostPermissions
             return false;
         }
 
-        if ($this->hasRole(AuthorRole::Moderator->value)
+        if ($this->hasRole(BranchAuthorPermissions::MODERATE->value)
         && $post->status < PostStatus::Approved->value) {
             return true;
         }
@@ -130,7 +130,7 @@ class PostPermissions
     public function approve($post)
     {
         if ($post->status === PostStatus::Moderation->value
-            && $this->hasRole(AuthorRole::Moderator->value)
+            && $this->hasRole(BranchAuthorPermissions::MODERATE->value)
             && !$this->isAuthor($post)) {
             return true;
         }

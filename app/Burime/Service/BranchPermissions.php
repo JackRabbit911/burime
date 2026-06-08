@@ -3,10 +3,10 @@
 namespace App\Burime\Service;
 
 use Common\Contract\BranchInterface;
-use Common\Enum\AuthorRole;
 use Common\Enum\BranchRole;
 use Common\Enum\BranchStatus;
 use Common\Enum\BranchAuthorStatus;
+use Common\Enum\BranchAuthorPermissions;
 
 use App\Author\Author;
 use Auth\User;
@@ -36,19 +36,7 @@ Register and indicate your date of birth';
         $this->permissions->edit = $this->edit();
         $this->permissions->leave = $this->leave();
         $this->permissions->ask = $this->ask2join();
-        // $this->permissions->timer = $this->timer();
     }
-
-    // public function isParticipant($branch_authors, $user_id)
-    // {
-    //     foreach ($branch_authors as $author) {
-    //         if ($author->user_id === $user_id) {
-    //             return true;
-    //         }
-    //     }
-
-    //     return false;
-    // }
 
     public function getPerms()
     {
@@ -65,7 +53,7 @@ Register and indicate your date of birth';
             if ($this->branch->role === BranchRole::Open->value) {
                 return true;
             } elseif (!$this->branch->authors->intersect($this->user->ownAuthors)->empty()
-                && $this->myAuthor->role >= AuthorRole::Author->value) {
+                && $this->myAuthor->role >= BranchAuthorPermissions::WRITE->value) {
                 return true;
             }
         }
@@ -76,7 +64,7 @@ Register and indicate your date of birth';
     private function show(): bool
     {
         if ($this->branch->status < BranchStatus::Archive->value 
-            && (!$this->myAuthor || $this->myAuthor->role < AuthorRole::Master->value)) {
+            && (!$this->myAuthor || $this->myAuthor->role < BranchAuthorPermissions::EDIT_STATUS->value)) {
             return false;
         }
 
@@ -87,18 +75,6 @@ Register and indicate your date of birth';
 
         return true;
     }
-
-    // private function timer(): bool
-    // {
-    //     if ($this->branch->status === BranchStatus::Blocked->value) {
-    //         if ($this->user->id === $this->branch->info['current_writer'] ?? null
-    //         || $this->myAuthor->role >= AuthorRole::Moderator) {
-    //             return true;
-    //         }
-    //     }
-
-    //     return false;
-    // }
 
     private function age(): bool
     {
