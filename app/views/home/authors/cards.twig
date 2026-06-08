@@ -1,10 +1,5 @@
 {% extends 'common/container.twig' %}
 {% block content %}
 {{ include('home/common/header.twig') }}
-<div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4 h-auto">
-    {% import 'home/authors/author_card.twig' as a %}
-    {% for author in authors %}
-    {{ a.authorcard(author) }}
-    {% endfor %}
-</div>
+{{ content }}
 {% endblock content %}
