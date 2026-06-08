@@ -1,0 +1,10 @@
+<tbody id="content">
+  {% for book in books %}
+  {% set link = path('branch', {'branch_id': book.id}) %}
+  <tr onclick="window.location='{{ link }}'" class="cursor-pointer hover:bg-base-300 transition-colors">
+    <td>{{ book.alias }}</td>
+    <td>{{ book.title }}</td>
+    <td>{{ book.genreStr }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
