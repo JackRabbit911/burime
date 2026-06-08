@@ -8,38 +8,33 @@ use App\Burime\Controller\PostBranchSave;
 use App\Burime\Controller\PostControls;
 use App\Burime\Controller\Participation;
 use App\Home\Controller\About;
-use App\Home\Controller\AuthorsList;
 use App\Home\Controller\Home;
-use App\Home\Controller\Search;
 use App\Home\Controller\StartGame;
-use App\Home\Controller\Works;
 use App\Home\Controller\AboutHowToCreate;
 use App\Rating\Rating;
 use Common\Controller\AuthFront;
 use Common\Controller\Front;
 use Common\Controller\Avatar;
 
-use App\Api\UserGuest;
-use App\Author\Controller\Form;
-use App\Author\Controller\NoAuthor;
-use App\Message\Controller\Message;
-use App\Private\PrivateController;
+// use App\Home\Controller\Works;
+// use App\Home\Controller\AuthorsList;
+// use App\Home\Controller\Search;
+// use App\Api\UserGuest;
+// use App\Author\Controller\Form;
+// use App\Author\Controller\NoAuthor;
+// use App\Message\Controller\Message;
+// use App\Private\PrivateController;
 // use App\Burime\Controller\Api as BurimeApi;
-use App\Chat\Controller\Chat;
+// use App\Chat\Controller\Chat;
 
 return [
     'my'            => ['/my/{any?}', Front::class, ['any' => '.*']],
     'auth'          => ['/auth/{any?}', AuthFront::class, ['any' => '.*']],
     'avatar'        => ['/ava/{action}/{id}/{lifetime?}', Avatar::class],
 
-    'home'          => ['/', Home::class],
     'about.create'  => ['/about/how_to_create/{action}', AboutHowToCreate::class],
     'about'         => ['/about/{action}', About::class],
-    'works'         => ['/works/{action?}', Works::class],
-    'authors'       => ['/authors', AuthorsList::class],
-    'search'        => ['/search', Search::class],
     'start'         => ['/start', StartGame::class],
-    // 'start'         => ['/how-to-play/{action}', StartGame::class],
     'author.controls'=>['/author/controls/{id?}', Controls::class],
     'author'        => ['/author/{action?}/{id}', Author::class],
     'branch.post'   => ['/branch/{branch_id}/save/{post_id?}', PostBranchSave::class],
@@ -49,7 +44,8 @@ return [
     
     'participation' => ['/participation/{branch_id}/{action}/{author_id?}', Participation::class],
     'int.author'    => ['/internal/author/{action}/{id?}', AuthorApi::class],
-
+    
+    'home'          => ['/{action?}', Home::class, ['action' => 'works|authors|']],
 
     // 'author.form'   => ['/author/form/{id?}', Form::class],
     // 'author.save'   => ['/author/save/{id?}', [Form::class, 'save']],
