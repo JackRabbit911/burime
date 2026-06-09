@@ -97,7 +97,7 @@ Register and indicate your date of birth';
     {
         if (!$this->user 
         || !$this->myAuthor 
-        || $this->myAuthor->role >= AuthorRole::Master->value
+        || $this->myAuthor->role >= BranchAuthorPermissions::EDIT_STATUS->value
         || $this->myAuthor->status <= BranchAuthorStatus::refused->value) {
             return false;
         }

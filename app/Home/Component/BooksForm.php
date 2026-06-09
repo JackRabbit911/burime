@@ -25,6 +25,6 @@ class BooksForm extends Form
         $this->data['genres'] = $repo->getTotalGenres();
         $this->data['reset'] = path('home', ['action' => 'works']) . '?show=' . $this->data['show'];
 
-        $this->js('assets/js/testform.js');
+        $this->js('assets/js/search.js');
     }
 }
