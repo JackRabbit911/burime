@@ -3,6 +3,7 @@
 namespace Auth\Model;
 
 use Auth\User;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Psr\Http\Message\ServerRequestInterface;
@@ -95,7 +96,7 @@ class OAuth
     {
         try {
             return JWT::decode($jwt, new Key($this->config['key'], $this->config['algo']));
-        } catch (Exception $e) {
+        } catch (ExpiredException $e) {
             return null;
         }
     }
