@@ -26,6 +26,6 @@ class AuthorsForm extends Form
         $this->data['options'][] = 'authors';
         $this->data['reset'] = path('home', ['action' => 'authors']);
 
-        $this->js('assets/js/testform.js');
+        $this->js('assets/js/search.js');
     }
 }
