@@ -18,6 +18,7 @@ use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchStatus;
 use Sys\Controller\WebController;
 use Az\Route\Route;
+use HttpSoft\Response\HtmlResponse;
 
 #[TimeUpMiddleware]
 class Burime extends WebController
@@ -114,7 +115,7 @@ class Burime extends WebController
         $this->data['timer'] = new Timer($this->data['branch'], $this->data['postPermissions']);
         $form = new PostForm($this->data, $post_last, $post_current);
 
-        return $form;
+        return new HtmlResponse($form->render(), $form->statusCode());
     }
 
     private function getBrunchAuthorsByUser($branch, $user)
