@@ -36,7 +36,7 @@ class AuthorsRepo
         $data['title'] = 'Authors';
         $data['authors'] = $authors;
         $data['content'] = view($view_content, $data);
-        $data['form'] = (new AuthorsForm($query_params, $user_id))->render([], $validation_response);
+        $data['form'] = new AuthorsForm($query_params, $user_id);
 
         return [$view, $data];
     }
