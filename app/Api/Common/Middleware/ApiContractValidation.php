@@ -23,6 +23,6 @@ abstract class ApiContractValidation extends ApiValidationMiddleware
             : new JsonResponse([
                     'success' => false,
                     'error' => $this->validation->getResponse(true),
-                ]);
+                ], $this->validation->statusCode());
     }
 }
