@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+// use Adm\Controller\Auth as ControllerAuth;
+
+use Adm\Controller\O2Auth;
 use Adm\Controller\Users;
 use App\Api\Auth\Controller\Auth;
 use App\Api\Auth\Controller\Recovery;
@@ -34,6 +37,8 @@ return [
     
     'rating'        => ['/api/rating/{action}/{post_id}', RatingApi::class],
     'post.confirm'  => ['/api/post/{action}/{post_id}', DeletePostApi::class],
+
+    'adm.auth'      => ['/api/adm/auth/{action}', O2Auth::class],
     'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
 
     'api.translate' => ['/api/gettranslate', Translate::class],
