@@ -51,14 +51,17 @@ class ModelRefreshToken extends MysqlModel
         $this->qb->transaction(function (Transaction $tr) use ($token_hash, $now, &$result) {
             $select_token = "SELECT token, session_id, user_id, invalidated_at
             FROM refresh_tokens 
-            WHERE token = ? 
+            WHERE token = ? AND created_at >= (NOW() - INTERVAL ? SECOND)
             FOR UPDATE";
 
             $select_user = "SELECT id, name, role FROM users
             JOIN admins ON admins.user_id = users.id
             WHERE id = ?";
 
-            $row = $tr->query($select_token, [$token_hash])->first();
+            $row = $tr->query($select_token, [
+                $token_hash,
+                $this->config['refresh_lifetime'],
+            ])->first();
 
             if (!$row) {
                 $result = false;
