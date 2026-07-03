@@ -15,6 +15,18 @@ class ModelAuth extends MysqlModel
         return self::$user;
     }
 
+    public function find(int $id)
+    {
+        if (self::$user) {
+            return self::$user;
+        }
+
+        return $this->qb->table('users')
+            ->select('id', 'name', 'role')
+            ->join('admins', 'admins.user_id', '=', 'id')
+            ->find($id);
+    }
+
     public function isPairEmailPswd(string $password, string $email): bool
     {
         self::$user = $this->qb->table('users')
