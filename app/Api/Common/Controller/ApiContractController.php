@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Api\Common\Controller;
 
-use HttpSoft\Response\JsonResponse;
 use Az\Route\Route;
+use Sys\I18n\I18n;
+use Sys\Controller\InvokeTrait;
+use HttpSoft\Response\JsonResponse;
+use HttpSoft\Response\EmptyResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
-use Sys\Controller\InvokeTrait;
-use Sys\I18n\I18n;
 use Throwable;
 
 abstract class ApiContractController implements RequestHandlerInterface // extends BaseController
@@ -21,6 +22,7 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
     protected ServerRequestInterface $request;
     protected array $parameters;
     protected array $headers;
+    protected array $data = [];
     protected $user;
     protected I18n $i18n;
     protected int $status = 200;
@@ -32,6 +34,14 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
         $this->parameters = $route->getParameters();
         $this->user = $request->getAttribute('user');
         $this->i18n = $request->getAttribute('i18n');
+
+        if ($request->getMethod() === 'POST') {
+            $this->status = 201;
+        }
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+            $this->data = $this->getData($request);
+        }
 
         [, $action] = $route->getHandler();
 
@@ -46,42 +56,53 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
             return $this->_success($response);
         } catch (Throwable $e) {
             $this->logger($e);
+            return $this->_error($e);
 
-            return ENV >= TESTING ? new JsonResponse([
-                'success' => false,
-                'error' => [
-                    'message' => $e->getMessage(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                ]
-            ], 500) : new JsonResponse('Service Unavailable', 503);
+            // return ENV >= TESTING ? new JsonResponse([
+            //     'success' => false,
+            //     'error' => [
+            //         'message' => $e->getMessage(),
+            //         'file' => $e->getFile(),
+            //         'line' => $e->getLine(),
+            //     ]
+            // ], 500) : new JsonResponse('Service Unavailable', 503);
         }
     }
 
-    protected function _success(string|array|object $response): ResponseInterface
+    private function _success(string|array|object|null $response): ResponseInterface
     {
-        $response = [
-            'success' => true,
-            'result' => $response,
-        ];
-
-        return new JsonResponse($response, $this->status);
+        return !$response ? new EmptyResponse($this->status)
+            : new JsonResponse(['success' => true, 'result' => $response], $this->status);
     }
 
-    protected function _error(string|array $error, int $status): ResponseInterface
+    private function _error(Throwable $e): ResponseInterface
     {
-        $response = [
+        return ENV >= TESTING ? new JsonResponse([
             'success' => false,
-            'error' => $error,
-        ];
-
-        return new JsonResponse($response, $status);
+            'error' => [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]
+        ], 500) : new JsonResponse('Service Unavailable', 503);
     }
 
     protected function logger(Throwable $e): void
     {
         $logger = container()->get(LoggerInterface::class);
         $logger->error($e->getMessage() . ' ' . $e->getFile(), [$e->getLine()]);
+    }
+
+    private function getData($request)
+    {
+        $data = $request->getParsedBody();
+
+        if (empty($data)) {
+            $json = $request->getBody()->getContents();
+            $data = json_decode($json, true);
+        }
+
+        return $data;
     }
 
     protected function _before(): void {}
