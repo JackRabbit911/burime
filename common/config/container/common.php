@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 use App\Author\Author;
 use App\Author\Model\ModelAuthor;
@@ -19,6 +21,17 @@ use Sys\CSRF\Driver\Db;
 use Sys\CSRF\Driver\DriverInterface;
 
 return [
+    Memcached::class => function () {
+        $config = config('memcache');
+        $memcached = new Memcached();
+        
+        if (empty($memcached->getServerList())) {
+            $memcached->addServer($config['host'], $config['port']);
+            $memcached->setOptions($config['options']);
+        }
+
+        return $memcached;
+    },
     DriverInterface::class => DI\get(Db::class),
     AuthorInterface::class => fn() => Author::class,
     BranchInterface::class => fn() => Branch::class,
