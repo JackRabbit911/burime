@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Auth\Middleware;
 
-use App\Api\Auth\Repository\AuthRepo;
-use Auth\Model\ModelRefreshToken;
-use Auth\Model\ModelRememberToken;
-use Auth\Model\ModelUser;
-use Auth\Model\OAuth;
+use Auth\Api\Repository\AuthRepo;
+use Auth\Api\Model\ModelRefreshToken;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -28,9 +25,6 @@ class AuthMiddleware implements MiddlewareInterface
     public function __construct(
         private AuthRepo $repo,
         private ModelRefreshToken $modelRefresh,
-        private ModelRememberToken $modelRemember,
-        // private OAuth $oAuth,
-        // private ModelUser $model
     ) {
         $this->config = config('o2auth');
     }
@@ -39,16 +33,15 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $cookie = $request->getCookieParams();
         $user = $this->checkCookie($cookie);
-        // $user = $this->oAuth->auth($request);
 
-        // if (ENV === DEVELOPMENT) {
-        //     $from_url = $request->getHeaderLine('Origin');
-        //     $from_port = parse_url($from_url, PHP_URL_PORT);
+        if (ENV === DEVELOPMENT) {
+            $from_url = $request->getHeaderLine('Origin');
+            $from_port = parse_url($from_url, PHP_URL_PORT);
 
-        //     if ($from_port === env('DEV_FROM_PORT', 5173)) {
-        //         $user = $this->model->find(env('DEV_UID'));
-        //     }
-        // }
+            if ($from_port === env('DEV_FROM_PORT', 5173)) {
+                $user = $this->model->find(env('DEV_UID'));
+            }
+        }
 
         if ($user) {
             $request = $request->withAttribute('user', $user);
@@ -63,12 +56,6 @@ class AuthMiddleware implements MiddlewareInterface
 
         if ($result === self::EXPIRED) {
             $user = $this->checkRefresh($cookie['UAT'] ?? null);
-
-            // dd($user, $cookie['UAT'] ?? null);
-
-            // if (!$user) {
-            //     $user = $this->checkRemember($cookie['RMT'] ?? null);
-            // }
         } elseif ($result === self::ALARM) {
             $this->repo->logout($cookie);
             $user = false;
@@ -104,12 +91,14 @@ class AuthMiddleware implements MiddlewareInterface
         $options = $this->config['cookie'];
         $result = $this->modelRefresh->rotateToken($token);
 
+        
+
         if ($result) {
             $now = time();
             $refresh = $result['token'];
-            $bearer = $this->repo->encodeJWT((object) $result['user'], md5($result['session_id']));
+            $bearer = $this->repo->encodeJWT((object) $result['user'], $result['session_id']);
 
-            $options['expires'] = $now + $this->config['refresh_lifetime'];
+            $options['expires'] = $now + $result['lifetime'];
             setcookie('UAT', $refresh, $options);
 
             $options['expires'] = $now + $this->config['lifetime'];
@@ -120,27 +109,4 @@ class AuthMiddleware implements MiddlewareInterface
 
         return false;
     }
-
-    private function checkRemember(?string $token)
-    {
-        if (!$token) {
-            return false;
-        }
-
-        $options = $this->config['cookie'];
-        $user = $this->modelRemember->read($token);
-
-        if ($user) {
-            $new_token = $this->modelRemember->update($user->id, $token);
-
-            $options['expires'] = time() + $this->config['remember_lifetime'];
-            setcookie('RMT', $new_token, $options);
-
-            return $user;
-        }
-
-        return false;
-    }
-
-    private function checkLongTokens(string $refresh, string $remember) {}
 }
