@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Auth\Controller;
+namespace Auth\Api\Controller;
 
-use App\Api\Auth\Service\OAuth;
-use App\Api\Auth\Service\TokenAuth;
-use App\Api\Auth\Middleware\AuthMiddleware;
-use App\Api\Auth\Middleware\AuthValidation;
-use App\Api\Auth\Repository\AuthRepo;
+use Auth\Api\Middleware\AuthMiddleware;
+use Auth\Api\Middleware\AuthValidation;
+use Auth\Api\Repository\AuthRepo;
 use Az\Route\Route;
 use Memcached;
 
@@ -24,41 +22,38 @@ class Auth extends ApiAuthController
 
     #[Route(methods: 'post')]
     #[AuthValidation]
-    // #[AuthMiddleware]
     public function login()
     {
         $now = time();
-        // return $this->request->getAttribute('user') ? true : false;
-        [$refresh, $bearer, $remember] = $this->repo->login($this->data);
+        [$user, $refresh, $bearer] = $this->repo->login($this->data);
         $options = $this->config['cookie'];
 
-        // return [$refresh, $bearer, $remember];
+        $lifetime = $this->data['remember']
+            ? $this->config['remember_lifetime']
+            : $this->config['refresh_lifetime'];
 
         $options['expires'] = $now + $this->config['lifetime'];
         setcookie('OAT', $bearer, $options);
 
-        $options['expires'] = $now + $this->config['refresh_lifetime'];
+        $options['expires'] = $now + $lifetime;
         setcookie('UAT', $refresh, $options);
 
-        if ($remember) {
-            $options['expires'] = $now + $this->config['remember_lifetime'];
-            setcookie('RMT', $remember, $options);
-        }
-
-        return true;
+        return [
+            'user' => $user,
+            'bearer' => $bearer,
+        ];
     }
 
     public function logout(Memcached $cache)
     {
         $cookie = $this->request->getCookieParams();
-        $sid = $this->repo->logout($cookie);
+        $sid = $this->repo->logout($cookie['UAT']);
 
         $options = $this->config['cookie'];
         $options['expires'] = time() - 3600;
 
         setcookie('OAT', '', $options);
         setcookie('UAT', '', $options);
-        setcookie('RMT', '', $options);
 
         if ($sid) {
             $cache->set('blacklist_sid:' . $sid, 1, $this->config['lifetime']);
@@ -66,11 +61,4 @@ class Auth extends ApiAuthController
 
         return true;
     }
-
-    // public function logout(OAuth $oauth, TokenAuth $tokenAuth)
-    // {
-    //     $oauth->logout();
-    //     $tokenAuth->forget();
-    //     return true;
-    // }
 }

@@ -6,9 +6,11 @@ declare(strict_types=1);
 
 use Adm\Controller\O2Auth;
 use Adm\Controller\Users;
-use App\Api\Auth\Controller\Auth;
-use App\Api\Auth\Controller\Recovery;
-use App\Api\Auth\Controller\Register;
+
+use Auth\Api\Controller\Auth;
+use Auth\Api\Controller\Recovery;
+use Auth\Api\Controller\Register;
+
 use App\Api\Author\Controller\AuthorSave;
 use App\Api\Author\Controller\Group;
 use App\Api\Branch\Controller\BranchSave;
@@ -53,7 +55,7 @@ return [
     'api.authorsave'=> ['/api/my/author/{action}/{id?}', AuthorSave::class],
     'api.message'   => ['/api/my/message/{action}/{id?}/{recipient?}', Message::class],
     'api.profile'   => ['/api/my/profile/{action?}', Profile::class],
-    'api.additional'=> ['api/my/additional/{action}/{id}', Additional::class],
+    'api.additional'=> ['/api/my/additional/{action}/{id}', Additional::class],
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 
     ['/api/auth/{action?}/{code?}', Auth::class],
