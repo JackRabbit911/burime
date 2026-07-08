@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Auth\Middleware;
+namespace Auth\Api\Middleware;
 
 use Auth\Api\Model\ModelUser;
 use App\Api\Common\Middleware\ApiContractValidation;
