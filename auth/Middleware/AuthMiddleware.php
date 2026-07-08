@@ -6,6 +6,7 @@ namespace Auth\Middleware;
 
 use Auth\Api\Repository\AuthRepo;
 use Auth\Api\Model\ModelRefreshToken;
+use Auth\Model\ModelUser;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -25,6 +26,7 @@ class AuthMiddleware implements MiddlewareInterface
     public function __construct(
         private AuthRepo $repo,
         private ModelRefreshToken $modelRefresh,
+        private ModelUser $model,
     ) {
         $this->config = config('o2auth');
     }
