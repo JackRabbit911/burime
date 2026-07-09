@@ -34,13 +34,11 @@ class AuthRepo
         return [$user, $refresh, $bearer];
     }
 
-    public function logout(?string $token): string|false
+    public function logout(?string $token): void
     {
         if (isset($token)) {
-            return $this->modelRefreshToken->logout($token);
+            $this->modelRefreshToken->logout($token);
         }
-
-        return false;
     }
 
     public function logoutGlobal()

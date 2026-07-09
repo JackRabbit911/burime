@@ -44,20 +44,21 @@ class Auth extends ApiAuthController
         ];
     }
 
-    public function logout(Memcached $cache)
+    public function logout()
     {
-        $cookie = $this->request->getCookieParams();
-        $sid = $this->repo->logout($cookie['UAT']);
+        $token = $this->request->getCookieParams()['UAT'] ?? null;
+
+        if (!$token) {
+            return false;
+        }
+        
+        $this->repo->logout($token);
 
         $options = $this->config['cookie'];
         $options['expires'] = time() - 3600;
 
         setcookie('OAT', '', $options);
         setcookie('UAT', '', $options);
-
-        if ($sid) {
-            $cache->set('blacklist_sid:' . $sid, 1, $this->config['lifetime']);
-        }
 
         return true;
     }
