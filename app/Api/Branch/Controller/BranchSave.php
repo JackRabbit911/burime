@@ -9,17 +9,15 @@ use App\Api\Branch\Repository\DraftSaveRepo;
 use App\Api\Branch\Middleware\SaveGuard;
 use App\Api\Branch\Middleware\DraftDeleteGuard;
 use App\Api\Branch\Middleware\BranchValidation;
-use App\Api\Common\Middleware\AuthGuard;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Common\Repository\InviteMessageRepo;
-// use Auth\Middleware\OAuthMiddleware;
+use Auth\Api\Middleware\ApiAuthGuard;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 use Sys\CSRF\Middleware\ApiDeleteCsrf;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
 
-// #[OAuthMiddleware]
-#[AuthGuard]
+#[ApiAuthGuard]
 #[Route(methods: 'post')]
 #[ApiCsrfMiddleware]
 #[PreparePostData]
