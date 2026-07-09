@@ -9,12 +9,12 @@ use App\Burime\Middleware\PostValidation;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
-use Common\Middleware\AuthGuard;
+use Auth\Middleware\AuthGuardRedirect;
 use Sys\Controller\WebController;
 use Az\Route\Route;
 use HttpSoft\Response\RedirectResponse;
 
-#[AuthGuard]
+#[AuthGuardRedirect]
 #[TimeUpMiddleware]
 class PostBranchSave extends WebController
 {
