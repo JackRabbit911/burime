@@ -17,7 +17,8 @@ class ModelAuth extends MysqlModel
         }
 
         self::$user = $this->qb->table('users')
-            ->select('id', 'name', 'dob', 'sex', 'password')
+            ->select('id', 'name', 'dob', 'sex', 'role', 'password')
+            ->leftJoin('admins', 'admins.user_id', '=', 'id')
             ->find($email, 'email');
 
         if (!self::$user) {
@@ -35,5 +36,19 @@ class ModelAuth extends MysqlModel
         $user = $this->auth($email, $password);
 
         return $user ? true : false;
+    }
+
+    public function find(int $id): object | null
+    {
+         if (self::$user) {
+            return self::$user;
+        }
+
+        self::$user = $this->qb->table('users')
+            ->select('id', 'name', 'dob', 'sex', 'role')
+            ->leftJoin('admins', 'admins.user_id', '=', 'id')
+            ->find($id);
+
+        return self::$user;
     }
 }

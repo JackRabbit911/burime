@@ -8,7 +8,9 @@ use Sys\Model\MysqlModel;
 use Pecee\Pixie\Exceptions\DuplicateEntryException;
 use Pecee\Pixie\QueryBuilder\IQueryBuilderHandler;
 use Pecee\Pixie\QueryBuilder\Transaction;
+use Memcached;
 use PDO;
+use stdClass;
 
 class ModelRefreshToken extends MysqlModel
 {
@@ -17,7 +19,7 @@ class ModelRefreshToken extends MysqlModel
     private string $user_agent;
     private string $remote_addr;
 
-    public function __construct(IQueryBuilderHandler $qb)
+    public function __construct(protected IQueryBuilderHandler $qb, protected Memcached $cache)
     {
         parent::__construct($qb);
         $this->config = config('o2auth');
@@ -43,98 +45,50 @@ class ModelRefreshToken extends MysqlModel
         return $token;
     }
 
-    public function rotateToken(string $token): array|false
+    public function rotateToken(string $token)
     {
-        $result;
         $token_hash = $this->hash($token);
+        $expired = $this->qb->raw('(NOW() - INTERVAL lifetime SECOND)');
 
-        $now = $this->qb->query('SELECT NOW()')
-            ->setFetchMode(PDO::FETCH_COLUMN)
-            ->first();
+        $user = $this->getUserByToken($token);
 
-        $this->qb->transaction(function (Transaction $tr) use ($token_hash, $now, &$result) {
-            $select_token = "SELECT token, session_id, user_id, lifetime, invalidated_at
-            FROM refresh_tokens 
-            WHERE token = ? AND user_agent = ? AND remote_addr = ? AND created_at >= (NOW() - INTERVAL lifetime SECOND)
-            FOR UPDATE";
+        if ($user) {
+            $data = new stdClass;
+            $data->lifetime = $user->lifetime;
+            unset($user->lifetime);
+            $data->user = $user;
+            $data->token_hash = $token_hash;
 
-            $select_user = "SELECT id, name, dob, sex, role FROM users
-            LEFT JOIN admins ON admins.user_id = users.id
-            WHERE id = ?";
+            while (true) {
+                try {
+                    $new_token = bin2hex(random_bytes(16));
+                    $new_hash = $this->hash($new_token);
+        
+                    $this->qb->table($this->table)
+                        ->where('token', '=', $token_hash)
+                        ->update(['token' => $new_hash]);
 
-            $row = $tr->query($select_token, [
-                $token_hash,
-                $this->user_agent,
-                $this->remote_addr,
-            ])->first();
-
-            if (!$row) {
-                $result = false;
-                return;
+                    break;
+                } catch (DuplicateEntryException $e) {
+                    continue;
+                }
             }
 
-            $user = $tr->query($select_user, [$row->user_id])->first();
+            $this->cache->set('token:' . $token_hash, $user, 10);
+            $data->token = $new_token;
+        } else {
+            $this->qb->table($this->table)
+                ->where('token', '=', $token_hash)
+                ->delete();
+        }
 
-            if (!$row->invalidated_at) {
-                $data = [
-                    'session_id' => $row->session_id,
-                    'user_id' => $row->user_id,
-                    'is_api' => 1,
-                    'lifetime' => $row->lifetime,
-                ];
-
-                $new_token = $this->createNewRow($tr, $data);
-
-                $update = "UPDATE refresh_tokens
-                SET invalidated_at = DATE_ADD(NOW(), INTERVAL 10 SECOND)
-                WHERE token = ?";
-
-                $tr->query($update, [$token_hash]);
-
-                $delete = "DELETE t1 
-                    FROM refresh_tokens t1
-                    JOIN (
-                        SELECT MAX(`created_at`) AS max_time 
-                        FROM refresh_tokens
-                    ) t2 ON t1.created_at < t2.max_time";
-
-                $tr->query($delete);
-
-                $result = [
-                    'user' => $user,
-                    'token' => $new_token,
-                    'session_id' => $row->session_id,
-                    'lifetime' => $row->lifetime,
-                ];
-            } elseif ($row->invalidated_at > $now) {
-                $result = [
-                    'user' => $user,
-                    'token' => '',
-                    'session_id' => $row->session_id,
-                    'lifetime' => $row->lifetime,
-                ];
-            } else {
-                $tr->table($this->table)
-                    ->where('session_id', '=', $row->session_id)
-                    ->delete();
-
-                $result = false;
-            }
-        });
-
-        return $result;
+        return $row ? $data : false;
     }
 
     public function logout(string $token): string
     {
-        $session_id = $this->qb->table($this->table)
-            ->select('session_id')
-            ->where('token', '=', $this->hash($token))
-            ->setFetchMode(PDO::FETCH_COLUMN)
-            ->first();
-
         $this->qb->table($this->table)
-            ->where('session_id', '=', $session_id)
+            ->where('token', '=', $this->hash($token))
             ->delete();
 
         return $session_id;
@@ -142,38 +96,10 @@ class ModelRefreshToken extends MysqlModel
 
     public function logoutGlobal(string $token): array
     {
-        $user_id = $this->qb->table($this->table)
-            ->select('user_id')
-            ->where('token', '=', $this->hash($token))
-            ->setFetchMode(PDO::FETCH_COLUMN)
-            ->first();
-
-        if (!$user_id) {
-            return [];
-        }
-
-        $session_ids = $this->qb->table($this->table)
-            ->select('session_id')
-            ->where('user_id', '=', $user_id)
-            ->setFetchMode(PDO::FETCH_COLUMN)
-            ->get();
-
-        $this->qb->table($this->table)
-            ->where('user_id', '=', $user_id)
-            ->delete();
-
-        return $session_ids;
-    }
-
-    public function sessionExists(string $session_id): bool
-    {
-        $row = $this->qb->table($this->table)
-            ->select('user_id')
-            ->where('session_id', '=', $session_id)
-            ->whereNull('invalidated_at') // Если invalidated_at заполнено — сессия закрыта
-            ->first();
-
-        return $row ? true : false;
+        $user = $this->getUserByToken($token);
+        unset($user->lifetime);
+        $this->cache->set('token:' . $token_hash, $user, 10);
+        $this->deleteByUser($user->id);
     }
 
     public function deleteByUser(int $user_id): void
@@ -195,6 +121,11 @@ class ModelRefreshToken extends MysqlModel
         $stmt->execute();
 
         return $stmt->rowCount();
+    }
+
+    public function hash(string $token)
+    {
+        return hash('sha256', $token, true);
     }
 
     private function sessionsLimit(Transaction $tr, int $user_id): void
@@ -246,8 +177,25 @@ class ModelRefreshToken extends MysqlModel
         return $token;
     }
 
-    private function hash(string $token)
+    private function getUserByToken(string $token): object|null
     {
-        return hash('sha256', $token, true);
+        return $this->qb->table($this->table)
+            ->select(
+                [
+                    'users.id',
+                    'users.name',
+                    'users.dob',
+                    'users.sex',
+                    'admins.role',
+                    'lifetime',
+                ]
+            )
+            ->join('users', 'users.id', '=', "refresh_tokens.user_id")
+            ->leftJoin('admins', 'admins.user_id', '=', 'refresh_tokens.user_id')
+            ->where('token', '=', $token_hash)
+            ->where('user_agent', '=', $this->user_agent)
+            ->where('remote_addr', '=', $this->remote_addr)
+            ->where('created_at', '>=', $expired)
+            ->first();
     }
 }

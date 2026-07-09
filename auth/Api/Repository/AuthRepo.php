@@ -63,9 +63,15 @@ class AuthRepo
                 'name' => $user->name,
                 'sex' => $user->sex,
                 'dob' => $user->dob,
+                'role' => $user->role,
             ]
         ];
 
         return JWT::encode($payload, $this->config['key'], $this->config['algo']);
+    }
+
+    public function find(int $user_id): object | null
+    {
+        return $this->modelAuth->find($user_id);
     }
 }
