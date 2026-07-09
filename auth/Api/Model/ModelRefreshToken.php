@@ -35,7 +35,6 @@ class ModelRefreshToken extends MysqlModel
 
             $data = [
                 'user_id' => $user_id,
-                'is_api' => 0,
                 'lifetime' => ($remember) ? $this->config['remember_lifetime'] : $this->config['refresh_lifetime'],
             ];
 
@@ -48,8 +47,6 @@ class ModelRefreshToken extends MysqlModel
     public function rotateToken(string $token)
     {
         $token_hash = $this->hash($token);
-        $expired = $this->qb->raw('(NOW() - INTERVAL lifetime SECOND)');
-
         $user = $this->getUserByToken($token);
 
         if ($user) {
@@ -82,16 +79,14 @@ class ModelRefreshToken extends MysqlModel
                 ->delete();
         }
 
-        return $row ? $data : false;
+        return $user ? $data : false;
     }
 
-    public function logout(string $token): string
+    public function logout(string $token): void
     {
         $this->qb->table($this->table)
             ->where('token', '=', $this->hash($token))
             ->delete();
-
-        return $session_id;
     }
 
     public function logoutGlobal(string $token): array
@@ -162,10 +157,6 @@ class ModelRefreshToken extends MysqlModel
             $data['user_agent'] = $this->user_agent;
             $data['remote_addr'] = $this->remote_addr;
 
-            if (!isset($data['session_id'])) {
-                $data['session_id'] = $data['token'];
-            }
-
             try {
                 $table->insert($data);
                 break;
@@ -179,6 +170,9 @@ class ModelRefreshToken extends MysqlModel
 
     private function getUserByToken(string $token): object|null
     {
+        $token_hash = $this->hash($token);
+        $expired = $this->qb->raw('(NOW() - INTERVAL lifetime SECOND)');
+
         return $this->qb->table($this->table)
             ->select(
                 [
