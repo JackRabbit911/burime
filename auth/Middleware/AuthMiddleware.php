@@ -6,7 +6,6 @@ namespace Auth\Middleware;
 
 use Auth\Api\Repository\AuthRepo;
 use Auth\Api\Model\ModelRefreshToken;
-use Auth\Model\ModelUser;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -15,6 +14,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 use UnexpectedValueException;
+use Memcached;
 use stdClass;
 
 class AuthMiddleware implements MiddlewareInterface
@@ -26,7 +26,7 @@ class AuthMiddleware implements MiddlewareInterface
     public function __construct(
         private AuthRepo $repo,
         private ModelRefreshToken $modelRefresh,
-        private ModelUser $model,
+        private Memcached $cache,
     ) {
         $this->config = config('o2auth');
     }
@@ -41,7 +41,7 @@ class AuthMiddleware implements MiddlewareInterface
             $from_port = parse_url($from_url, PHP_URL_PORT);
 
             if ($from_port === env('DEV_FROM_PORT', 5173)) {
-                $user = $this->model->find(env('DEV_UID'));
+                $user = $this->repo->find(env('DEV_UID'));
             }
         }
 
@@ -54,13 +54,21 @@ class AuthMiddleware implements MiddlewareInterface
 
     private function checkCookie(array $cookie): object|false
     {
+        $user = false;
         $result = $this->checkBearer($cookie['OAT'] ?? null);
 
         if ($result === self::EXPIRED) {
-            $user = $this->checkRefresh($cookie['UAT'] ?? null);
+            $refresh = $cookie['UAT'] ?? null;
+
+            if ($refresh) {
+                $user = $this->checkCache($refresh);
+
+                if (!$user) {
+                    $user = $this->checkRefresh($refresh);
+                }
+            }
         } elseif ($result === self::ALARM) {
             $this->repo->logout($cookie);
-            $user = false;
         } else {
             $user = $result->user;
         }
@@ -93,22 +101,27 @@ class AuthMiddleware implements MiddlewareInterface
         $options = $this->config['cookie'];
         $result = $this->modelRefresh->rotateToken($token);
 
-        
-
         if ($result) {
-            $now = time();
-            $refresh = $result['token'];
-            $bearer = $this->repo->encodeJWT((object) $result['user'], $result['session_id']);
+            if (isset($result->token)) {
+                $now = time();
+                $bearer = $this->repo->encodeJWT((object) $result->user, $result->token_hash);
 
-            $options['expires'] = $now + $result['lifetime'];
-            setcookie('UAT', $refresh, $options);
+                $options['expires'] = $now + $result->lifetime;
+                setcookie('UAT', $result->token, $options);
 
-            $options['expires'] = $now + $this->config['lifetime'];
-            setcookie('OAT', $bearer, $options);
+                $options['expires'] = $now + $this->config['lifetime'];
+                setcookie('OAT', $bearer, $options);
+            }
 
-            return $result['user'];
+            return $result->user;
         }
 
         return false;
+    }
+
+    private function checkCache(string $token)
+    {
+        $hash = $this->modelRefresh->hash($token);
+        return $this->cache->get('token:' . $hash);
     }
 }
