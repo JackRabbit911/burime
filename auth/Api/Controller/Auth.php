@@ -44,6 +44,7 @@ class Auth extends ApiAuthController
         ];
     }
 
+    #[Route(methods: ['get', 'delete'])]
     public function logout()
     {
         $token = $this->request->getCookieParams()['UAT'] ?? null;
@@ -60,6 +61,6 @@ class Auth extends ApiAuthController
         setcookie('OAT', '', $options);
         setcookie('UAT', '', $options);
 
-        return true;
+        return 'GoodBye';
     }
 }
