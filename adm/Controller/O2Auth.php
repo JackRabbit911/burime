@@ -67,6 +67,11 @@ class O2Auth extends ApiContractController
     public function refresh()
     {
         $refresh = $this->request->getCookieParams()['UAT'] ?? null;
+
+        if (!$refresh) {
+            return new EmptyResponse(401);
+        }
+        
         $data = $this->repo->rotate($refresh);
 
         return (($data)) ?: new EmptyResponse(401);
