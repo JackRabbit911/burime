@@ -51,6 +51,19 @@ class AuthRepo
         return [$user, $refresh, $bearer];
     }
 
+    public function rotate(string $token): array|false
+    {
+        $result = $this->modelRefreshToken->rotateToken($token);
+
+        if (!$result) {
+            return false;
+        }
+
+        return [
+            $this->encodeJWT((object) $result->user, $result->token_hash),
+        ];
+    }
+
     public function logout(?string $token): void
     {
         if (isset($token)) {
