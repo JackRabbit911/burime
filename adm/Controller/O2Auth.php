@@ -4,48 +4,83 @@ declare(strict_types=1);
 
 namespace Adm\Controller;
 
-use App\Api\Common\Controller\ApiContractController;
 use Adm\Middleware\AuthValidation;
-use Adm\Repository\AuthRepo;
+use App\Api\Common\Controller\ApiContractController;
+use Auth\Api\Repository\AuthRepo;
 use Az\Route\Route;
 use HttpSoft\Response\EmptyResponse;
 
 class O2Auth extends ApiContractController
 {
-    public function __construct(private AuthRepo $repo) {}
+    private $config = [];
 
-    #[Route(methods: 'post')]
-    #[AuthValidation]
-    public function login()
+    public function __construct(private AuthRepo $repo)
     {
-        return $this->repo->login();
+        $this->config = config('o2auth');
+    }
+
+    public function auth()
+    {
+        $refresh = $this->request->getCookieParams()['UAT'] ?? false;
+        return $refresh ? $this->repo->auth($refresh) : new EmptyResponse(401);
     }
 
     #[Route(methods: 'delete')]
     public function logout()
     {
-        $this->repo->logout($this->data['refresh']);
+        $token = $this->request->getCookieParams()['UAT'] ?? null;
+
+        if (!$token) {
+            return 'Goodbye';
+        }
+
+        $this->repo->logout($token);
+
+        $options = $this->config['cookie'];
+        $options['expires'] = time() - 3600;
+
+        setcookie('OAT', '', $options);
+        setcookie('UAT', '', $options);
+
         return 'Goodbye';
     }
 
     #[Route(methods: 'delete')]
     public function quit()
     {
-        $this->repo->logoutGlobal($this->data['refresh']);
+        $token = $this->request->getCookieParams()['UAT'] ?? null;
+
+        if (!$token) {
+            return 'Goodbye';
+        }
+
+        $this->repo->logoutGlobal($token);
+
+        $options = $this->config['cookie'];
+        $options['expires'] = time() - 3600;
+        setcookie('UAT', '', $options);
+
         return 'Goodbye';
     }
 
     #[Route(methods: 'post')]
     public function refresh()
     {
-        $data = $this->repo->rotate($this->data['refresh']);
+        $refresh = $this->request->getCookieParams()['UAT'] ?? null;
+
+        if (!$refresh) {
+            return new EmptyResponse(401);
+        }
+        
+        $data = $this->repo->rotate($refresh);
+
         return (($data)) ?: new EmptyResponse(401);
     }
 
     #[Route(methods: 'delete')]
     public function ban()
     {
-        $user_id = $this->data['user_id'];
-        $this->repo->ban($user_id);
+        // $user_id = $this->data['user_id'];
+        // $this->repo->ban($user_id);
     }
 }

@@ -63,7 +63,7 @@ class ModelRefreshToken extends MysqlModel
         
                     $this->qb->table($this->table)
                         ->where('token', '=', $token_hash)
-                        ->update(['token' => $new_hash]);
+                        ->update(['token' => $new_hash, 'raw' => $new_token]);
 
                     break;
                 } catch (DuplicateEntryException $e) {
@@ -89,8 +89,9 @@ class ModelRefreshToken extends MysqlModel
             ->delete();
     }
 
-    public function logoutGlobal(string $token): array
+    public function logoutGlobal(string $token): void
     {
+        $token_hash = $this->hash($token);
         $user = $this->getUserByToken($token);
         unset($user->lifetime);
         $this->cache->set('token:' . $token_hash, $user, 10);
@@ -153,6 +154,7 @@ class ModelRefreshToken extends MysqlModel
 
         while (true) {
             $token = bin2hex(random_bytes(16));
+            $data['raw'] = $token;
             $data['token'] = $this->hash($token);
             $data['user_agent'] = $this->user_agent;
             $data['remote_addr'] = $this->remote_addr;
@@ -168,7 +170,7 @@ class ModelRefreshToken extends MysqlModel
         return $token;
     }
 
-    private function getUserByToken(string $token): object|null
+    public function getUserByToken(string $token): object|null
     {
         $token_hash = $this->hash($token);
         $expired = $this->qb->raw('(NOW() - INTERVAL lifetime SECOND)');

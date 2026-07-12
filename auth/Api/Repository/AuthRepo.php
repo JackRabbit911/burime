@@ -7,6 +7,7 @@ namespace Auth\Api\Repository;
 use Auth\Api\Model\ModelAuth;
 use Auth\Api\Model\ModelRefreshToken;
 use Firebase\JWT\JWT;
+use HttpSoft\Response\EmptyResponse;
 
 class AuthRepo
 {
@@ -15,9 +16,25 @@ class AuthRepo
     public function __construct(
         private ModelAuth $modelAuth,
         private ModelRefreshToken $modelRefreshToken,
-    )
-    {
+    ) {
         $this->config = config('o2auth');
+    }
+
+    public function auth(string $refresh)
+    {
+        $token_hash = $this->modelRefreshToken->hash($refresh);
+        $user = $this->modelRefreshToken->getUserByToken($refresh);
+
+        if (!$user) {
+            return new EmptyResponse(401);
+        }
+        
+        $bearer = $this->encodeJWT($user, $token_hash);
+
+        return [
+            'user' => $user,
+            'bearer' => $bearer,
+        ];
     }
 
     public function login(array $data)
@@ -34,6 +51,19 @@ class AuthRepo
         return [$user, $refresh, $bearer];
     }
 
+    public function rotate(string $token): array|false
+    {
+        $result = $this->modelRefreshToken->rotateToken($token);
+
+        if (!$result) {
+            return false;
+        }
+
+        return [
+            $this->encodeJWT((object) $result->user, $result->token_hash),
+        ];
+    }
+
     public function logout(?string $token): void
     {
         if (isset($token)) {
@@ -41,9 +71,11 @@ class AuthRepo
         }
     }
 
-    public function logoutGlobal()
+    public function logoutGlobal(?string $token)
     {
-
+        if (isset($token)) {
+            $this->modelRefreshToken->logoutGlobal($token);
+        }
     }
 
     public function encodeJWT(object $user, $session_id): string
