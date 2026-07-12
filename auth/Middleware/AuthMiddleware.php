@@ -9,6 +9,7 @@ use Auth\Api\Model\ModelRefreshToken;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use HttpSoft\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
@@ -33,17 +34,21 @@ class AuthMiddleware implements MiddlewareInterface
 
     public function process(Request $request, Handler $handler): Response
     {
+        if ($this->exceptUri($request)) {
+            return $handler->handle($request);
+        }
+        
         $cookie = $request->getCookieParams();
         $user = $this->checkCookie($cookie);
 
-        if (ENV === DEVELOPMENT) {
-            $from_url = $request->getHeaderLine('Origin');
-            $from_port = parse_url($from_url, PHP_URL_PORT);
+        // if (ENV === DEVELOPMENT) {
+        //     $from_url = $request->getHeaderLine('Origin');
+        //     $from_port = parse_url($from_url, PHP_URL_PORT);
 
-            if ($from_port === env('DEV_FROM_PORT', 5173)) {
-                $user = $this->repo->find(env('DEV_UID'));
-            }
-        }
+        //     if ($from_port === env('DEV_FROM_PORT', 5173)) {
+        //         $user = $this->repo->find(env('DEV_UID'));
+        //     }
+        // }
 
         if ($user) {
             $request = $request->withAttribute('user', $user);
@@ -123,5 +128,18 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $hash = $this->modelRefresh->hash($token);
         return $this->cache->get('token:' . $hash);
+    }
+
+    private function exceptUri(Request $request): bool
+    {
+        $uri = $request->getUri()->getPath();
+
+        foreach ($this->config['exclude_urls'] as $start) {
+            if (str_starts_with($uri, $start)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
