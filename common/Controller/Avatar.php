@@ -12,18 +12,18 @@ class Avatar extends BaseController
     private const NO_AVATAR = 'avatar/no_avatar.webp';
     private const AVATAR_URL = 'avatar/';
     
-    public function author(int $id, int $lifetime = 0)
+    public function author(int|string $id, int|string $lifetime = 0)
     {
-        $file = $this->getAvatarById($id, 'author');
+        $file = $this->getAvatarById((int) $id, 'author');
 
-        return new FileResponse($file, $lifetime);
+        return new FileResponse($file, (int) $lifetime);
     }
 
-    public function user(int $id, int $lifetime = 0)
+    public function user(int|string $id, int|string $lifetime = 0)
     {
-        $file = $this->getAvatarById($id, 'user');
+        $file = $this->getAvatarById((int) $id, 'user');
 
-        return new FileResponse($file, $lifetime);
+        return new FileResponse($file, (int) $lifetime);
     }
 
     private function getAvatarById(int $id, string $folder)
