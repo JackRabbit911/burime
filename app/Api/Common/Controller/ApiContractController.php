@@ -24,7 +24,7 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
     protected array $headers;
     protected array $data = [];
     protected $user;
-    protected I18n $i18n;
+    protected ?I18n $i18n;
     protected int $status = 200;
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -57,15 +57,6 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
         } catch (Throwable $e) {
             $this->logger($e);
             return $this->_error($e);
-
-            // return ENV >= TESTING ? new JsonResponse([
-            //     'success' => false,
-            //     'error' => [
-            //         'message' => $e->getMessage(),
-            //         'file' => $e->getFile(),
-            //         'line' => $e->getLine(),
-            //     ]
-            // ], 500) : new JsonResponse('Service Unavailable', 503);
         }
     }
 
@@ -102,7 +93,7 @@ abstract class ApiContractController implements RequestHandlerInterface // exten
             $data = json_decode($json, true);
         }
 
-        return $data;
+        return (($data)) ?: [];
     }
 
     protected function _before(): void {}
