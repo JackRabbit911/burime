@@ -18,6 +18,7 @@ return [
     ],
     'exclude_urls' => [
         '/ava',
+        '/api/adm/auth',
         // '/api/my/stat',
         // '/api/auth/login',
         // '/api/auth/logout',
