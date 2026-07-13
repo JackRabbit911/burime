@@ -8,6 +8,7 @@ use Auth\Api\Model\ModelAuth;
 use Auth\Api\Model\ModelRefreshToken;
 use Firebase\JWT\JWT;
 use HttpSoft\Response\EmptyResponse;
+use Memcached;
 
 class AuthRepo
 {
@@ -16,20 +17,22 @@ class AuthRepo
     public function __construct(
         private ModelAuth $modelAuth,
         private ModelRefreshToken $modelRefreshToken,
+        private Memcached $cache,
     ) {
         $this->config = config('o2auth');
     }
 
     public function auth(string $refresh)
     {
-        $token_hash = $this->modelRefreshToken->hash($refresh);
         $user = $this->modelRefreshToken->getUserByToken($refresh);
+
+        return (($user)) ?: new EmptyResponse(401);
 
         if (!$user) {
             return new EmptyResponse(401);
         }
         
-        $bearer = $this->encodeJWT($user, $token_hash);
+        $bearer = $this->encodeJWT($user);
 
         return [
             'user' => $user,
@@ -46,22 +49,32 @@ class AuthRepo
     public function forceLogin(object $user, bool $remember = false): array
     {
         $refresh = $this->modelRefreshToken->initialSesssion($user->id, $remember);
-        $bearer = $this->encodeJWT($user, $refresh);
+        $bearer = $this->encodeJWT($user);
 
         return [$user, $refresh, $bearer];
     }
 
-    public function rotate(string $token): array|false
+    public function rotate(string $token): object|false
     {
-        $result = $this->modelRefreshToken->rotateToken($token);
+        $token_hash = $this->modelRefreshToken->hash($token);
+        $user = $this->cache->get('token:' . $token);
+
+        if ($user) {
+            $result = (object) [
+                'user' => $user,
+                'token_hash' => $token_hash,
+            ];
+        } else {
+            $result = $this->modelRefreshToken->rotateToken($token);
+        }
 
         if (!$result) {
             return false;
         }
 
-        return [
-            $this->encodeJWT((object) $result->user, $result->token_hash),
-        ];
+        $result->bearer = $this->encodeJWT($result->user);
+
+        return $result;
     }
 
     public function logout(?string $token): void
@@ -78,7 +91,7 @@ class AuthRepo
         }
     }
 
-    public function encodeJWT(object $user, $session_id): string
+    public function encodeJWT(object $user): string
     {
         $iat = time();
 
@@ -86,7 +99,6 @@ class AuthRepo
             'iss' => $this->config['iss'],
             'iat' => $iat,
             'exp' => $iat + $this->config['lifetime'],
-            'sid' => bin2hex($session_id),
             'user' =>
             [
                 'id' => $user->id,

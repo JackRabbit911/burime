@@ -56,6 +56,8 @@ class ModelRefreshToken extends MysqlModel
             $data->user = $user;
             $data->token_hash = $token_hash;
 
+            $this->cache->set('token:' . $token, $user, 10);
+
             while (true) {
                 try {
                     $new_token = bin2hex(random_bytes(16));
@@ -71,7 +73,6 @@ class ModelRefreshToken extends MysqlModel
                 }
             }
 
-            $this->cache->set('token:' . $token_hash, $user, 10);
             $data->token = $new_token;
         } else {
             $this->qb->table($this->table)

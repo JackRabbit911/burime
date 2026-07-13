@@ -71,10 +71,20 @@ class O2Auth extends ApiContractController
         if (!$refresh) {
             return new EmptyResponse(401);
         }
-        
-        $data = $this->repo->rotate($refresh);
 
-        return (($data)) ?: new EmptyResponse(401);
+        $result = $this->repo->rotate($refresh);
+
+        if ($result) {
+            if (isset($result->lifetime)) {
+                $options = $this->config['cookie'];
+                $options['expires'] = time() + $result->lifetime;
+                setcookie('UAT', $result->token, $options);
+            }
+
+            return $result->bearer;
+        }
+
+        return new EmptyResponse(403);
     }
 
     #[Route(methods: 'delete')]
