@@ -88,8 +88,7 @@ class AuthMiddleware implements MiddlewareInterface
         }
 
         try {
-            $payload = JWT::decode($token, new Key($this->config['key'], $this->config['algo']));
-            return $payload;
+            return JWT::decode($token, new Key($this->config['key'], $this->config['algo']));
         } catch (ExpiredException $e) {
             return self::EXPIRED;
         } catch (UnexpectedValueException $e) {
@@ -109,7 +108,7 @@ class AuthMiddleware implements MiddlewareInterface
         if ($result) {
             if (isset($result->token)) {
                 $now = time();
-                $bearer = $this->repo->encodeJWT((object) $result->user, $result->token_hash);
+                $bearer = $this->repo->encodeJWT((object) $result->user);
 
                 $options['expires'] = $now + $result->lifetime;
                 setcookie('UAT', $result->token, $options);
