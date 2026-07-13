@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Auth\Api\Middleware;
 
-use Adm\Model\ModelRefreshToken;
+use Auth\Api\Model\ModelRefreshToken;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use HttpSoft\Response\EmptyResponse;
@@ -39,7 +39,7 @@ class O2AuthGuard implements MiddlewareInterface
             $token = str_replace('Bearer ', '', $token);
             $payload = $this->checkBearer($token);
 
-            if ($payload && $this->checkLogIn($payload->sid) && $this->checkNoBan($payload->user)) {
+            if ($payload) { // && $this->checkLogIn($payload->sid) && $this->checkNoBan($payload->user)) {
                 $request = $request->withAttribute('user', $payload->user);
                 return $handler->handle($request);
             }
