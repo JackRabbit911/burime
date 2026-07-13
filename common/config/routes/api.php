@@ -5,6 +5,7 @@ declare(strict_types=1);
 // use Adm\Controller\Auth as ControllerAuth;
 
 use Adm\Controller\O2Auth;
+use Adm\Controller\Test;
 use Adm\Controller\Users;
 
 use Auth\Api\Controller\Auth;
@@ -42,6 +43,7 @@ return [
 
     'adm.auth'      => ['/api/adm/auth/{action}', O2Auth::class],
     'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
+    'adm.test'      => ['/api/adm/test/{action?}', Test::class],
 
     'api.translate' => ['/api/gettranslate', Translate::class],
     'api.help'      => ['/api/my/help/{path}', Help::class, ['path' => '.*']],
