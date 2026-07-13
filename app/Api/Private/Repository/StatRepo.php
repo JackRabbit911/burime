@@ -19,20 +19,21 @@ class StatRepo
         private ModelUserStat $modelUserStat,
     ) {}
 
-    public function get(int $user_id, array $ownAuthorsIds)
+    public function get(object $user, array $ownAuthorsIds)
     {
         return new StatDTO([
             'books' => [
                 'total' => $this->modelBooks->getCount($ownAuthorsIds),
-                'own' => $this->modelBooks->getOwnCount($user_id, $ownAuthorsIds),
+                'own' => $this->modelBooks->getOwnCount($user->id, $ownAuthorsIds),
             ],
-            'drafts' => $this->modelDrafts->getCount($user_id),
+            'drafts' => $this->modelDrafts->getCount($user->id),
             'authors' => [
                 'total' => $this->modelAuthors->getGroupsCount($ownAuthorsIds),
                 'own' => count($ownAuthorsIds),
             ],
             'messages' => $this->modelUserStat->getMsgCount($ownAuthorsIds),
-            'complete' => $this->getComplete($user_id),
+            'complete' => $this->getComplete($user->id),
+            'admin' => $user->role ? true : false,
         ]);
     }
 

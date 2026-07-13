@@ -24,7 +24,7 @@ class MyController extends ApiContractController
 
     public function stat(StatRepo $repo)
     {
-        return $repo->get($this->user->id, $this->ownAuthorsIds);
+        return $repo->get($this->user, $this->ownAuthorsIds);
     }
 
     public function books(ModelBooks $model)
