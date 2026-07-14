@@ -58,6 +58,8 @@ class O2Auth extends ApiContractController
 
         $options = $this->config['cookie'];
         $options['expires'] = time() - 3600;
+        
+        setcookie('OAT', '', $options);
         setcookie('UAT', '', $options);
 
         return 'Goodbye';
