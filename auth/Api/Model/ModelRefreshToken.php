@@ -62,7 +62,7 @@ class ModelRefreshToken extends MysqlModel
                 try {
                     $new_token = bin2hex(random_bytes(16));
                     $new_hash = $this->hash($new_token);
-        
+
                     $this->qb->table($this->table)
                         ->where('token', '=', $token_hash)
                         ->update(['token' => $new_hash, 'raw' => $new_token]);
@@ -92,11 +92,15 @@ class ModelRefreshToken extends MysqlModel
 
     public function logoutGlobal(string $token): void
     {
-        $token_hash = $this->hash($token);
-        $user = $this->getUserByToken($token);
-        unset($user->lifetime);
-        $this->cache->set('token:' . $token_hash, $user, 10);
-        $this->deleteByUser($user->id);
+        $user = $this->getUserByToken($token, false);
+
+        if ($user) {
+            unset($user->lifetime);
+            $this->cache->set('token:' . $token, $user, 10);
+            $this->deleteByUser($user->id);
+        } else {
+            $this->logout($token);
+        }
     }
 
     public function deleteByUser(int $user_id): void
@@ -171,12 +175,12 @@ class ModelRefreshToken extends MysqlModel
         return $token;
     }
 
-    public function getUserByToken(string $token): object|null
+    public function getUserByToken(string $token, bool $is_expired = true): object|null
     {
         $token_hash = $this->hash($token);
         $expired = $this->qb->raw('(NOW() - INTERVAL lifetime SECOND)');
 
-        return $this->qb->table($this->table)
+        $table = $this->qb->table($this->table)
             ->select(
                 [
                     'users.id',
@@ -189,10 +193,14 @@ class ModelRefreshToken extends MysqlModel
             )
             ->join('users', 'users.id', '=', "refresh_tokens.user_id")
             ->leftJoin('admins', 'admins.user_id', '=', 'refresh_tokens.user_id')
-            ->where('token', '=', $token_hash)
-            ->where('user_agent', '=', $this->user_agent)
-            ->where('remote_addr', '=', $this->remote_addr)
-            ->where('created_at', '>=', $expired)
-            ->first();
+            ->where('token', '=', $token_hash);
+
+        if ($is_expired) {
+            $table->where('created_at', '>=', $expired)
+                ->where('user_agent', '=', $this->user_agent)
+                ->where('remote_addr', '=', $this->remote_addr);
+        }
+
+        return $table->first();
     }
 }

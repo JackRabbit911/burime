@@ -84,7 +84,7 @@ class AuthRepo
         }
     }
 
-    public function logoutGlobal(?string $token)
+    public function logoutGlobal(?string $token): void
     {
         if (isset($token)) {
             $this->modelRefreshToken->logoutGlobal($token);
