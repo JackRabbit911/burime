@@ -35,7 +35,7 @@ use Sys\Console\Controller as ConsoleController;
 // use Auth\Api\Controller\O2Auth;
 
 return [
-    'informer'      => ['api/informer', Informer::class],
+    'informer'      => ['/api/informer', Informer::class],
     'console'       => ['/api/console/{model}/{method}', ConsoleController::class, ['model' => '[\w\/]+']],
     
     'rating'        => ['/api/rating/{action}/{post_id}', RatingApi::class],
