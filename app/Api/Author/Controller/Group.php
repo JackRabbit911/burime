@@ -7,8 +7,8 @@ namespace App\Api\Author\Controller;
 use App\Api\Author\Model\ModelGroup;
 use App\Api\Author\Middleware\StatusValidation;
 use App\Api\Common\Controller\ApiContractController;
-use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
+use Sys\Middleware\PreparePostData;
 use Sys\CSRF\Facade\Csrf;
 
 class Group extends ApiContractController
@@ -17,8 +17,6 @@ class Group extends ApiContractController
 
     public function members(?int $id = null)
     {
-        Csrf::send($this->user->id, 7200);
-        
         return [
             'members' => $id ? $this->model->getMembers((int) $id) : [],
         ];
