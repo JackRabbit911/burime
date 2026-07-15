@@ -8,6 +8,7 @@ use App\Api\Common\Controller\ApiContractController;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\MemberRole;
+use Sys\CSRF\Facade\Csrf;
 
 class ReferenceBooks extends ApiContractController
 {
@@ -34,5 +35,10 @@ class ReferenceBooks extends ApiContractController
         $data['authorsFilters'] = MemberRole::getFilters();
 
         return $data;
+    }
+
+    public function csrf()
+    {
+        return Csrf::generate($this->user->id);
     }
 }
