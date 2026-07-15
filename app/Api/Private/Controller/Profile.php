@@ -10,8 +10,8 @@ use App\Api\Private\Middleware\PasswordConfirmValidation;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Auth\Service\OAuth;
 use App\Api\Common\Repository\Avatar;
+use Auth\Api\Repository\AuthRepo;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
-use Sys\CSRF\Middleware\ApiDeleteCsrf;
 use Sys\Middleware\PreparePostData;
 use Sys\CSRF\Facade\Csrf;
 use Az\Route\Route;
@@ -23,8 +23,6 @@ class Profile extends ApiContractController
     public function __invoke()
     {
         $userdata = $this->model->find($this->user->id);
-        Csrf::send($this->user->id, 7200);
-
         return $userdata;
     }
 
@@ -37,23 +35,24 @@ class Profile extends ApiContractController
     #[ApiCsrfMiddleware]
     #[PreparePostData]
     #[ProfileValidation]
-    #[ApiDeleteCsrf]
-    public function save(Avatar $avatar, OAuth $auth)
+    public function save(Avatar $avatar, AuthRepo $repo)
     {
-        $data = $this->request->getParsedBody();
         $file = $this->request->getUploadedFiles()['file'] ?? null;
 
-        $this->model->update($data, $this->user->id);
+        $this->model->update($this->data, $this->user->id);
         $avatar->save($file, $this->user->id, Avatar::USER);
-        $auth->login($this->user->update($data));
+        $this->model->update($this->data, $this->user->id);
 
-        return ['id' => $this->user->id];
+        $bearer = $repo->encodeJWT($this->user);
+        $options = config('o2auth', 'cookie');
+        setcookie('OAT', $bearer, $options);
+
+        return ['user' => $this->user];
     }
 
     #[Route(methods: 'post')]
     #[ApiCsrfMiddleware]
     #[PasswordConfirmValidation]
-    #[ApiDeleteCsrf]
     public function savepswd()
     {
         $data = $this->request->getParsedBody();

@@ -11,8 +11,6 @@ use Auth\Api\Model\ModelRecovery;
 use Auth\Api\Middleware\EmailValidation;
 use Auth\Api\Middleware\PasswordConfirmValidation;
 use Az\Route\Route;
-use Sys\CSRF\Facade\Csrf;
-use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 
 #[Route(methods: 'post')]
 class Recovery extends ApiAuthController
@@ -24,10 +22,7 @@ class Recovery extends ApiAuthController
         ModelRecovery $modelRecovery,
         SendEmail $mailer
     ) {
-        $data = $this->request->getBody()->getContents();
-        $data = json_decode($data);
-
-        $user = $modelRecovery->findByEmail($data->email);
+        $user = $modelRecovery->findByEmail($this->data->email);
 
         $code = $this->confirm->set($user);
         $mailer->recovery($this->request->getUri(), $user, $this->i18n->lang(), $code);
@@ -38,12 +33,9 @@ class Recovery extends ApiAuthController
     #[PasswordConfirmValidation]
     public function savepswd(ModelUser $model)
     {
-        $data = $this->request->getBody()->getContents();
-        $data = json_decode($data);
-
-        if (($result = $this->confirm->check($data->code, $data->id))) {
-            $hash = password_hash($data->password, PASSWORD_DEFAULT);
-            $model->update(['password' => $hash], $data->id);
+        if (($result = $this->confirm->check($this->data->code, $this->data->id))) {
+            $hash = password_hash($this->data->password, PASSWORD_DEFAULT);
+            $model->update(['password' => $hash], $this->data->id);
         }
 
         return $result;

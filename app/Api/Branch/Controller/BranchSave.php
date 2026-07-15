@@ -13,7 +13,6 @@ use App\Api\Common\Controller\ApiContractController;
 use App\Api\Common\Repository\InviteMessageRepo;
 use Auth\Api\Middleware\ApiAuthGuard;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
-use Sys\CSRF\Middleware\ApiDeleteCsrf;
 use Sys\Middleware\PreparePostData;
 use Az\Route\Route;
 
@@ -21,7 +20,6 @@ use Az\Route\Route;
 #[Route(methods: 'post')]
 #[ApiCsrfMiddleware]
 #[PreparePostData]
-#[ApiDeleteCsrf]
 class BranchSave extends ApiContractController
 {
     public function __construct(private DraftSaveRepo $draftSaveRepo) {}
