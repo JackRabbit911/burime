@@ -8,7 +8,6 @@ use App\Api\Private\Model\ModelUser;
 use App\Api\Private\Middleware\ProfileValidation;
 use App\Api\Private\Middleware\PasswordConfirmValidation;
 use App\Api\Common\Controller\ApiContractController;
-use App\Api\Auth\Service\OAuth;
 use App\Api\Common\Repository\Avatar;
 use Auth\Api\Repository\AuthRepo;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
