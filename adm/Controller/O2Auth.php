@@ -45,26 +45,6 @@ class O2Auth extends ApiContractController
         return 'Goodbye';
     }
 
-    #[Route(methods: 'delete')]
-    public function quit()
-    {
-        $token = $this->request->getCookieParams()['UAT'] ?? null;
-
-        if (!$token) {
-            return 'Goodbye';
-        }
-
-        $this->repo->logoutGlobal($token);
-
-        $options = $this->config['cookie'];
-        $options['expires'] = time() - 3600;
-        
-        setcookie('OAT', '', $options);
-        setcookie('UAT', '', $options);
-
-        return 'Goodbye';
-    }
-
     #[Route(methods: 'post')]
     public function refresh()
     {
