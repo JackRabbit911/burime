@@ -83,14 +83,20 @@ class ModelRefreshToken extends MysqlModel
         return $user ? $data : false;
     }
 
-    public function logout(string $token): void
+    public function logout(string $token, ?int $user_id = null): int|null
     {
+        if (!$user_id) {
+            $user = $this->getUserByToken($token, false);
+        }
+
         $this->qb->table($this->table)
             ->where('token', '=', $this->hash($token))
             ->delete();
+
+        return $user?->id ?? null;
     }
 
-    public function logoutGlobal(string $token): void
+    public function logoutGlobal(string $token): int|null
     {
         $user = $this->getUserByToken($token, false);
 
@@ -101,6 +107,25 @@ class ModelRefreshToken extends MysqlModel
         } else {
             $this->logout($token);
         }
+
+        return $user?->id ?? null;
+    }
+
+    public function deleteOthers(string $token)
+    {
+        $user = $this->getUserByToken($token);
+
+        if (!$user) {
+            return;
+        }
+
+        unset($user->lifetime);
+        $this->cache->set('token:' . $token, $user, 10);
+
+        $this->qb->table($this->table)
+            ->where('user_id', '=', $user->id)
+            ->where('token', '!=', $this->hash($token))
+            ->delete();
     }
 
     public function deleteByUser(int $user_id): void
