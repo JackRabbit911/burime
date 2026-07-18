@@ -6,6 +6,7 @@ namespace Auth\Api\Repository;
 
 use Auth\Api\Model\ModelAuth;
 use Auth\Api\Model\ModelRefreshToken;
+use Sys\CSRF\Driver\Db as CSRF;
 use Firebase\JWT\JWT;
 use HttpSoft\Response\EmptyResponse;
 use Memcached;
@@ -17,6 +18,7 @@ class AuthRepo
     public function __construct(
         private ModelAuth $modelAuth,
         private ModelRefreshToken $modelRefreshToken,
+        private CSRF $csrf,
         private Memcached $cache,
     ) {
         $this->config = config('o2auth');
@@ -77,18 +79,31 @@ class AuthRepo
         return $result;
     }
 
-    public function logout(?string $token): void
+    public function logout(string $token, ?string $csrf): void
     {
-        if (isset($token)) {
-            $this->modelRefreshToken->logout($token);
+        $user_id = $this->modelRefreshToken->logout($token);
+
+        if (isset($csrf)) {
+            $this->csrf->delete($csrf);
+        } elseif (isset($user_id)) {
+            $this->csrf->deleteByUserAgent($user_id);
         }
     }
 
     public function logoutGlobal(?string $token): void
     {
         if (isset($token)) {
-            $this->modelRefreshToken->logoutGlobal($token);
+            $user_id = $this->modelRefreshToken->logoutGlobal($token);
+
+            if ($user_id) {
+                $this->csrf->deleteByUser($user_id);
+            }
         }
+    }
+
+    public function logoutOthers(string $token): void
+    {
+        $this->modelRefreshToken->logoutOthers($token);
     }
 
     public function encodeJWT(object $user): string
