@@ -10,6 +10,7 @@ use App\Api\Private\Middleware\PasswordConfirmValidation;
 use App\Api\Common\Controller\ApiContractController;
 use App\Api\Common\Repository\Avatar;
 use Auth\Api\Repository\AuthRepo;
+use Auth\Api\Model\ModelRefreshToken;
 use Sys\CSRF\Middleware\ApiCsrfMiddleware;
 use Sys\Middleware\PreparePostData;
 use Sys\CSRF\Facade\Csrf;
@@ -52,11 +53,17 @@ class Profile extends ApiContractController
     #[Route(methods: 'post')]
     #[ApiCsrfMiddleware]
     #[PasswordConfirmValidation]
-    public function savepswd()
+    public function savepswd(ModelRefreshToken $modelToken)
     {
         $data = $this->request->getParsedBody();
         $hash = password_hash($data['password'], PASSWORD_DEFAULT);
         $this->model->update(['password' => $hash], $this->user->id);
+
+        $token = $this->request->getCookieParams()['UAT'] ?? null;
+
+        if ($token) {
+            $modelToken->deleteOthers($token);
+        }
 
         return ['id' => $this->user->id];
     }
