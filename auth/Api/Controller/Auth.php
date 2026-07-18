@@ -44,16 +44,43 @@ class Auth extends ApiAuthController
         ];
     }
 
-    #[Route(methods: ['get', 'delete'])]
+    #[Route(methods: 'delete')]
     public function logout()
+    {
+        return $this->_logout('logout');
+    }
+
+    #[Route(methods: 'delete')]
+    public function quit()
+    {
+        return $this->_logout('logoutGlobal');
+    }
+
+
+    #[Route(methods: 'delete')]
+    public function logoutOthers()
     {
         $token = $this->request->getCookieParams()['UAT'] ?? null;
 
         if (!$token) {
             return false;
         }
-        
-        $this->repo->logout($token);
+
+        $this->repo->logoutOthers($token);
+
+        return 'GoodBye';
+    }
+
+    private function _logout(string $func)
+    {
+        $csrf = $this->data['csrf'] ?? null;
+        $token = $this->request->getCookieParams()['UAT'] ?? null;
+
+        if (!$token) {
+            return 'Goodbye';
+        }
+
+        call_user_func([$this->repo, $func], $token, $csrf);
 
         $options = $this->config['cookie'];
         $options['expires'] = time() - 3600;
@@ -61,6 +88,6 @@ class Auth extends ApiAuthController
         setcookie('OAT', '', $options);
         setcookie('UAT', '', $options);
 
-        return 'GoodBye';
+        return 'Goodbye';
     }
 }

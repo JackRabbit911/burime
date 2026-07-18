@@ -6,13 +6,13 @@ namespace Auth\Middleware;
 
 use Auth\Api\Repository\AuthRepo;
 use Auth\Api\Model\ModelRefreshToken;
-use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Firebase\JWT\ExpiredException;
 use HttpSoft\Response\JsonResponse;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 use UnexpectedValueException;
 use Memcached;
@@ -57,7 +57,7 @@ class AuthMiddleware implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    private function checkCookie(array $cookie): object|false
+    public function checkCookie(array $cookie): object|false
     {
         $user = false;
         $result = $this->checkBearer($cookie['OAT'] ?? null);
@@ -73,7 +73,7 @@ class AuthMiddleware implements MiddlewareInterface
                 }
             }
         } elseif ($result === self::ALARM) {
-            $this->repo->logout($cookie);
+            $this->repo->logout($refresh);
         } else {
             $user = $result->user;
         }
