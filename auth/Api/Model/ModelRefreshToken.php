@@ -137,16 +137,28 @@ class ModelRefreshToken extends MysqlModel
 
     public function gc(): int
     {
-        $pdo = $this->qb->pdo();
+        $sql = "DELETE t1
+        FROM refresh_tokens t1
+        LEFT JOIN refresh_tokens t2 
+            ON t1.user_id = t2.user_id 
+            AND t1.user_agent = t2.user_agent
+            AND t1.remote_addr = t2.remote_addr
+            AND t1.created_at < t2.created_at
+        WHERE (t1.created_at + INTERVAL t1.lifetime SECOND < NOW())
+        OR t2.token IS NOT NULL";
 
-        $sql = "DELETE FROM `refresh_tokens`
-        WHERE `created_at` < (NOW() - INTERVAL lifetime SECOND)
-        OR (`invalidated_at` IS NOT NULL AND `invalidated_at` < NOW())";
+        return $this->qb->query($sql)->count();
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+        // $pdo = $this->qb->pdo();
 
-        return $stmt->rowCount();
+        // $sql = "DELETE FROM `refresh_tokens`
+        // WHERE `created_at` < (NOW() - INTERVAL lifetime SECOND)
+        // OR (`invalidated_at` IS NOT NULL AND `invalidated_at` < NOW())";
+
+        // $stmt = $pdo->prepare($sql);
+        // $stmt->execute();
+
+        // return $stmt->rowCount();
     }
 
     public function hash(string $token)
