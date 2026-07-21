@@ -10,19 +10,27 @@ class ModelUsers extends MysqlModel
 {
     private string $table = 'users';
 
-    public function get(int $limit, int $offset, ?string $filter = null)
+    public function get(?int $limit = null, int $offset = 0, ?string $filter = null, string $search = '')
     {
-        $table = $this->qb->table($this->table);
+        $table = $this->qb->table($this->table)
+            ->select('id', 'name', 'role')
+            ->leftJoin('admins', 'admins.user_id', '=', 'id');
 
-        if ($filter) {
-            $table->where('name', 'LIKE', "%$filter%");
+        // if ($filter) {
+        //     $table->where('name', 'LIKE', "%$filter%");
+        // }
+
+        if (!empty($search)) {
+           $table->where($this->qb->raw('MATCH(name) AGAINST(?)', [$search]));
         }
         
         $result['total'] = $table->count();
 
-        $table->select('id', 'name')
-        ->limit($limit)
-        ->offset($offset);
+
+        if ($limit) {
+            $table->limit($limit)
+                ->offset($offset);
+        }
         
         $result['list'] = $table->get();
 
@@ -34,7 +42,8 @@ class ModelUsers extends MysqlModel
     public function read(int $id)
     {
         return $this->qb->table($this->table)
-            ->select('id', 'name', 'dob', 'sex', 'created')
+            ->select('id', 'name', 'dob', 'sex', 'role', 'created')
+            ->leftJoin('admins', 'admins.user_id', '=', 'id')
             ->find($id);
     }
 

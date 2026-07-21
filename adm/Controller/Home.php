@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Adm\Controller;
 
 use App\Api\Common\Controller\ApiContractController;
+use HttpSoft\Response\EmptyResponse;
 
-class Dicts extends ApiContractController
+class Home extends ApiContractController
 {
     public function sidebar()
     {
@@ -17,5 +18,17 @@ class Dicts extends ApiContractController
             $item->setDisabled($role);
             return $item;
         }, $config);
+    }
+
+    public function dashboard()
+    {
+        $role = $this->user?->role ?? 0;
+
+        return 'Здесь будет какой-нибудь дашборд';
+    }
+
+    public function pages()
+    {
+        return 'Здесь будет панель управления страницами';
     }
 }
