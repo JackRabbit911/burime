@@ -28,8 +28,6 @@ class AuthRepo
     {
         $user = $this->modelRefreshToken->getUserByToken($refresh);
 
-        return (($user)) ?: new EmptyResponse(401);
-
         if (!$user) {
             return new EmptyResponse(401);
         }

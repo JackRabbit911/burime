@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 // use Adm\Controller\Auth as ControllerAuth;
 
+use Adm\Controller\Dicts;
 use Adm\Controller\O2Auth;
 use Adm\Controller\Test;
 use Adm\Controller\Users;
@@ -42,6 +43,7 @@ return [
     'post.confirm'  => ['/api/post/{action}/{post_id}', DeletePostApi::class],
 
     'adm.auth'      => ['/api/adm/auth/{action}', O2Auth::class],
+    'adm.dicts'     => ['/api/adm/dicts/{action}', Dicts::class],
     'api.adm.users' => ['/api/adm/users/{id?}', Users::class],
     'adm.test'      => ['/api/adm/test/{action?}', Test::class],
 

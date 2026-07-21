@@ -1,5 +1,6 @@
 <?php
 
+use Adm\Enum\AdminRoles;
 use Sys\Response\ResponseHeader;
 
 define('SYSPATH', DOCROOT . '../../system/');
@@ -49,4 +50,15 @@ define('ROUTE_PATHS', [
 
 if (ENV > PRODUCTION) {
     ResponseHeader::addHeader('X-Robots-Tag', 'noindex, nofollow, noimageindex');
+}
+
+if (str_starts_with($_SERVER['REQUEST_URI'], '/api/adm')) {
+    define('ADM_SEO', AdminRoles::Seo->value);
+    define('ADM_BURIME', AdminRoles::Burime->value);
+    define('ADM_CONTENT', AdminRoles::Content->value);
+    define('ADM_USERS', AdminRoles::Users->value);
+    define('ADM_DEVELOP', AdminRoles::Develop->value);
+    define('ADM_DEVOPS', AdminRoles::DevOps->value);
+    define('ADM_ADMIN', AdminRoles::Admin->value);
+    define('ADM_COMMERCE', AdminRoles::Commerce->value);
 }
