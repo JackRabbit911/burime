@@ -7,7 +7,6 @@ namespace Adm\Controller;
 use Adm\Model\ModelUsers;
 use Adm\Middleware\SearchValidation;
 use App\Api\Common\Controller\ApiContractController;
-use Auth\Component\Avatar;
 use Auth\Api\Middleware\O2AuthGuard;
 use Sys\Controller\ApiController;
 
@@ -25,19 +24,17 @@ class Users extends ApiContractController
     private function list()
     {
         $params = $this->request->getQueryParams();
-        $filter = $params['name'] ?? null;
-        $page = $params['pageNumber'] ?? 1;
-        $limit = $params['perPage'] ?? 10;
+        $filter = $params['filter'] ?? null;
+        $search = $params['search'] ?? null;
+        $page = $params['page'] ?? 1;
+        $limit = $params['limit'] ?? 10;
         $offset = ((int) $page - 1) * (int) $limit;
 
-        return $this->model->get((int) $limit, $offset, $filter);
+        return $this->model->get((int) $limit, $offset, $filter, $search);
     }
 
     private function user(int $id)
     {
-        $user = $this->model->read($id);
-        $user->avatar = Avatar::getSrc($id);
-
-        return $user;
+        return $this->model->read($id);
     }
 }
