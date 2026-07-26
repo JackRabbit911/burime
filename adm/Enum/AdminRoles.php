@@ -6,12 +6,12 @@ namespace Adm\Enum;
 
 enum AdminRoles: int
 {
-    case Seo = 1 << 0;
-    case Burime = 1 << 1;
-    case Content = 1 << 2;
-    case Users = 1 << 3;
+    case Tranlate = 1 << 0;
+    case Seo = 1 << 1;
+    case Burime = 1 << 2;
+    case Content = 1 << 3;
     case Develop = 1 << 4;
-    case DevOps = 1 << 5;
+    case Users = 1 << 5;
     case Admin = 1 << 6;
     case Commerce = 1 << 7;
 
