@@ -32,12 +32,7 @@ class AuthRepo
             return new EmptyResponse(401);
         }
         
-        $bearer = $this->encodeJWT($user);
-
-        return [
-            'user' => $user,
-            'bearer' => $bearer,
-        ];
+        return $this->encodeJWT($user);
     }
 
     public function login(array $data)
