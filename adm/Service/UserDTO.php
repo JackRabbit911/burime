@@ -18,6 +18,8 @@ class UserDTO
     public readonly ?int $sex;
     public readonly ?string $created;
     public readonly ?string $avatarUrl;
+    public readonly ?int $authorsCount;
+    public readonly ?int $groupsCount;
 
     private string $path = DOCROOT . 'avatar/user/';
 
