@@ -6,6 +6,7 @@ namespace Adm\Controller;
 
 use Adm\Model\ModelUsers;
 use Adm\Middleware\SearchValidation;
+use Adm\Repository\UserRepo;
 use App\Api\Common\Controller\ApiContractController;
 use Auth\Api\Middleware\O2AuthGuard;
 use Sys\Controller\ApiController;
@@ -14,7 +15,10 @@ use Sys\Controller\ApiController;
 // #[SearchValidation]
 class Users extends ApiContractController
 {
-    public function __construct(private ModelUsers $model) {}
+    public function __construct(
+        private ModelUsers $model,
+        private UserRepo $userRepo,
+    ) {}
 
     public function __invoke(?int $id)
     {
@@ -35,6 +39,6 @@ class Users extends ApiContractController
 
     private function user(int $id)
     {
-        return $this->model->read($id);
+        return $this->userRepo->getUser($this->user->role, $id);
     }
 }
