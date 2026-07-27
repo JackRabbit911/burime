@@ -49,7 +49,6 @@ class ModelUsers extends MysqlModel
         return $this->qb->table($this->table)
             ->select('id', 'name', 'email', 'phone', 'dob', 'sex', 'role', 'created')
             ->leftJoin('admins', 'admins.user_id', '=', 'id')
-            ->asObject(UserDTO::class)
             ->find($id);
     }
 
