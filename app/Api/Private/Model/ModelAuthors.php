@@ -10,7 +10,7 @@ use PDO;
 
 class ModelAuthors extends MysqlModel
 {
-    public function getOwnAuthors(int $user_id)
+    public function getOwnAuthorsIds(int $user_id)
     {
         return $this->qb->table('authors')
             ->select('id')

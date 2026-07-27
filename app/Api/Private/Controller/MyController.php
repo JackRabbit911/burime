@@ -19,7 +19,7 @@ class MyController extends ApiContractController
     
     protected function _before(): void
     {
-        $this->ownAuthorsIds = $this->modelAuthors->getOwnAuthors($this->user->id);
+        $this->ownAuthorsIds = $this->modelAuthors->getOwnAuthorsIds($this->user->id);
     }
 
     public function stat(StatRepo $repo)
