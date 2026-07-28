@@ -12,6 +12,10 @@ class ModelBooks extends MysqlModel
 {
     public function get(array $params)
     {
+        if (empty($params)) {
+            return [];
+        }
+        
         $master_role = BranchAuthorPermissions::EDIT_STATUS->value;
 
         $str = implode(',', array_fill(0, count($params), '?'));
