@@ -10,6 +10,7 @@ use Adm\Repository\UserRepo;
 use App\Api\Common\Controller\ApiContractController;
 use Auth\Api\Middleware\O2AuthGuard;
 use Sys\Controller\ApiController;
+use Az\Route\Route;
 
 // #[O2AuthGuard]
 // #[SearchValidation]
@@ -23,6 +24,12 @@ class Users extends ApiContractController
     public function __invoke(?int $id)
     {
         return ($id) ? $this->user($id) : $this->list();
+    }
+
+    #[Route(methods: 'post')]
+    public function save(int $id)
+    {
+        return $this->data;
     }
 
     private function list()
