@@ -44,7 +44,7 @@ return [
 
     'adm.auth'      => ['/api/adm/auth/{action}', O2Auth::class],
     'adm.dicts'     => ['/api/adm/home/{action}', Home::class],
-    'adm.users'     => ['/api/adm/users/{id?}', Users::class],
+    'adm.users'     => ['/api/adm/users/{id?}/{action?}', Users::class],
     'adm.test'      => ['/api/adm/test/{action?}', Test::class],
 
     'api.translate' => ['/api/gettranslate', Translate::class],
