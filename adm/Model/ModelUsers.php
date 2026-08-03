@@ -19,9 +19,11 @@ class ModelUsers extends MysqlModel
 
         $result['total'] = $table->count();
 
-        // if ($filter) {
-        //     $table->where('name', 'LIKE', "%$filter%");
-        // }
+        if ($filter) {
+            if ($filter === 'admin') {
+                $table->where('role', '>', 0);
+            }
+        }
 
         if (!empty($search)) {
             $table->where($this->qb->raw('MATCH(name) AGAINST(? IN BOOLEAN MODE)', [$search]));
@@ -42,9 +44,20 @@ class ModelUsers extends MysqlModel
         return $result;
     }
 
-    public function create(array $data) {}
+    public function setAdmRole(array $data)
+    {
+        $table = $this->qb->table('admins');
 
-    public function read(int $id)
+        if ($data['role'] === 0) {
+            return $table->where('user_id', '=', $data['user_id'])
+                ->delete();
+        }
+
+        return $table->onDuplicateKeyUpdate($data)
+            ->insert($data);
+    }
+
+    public function find(int $id)
     {
         return $this->qb->table($this->table)
             ->select('id', 'name', 'email', 'phone', 'dob', 'sex', 'role', 'created')
