@@ -147,18 +147,11 @@ class ModelRefreshToken extends MysqlModel
         WHERE (t1.created_at + INTERVAL t1.lifetime SECOND < NOW())
         OR t2.token IS NOT NULL";
 
-        return $this->qb->query($sql)->count();
+        $pdo = $this->qb->pdo();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
 
-        // $pdo = $this->qb->pdo();
-
-        // $sql = "DELETE FROM `refresh_tokens`
-        // WHERE `created_at` < (NOW() - INTERVAL lifetime SECOND)
-        // OR (`invalidated_at` IS NOT NULL AND `invalidated_at` < NOW())";
-
-        // $stmt = $pdo->prepare($sql);
-        // $stmt->execute();
-
-        // return $stmt->rowCount();
+        return $stmt->rowCount();
     }
 
     public function hash(string $token)
