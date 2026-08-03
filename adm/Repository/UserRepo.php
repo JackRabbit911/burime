@@ -20,7 +20,7 @@ class UserRepo
 
     public function getUser(int $adm_role, int $id)
     {
-        $user = $this->modelUsers->read($id);
+        $user = $this->modelUsers->find($id);
         $own_authors_ids = $this->modelAuthors->getOwnAuthorsIds($id);
 
         $authors = [
@@ -52,28 +52,4 @@ class UserRepo
     {
         return $adm_role & $role ? true : false;
     }
-
-    // private function makeAuthorsList(int $id, array $own_authors_ids)
-    // {
-    //     $authors = $this->modelAuthors->getMyGroups($id, $own_authors_ids);
-
-    //     return array_map(function($v) {
-    //         return [
-    //             'id' => $v->id,
-    //             'label' => $v->alias,
-    //         ];
-    //     }, $authors);
-    // }
-
-    // private function makeBooksList(array $own_authors_ids)
-    // {
-    //     $authors = $this->modelBooks->get($own_authors_ids);
-
-    //     return array_map(function($v) {
-    //         return [
-    //             'id' => $v->id,
-    //             'label' => $v->title,
-    //         ];
-    //     }, $authors);
-    // }
 }
