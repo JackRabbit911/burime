@@ -29,7 +29,8 @@ class Users extends ApiContractController
     #[Route(methods: 'post')]
     public function save(int $id)
     {
-        return $this->data;
+        $this->model->setAdmRole($this->data);
+        return 'Ok';
     }
 
     private function list()
