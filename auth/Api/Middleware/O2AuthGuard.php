@@ -12,9 +12,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use UnexpectedValueException;
 use stdClass;
-use Memcached;
+// use Memcached;
+use Throwable;
 
 class O2AuthGuard implements MiddlewareInterface
 {
@@ -39,9 +39,13 @@ class O2AuthGuard implements MiddlewareInterface
             $token = str_replace('Bearer ', '', $token);
             $payload = $this->checkBearer($token);
 
-            if ($payload) { // && $this->checkLogIn($payload->sid) && $this->checkNoBan($payload->user)) {
-                $request = $request->withAttribute('user', $payload->user);
-                return $handler->handle($request);
+            if ($payload) {
+                if ($payload->user->role) {
+                    $request = $request->withAttribute('user', $payload->user);
+                    return $handler->handle($request);
+                }
+
+                return new EmptyResponse(403);
             }
         }
 
@@ -64,37 +68,36 @@ class O2AuthGuard implements MiddlewareInterface
     private function checkBearer(string $token): stdClass|false
     {
         try {
-            $payload = JWT::decode($token, new Key($this->config['key'], $this->config['algo']));
-            return $payload;
-        } catch (UnexpectedValueException $e) {
+            return JWT::decode($token, new Key($this->config['key'], $this->config['algo']));
+        } catch (Throwable $e) {
             return false;
         }
     }
 
-    private function checkLogIn(string $session_id): bool
-    {
-        $sid = hex2bin($session_id);
-        $is_blacklisted = $this->cache->get('blacklist_sid:' . $sid);
+    // private function checkLogIn(string $session_id): bool
+    // {
+    //     $sid = hex2bin($session_id);
+    //     $is_blacklisted = $this->cache->get('blacklist_sid:' . $sid);
 
-        if ($is_blacklisted) {
-            return false;
-        }
+    //     if ($is_blacklisted) {
+    //         return false;
+    //     }
 
-        $resultCode = $this->cache->getResultCode();
-        $is_cache_down = ($resultCode !== Memcached::RES_SUCCESS && $resultCode !== Memcached::RES_NOTFOUND);
+    //     $resultCode = $this->cache->getResultCode();
+    //     $is_cache_down = ($resultCode !== Memcached::RES_SUCCESS && $resultCode !== Memcached::RES_NOTFOUND);
 
-        if ($is_cache_down) {
-            $session_in_db = $this->model->sessionExists($sid);
-            return $session_in_db ? true : false;
-        }
+    //     if ($is_cache_down) {
+    //         $session_in_db = $this->model->sessionExists($sid);
+    //         return $session_in_db ? true : false;
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    private function checkNoBan(object $user): bool
-    {
-        $is_blacklisted = $this->cache->get('blacklist_uid:' . $user->id);
-        return $is_blacklisted ? false : true;
-    }
+    // private function checkIsBan(object $user): bool
+    // {
+    //     $is_blacklisted = $this->cache->get('blacklist_uid:' . $user->id);
+    //     return $is_blacklisted ? true : false;
+    // }
 }
 
