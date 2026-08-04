@@ -24,18 +24,18 @@ class AuthRepo
         $this->config = config('o2auth');
     }
 
-    public function auth(string $refresh)
+    public function auth(string $refresh): array
     {
         $user = $this->modelRefreshToken->getUserByToken($refresh);
 
         if (!$user) {
-            return new EmptyResponse(401);
+            return [false, false];
         }
         
-        return $this->encodeJWT($user);
+        return [$user, $this->encodeJWT($user)];
     }
 
-    public function login(array $data)
+    public function login(array $data): array
     {
         $user = $this->modelAuth->auth($data['email'], $data['password']);
         return $this->forceLogin($user, $data['remember'] ?? false);

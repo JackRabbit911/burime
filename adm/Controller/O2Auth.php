@@ -9,6 +9,7 @@ use App\Api\Common\Controller\ApiContractController;
 use Auth\Api\Repository\AuthRepo;
 use Az\Route\Route;
 use HttpSoft\Response\EmptyResponse;
+use HttpSoft\Response\JsonResponse;
 
 class O2Auth extends ApiContractController
 {
@@ -19,14 +20,29 @@ class O2Auth extends ApiContractController
         $this->config = config('o2auth');
     }
 
-    public function auth()
+    public function auth(): string
     {
         $refresh = $this->request->getCookieParams()['UAT'] ?? false;
-        return $refresh ? $this->repo->auth($refresh) : new EmptyResponse(401);
+
+        if (!$refresh) {
+            return new EmptyResponse(401);
+        }
+
+        [$user, $jwt] = $this->repo->auth($refresh);
+
+        if (!$user) {
+            return new EmptyResponse(401);
+        }
+
+        if (!$user->role) {
+            return new EmptyResponse(403);
+        }
+
+        return $jwt;
     }
 
     #[Route(methods: 'delete')]
-    public function logout()
+    public function logout(): string
     {
         $token = $this->request->getCookieParams()['UAT'] ?? null;
 
