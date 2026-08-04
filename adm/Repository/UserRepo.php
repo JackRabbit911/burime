@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Adm\Repository;
 
 use Adm\Model\ModelUsers;
+use Adm\Service\ADM;
 use App\Api\Private\Model\ModelAuthors;
-// use App\Api\Common\Model\ModelAuthors;
 use App\Api\Private\Model\ModelBooks;
 use Auth\Component\Avatar;
 
@@ -26,16 +26,16 @@ class UserRepo
         $authors = [
             'total' => $this->modelAuthors->getGroupsCount($own_authors_ids),
             'own' => count($own_authors_ids),
-            'allow' => $this->access($adm_role, ADM_BURIME),
-            'list' => $this->access($adm_role, ADM_BURIME)
+            'allow' => ADM::is($adm_role, ADM::BURIME),
+            'list' => ADM::is($adm_role, ADM::BURIME)
                 ? $this->modelAuthors->getMyGroups($id, $own_authors_ids) : [],
         ];
 
         $books = [
             'total' => $this->modelBooks->getCount($own_authors_ids),
             'own' => $this->modelBooks->getOwnCount($user->id, $own_authors_ids),
-            'allow' => $this->access($adm_role, ADM_BURIME),
-            'list' =>  $this->access($adm_role, ADM_BURIME)
+            'allow' => ADM::is($adm_role, ADM::BURIME),
+            'list' =>  ADM::is($adm_role, ADM::BURIME)
                 ? $this->modelBooks->get($own_authors_ids) : [],
         ];
 
@@ -46,10 +46,5 @@ class UserRepo
         $user->admRole = $adm_role;
 
         return $user;
-    }
-
-    private function access(int $adm_role, int $role, $user_role = null)
-    {
-        return $adm_role & $role ? true : false;
     }
 }
