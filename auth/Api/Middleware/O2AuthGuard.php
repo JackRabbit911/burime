@@ -20,7 +20,7 @@ class O2AuthGuard implements MiddlewareInterface
 {
     private array $config;
 
-    public function __construct(private Memcached $cache, private ModelRefreshToken $model)
+    public function __construct(private ModelRefreshToken $model)
     {
         $this->config = config('o2auth');
     }
