@@ -20,7 +20,7 @@ class O2Auth extends ApiContractController
         $this->config = config('o2auth');
     }
 
-    public function auth(): string
+    public function auth(): string|EmptyResponse
     {
         $refresh = $this->request->getCookieParams()['UAT'] ?? false;
 
