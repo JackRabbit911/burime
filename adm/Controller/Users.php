@@ -13,10 +13,11 @@ use App\Api\Common\Controller\ApiContractController;
 use Auth\Api\Middleware\O2AuthGuard;
 use Sys\Controller\ApiController;
 use Az\Route\Route;
+use HttpSoft\Response\EmptyResponse;
 
 // #[O2AuthGuard]
-// #[SearchValidation]
 #[AdmGuard(role: ADM::USERS)]
+#[SearchValidation]
 class Users extends ApiContractController
 {
     public function __construct(
