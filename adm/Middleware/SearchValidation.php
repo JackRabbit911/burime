@@ -10,6 +10,6 @@ class SearchValidation extends ApiContractValidation
 {
     protected function setRules($request)
     {
-        $this->validation->rule('search', 'username');
+        $this->validation->rule('search', 'text_utf8');
     }
 }
