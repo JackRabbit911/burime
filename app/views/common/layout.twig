@@ -1,12 +1,9 @@
 <!doctype html>
 <html lang="{{ i18n.lang()|default('en') }}" class="h-full">
-
 <head>
   {{ include('common/head.twig') }}
   <script src="/assets/js/themeSet.js"></script>
 </head>
-{% apply spaceless %}
-
 <body class="h-full">
   <div class="mx-auto flex flex-col min-h-screen">
     <div class="lg:container lg:mx-auto">
@@ -21,6 +18,4 @@
   <script src="/assets/js/informer.js"></script>
   {{ app.js|raw }}
 </body>
-{% endapply %}
-
 </html>
