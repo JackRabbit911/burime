@@ -5,19 +5,17 @@ namespace App\Burime\Service;
 use App\Author\Author;
 use App\Burime\Post;
 use Common\Contract\BranchInterface;
-// use Common\Enum\AuthorRole;
 use Common\Enum\BranchAuthorPermissions;
 use Common\Enum\BranchStatus;
 use Common\Enum\PostStatus;
-use Auth\User;
 
 class PostPermissions
 {
     public BranchInterface $branch;
-    private ?User $user;
+    private ?object $user;
     private ?Author $author;
 
-    public function __construct(BranchInterface $branch, ?User $user)
+    public function __construct(BranchInterface $branch, ?object $user)
     {
         $this->branch = $branch;
         $this->user = $user;
