@@ -27,6 +27,8 @@ use Common\Controller\Avatar;
 // use App\Burime\Controller\Api as BurimeApi;
 // use App\Chat\Controller\Chat;
 
+use App\Api\Message\Controller\Message;
+
 return [
     'my'            => ['/my/{any?}', Front::class, ['any' => '.*']],
     'auth'          => ['/auth/{any?}', AuthFront::class, ['any' => '.*']],
@@ -55,4 +57,6 @@ return [
     // 'private'       => ['/private/{action}', PrivateController::class],
     // 'int.burime'    => ['/internal/burime/{action}/{id?}', BurimeApi::class],
     // 'lab.react'     => ['/whoami', UserGuest::class],
+
+    'message'   => ['/my/message/{action}/{id?}/{recipient?}', Message::class],
 ];
