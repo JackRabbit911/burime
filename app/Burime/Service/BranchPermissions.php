@@ -7,9 +7,7 @@ use Common\Enum\BranchRole;
 use Common\Enum\BranchStatus;
 use Common\Enum\BranchAuthorStatus;
 use Common\Enum\BranchAuthorPermissions;
-
 use App\Author\Author;
-use Auth\User;
 use stdClass;
 
 class BranchPermissions
@@ -18,12 +16,12 @@ class BranchPermissions
 Register and indicate your date of birth';
 
     private BranchInterface $branch;
-    private ?User $user;
+    private ?object $user;
     private string $msg;
     private ?Author $myAuthor;
     private stdClass $permissions;
 
-    public function __construct(BranchInterface $branch, ?User $user, ?Author $myAuthor)
+    public function __construct(BranchInterface $branch, ?object $user, ?Author $myAuthor)
     {
         $this->branch = $branch;
         $this->user = $user;
