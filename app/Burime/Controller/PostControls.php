@@ -17,13 +17,15 @@ use Sys\Controller\BaseController;
 use Sys\Helper\Facade\Text;
 use HttpSoft\Response\RedirectResponse;
 use Sys\Request\Internal\Wrapper;
+use Az\Session\SessionMiddleware;
 
+#[SessionMiddleware]
 class PostControls extends BaseController
 {
     private PostPermissions $permissions;
     private BranchInterface $branch;
     private EntityPost $post;
-    private ?UserInterface $user;
+    private ?object $user;
     private ?SessionInterface $session;
 
     private string $authorAlias;
@@ -41,6 +43,7 @@ class PostControls extends BaseController
     {
         $this->session = $this->request->getAttribute('session');
         $this->user = $this->request->getAttribute('user');
+
         $this->branch = $this->branchRepo->find($this->parameters['branch_id']);
         $this->permissions = new PostPermissions($this->branch, $this->user);
         $this->post = $this->modelPost->findPost($this->parameters['post_id'], $this->parameters['branch_id']);
