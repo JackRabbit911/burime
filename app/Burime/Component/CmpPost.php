@@ -12,12 +12,12 @@ use Sys\Contract\UserInterface;
 class CmpPost
 {
     private BranchInterface $branch;
-    private ?UserInterface $user;
+    private ?object $user;
     private PostPermissions $postPermissions;
     private PostControls $postControls;
     private Timer $timer;
 
-    public function __construct(BranchInterface $branch, ?UserInterface $user = null)
+    public function __construct(BranchInterface $branch, ?object $user = null)
     {
         $this->branch = $branch;
         $this->user = $user;
