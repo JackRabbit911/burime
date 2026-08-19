@@ -25,9 +25,20 @@ class Recovery extends ApiAuthController
         $user = $modelRecovery->findByEmail($this->data->email);
 
         $code = $this->confirm->set($user);
-        $mailer->recovery($this->request->getUri(), $user, $this->i18n->lang(), $code);
 
-        return $user->name;
+        if (ENV !== TESTING) {
+            $mailer->recovery($this->request->getUri(), $user, $this->i18n->lang(), $code);
+        }
+
+        $data = [
+            'name' => $user->name,
+        ];
+
+        if (ENV === TESTING) {
+            $data['code'] = "$user->id/$code";
+        }
+
+        return $data;
     }
 
     #[PasswordConfirmValidation]
