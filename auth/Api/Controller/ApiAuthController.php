@@ -22,14 +22,14 @@ abstract class ApiAuthController implements RequestHandlerInterface
     protected array $headers;
     protected I18n $i18n;
     protected int $status = 200;
-    protected $data = [];
+    protected object $data;
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if ($request->getMethod() === 'POST') {
             $this->status = 201;
         }
-        
+
         $this->request = $request;
         $route = $request->getAttribute(Route::class);
         $parameters = $route->getParameters();
@@ -84,14 +84,8 @@ abstract class ApiAuthController implements RequestHandlerInterface
 
     private function getData($request)
     {
-        $data = $request->getParsedBody();
-
-        if (empty($data)) {
-            $json = $request->getBody()->getContents();
-            $data = json_decode($json, true);
-        }
-
-        return $data;
+        $json = $request->getBody()->getContents();
+        return json_decode($json);
     }
 
     protected function _before(): void {}
