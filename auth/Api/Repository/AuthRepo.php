@@ -35,10 +35,10 @@ class AuthRepo
         return [$user, $this->encodeJWT($user)];
     }
 
-    public function login(array $data): array
+    public function login(object $data): array
     {
-        $user = $this->modelAuth->auth($data['email'], $data['password']);
-        return $this->forceLogin($user, $data['remember'] ?? false);
+        $user = $this->modelAuth->auth($data->email, $data->password);
+        return $this->forceLogin($user, $data->remember ?? false);
     }
 
     public function forceLogin(object $user, bool $remember = false): array
