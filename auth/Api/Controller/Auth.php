@@ -28,7 +28,7 @@ class Auth extends ApiAuthController
         [$user, $refresh, $bearer] = $this->repo->login($this->data);
         $options = $this->config['cookie'];
 
-        $lifetime = $this->data['remember']
+        $lifetime = $this->data->remember
             ? $this->config['remember_lifetime']
             : $this->config['refresh_lifetime'];
 
@@ -73,7 +73,7 @@ class Auth extends ApiAuthController
 
     private function _logout(string $func)
     {
-        $csrf = $this->data['csrf'] ?? null;
+        $csrf = $this->data->csrf ?? null;
         $token = $this->request->getCookieParams()['UAT'] ?? null;
 
         if (!$token) {
