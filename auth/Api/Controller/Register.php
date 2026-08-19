@@ -13,8 +13,8 @@ use stdClass;
 
 class Register extends ApiAuthController
 {
-    public function __construct(private ModelConfirm $model){}
-    
+    public function __construct(private ModelConfirm $model) {}
+
     #[Route(methods: 'post')]
     #[RegisterValidation]
     public function save(SendEmail $mailer)
@@ -28,9 +28,20 @@ class Register extends ApiAuthController
         $user->password = password_hash($data->password, PASSWORD_DEFAULT);
 
         $code = $this->model->set($user);
-        $mailer->register($this->request->getUri(), $user, $this->i18n->lang(), $code);
 
-        return true;
+        if (ENV !== TESTING) {
+            $mailer->register($this->request->getUri(), $user, $this->i18n->lang(), $code);
+        }
+
+        $data = [
+            'name' => $user->name,
+        ];
+
+        if (ENV === TESTING) {
+            $data['code'] = $code;
+        }
+
+        return $data;
     }
 
     public function confirm(ModelUser $model, string $code)
