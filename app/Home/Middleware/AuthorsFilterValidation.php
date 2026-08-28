@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Home\Middleware;
 
-use Az\Validation\Middleware\ValidationMiddleware;
+use App\Api\Common\Middleware\ApiContractValidation;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AuthorsFilterValidation extends ValidationMiddleware
+class AuthorsFilterValidation extends ApiContractValidation
 {
     protected function setRules(ServerRequestInterface $request)
     {
