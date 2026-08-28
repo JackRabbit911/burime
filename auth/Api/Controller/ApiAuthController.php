@@ -22,7 +22,7 @@ abstract class ApiAuthController implements RequestHandlerInterface
     protected array $headers;
     protected I18n $i18n;
     protected int $status = 200;
-    protected object $data;
+    protected ?object $data;
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
