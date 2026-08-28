@@ -161,26 +161,19 @@ class ModelRefreshToken extends MysqlModel
 
     private function sessionsLimit(Transaction $tr, int $user_id): void
     {
-        $activeSessionsCount = $tr->table($this->table)
-            ->where('user_id', '=', $user_id)
-            ->whereNull('invalidated_at')
-            ->count();
+        $limit = $this->config['max_active_sessions'];
 
-        if ($activeSessionsCount >= $this->config['max_active_sessions']) {
-            $oldestSession = $tr->table('user_refresh_tokens')
-                ->select('session_id')
-                ->where('user_id', '=', $user_id)
-                ->whereNull('invalidated_at')
-                ->orderBy('expires_at', 'ASC')
-                ->setFetchMode(PDO::FETCH_COLUMN)
-                ->first();
+        $sql = "DELETE FROM refresh_tokens 
+        WHERE token NOT IN (
+            SELECT token FROM (
+                SELECT token FROM refresh_tokens
+                WHERE user_id = $user_id
+                ORDER BY created_at DESC 
+                LIMIT $limit
+            ) AS temp
+        )";
 
-            if ($oldestSession) {
-                $tr->table('user_refresh_tokens')
-                    ->where('session_id', '=', $oldestSession)
-                    ->delete();
-            }
-        }
+        $tr->query($sql);
     }
 
     private function createNewRow(Transaction $tr, array $data): string

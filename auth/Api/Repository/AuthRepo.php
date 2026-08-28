@@ -72,7 +72,7 @@ class AuthRepo
         return $result;
     }
 
-    public function logout(string $token, ?string $csrf): void
+    public function logout(string $token, ?string $csrf = null): void
     {
         $user_id = $this->modelRefreshToken->logout($token);
 

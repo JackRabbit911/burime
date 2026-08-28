@@ -10,6 +10,7 @@ use Auth\Api\Repository\AuthRepo;
 use Az\Route\Route;
 use HttpSoft\Response\EmptyResponse;
 use HttpSoft\Response\JsonResponse;
+use Sys\Request\Http;
 
 class O2Auth extends ApiContractController
 {
@@ -42,23 +43,15 @@ class O2Auth extends ApiContractController
     }
 
     #[Route(methods: 'delete')]
-    public function logout(): string
+    public function logout()
     {
         $token = $this->request->getCookieParams()['UAT'] ?? null;
+        $url = path('api.auth', ['action' => 'logout']);
 
-        if (!$token) {
-            return 'Goodbye';
-        }
-
-        $this->repo->logout($token);
-
-        $options = $this->config['cookie'];
-        $options['expires'] = time() - 3600;
-
-        setcookie('OAT', '', $options);
-        setcookie('UAT', '', $options);
-
-        return 'Goodbye';
+        return Http::client($url)
+            ->method('DELETE')
+            ->cookies(['UAT' => $token])
+            ->send();
     }
 
     #[Route(methods: 'post')]
