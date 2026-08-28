@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Home\Middleware;
 
-use Az\Validation\Middleware\ValidationMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
 
-class BooksFilterValidation extends ValidationMiddleware
+class BooksFilterValidation extends ApiContractValidation
 {
     protected function setRules(ServerRequestInterface $request)
     {
