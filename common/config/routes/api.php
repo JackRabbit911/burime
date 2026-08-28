@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 // use Adm\Controller\Auth as ControllerAuth;
 
+use Adm\Controller\Dev;
 use Adm\Controller\Home;
 use Adm\Controller\O2Auth;
 use Adm\Controller\Test;
@@ -45,6 +46,7 @@ return [
     'adm.auth'      => ['/api/adm/auth/{action}', O2Auth::class],
     'adm.dicts'     => ['/api/adm/home/{action}', Home::class],
     'adm.users'     => ['/api/adm/users/{id?}/{action?}', Users::class],
+    'adm.dev'       => ['/api/adm/dev/{action}', Dev::class],
     'adm.test'      => ['/api/adm/test/{action?}', Test::class],
 
     'api.translate' => ['/api/gettranslate', Translate::class],
@@ -62,7 +64,7 @@ return [
     'api.additional'=> ['/api/my/additional/{action}/{id}', Additional::class],
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 
-    ['/api/auth/{action?}/{code?}', Auth::class],
+    'api.auth' => ['/api/auth/{action?}/{code?}', Auth::class],
     ['/api/register/{action}/{code?}', Register::class],
     ['/api/recovery/{action}/{id?}/{code?}', Recovery::class],
 ];
