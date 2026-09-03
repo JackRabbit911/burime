@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Home\Middleware;
 
+use App\Api\Common\Middleware\ApiContractValidation;
 use Psr\Http\Message\ServerRequestInterface;
 
 class BooksFilterValidation extends ApiContractValidation
