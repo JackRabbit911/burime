@@ -14,21 +14,30 @@ class MenuItem implements JsonSerializable
 
     public function __construct(
         string $label,
-        string $to,
+        ?string $to,
+        ?string $icon = null,
         ?int $access = null,
     ) {
         $this->data = new stdClass;
         $this->data->label = __($label);
         $this->data->to = $to;
 
+        if ($icon) {
+            $this->data->icon = $icon;
+        }
+
         if ($access) {
             $this->access = $access;
         }
     }
 
-    public static function create(string $label, ?string $to = null, ?int $access = null)
-    {
-        return new self($label, $to, $access);
+    public static function create(
+        string $label,
+        ?string $to = null,
+        ?string $icon = null,
+        ?int $access = null
+    ) {
+        return new self($label, $to, $icon, $access);
     }
 
     public function sub(...$sub)
