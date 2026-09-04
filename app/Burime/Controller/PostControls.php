@@ -14,7 +14,7 @@ use Common\Enum\PostStatus;
 use Az\Session\SessionInterface;
 use Sys\Contract\UserInterface;
 use Sys\Controller\BaseController;
-use Sys\Helper\Facade\Text;
+use Sys\Helper\Facade\Str;
 use HttpSoft\Response\RedirectResponse;
 use Sys\Request\Internal\Wrapper;
 use Az\Session\SessionMiddleware;
@@ -112,7 +112,7 @@ class PostControls extends BaseController
     private function getDataBody()
     {
         return [
-            ':substr' => Text::catStr($this->post->body, 8),
+            ':substr' => Str::cat($this->post->body, 8),
             ':created' => $this->post->created,
             ':author' => $this->authorAlias,
             ];

@@ -5,7 +5,7 @@ namespace App\Home\Model;
 use App\Home\Model\ModelAuthors;
 use App\Home\Model\ModelBestPost;
 use App\Home\Model\ModelWorks;
-use Sys\Helper\Facade\Text;
+use Sys\Helper\Facade\Str;
 
 class HomeRepo
 {
@@ -30,7 +30,7 @@ class HomeRepo
         $post = $this->modelBestPost->getPost();
 
         if ($post) {
-            $post->body = Text::catStr($post->body, 500);
+            $post->body = Str::cat($post->body, 500);
         }
 
         return $post;
