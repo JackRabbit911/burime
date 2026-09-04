@@ -4,7 +4,6 @@ namespace App\Home\Controller;
 
 use App\Home\Repository\About\CreateBranch;
 use Sys\Controller\WebController;
-use Sys\Helper\Facade\Text;
 
 class AboutHowToCreate extends WebController
 {
