@@ -37,15 +37,15 @@ define('MODE', getMode($_SERVER['REQUEST_URI']));
 $GLOBALS['_MODE'] = MODE;
 
 function getMode(string $path)
-    {
-        if (PHP_SAPI === 'cli') {
-            return 'cli';
-        } elseif (strpos($path, '/api/') === 0) {
-            return 'api';
-        } else {
-            return 'web';
-        }
+{
+    if (PHP_SAPI === 'cli') {
+        return 'cli';
+    } elseif (strpos($path, '/api/') === 0) {
+        return 'api';
+    } else {
+        return 'web';
     }
+}
 
 function getRoutePaths(): array
 {
