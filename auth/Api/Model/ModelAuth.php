@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Auth\Api\Model;
 
+use stdClass;
 use Sys\Model\MysqlModel;
 
 class ModelAuth extends MysqlModel
@@ -33,14 +34,16 @@ class ModelAuth extends MysqlModel
 
     public function isPairEmailPswd(string $password, string $email): bool
     {
-        $user = $this->auth($email, $password);
+        if (!($user = $this->root($email, $password))) {
+            $user = $this->auth($email, $password);
+        }
 
         return $user ? true : false;
     }
 
     public function find(int $id): object | null
     {
-         if (self::$user) {
+        if (self::$user) {
             return self::$user;
         }
 
@@ -48,6 +51,22 @@ class ModelAuth extends MysqlModel
             ->select('id', 'name', 'dob', 'sex', 'role')
             ->leftJoin('admins', 'admins.user_id', '=', 'id')
             ->find($id);
+
+        return self::$user;
+    }
+
+    private function root(string $email, string $password)
+    {
+        if ($email !== env('ADM_ROOT_EMAIL') || $password !== env('ADM_ROOT_PASSWORD')) {
+            return false;
+        }
+
+        self::$user = new stdClass;
+        self::$user->id = 0;
+        self::$user->name = 'Root';
+        self::$user->dob = null;
+        self::$user->sex = null;
+        self::$user->role = 255;
 
         return self::$user;
     }
