@@ -19,7 +19,7 @@ class Avatar extends BaseController
         return new FileResponse($file, (int) $lifetime);
     }
 
-    public function user(int|string $id, int|string $lifetime = 0)
+    public function user(int|string $id = 0, int|string $lifetime = 0)
     {
         $file = $this->getAvatarById((int) $id, 'user');
 
