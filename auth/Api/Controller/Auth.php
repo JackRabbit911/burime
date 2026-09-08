@@ -28,15 +28,21 @@ class Auth extends ApiAuthController
         [$user, $refresh, $bearer] = $this->repo->login($this->data);
         $options = $this->config['cookie'];
 
-        $lifetime = $this->data->remember
-            ? $this->config['remember_lifetime']
-            : $this->config['refresh_lifetime'];
+        $bearer_lifetime = $user->id === 0
+            ? $this->config['roottime']
+            : $this->config['lifetime'];
 
-        $options['expires'] = $now + $this->config['lifetime'];
+        $options['expires'] = $now + $bearer_lifetime;
         setcookie('OAT', $bearer, $options);
 
-        $options['expires'] = $now + $lifetime;
-        setcookie('UAT', $refresh, $options);
+        if ($refresh) {
+            $refresh_lifetime = $this->data->remember
+                ? $this->config['remember_lifetime']
+                : $this->config['refresh_lifetime'];
+
+            $options['expires'] = $now + $refresh_lifetime;
+            setcookie('UAT', $refresh, $options);
+        }
 
         return [
             'user' => $user,
@@ -73,19 +79,18 @@ class Auth extends ApiAuthController
 
     private function _logout(string $func)
     {
-        $csrf = $this->data->csrf ?? null;
+        $options = $this->config['cookie'];
+        $options['expires'] = time() - 3600;
+        setcookie('OAT', '', $options);
+
         $token = $this->request->getCookieParams()['UAT'] ?? null;
 
         if (!$token) {
             return 'Goodbye';
         }
 
+        $csrf = $this->data->csrf ?? null;
         call_user_func([$this->repo, $func], $token, $csrf);
-
-        $options = $this->config['cookie'];
-        $options['expires'] = time() - 3600;
-
-        setcookie('OAT', '', $options);
         setcookie('UAT', '', $options);
 
         return 'Goodbye';
