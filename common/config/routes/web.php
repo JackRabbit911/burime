@@ -32,7 +32,7 @@ use App\Api\Message\Controller\Message;
 return [
     'my'            => ['/my/{any?}', Front::class, ['any' => '.*']],
     'auth'          => ['/auth/{any?}', AuthFront::class, ['any' => '.*']],
-    'avatar'        => ['/ava/{action}/{id}/{lifetime?}', Avatar::class],
+    'avatar'        => ['/ava/{action}/{id?}/{lifetime?}', Avatar::class],
 
     'about.create'  => ['/about/how_to_create/{action}', AboutHowToCreate::class],
     'about'         => ['/about/{action}', About::class],
