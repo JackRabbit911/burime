@@ -8,8 +8,10 @@ use Auth\Api\Model\ModelAuth;
 use Auth\Api\Model\ModelRefreshToken;
 use Sys\CSRF\Driver\Db as CSRF;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use HttpSoft\Response\EmptyResponse;
 use Memcached;
+use Throwable;
 
 class AuthRepo
 {
@@ -35,9 +37,33 @@ class AuthRepo
         return [$user, $this->encodeJWT($user)];
     }
 
+    public function authRoot(string | false $token)//: array | false
+    {
+        if (!$token) {
+            return false;
+        }
+
+        $payload = $this->decodeJwt($token);
+
+        if (!$payload) {
+            return false;
+        }
+
+        if ($payload->user->id != 0) {
+            return false;
+        }
+        
+        return $this->encodeJWT($payload->user, $this->config['roottime']);
+    }
+
     public function login(object $data): array
     {
         $user = $this->modelAuth->auth($data->email, $data->password);
+
+        if ($user->id === 0) {
+            return $this->rootlogin($user);
+        }
+
         return $this->forceLogin($user, $data->remember ?? false);
     }
 
@@ -99,14 +125,18 @@ class AuthRepo
         $this->modelRefreshToken->logoutOthers($token);
     }
 
-    public function encodeJWT(object $user): string
+    public function encodeJWT(object $user, ?int $lifetime = null): string
     {
         $iat = time();
+
+        if (!$lifetime) {
+            $lifetime = $this->config['lifetime'];
+        }
 
         $payload = [
             'iss' => $this->config['iss'],
             'iat' => $iat,
-            'exp' => $iat + $this->config['lifetime'],
+            'exp' => $iat + $lifetime,
             'user' =>
             [
                 'id' => $user->id,
@@ -123,5 +153,21 @@ class AuthRepo
     public function find(int $user_id): object | null
     {
         return $this->modelAuth->find($user_id);
+    }
+
+    private function rootlogin(object $user)
+    {
+        $lifetime = $this->config['roottime'];
+        $bearer = $this->encodeJWT($user, $lifetime);
+        return [$user, null, $bearer];
+    }
+
+    private function decodeJwt(string $token)
+    {
+        try {
+            return JWT::decode($token, new Key($this->config['key'], $this->config['algo']));
+        } catch (Throwable $e) {
+            return false;
+        }
     }
 }
