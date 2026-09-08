@@ -8,9 +8,12 @@ use Adm\Middleware\AuthValidation;
 use App\Api\Common\Controller\ApiContractController;
 use Auth\Api\Repository\AuthRepo;
 use Az\Route\Route;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use HttpSoft\Response\EmptyResponse;
 use HttpSoft\Response\JsonResponse;
 use Sys\Request\Http;
+use Throwable;
 
 class O2Auth extends ApiContractController
 {
@@ -24,6 +27,13 @@ class O2Auth extends ApiContractController
     public function auth(): string|EmptyResponse
     {
         $refresh = $this->request->getCookieParams()['UAT'] ?? false;
+        $bearer = $this->request->getCookieParams()['OAT'] ?? false;
+
+        $root_jwt = $this->repo->authRoot($bearer);
+
+        if ($root_jwt) {
+            return $root_jwt;
+        }
 
         if (!$refresh) {
             return new EmptyResponse(401);

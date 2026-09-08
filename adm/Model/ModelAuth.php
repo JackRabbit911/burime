@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+/** Возможно, лишний файл */
 namespace Adm\Model;
 
 use Sys\Model\MysqlModel;
