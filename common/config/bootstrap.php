@@ -32,7 +32,7 @@ define('IS_DEBUG', false);
 define('IS_CACHE', false);
 define('STRICT_MODE', false);
 
-define('MODE', getMode($_SERVER['REQUEST_URI']));
+define('MODE', getMode($_SERVER['REQUEST_URI'] ?? ''));
 
 $GLOBALS['_MODE'] = MODE;
 
