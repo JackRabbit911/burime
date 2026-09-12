@@ -18,9 +18,9 @@ return [
         'samesite' => 'Lax',
     ],
     'exclude_urls' => [
-        '/ava',
-        '/api/adm/auth',
-        '/auth',
+        '/ava/',
+        '/api/adm/auth/',
+        '/auth/',
         // '/api/my/stat',
         // '/api/auth/login',
         // '/api/auth/logout',
