@@ -9,6 +9,8 @@ use Adm\Model\ModelDump;
 use App\Api\Common\Controller\ApiContractController;
 use Az\Route\Route;
 use HttpSoft\Response\JsonResponse;
+use Sys\Console\Command\Do\Down;
+use Sys\Console\Command\Do\Up;
 
 class Dev extends ApiContractController
 {
@@ -41,6 +43,7 @@ class Dev extends ApiContractController
     #[Route(methods: 'post')]
     public function truncate(ModelDev $model)
     {
+        return $this->data;
         $count = $model->truncate($this->data['tables']);
         return ['truncated' => $count];
     }
@@ -75,5 +78,18 @@ class Dev extends ApiContractController
         });
 
         return $res;
+    }
+
+    #[Route(methods: ['get', 'post'])]
+    public function maintenance()
+    {
+        if ($this->request->getMethod() === 'GET') {
+            return ['off' => is_file(STORAGE . 'maintenance')];
+        }
+
+        $wait = $this->data['wait'];
+        ($wait > 0) ? Down::down($wait) : Up::up();
+
+        return ['off' => ($wait > 0)];
     }
 }
