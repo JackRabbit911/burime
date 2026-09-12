@@ -23,5 +23,6 @@ return [
             MenuItem::create('Authors', 'authors', 'users'),
         ),
     MenuItem::create('SuperAdmin', 'super', 'user_star', ADM::ADMIN),
-    MenuItem::create('Commerce', 'commerce', 'dollar_sign', ADM::COMMERCE)
+    MenuItem::create('Commerce', 'commerce', 'dollar_sign', ADM::COMMERCE),
+    MenuItem::create('Others', 'others', 'bug_off', ADM::DEVELOP),
 ];
