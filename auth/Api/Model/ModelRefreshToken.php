@@ -154,6 +154,25 @@ class ModelRefreshToken extends MysqlModel
         return $stmt->rowCount();
     }
 
+    public function getExpired()
+    {
+        $sql = "SELECT COUNT(t1.token) AS count
+        FROM refresh_tokens t1
+        LEFT JOIN refresh_tokens t2 
+            ON t1.user_id = t2.user_id 
+            AND t1.user_agent = t2.user_agent
+            AND t1.remote_addr = t2.remote_addr
+            AND t1.created_at < t2.created_at
+        WHERE (t1.created_at + INTERVAL t1.lifetime SECOND < NOW())
+        OR t2.token IS NOT NULL";
+
+        $pdo = $this->qb->pdo();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_COLUMN);
+    }
+
     public function hash(string $token)
     {
         return hash('sha256', $token, true);
