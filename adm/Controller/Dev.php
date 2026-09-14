@@ -6,6 +6,7 @@ namespace Adm\Controller;
 
 use Adm\Model\ModelDev;
 use Adm\Model\ModelDump;
+use Adm\Repository\ClearRepo;
 use App\Api\Common\Controller\ApiContractController;
 use Az\Route\Route;
 use HttpSoft\Response\JsonResponse;
@@ -78,6 +79,18 @@ class Dev extends ApiContractController
         });
 
         return $res;
+    }
+
+    #[Route(methods: ['get', 'delete'])]
+    public function clear(ClearRepo $repo)
+    {
+        if ($this->request->getMethod() === 'GET') {
+            return $repo->start();
+        }
+
+        $action = $this->data['action'];
+
+        return $repo->$action();
     }
 
     #[Route(methods: ['get', 'post'])]
