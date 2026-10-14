@@ -9,7 +9,6 @@ use Auth\Api\Model\ModelRefreshToken;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
-use HttpSoft\Response\JsonResponse;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -61,9 +60,9 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $user = false;
         $result = $this->checkBearer($cookie['OAT'] ?? null);
+        $refresh = $cookie['UAT'] ?? null;
 
         if ($result === self::EXPIRED) {
-            $refresh = $cookie['UAT'] ?? null;
 
             if ($refresh) {
                 $user = $this->checkCache($refresh);
