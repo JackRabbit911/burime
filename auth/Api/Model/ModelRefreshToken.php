@@ -27,7 +27,7 @@ class ModelRefreshToken extends MysqlModel
         $this->remote_addr = $_SERVER['REMOTE_ADDR'];
     }
 
-    public function initialSesssion(int $user_id, bool $remember): string
+    public function initialSesssion(int $user_id, bool $remember): string | null
     {
         $token = null;
         $this->qb->transaction(function (Transaction $tr) use ($user_id, $remember, &$token) {
@@ -48,9 +48,10 @@ class ModelRefreshToken extends MysqlModel
     {
         $token_hash = $this->hash($token);
         $user = $this->getUserByToken($token);
+        
+        $data = new stdClass;
 
         if ($user) {
-            $data = new stdClass;
             $data->lifetime = $user->lifetime;
             unset($user->lifetime);
             $data->user = $user;
