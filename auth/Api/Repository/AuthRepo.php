@@ -9,7 +9,6 @@ use Auth\Api\Model\ModelRefreshToken;
 use Sys\CSRF\Driver\Db as CSRF;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use HttpSoft\Response\EmptyResponse;
 use Memcached;
 use Throwable;
 
@@ -37,7 +36,7 @@ class AuthRepo
         return [$user, $this->encodeJWT($user)];
     }
 
-    public function authRoot(string | false $token)//: array | false
+    public function authRoot(string | false $token): string | false
     {
         if (!$token) {
             return false;
@@ -120,10 +119,10 @@ class AuthRepo
         }
     }
 
-    public function logoutOthers(string $token): void
-    {
-        $this->modelRefreshToken->logoutOthers($token);
-    }
+    // public function logoutOthers(string $token): void
+    // {
+    //     $this->modelRefreshToken->logoutOthers($token);
+    // }
 
     public function encodeJWT(object $user, ?int $lifetime = null): string
     {
