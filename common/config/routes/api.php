@@ -43,7 +43,7 @@ return [
     'rating'        => ['/api/rating/{action}/{post_id}', RatingApi::class],
     'post.confirm'  => ['/api/post/{action}/{post_id}', DeletePostApi::class],
 
-    'adm.auth'      => ['/api/adm/auth/{action}', O2Auth::class],
+    'adm.auth'      => ['/api/adm/auth/{action}', Auth::class],//O2Auth::class],
     'adm.dicts'     => ['/api/adm/home/{action}', Home::class],
     'adm.users'     => ['/api/adm/users/{id?}/{action?}', Users::class],
     'adm.dev'       => ['/api/adm/dev/{action}', Dev::class],
@@ -64,7 +64,7 @@ return [
     'api.additional'=> ['/api/my/additional/{action}/{id}', Additional::class],
     'api.my'        => ['/api/my/{action}/{id?}', MyController::class],
 
-    'api.auth' => ['/api/auth/{action?}/{code?}', Auth::class],
+    'api.auth'      => ['/api/auth/{action?}/{code?}', Auth::class],
     ['/api/register/{action}/{code?}', Register::class],
     ['/api/recovery/{action}/{id?}/{code?}', Recovery::class],
 ];

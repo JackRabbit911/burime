@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Auth\Api\Controller;
 
-use Auth\Api\Middleware\AuthMiddleware;
 use Auth\Api\Middleware\AuthValidation;
 use Auth\Api\Repository\AuthRepo;
 use Az\Route\Route;
-use Memcached;
+use HttpSoft\Response\EmptyResponse;
 
 class Auth extends ApiAuthController
 {
@@ -19,6 +18,33 @@ class Auth extends ApiAuthController
         $this->config = config('o2auth');
     }
 
+    public function auth(): string | EmptyResponse
+    {
+        $refresh = $this->request->getCookieParams()['UAT'] ?? false;
+        $bearer = $this->request->getCookieParams()['OAT'] ?? false;
+
+        $root_jwt = $this->repo->authRoot($bearer);
+
+        if ($root_jwt) {
+            return $root_jwt;
+        }
+
+        if (!$refresh) {
+            return new EmptyResponse(401);
+        }
+
+        [$user, $jwt] = $this->repo->auth($refresh);
+
+        if (!$user) {
+            return new EmptyResponse(401);
+        }
+
+        if (!$user->role) {
+            return new EmptyResponse(403);
+        }
+
+        return $jwt;
+    }
 
     #[Route(methods: 'post')]
     #[AuthValidation]
@@ -62,20 +88,43 @@ class Auth extends ApiAuthController
         return $this->_logout('logoutGlobal');
     }
 
-
-    #[Route(methods: 'delete')]
-    public function logoutOthers()
+    #[Route(methods: 'post')]
+    public function refresh()
     {
-        $token = $this->request->getCookieParams()['UAT'] ?? null;
+        $refresh = $this->request->getCookieParams()['UAT'] ?? null;
 
-        if (!$token) {
-            return false;
+        if (!$refresh) {
+            return new EmptyResponse(401);
         }
 
-        $this->repo->logoutOthers($token);
+        $result = $this->repo->rotate($refresh);
 
-        return 'GoodBye';
+        if ($result) {
+            if (isset($result->lifetime)) {
+                $options = $this->config['cookie'];
+                $options['expires'] = time() + $result->lifetime;
+                setcookie('UAT', $result->token, $options);
+            }
+
+            return $result->bearer;
+        }
+
+        return new EmptyResponse(403);
     }
+
+    // #[Route(methods: 'delete')]
+    // public function logoutOthers()
+    // {
+    //     $token = $this->request->getCookieParams()['UAT'] ?? null;
+
+    //     if (!$token) {
+    //         return false;
+    //     }
+
+    //     $this->repo->logoutOthers($token);
+
+    //     return 'GoodBye';
+    // }
 
     private function _logout(string $func)
     {
