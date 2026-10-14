@@ -6,12 +6,13 @@ namespace Auth\Api\Middleware;
 
 use Auth\Api\Model\ModelAuth;
 use App\Api\Common\Middleware\ApiContractValidation;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AuthValidation extends ApiContractValidation
 {
     public function __construct(private ModelAuth $model){}
 
-    protected function setRules($request)
+    protected function setRules(ServerRequestInterface $request)
     {
         $this->validation
             ->rule('email', 'required|email')
