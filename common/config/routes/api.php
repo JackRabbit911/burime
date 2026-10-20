@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 use Adm\Controller\Dev;
 use Adm\Controller\Home;
-use Adm\Controller\O2Auth;
+// use Adm\Controller\O2Auth;
 use Adm\Controller\Test;
 use Adm\Controller\Users;
 

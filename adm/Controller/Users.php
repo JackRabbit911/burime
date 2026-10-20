@@ -10,12 +10,8 @@ use Adm\Repository\UserRepo;
 use Adm\Middleware\AdmGuard;
 use Adm\Service\ADM;
 use App\Api\Common\Controller\ApiContractController;
-use Auth\Api\Middleware\O2AuthGuard;
-use Sys\Controller\ApiController;
 use Az\Route\Route;
-use HttpSoft\Response\EmptyResponse;
 
-// #[O2AuthGuard]
 #[AdmGuard(role: ADM::USERS)]
 #[SearchValidation]
 class Users extends ApiContractController
