@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Adm\Service;
 
-use Override;
-use Sys\Entity\DTO;
-
 class UserDTO
 {
     public readonly int $id;
@@ -21,15 +18,15 @@ class UserDTO
     public readonly ?int $authorsCount;
     public readonly ?int $groupsCount;
 
-    private string $path = DOCROOT . 'avatar/user/';
+    private string $path = 'avatar/user/';
 
     public function __construct()
     {
         $pattern = $this->path . $this->id . '.{jpg,jpeg,png,gif,webp}';
-        $file = glob($pattern, GLOB_BRACE)[0] ?? '';
+        $file = glob(DOCROOT . $pattern, GLOB_BRACE)[0] ?? '';
 
         if (is_file($file)) {
-            $this->avatarUrl = ltrim($file, '.');
+            $this->avatarUrl = '/' . $this->path .basename($file);
         } else {
             $this->avatarUrl = null;
         }
