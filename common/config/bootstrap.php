@@ -2,7 +2,7 @@
 
 use Sys\Response\ResponseHeader;
 
-define('SYSPATH', DOCROOT . '../../system/');
+define('SYSPATH', DOCROOT . '../');
 define('FRAMEWORK', SYSPATH . 'vendor/alpha-zeta/framework/src/');
 define('CONFIG', APPPATH . 'common/config/');
 define('ENVPATH', DOCROOT . '../');
