@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'app' => './tests',
-    'sys' => '../system/vendor/alpha-zeta',
-    'valid' => '../system/vendor/alpha-zeta/validation'
+    'app' => '-c ' . APPPATH . 'tests/phpunit.xml',
+    'sys' => 'vendor/alpha-zeta/framework/tests',
 ];
