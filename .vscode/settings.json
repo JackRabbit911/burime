@@ -1,7 +1,0 @@
-{
-    "intelephense.compatibility.correctForArrayAccessArrayAndTraversableArrayUnionTypes": false,
-    "intelephense.completion.insertUseDeclaration": false,
-    "intelephense.environment.includePaths": [
-        "/home/alx/www/burime/site.zone/system/vendor"
-    ]
-}
